@@ -71,11 +71,11 @@ export default class CommentPager extends Component {
             return (<View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starA: select})}/>
-                    <Text style={{margin: 16}}>工作效率</Text>
+                    <Text style={{margin: 16,textAlign:'right'}}>工作效率</Text>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starB: select})}/>
-                    <Text style={{margin: 16}}>结果质量</Text>
+                    <Text style={{margin: 16,textAlign:'right'}}>结果质量</Text>
                 </View>
             </View>);
         }
@@ -112,11 +112,11 @@ export default class CommentPager extends Component {
                 }}>{this.props.task.list[this.props.position].WorkResult}</Text>
 
 
-                <Text style={{color: Color.colorPrimary, margin: 16}}>工作评分</Text>
+                <Text style={{color: Color.colorPrimary, margin: 16,}}>工作评分</Text>
                 {this._fullView()}
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starC: select})}/>
-                    <Text style={{margin: 16}}>进度反馈详细程度</Text>
+                    <Text style={{margin: 16,width:65,textAlign:'right'}}>进度反馈详细程度</Text>
                 </View>
 
                 <Text style={{color: Color.colorPrimary, margin: 16}}>工作评价与建议</Text>
