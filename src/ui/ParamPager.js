@@ -8,7 +8,7 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    InteractionManager, TextInput,
+    InteractionManager, TextInput, KeyboardAvoidingView, ScrollView,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -97,6 +97,7 @@ export default class PasswordPager extends Component {
 
     render() {
         return (
+
             <View style={{
                 flex: 1,
                 backgroundColor: 'white'
@@ -155,7 +156,7 @@ export default class PasswordPager extends Component {
 
                 <Loading visible={this.state.isLoading}/>
                 {this._editDialog()}
-            </View>
+         </View>
         )
     }
 }

@@ -7,7 +7,7 @@ import {
     View,
     ScrollView,
     Text,
-    TextInput,
+    TextInput, KeyboardAvoidingView,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -56,6 +56,7 @@ export default class PasswordPager extends Component {
 
     render() {
         return (
+
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background
@@ -77,30 +78,36 @@ export default class PasswordPager extends Component {
                                  this._password()
                              }]}/>
 
+                <KeyboardAvoidingView behavior='position'>
+                    <ScrollView
+                        style={{
+                            backgroundColor: Color.background,
+                        }}>
 
-                <ScrollView>
-                    <View style={{backgroundColor: Color.background, flexDirection: 'column', margin: 16}}>
-                        <Text style={{color: Color.colorPrimary, marginTop: 16}}>旧密码</Text>
-                        <TextInput style={{width: width, height: 65,}}
-                                   placeholder="请输入密码"
-                                   secureTextEntry={true}
-                                   onChangeText={(text) => this.setState({oldPwd: text})}/>
-                        <Text style={{color: Color.colorPrimary, marginTop: 16}}>新密码</Text>
-                        <TextInput style={{width: width, height: 65,}}
-                                   placeholder="请输入密码"
-                                   secureTextEntry={true}
-                                   onChangeText={(text) => this.setState({newPwd: text})}/>
-                        <Text style={{color: Color.colorPrimary, marginTop: 16}}>确认密码</Text>
-                        <TextInput style={{width: width, height: 65,}}
-                                   placeholder="请输入密码"
-                                   secureTextEntry={true}
-                                   onChangeText={(text) => this.setState({confirmPwd: text})}
-                        />
+                        <View style={{backgroundColor: Color.background, flexDirection: 'column', margin: 16}}>
+                            <Text style={{color: Color.colorPrimary, marginTop: 16}}>旧密码</Text>
+                            <TextInput style={{width: width, height: 65,}}
+                                       placeholder="请输入密码"
+                                       secureTextEntry={true}
+                                       onChangeText={(text) => this.setState({oldPwd: text})}/>
+                            <Text style={{color: Color.colorPrimary, marginTop: 16}}>新密码</Text>
+                            <TextInput style={{width: width, height: 65,}}
+                                       placeholder="请输入密码"
+                                       secureTextEntry={true}
+                                       onChangeText={(text) => this.setState({newPwd: text})}/>
+                            <Text style={{color: Color.colorPrimary, marginTop: 16}}>确认密码</Text>
+                            <TextInput style={{width: width, height: 65,}}
+                                       placeholder="请输入密码"
+                                       secureTextEntry={true}
+                                       onChangeText={(text) => this.setState({confirmPwd: text})}/>
 
-                    </View>
-                </ScrollView>
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+
                 <Loading visible={this.state.isLoading}/>
             </View>
+
         )
     }
 }

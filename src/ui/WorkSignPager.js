@@ -5,13 +5,15 @@
 import React, {Component} from 'react';
 import {
     View,
-    ListView,
+    KeyboardAvoidingView,
     Text,
     StyleSheet,
-    InteractionManager, TextInput,
+    InteractionManager, TextInput, ScrollView,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import App from '../constant/Application';
@@ -28,7 +30,7 @@ export default class WorkSignPager extends Component {
     }
 
     _sign() {
-        if(this.state.comment!==''){
+        if (this.state.comment !== '') {
             this.setState({isLoading: true});
             ApiService.sighWork(this.state.task.Guid, this.state.comment)
                 .then((responseJson) => {
@@ -41,7 +43,7 @@ export default class WorkSignPager extends Component {
                     } else Toast.show(responseJson.ErrDesc);
                 })
                 .done();
-        }else Toast.show('未填写内容');
+        } else Toast.show('未填写内容');
 
 
     }
@@ -49,6 +51,7 @@ export default class WorkSignPager extends Component {
 
     render() {
         return (
+
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background
@@ -67,38 +70,52 @@ export default class WorkSignPager extends Component {
                             this.props.nav.pop()
                         },
                         () => {
-                        this._sign();
+                            this._sign();
                         }
                     ]}/>
+                <KeyboardAvoidingView behavior='position'>
+                    <ScrollView
+                        style={{
+                            backgroundColor: Color.background,
+                        }}><View>
+                        <Text style={{color: Color.colorPrimary, margin: 16}}>对接内容</Text>
 
-                <Text style={{color: Color.colorPrimary, margin: 16}}>对接内容</Text>
+                        <View style={styles.textStyle}>
+                            <Text >系列</Text>
+                            <Text
+                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].Series}</Text>
+                        </View>
+                        <View style={styles.textStyle}>
+                            <Text >供应商</Text>
+                            <Text
+                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].SupplierName}</Text>
+                        </View>
+                        <View style={styles.textStyle}>
+                            <Text >对接方式</Text>
+                            <Text
+                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].VisitingMode}</Text>
+                        </View>
+                        <View style={styles.textStyle}>
+                            <Text >对接内容</Text>
+                            <Text
+                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].WorkContent}</Text>
+                        </View>
 
-                <View style={styles.textStyle}>
-                    <Text >系列</Text>
-                    <Text style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].Series}</Text>
-                </View>
-                <View style={styles.textStyle}>
-                    <Text >供应商</Text>
-                    <Text style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].SupplierName}</Text>
-                </View>
-                <View style={styles.textStyle}>
-                    <Text >对接方式</Text>
-                    <Text style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].VisitingMode}</Text>
-                </View>
-                <View style={styles.textStyle}>
-                    <Text >对接内容</Text>
-                    <Text style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].WorkContent}</Text>
-                </View>
+                        <Text style={{color: Color.colorPrimary, margin: 16}}>对接结果反馈</Text>
 
-                <Text style={{color: Color.colorPrimary, margin: 16}}>对接结果反馈</Text>
-                <TextInput style={{width: width - 32, height: 45, marginLeft: 10, marginRight: 10}}
-                           placeholder="在此输入"
-                           onChangeText={(text) => {
-                                this.setState({comment:text})
-                           }}/>
-
+                        <TextInput style={{width: width - 32, height: 70, marginLeft: 10, marginRight: 10,}}
+                                   multiline={true}
+                                   placeholder="在此输入"
+                            //onFocus={() =>{_scrollView.scrollToEnd()}}
+                                   onChangeText={(text) => {
+                                       this.setState({comment: text})
+                                   }}/>
+                    </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
                 <Loading visible={this.state.isLoading}/>
             </View>
+
         )
     }
 }

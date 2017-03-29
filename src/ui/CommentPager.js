@@ -8,7 +8,7 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    InteractionManager, TextInput,
+    InteractionManager, TextInput, KeyboardAvoidingView, ScrollView,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -84,6 +84,7 @@ export default class CommentPager extends Component {
 
     render() {
         return (
+
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background
@@ -105,6 +106,13 @@ export default class CommentPager extends Component {
                             this._comment();
                         }
                     ]}/>
+                <KeyboardAvoidingView behavior='position' >
+                    <ScrollView
+                        style={{
+                            backgroundColor: Color.background,
+                            height:height
+                        }}>
+                        <View>
                 <Text style={{color: Color.colorPrimary, margin: 16}}>对接内容</Text>
                 <Text style={{
                     marginLeft: 16,
@@ -125,9 +133,11 @@ export default class CommentPager extends Component {
                            onChangeText={(text) => {
                                 this.setState({comment:text})
                            }}/>
+                        </View></ScrollView></KeyboardAvoidingView>
 
                 <Loading visible={this.state.isLoading}/>
             </View>
+
         )
     }
 }

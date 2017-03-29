@@ -12,8 +12,7 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
-    StatusBar,
-    KeyboardAvoidingView,
+    KeyboardAvoidingView, ScrollView,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import CheckBox from 'react-native-check-box';
@@ -33,13 +32,16 @@ export default class LoginPager extends Component {
 
 
     }
-    componentWillMount(){
-      //  console.log("componentWillMount---login---");
-  //      this._autoLogin()
+
+    componentWillMount() {
+        //  console.log("componentWillMount---login---");
+        //      this._autoLogin()
 
     }
+
+
     _autoLogin() {
-        App.initAccount(()=>{
+        App.initAccount(() => {
             if (App.session && App.account && App.workType && App.department) {
                 this.props.nav.push({
                     id: 'main',
@@ -69,7 +71,7 @@ export default class LoginPager extends Component {
                         id: 'main',
                     });
                 } else {
-                    Toast.show(responseJson.ErrDesc,{});
+                    Toast.show(responseJson.ErrDesc, {});
                 }
             })
     }
@@ -77,42 +79,47 @@ export default class LoginPager extends Component {
     render() {
         //console.log("render---login---");
         return (
+            <KeyboardAvoidingView behavior={'padding'}>
+                <ScrollView>
 
-            <View style={styles.container}>
-                <View style={{width: width, alignItems: 'flex-start'}}>
-                    <Image style={styles.logo}
-                           source={require('../drawable/logo_white.png')}/></View>
-                <Text style={styles.welcome}>外协工作记录</Text>
-                <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
-                <Text style={{width: width, textAlign: 'center', color: 'white', fontSize: 18, margin: 16}}>
-                    登录
-                </Text>
-                <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
-                    <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
+                    <View style={styles.container}>
+                        <View style={{width: width, alignItems: 'flex-start'}}>
+                            <Image style={styles.logo}
+                                   source={require('../drawable/logo_white.png')}/></View>
+                        <Text style={styles.welcome}>外协工作记录</Text>
+                        <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
+                        <Text style={{width: width, textAlign: 'center', color: 'white', fontSize: 18, margin: 16}}>
+                            登录
+                        </Text>
 
-                    <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
-                               placeholder="请输入登录账号"
-                               onChangeText={(text) => this.setState({account: text})}/>
-                    <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
+                        <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
+                            <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
 
-                    <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
-                               placeholder="请输入密码"
-                               secureTextEntry={true}
-                               onChangeText={(text) => this.setState({pwd: text})}/>
-                    <CheckBox
-                        style={{padding: 10}}
-                        isChecked={this.state.check}
-                        onClick={() => this.setState({check: !this.state.check}) }
-                        rightText={'自动登录'}/>
+                            <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
+                                       placeholder="请输入登录账号"
+                                       onChangeText={(text) => this.setState({account: text})}/>
+                            <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
+                            <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
+                                       placeholder="请输入密码"
+                                       secureTextEntry={true}
+                                       onChangeText={(text) => this.setState({pwd: text})}/>
+                            <CheckBox
+                                style={{padding: 10}}
+                                isChecked={this.state.check}
+                                onClick={() => this.setState({check: !this.state.check}) }
+                                rightText={'自动登录'}/>
+                        </View>
 
-                </View>
-                <View style={{backgroundColor: 'white', padding: 16}}>
-                    <TouchableOpacity onPress={() => this._login()}>
-                        <View style={styles.button}>
-                            <Text style={{color: 'white'}}>登录</Text>
-                        </View></TouchableOpacity></View>
+                        <View style={{backgroundColor: 'white', padding: 16}}>
+                            <TouchableOpacity onPress={() => this._login()}>
+                                <View style={styles.button}>
+                                    <Text style={{color: 'white'}}>登录</Text>
+                                </View></TouchableOpacity></View>
 
-            </View>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+
         );
     }
 }
@@ -123,6 +130,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Color.colorPrimary,
         justifyContent: 'flex-start',
+        height: height,
     },
     logo: {
         width: 100,
