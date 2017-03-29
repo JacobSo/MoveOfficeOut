@@ -368,31 +368,4 @@ export default class SearchPager extends Component {
     }
 }
 
-const styles = StyleSheet.create(
-    {
-        card: {
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderColor: Color.trans,
-            margin: 16,
-            padding: 15,
-            shadowColor: Color.background,
-            shadowOffset: {width: 2, height: 2,},
-            shadowOpacity: 0.5,
-            shadowRadius: 3,
-            alignItems: 'center',
-            elevation: 2,
-            flexDirection: 'column',
 
-        },
-        control: {
-            width: width - 32,
-            height: 55,
-            backgroundColor: Color.colorPrimary,
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 8,
-            marginTop: 8,
-        },
-
-    });

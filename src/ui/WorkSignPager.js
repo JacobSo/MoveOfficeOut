@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
