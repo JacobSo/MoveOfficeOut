@@ -83,7 +83,7 @@ export default class SearchPager extends Component {
                                     }
                                 },
                             });
-                        }else {
+                        } else {
                             let type = -1;
                             if (this.props.task.DailyRecordState === 3 && App.workType.indexOf('项目专员') > -1 && App.account !== this.props.task.Creator) {
                                 type = 1;
@@ -164,7 +164,7 @@ export default class SearchPager extends Component {
             } else return [];
         } else if (App.workType.indexOf('项目专员') > -1 && this.props.task.Creator !== App.account) {
             if (this.props.task.DailyRecordState === 1) {
-                return  [
+                return [
                     () => {
                         this._passDialog();
                     },
@@ -283,10 +283,10 @@ export default class SearchPager extends Component {
                     (popupDialog) => {
                         this.popupDialog = popupDialog;
                     },
-                    (text) => {
+                    (text) => {//input listen
                         this.setState({rejectContent: text})
                     },
-                    () => {
+                    () => {//dismiss
                         this.setState({rejectContent: ''});
                         this.popupDialog.dismiss();
                     },
@@ -302,14 +302,13 @@ export default class SearchPager extends Component {
         this.setState({isLoading: true});
         ApiService.finishWork(this.props.task.Guid, flag, this.state.rejectContent)
             .then((responseJson) => {
-                this.setState({isLoading: false});
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
                     this.props.nav.pop();
                 } else {
                     Toast.show(responseJson.ErrDesc)
                 }
-            })
+            }).done(this.setState({isLoading: false}));
     }
 
     _delete() {

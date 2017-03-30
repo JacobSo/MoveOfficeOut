@@ -20,7 +20,7 @@ export default class MainPager extends Component {
         super(props);
 
         this.state = {
-            isFloat: true,
+            isFloat: false,
         };
 
 
