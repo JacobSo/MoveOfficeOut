@@ -19,6 +19,7 @@ import CheckBox from 'react-native-check-box';
 import ApiService from '../network/ApiService';
 import Color from '../constant/Color';
 import App from '../constant/Application';
+import AndroidModule from '../module/AndoridCommontModule'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class LoginPager extends Component {
@@ -39,6 +40,9 @@ export default class LoginPager extends Component {
 
     }
 
+/*    _test(){
+        AndroidModule.testToast();
+    }*/
 
     _autoLogin() {
         App.initAccount(() => {

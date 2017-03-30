@@ -4,4 +4,4 @@
 'use strict';
 import { NativeModules } from 'react-native';
 
-export default NativeModules.TestModule;
+export default NativeModules.CommonModule;
