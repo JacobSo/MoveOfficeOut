@@ -42,7 +42,7 @@ export default class SearchPager extends Component {
             isCarVisible: false,
             isNeedCar: false,
             isRemarkVisible: false,
-            items: [],
+            items: this.props.task.list,
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
@@ -53,7 +53,7 @@ export default class SearchPager extends Component {
     }
 
     componentDidMount() {
-        this.state.items = this.props.task.list;
+        console.log('----------detail componentDidMount-----------------');
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
@@ -77,9 +77,13 @@ export default class SearchPager extends Component {
                                     position: sectionID,
                                     task: this.props.task,
                                     commentWork: (resultArray) => {
+                                        this.state.items = JSON.parse(JSON.stringify(resultArray));
+                                        // console.log('-----------------update'+JSON.stringify( this.state.items));
+
                                         this.setState({
-                                            dataSource: this.state.dataSource.cloneWithRows(resultArray),
+                                            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                                         });
+
                                     }
                                 },
                             });
@@ -99,8 +103,10 @@ export default class SearchPager extends Component {
                                         position: sectionID,
                                         task: this.props.task,
                                         commentWork: (resultArray) => {
+                                            this.state.items = JSON.parse(JSON.stringify(resultArray));
+                                            //    console.log('-----------------update'+JSON.stringify( this.state.items));
                                             this.setState({
-                                                dataSource: this.state.dataSource.cloneWithRows(resultArray),
+                                                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                                             });
                                         }
                                     },
@@ -190,25 +196,31 @@ export default class SearchPager extends Component {
     }
 
     _carSelect() {
-        this.props.nav.push(
-            {
-                id: 'param',
-                params: {
-                    title: '选择车牌',
-                    type: 2,//2 car
-                    searchKey: this.props.task.Guid,
-                    setSelect: (select) => {
-                        this.setState({carNumber: select})
-                    }
-                },
-            }
-        );
+        if (this.props.task.CarType === '') {
+            Toast.show('不需要车牌');
+        } else {
+            this.props.nav.push(
+                {
+                    id: 'param',
+                    params: {
+                        title: '选择车牌',
+                        type: 2,//2 car
+                        searchKey: this.props.task.Guid,
+                        setSelect: (select) => {
+                            this.setState({carNumber: select})
+                        }
+                    },
+                }
+            );
+        }
+
+
     }
 
     _deleteDialog() {
         Alert.alert(
             '删除',
-            '是否删除当前未审核任务？',
+            '是否删除当前任务？',
             [
                 {
                     text: '取消', onPress: () => {

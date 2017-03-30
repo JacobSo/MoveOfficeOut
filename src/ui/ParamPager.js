@@ -40,7 +40,7 @@ export default class PasswordPager extends Component {
     _getData() {
         this.setState({isLoading: true});
         InteractionManager.runAfterInteractions(() => {
-            if(this.props.type===2){
+            if (this.props.type === 2) {
                 ApiService.getCarList()
                     .then((responseJson) => {
                         console.log(responseJson);
@@ -50,7 +50,7 @@ export default class PasswordPager extends Component {
                         });
                     })
                     .done(this.setState({isLoading: false}))
-            }else{
+            } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
                         console.log(responseJson);
@@ -65,8 +65,26 @@ export default class PasswordPager extends Component {
         });
     }
 
-   async  _search(text){
-      return this.state.items.filter((item)=> item.toLowerCase().indexOf(text.toLowerCase())>-1) ;}
+    _setSelect(rowData) {
+        if (this.props.type === 2) {//car
+            this.setState({isLoading: true});
+            ApiService.addCar(this.props.searchKey, rowData)
+                .then((responseJson) => {
+                    if (!responseJson.IsErr) {
+                        Toast.show('操作成功');
+                        this.props.setSelect(rowData);
+                    } else Toast.show(responseJson.ErrDesc)
+                })
+                .done(this.props.nav.pop())
+        } else {
+            this.props.setSelect(rowData);
+            this.props.nav.pop();
+        }
+    }
+
+    async  _search(text) {
+        return this.state.items.filter((item) => item.toLowerCase().indexOf(text.toLowerCase()) > -1);
+    }
 
 
     _editDialog() {
@@ -85,8 +103,7 @@ export default class PasswordPager extends Component {
                     },
                     () => {
                         if (this.state.editContent) {
-                            this.props.setSelect(this.state.editContent);
-                            this.props.nav.pop();
+                            this._setSelect(this.state.editContent)
                         } else {
                             Toast.show('未填写内容')
                         }
@@ -121,8 +138,8 @@ export default class PasswordPager extends Component {
 
                 <TextInput style={{width: width - 32, height: 45, marginLeft: 10, marginRight: 10}}
                            placeholder="搜索"
-                           onChangeText={(text) =>{
-                               this._search(text).then((array)=>{
+                           onChangeText={(text) => {
+                               this._search(text).then((array) => {
                                    console.log(array);
                                    this.setState({
                                        dataSource: this.state.dataSource.cloneWithRows(array),
@@ -133,30 +150,16 @@ export default class PasswordPager extends Component {
                     dataSource={this.state.dataSource}
                     enableEmptySections={true}
                     renderRow={ (rowData) =>
-                        <TouchableOpacity
-                            onPress={() => {
-                                if(this.props.type===2){
-                                    this.setState({isLoading: true});
-                                    ApiService.addCar(this.props.searchKey, this.carNumber)
-                                        .then((responseJson)=>{
-                                            if (!responseJson.IsErr) {
-                                                Toast.show('操作成功');
-                                                this.props.setSelect(rowData);
-                                            }else Toast.show(responseJson.ErrDesc)
-                                        })
-                                        .done( this.props.nav.pop())
-                                }else{
-                                    this.props.setSelect(rowData);
-                                    this.props.nav.pop();
-                                }
-                            }}>
+                        <TouchableOpacity onPress={() => {
+                            this._setSelect(rowData);
+                        }}>
                             <Text style={{padding: 16}}>{rowData}</Text>
                         </TouchableOpacity>}/>
 
 
                 <Loading visible={this.state.isLoading}/>
                 {this._editDialog()}
-         </View>
+            </View>
         )
     }
 }

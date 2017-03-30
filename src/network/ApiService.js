@@ -117,7 +117,7 @@ export  default  class ApiService extends Component {
     }
 
     static finishWork(guid, state, reject) {
-        let method = 'DailyRecord/CreateDailyRecord';
+        let method = 'DailyRecord/UpdateDailyRecordState';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
             Guid: guid,
@@ -173,7 +173,7 @@ export  default  class ApiService extends Component {
     }
 
     static addScore(guid, score, detailGuid, suggest, type) {
-        let method = 'DailyRecord/delRecord';
+        let method = 'DailyRecord/DailyRecordScore';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
             recordguid: guid,

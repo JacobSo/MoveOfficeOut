@@ -25,23 +25,24 @@ export default class WorkSignPager extends Component {
         super(props);
         this.state = {
             comment: '',
+            items:this.props.task.list,
         }
     }
 
     _sign() {
         if (this.state.comment !== '') {
             this.setState({isLoading: true});
-            ApiService.sighWork(this.state.task.Guid, this.state.comment)
+            ApiService.sighWork(this.state.items[this.props.position].Guid, this.state.comment)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {
                         Toast.show('操作成功');
-                        this.props.task.list[this.props.position].WorkResult = this.state.comment;
-                        this.props.commentWork(this.props.task.list);
-                        this.setState({isLoading: false});
+                        this.state.items[this.props.position].WorkResult = this.state.comment;
+                    //    console.log('----------'+JSON.stringify(this.state.items));
+                        this.props.commentWork(this.state.items);
                         this.props.nav.pop()
                     } else Toast.show(responseJson.ErrDesc);
                 })
-                .done();
+                .done(this.setState({isLoading: false}));
         } else Toast.show('未填写内容');
 
 
@@ -82,22 +83,22 @@ export default class WorkSignPager extends Component {
                         <View style={styles.textStyle}>
                             <Text >系列</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].Series}</Text>
+                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].Series}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >供应商</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].SupplierName}</Text>
+                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].SupplierName}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >对接方式</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].VisitingMode}</Text>
+                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].VisitingMode}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >对接内容</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.props.task.list[this.props.position].WorkContent}</Text>
+                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].WorkContent}</Text>
                         </View>
 
                         <Text style={{color: Color.colorPrimary, margin: 16}}>对接结果反馈</Text>

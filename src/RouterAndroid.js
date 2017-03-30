@@ -72,7 +72,7 @@ export default class RouterAndroid extends Component {
     }
 
     renderScene(route, navigator) {
-        console.info("当前路由：", navigator.getCurrentRoutes());
+      //  console.info("当前路由：", navigator.getCurrentRoutes());
         //   console.log('renderScene');
         _navigator = navigator;
         if (route.id === "main") {
