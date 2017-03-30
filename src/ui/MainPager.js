@@ -8,6 +8,7 @@ import {
     View,
 
 } from 'react-native';
+import Toast from 'react-native-root-toast';
 import FloatButton from './Component/FloatButton';
 import Toolbar from './Component/Toolbar';
 import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-view';
@@ -21,6 +22,7 @@ export default class MainPager extends Component {
         this.state = {
             isFloat: true,
         };
+
 
     }
 
@@ -84,6 +86,8 @@ export default class MainPager extends Component {
                         if (this.state.isFloat) {
                             return (
                                 <FloatButton drawable={require('../drawable/add.png')} action={() => {
+
+
                                     this.props.nav.push({id: 'work',})
                                 }}/>)
                         } else return null;
@@ -94,5 +98,7 @@ export default class MainPager extends Component {
 
         )
     }
+
+
 }
 

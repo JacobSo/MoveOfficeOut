@@ -26,7 +26,7 @@ export default class LoginPager extends Component {
         super(props);
         this.state = {
             account: '张发',
-            pwd: '123',
+            pwd: '321',
             check: false
         };
 

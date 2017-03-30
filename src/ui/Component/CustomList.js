@@ -5,14 +5,14 @@
  * Created by Administrator on 2017/3/15.
  */
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     ListView,
     View,
     StyleSheet,
     Text,
     RefreshControl,
-    InteractionManager,
+    InteractionManager, ScrollView,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
@@ -31,12 +31,18 @@ export default class CustomList extends Component {
             isRefreshing: true,
             isEndUp: false
         };
+        this.listener = this.props.nav.navigationContext.addListener('didfocus', (event) => {
+            console.log(event.target._currentRoute.id);
+            if (event.target._currentRoute.id === 'main') {
+                this._onRefresh();
 
+            }
+        });
     }
 
     static propTypes = {
-        type:PropTypes.string.isRequired,
-        nav:PropTypes.any.isRequired
+        type: PropTypes.string.isRequired,
+        nav: PropTypes.any.isRequired
     };
 
     componentDidMount() {
@@ -49,7 +55,7 @@ export default class CustomList extends Component {
         console.log('_refresh');
         this.state.page = 1;
         this.state.isRefreshing = true;
-        ApiService.getItems(this.state.page,this.props.type).then((responseJson) => {
+        ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
             //  console.log(responseJson);
             this.state.items = responseJson.list;
             this.setState({
@@ -63,7 +69,7 @@ export default class CustomList extends Component {
 
     _onLoad() {
         console.log('_load');
-        if(this.state.items.length>=10) {
+        if (this.state.items.length >= 10) {
             this.setState({
                 //  isRefreshing: true,
                 page: this.state.page + 1
@@ -85,42 +91,58 @@ export default class CustomList extends Component {
 
     render() {
         if (this.state.items.length === 0) {
-            return (<View
-                    style={styles.card}>
-                    <Text>没有数据</Text>
-                </View>
+            return (
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={() => this._onRefresh()}
+                            tintColor={Color.colorBlueGrey}//ios
+                            title="Loading..."//ios
+                            titleColor='white'
+                            colors={[Color.colorPrimary]}
+                            progressBackgroundColor="white"
+                        />}>
+                    <View
+                        style={styles.card}>
+                        <Text>没有数据</Text>
+                    </View></ScrollView>
             );
         } else {
-            return(
+            return (
                 <ListView
-                style={styles.tabView}
-                dataSource={this.state.dataSource}
-                //  pageSize={2}
-                onEndReached={() => {
-                    this._onLoad()
-                }}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={() => this._onRefresh()}
-                        tintColor={Color.colorBlueGrey}//ios
-                        title="Loading..."//ios
-                        titleColor='white'
-                        colors={[Color.colorPrimary]}
-                        progressBackgroundColor="white"
-                    />}
-                enableEmptySections={true}
-                renderRow={ (rowData,rowID,sectionID) => <MainItem key={sectionID} task={rowData} func={() => {
+                    style={styles.tabView}
+                    dataSource={this.state.dataSource}
+                    //  pageSize={2}
+                    onEndReached={() => {
+                        this._onLoad()
+                    }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={() => this._onRefresh()}
+                            tintColor={Color.colorBlueGrey}//ios
+                            title="Loading..."//ios
+                            titleColor='white'
+                            colors={[Color.colorPrimary]}
+                            progressBackgroundColor="white"
+                        />}
+                    enableEmptySections={true}
+                    renderRow={ (rowData, rowID, sectionID) => <MainItem key={sectionID} task={rowData} func={() => {
 
-                    this.props.nav.push({
-                        id: 'detail',
-                        params:{
-                            task:rowData,
-                        }
-                    })
-                }}/>
-                }/>)
+                        this.props.nav.push({
+                            id: 'detail',
+                            params: {
+                                task: rowData,
+                            }
+                        })
+                    }}/>
+                    }/>)
         }
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 }
 

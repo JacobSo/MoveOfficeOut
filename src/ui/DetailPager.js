@@ -164,14 +164,14 @@ export default class SearchPager extends Component {
             } else return [];
         } else if (App.workType.indexOf('项目专员') > -1 && this.props.task.Creator !== App.account) {
             if (this.props.task.DailyRecordState === 1) {
-                return ['审核', '驳回']
-            } else return [
-                () => {
-                    this._passDialog();
-                },
-                () => {
-                    this.popupDialog.show();
-                }];
+                return  [
+                    () => {
+                        this._passDialog();
+                    },
+                    () => {
+                        this.popupDialog.show();
+                    }]
+            } else return [];
         } else if (App.workType.indexOf('助理') > -1) {
             if (this.props.task.DailyRecordState === 2) {
                 return [

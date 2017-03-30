@@ -7,6 +7,7 @@ import {
     View,
     ScrollView,
     Text,
+    Alert,
     TextInput, KeyboardAvoidingView,
 } from 'react-native';
 import Color from '../constant/Color';
@@ -37,20 +38,36 @@ export default class PasswordPager extends Component {
         } else if (this.state.newPwd.length < 3) {
             Toast.show('密码不能太短')
         } else {
-            this.setState({isLoading: !this.state.isLoading});
-            ApiService.setPassword(this.state.oldPwd, this.state.confirmPwd)
-                .then((responseJson) => {
-                        this.setState({isLoading: !this.state.isLoading});
-                        if (!responseJson.IsErr) {
-                            Toast.show('修改成功');
-                            this.props.nav.pop();
-                        } else {
-                            Toast.show(responseJson.ErrDesc)
-                        }
+
+            Alert.alert(
+                '修改密码',
+                '是否修改密码？',
+                [
+                    {
+                        text: '取消', onPress: () => {
                     }
-                ).done();
+                    },
+                    {
+                        text: '确定', onPress: () => {
+                        this.setState({isLoading: !this.state.isLoading});
+                        ApiService.setPassword(this.state.oldPwd, this.state.confirmPwd)
+                            .then((responseJson) => {
+                                    //
+                                    if (!responseJson.IsErr) {
+                                        Toast.show('修改成功');
+                                        this.props.nav.push({
+                                            id: 'login',
+                                        });
+                                    } else {
+                                        Toast.show(responseJson.ErrDesc)
+                                    }
+                                }
+                            ).done(()=>this.setState({isLoading: !this.state.isLoading}));
 
-
+                    }
+                    },
+                ]
+            )
         }
     }
 
@@ -74,7 +91,6 @@ export default class PasswordPager extends Component {
                                  this.props.nav.pop()
                              },
                              () => {
-
                                  this._password()
                              }]}/>
 
