@@ -304,6 +304,7 @@ export default class SearchPager extends Component {
                     },
                     () => {
                         this._finish(1);
+                        this.popupDialog.dismiss();
                     }
                 ]} str={['驳回', '驳回内容']}/>
         )

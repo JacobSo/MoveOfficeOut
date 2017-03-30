@@ -104,6 +104,8 @@ export default class PasswordPager extends Component {
                     () => {
                         if (this.state.editContent) {
                             this._setSelect(this.state.editContent)
+                            this.popupDialog.dismiss();
+
                         } else {
                             Toast.show('未填写内容')
                         }

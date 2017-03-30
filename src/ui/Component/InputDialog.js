@@ -26,7 +26,6 @@ export default class InputDialog extends Component {
                 ref={this.props.action[0]}
                 width={width - 32}
                 height={200}
-
             >
                 <View style={{width: width - 32, flexDirection: 'column', height: 200, backgroundColor: 'white'}}>
                     <Text style={{
