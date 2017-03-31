@@ -347,7 +347,6 @@ export default class SearchPager extends Component {
                          functionArray={[
                              () => {
                                 // this.props.nav.pop()
-                                 this.props.nav.onGoBack()
                                  this.props.nav.goBack();
 
                              }

@@ -18,31 +18,42 @@ import WorkSignPager from "./ui/WorkSignPager";
 import {
     StackNavigator,
 } from 'react-navigation';
-/*
-const MyNavScreen = ({navigation}) => (
-    <ScrollView>
-        <Button
-            onPress={() => navigation.navigate('Photos',)}
-            title="Go to a photos screen"
-        />
-        <Button
-            onPress={() => navigation.goBack(null)}
-            title="Go back"
-        />
-    </ScrollView>
-);*/
+import {Platform, Navigator, BackAndroid, Dimensions, Text, View, StatusBar} from 'react-native';
+const {width, height} = Dimensions.get('window');
 
-const MainScreen = ({navigation}) => (<MainPager {...navigation.state.params} nav={navigation}/>);
-const PreferencesScreen = ({navigation}) => (<PreferencesPager {...navigation.state.params} nav={navigation}/>);
-const PasswordScreen = ({navigation}) => (<PasswordPager {...navigation.state.params} nav={navigation}/>);
-const WorkScreen = ({navigation}) => (<WorkPager {...navigation.state.params} nav={navigation}/>);
-const SearchScreen = ({navigation}) => (<SearchPager {...navigation.state.params} nav={navigation}/>);
-const DetailScreen = ({navigation}) => (<DetailPager {...navigation.state.params} nav={navigation}/>);
-const WorkAddScreen = ({navigation}) => (<WorkAddPager {...navigation.state.params} nav={navigation}/>);
-const ParamScreen = ({navigation}) => (<ParamPager {...navigation.state.params} nav={navigation}/>);
-const CommentScreen = ({navigation}) => (<CommentPager {...navigation.state.params} nav={navigation}/>);
-const WorkSignScreen = ({navigation}) => (<WorkSignPager {...navigation.state.params} nav={navigation}/>);
-const LoginScreen = ({navigation}) => (<LoginPager {...navigation.state.params} nav={navigation}/>);
+_renderScreen = (pager) => {
+
+        return(
+    <View
+        style={{
+            width: width,
+            height: height,
+        }}>
+        { (()=>{if (Platform.OS === 'ios')
+           return  <View style={{width: width, height: 20, backgroundColor: Color.colorPrimaryDark}}/>
+        })()}
+        <StatusBar
+            backgroundColor={Color.colorPrimaryDark}
+            barStyle="light-content"
+            networkActivityIndicatorVisible={true}
+            hidden={false}/>
+        {pager}
+    </View>)
+
+};
+
+
+const MainScreen = ({navigation}) => _renderScreen( <MainPager {...navigation.state.params} nav={navigation}/>);
+const PreferencesScreen = ({navigation}) => _renderScreen(<PreferencesPager {...navigation.state.params} nav={navigation}/>);
+const PasswordScreen = ({navigation}) => _renderScreen(<PasswordPager {...navigation.state.params} nav={navigation}/>);
+const WorkScreen = ({navigation}) => _renderScreen(<WorkPager {...navigation.state.params} nav={navigation}/>);
+const SearchScreen = ({navigation}) => _renderScreen(<SearchPager {...navigation.state.params} nav={navigation}/>);
+const DetailScreen = ({navigation}) => _renderScreen(<DetailPager {...navigation.state.params} nav={navigation}/>);
+const WorkAddScreen = ({navigation}) => _renderScreen(<WorkAddPager {...navigation.state.params} nav={navigation}/>);
+const ParamScreen = ({navigation}) => _renderScreen(<ParamPager {...navigation.state.params} nav={navigation}/>);
+const CommentScreen = ({navigation}) => _renderScreen(<CommentPager {...navigation.state.params} nav={navigation}/>);
+const WorkSignScreen = ({navigation}) => _renderScreen(<WorkSignPager {...navigation.state.params} nav={navigation}/>);
+const LoginScreen = ({navigation}) => _renderScreen(<LoginPager {...navigation.state.params} nav={navigation}/>);
 
 const SimpleStack = StackNavigator({
     main: {

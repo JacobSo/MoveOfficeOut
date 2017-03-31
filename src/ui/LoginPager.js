@@ -12,6 +12,7 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
+    NativeModules,
     KeyboardAvoidingView, ScrollView,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
@@ -20,6 +21,7 @@ import ApiService from '../network/ApiService';
 import Color from '../constant/Color';
 import App from '../constant/Application';
 import AndroidModule from '../module/AndoridCommontModule'
+import IosModule from '../module/IosCommontModule'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class LoginPager extends Component {
@@ -40,9 +42,11 @@ export default class LoginPager extends Component {
 
     }
 
-/*    _test(){
-        AndroidModule.testToast();
-    }*/
+    _test(){
+        //AndroidModule.testToast();
+        IosModule.pgyUpdateSEL();
+    }
+
 
     _autoLogin() {
         App.initAccount(() => {
