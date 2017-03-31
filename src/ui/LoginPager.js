@@ -47,9 +47,10 @@ export default class LoginPager extends Component {
     _autoLogin() {
         App.initAccount(() => {
             if (App.session && App.account && App.workType && App.department) {
-                this.props.nav.push({
+               /* this.props.nav.push({
                     id: 'main',
-                });
+                });*/
+                this.props.nav.navigate('main',)
             }
         });
     }
@@ -71,9 +72,10 @@ export default class LoginPager extends Component {
                         App.department = responseJson.DptName,
                         App.workType = responseJson.WorkType,
                         this.state.check);
-                    this.props.nav.push({
+     /*               this.props.nav.push({
                         id: 'main',
-                    });
+                    });*/
+                    this.props.nav.navigate('main',)
                 } else {
                     Toast.show(responseJson.ErrDesc, {});
                 }

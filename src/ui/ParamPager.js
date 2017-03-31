@@ -75,10 +75,10 @@ export default class PasswordPager extends Component {
                         this.props.setSelect(rowData);
                     } else Toast.show(responseJson.ErrDesc)
                 })
-                .done(this.props.nav.pop())
+                .done( this.props.nav.goBack(null))
         } else {
             this.props.setSelect(rowData);
-            this.props.nav.pop();
+            this.props.nav.goBack(null);
         }
     }
 
@@ -131,7 +131,7 @@ export default class PasswordPager extends Component {
                          actionArray={['填写']}
                          functionArray={[
                              () => {
-                                 this.props.nav.pop()
+                                 this.props.nav.goBack(null)
                              },
                              () => {
                                  this.popupDialog.show();

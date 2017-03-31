@@ -25,7 +25,7 @@ export default class WorkSignPager extends Component {
         super(props);
         this.state = {
             comment: '',
-            items:this.props.task.list,
+            items: this.props.task.list,
         }
     }
 
@@ -37,9 +37,9 @@ export default class WorkSignPager extends Component {
                     if (!responseJson.IsErr) {
                         Toast.show('操作成功');
                         this.state.items[this.props.position].WorkResult = this.state.comment;
-                    //    console.log('----------'+JSON.stringify(this.state.items));
+                        //    console.log('----------'+JSON.stringify(this.state.items));
                         this.props.commentWork(this.state.items);
-                        this.props.nav.pop()
+                        this.props.nav.goBack(null);
                     } else Toast.show(responseJson.ErrDesc);
                 })
                 .done(this.setState({isLoading: false}));
@@ -66,12 +66,8 @@ export default class WorkSignPager extends Component {
                     isActionByText={true}
                     actionArray={['提交']}
                     functionArray={[
-                        () => {
-                            this.props.nav.pop()
-                        },
-                        () => {
-                            this._sign();
-                        }
+                        () => this.props.nav.goBack(null),
+                        () => this._sign()
                     ]}/>
                 <KeyboardAvoidingView behavior='position'>
                     <ScrollView

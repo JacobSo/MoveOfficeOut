@@ -78,7 +78,10 @@ export default class MainPager extends Component {
                     isAction={true}
                     isActionByText={false}
                     actionArray={[require("../drawable/search.png"), require("../drawable/setting.png")]}
-                    functionArray={[() => this.props.nav.push({id: 'search',}), () => this.props.nav.push({id: 'preferences',})]}/>
+                    functionArray={[
+                        () =>  this.props.nav.navigate('search'),
+                        () =>  this.props.nav.navigate('preferences')
+                    ]}/>
 
                 {this._get()}
                 {
@@ -86,9 +89,7 @@ export default class MainPager extends Component {
                         if (this.state.isFloat) {
                             return (
                                 <FloatButton drawable={require('../drawable/add.png')} action={() => {
-
-
-                                    this.props.nav.push({id: 'work',})
+                                    this.props.nav.navigate('work');
                                 }}/>)
                         } else return null;
                     })()

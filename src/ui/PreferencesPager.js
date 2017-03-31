@@ -44,9 +44,7 @@ export default class PreferencesPager extends Component {
                          isAction={false}
                          isActionByText={false}
                          actionArray={[]}
-                         functionArray={[() => {
-                             this.props.nav.pop()
-                         }]}/>
+                         functionArray={[() =>  this.props.nav.goBack(null)]}/>
                 <ScrollView  >
                     <View>
                         <PreferencesTextItem
@@ -63,13 +61,11 @@ export default class PreferencesPager extends Component {
                                         '注销当前账号，返回登录页面',
                                         [
                                             {text: '取消', onPress: () =>{}},
-                                            {text: '确定', onPress: () =>  this.props.nav.push({id: 'login',})},
+                                            {text: '确定', onPress: () =>  this.props.nav.navigate('login')},
                                         ]
                                     )
                                 },
-                                () => {
-                                    this.props.nav.push({id: 'password',})
-                                },
+                                () => this.props.nav.navigate('password'),
                                 () => {
                                 }]}/>
 

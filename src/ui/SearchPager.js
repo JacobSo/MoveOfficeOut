@@ -48,7 +48,7 @@ export default class SearchPager extends Component {
             isRefreshing: true,
             isEndUp: false,
 
-            star:0
+            star: 0
         };
 
     }
@@ -100,20 +100,13 @@ export default class SearchPager extends Component {
             return <ListView
                 dataSource={this.state.dataSource}
                 //  pageSize={2}
-                onEndReached={() => {
-                    this._onLoad()
-                }}
+                onEndReached={() => this._onLoad()}
                 enableEmptySections={true}
                 renderRow={ (rowData) => <MainItem task={rowData} func={() => {
-                    this.props.nav.push({
-                        id: 'detail',
-                        params: {
-                            task: rowData,
-                        }
-                    })
+                    this.props.nav.navigate('detail', {task: rowData,})
                 }}/>
                 }/>
-        }
+        };
     }
 
     _timeSelect() {
@@ -131,7 +124,7 @@ export default class SearchPager extends Component {
                     showIcon={false}
                     onDateChange={(date) => {
                         this.setState({beginTime: date});
-                        if(this.state.beginTime!==''&&this.state.endTime!==''){
+                        if (this.state.beginTime !== '' && this.state.endTime !== '') {
                             this.setState({isTimeSelect: !this.state.isTimeSelect});
                         }
                     }}
@@ -146,7 +139,7 @@ export default class SearchPager extends Component {
                     showIcon={false}
                     onDateChange={(date) => {
                         this.setState({endTime: date});
-                        if(this.state.beginTime!==''&&this.state.endTime!==''){
+                        if (this.state.beginTime !== '' && this.state.endTime !== '') {
                             this.setState({isTimeSelect: !this.state.isTimeSelect});
                         }
                     }}
@@ -170,12 +163,9 @@ export default class SearchPager extends Component {
                          isActionByText={true}
                          actionArray={['搜索']}
                          functionArray={[
-                             () => {
-                                 this.props.nav.pop()
-                             },
-                             () => {
-                                 this._onRefresh();
-                             }]}/>
+                             () => this.props.nav.goBack(null),
+                             () => this._onRefresh(),
+                         ]}/>
                 <ScrollView>
                     <View style={{
                         flexDirection: 'column',
@@ -184,8 +174,8 @@ export default class SearchPager extends Component {
                     }}>
                         <TouchableOpacity onPress={() => {
                             this.setState({isTimeSelect: !this.state.isTimeSelect});
-                            if(this.state.beginTime===''||this.state.endTime===''){
-                                this.setState({beginTime:'',endTime:''});
+                            if (this.state.beginTime === '' || this.state.endTime === '') {
+                                this.setState({beginTime: '', endTime: ''});
                             }
                         }}>
                             <View style={styles.control}>
@@ -201,7 +191,7 @@ export default class SearchPager extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }} onPress={() => {
-                                    this.setState({beginTime:'',endTime:''});
+                                    this.setState({beginTime: '', endTime: ''});
                                 }}>
                                     <Image source={require('../drawable/close_white.png')}
                                            style={{width: 15, height: 15,}}/>
@@ -210,18 +200,15 @@ export default class SearchPager extends Component {
                         </TouchableOpacity>
                         {this._timeSelect()}
                         <TouchableOpacity onPress={() => {
-                            this.props.nav.push(
+                            this.props.nav.navigate('param',
                                 {
-                                    id: 'param',
-                                    params: {
-                                        title: '选择供应商',
-                                        type: 0,//supply
-                                        searchKey: this.state.series,//if key
-                                        setSelect: (select) => {
-                                            this.setState({supply: select})
-                                        }
-                                    },
-                                }
+                                    title: '选择供应商',
+                                    type: 0,//supply
+                                    searchKey: this.state.series,//if key
+                                    setSelect: (select) => {
+                                        this.setState({supply: select})
+                                    }
+                                },
                             );
                         }}>
                             <View style={styles.control}>
@@ -236,7 +223,7 @@ export default class SearchPager extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }} onPress={() => {
-                                    this.setState({supply:''})
+                                    this.setState({supply: ''})
                                 }}>
                                     <Image source={require('../drawable/close_white.png')}
                                            style={{width: 15, height: 15,}}/>
@@ -245,18 +232,15 @@ export default class SearchPager extends Component {
                             </View></TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            this.props.nav.push(
+                            this.props.nav.navigate('param',
                                 {
-                                    id: 'param',
-                                    params: {
-                                        title: '选择系列',
-                                        type: 1,//series
-                                        searchKey: this.state.supply,//if key
-                                        setSelect: (select) => {
-                                            this.setState({series: select})
-                                        }
-                                    },
-                                }
+                                    title: '选择系列',
+                                    type: 1,//series
+                                    searchKey: this.state.supply,//if key
+                                    setSelect: (select) => {
+                                        this.setState({series: select})
+                                    }
+                                },
                             );
                         }}>
                             <View style={styles.control}>
@@ -271,7 +255,7 @@ export default class SearchPager extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }} onPress={() => {
-                                    this.setState({series:''})
+                                    this.setState({series: ''})
                                 }}>
                                     <Image source={require('../drawable/close_white.png')}
                                            style={{width: 15, height: 15,}}/>

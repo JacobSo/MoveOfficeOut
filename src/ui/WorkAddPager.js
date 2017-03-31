@@ -50,16 +50,16 @@ export default class PasswordPager extends Component {
                          actionArray={['完成']}
                          functionArray={[
                              () => {
-                                 this.props.nav.pop()
+                                 this.props.nav.goBack(null)
                              },
                              () => {
                                  if (this.state.content === '' || this.state.series === '' || this.state.supply === '' ||
                                      (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)) {
                                      Toast.show('填写不完整');
                                  } else {
-                              //       console.log(this.state);
+                                     //       console.log(this.state);
                                      this.props.addWork([this.state]);
-                                     this.props.nav.pop();
+                                     this.props.nav.goBack(null)
                                  }
                              }]}/>
                 <ScrollView>
@@ -109,18 +109,16 @@ export default class PasswordPager extends Component {
                         </View>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.nav.push(
+                                this.props.nav.navigate(
+                                    'param',
                                     {
-                                        id: 'param',
-                                        params: {
-                                            title: '选择供应商',
-                                            type: 0,//supply
-                                            searchKey: this.state.series,//if key
-                                            setSelect: (select) => {
-                                                this.setState({supply: select})
-                                            }
-                                        },
-                                    }
+                                        title: '选择供应商',
+                                        type: 0,//supply
+                                        searchKey: this.state.series,//if key
+                                        setSelect: (select) => {
+                                            this.setState({supply: select})
+                                        }
+                                    },
                                 );
                             }}
                         >
@@ -131,18 +129,16 @@ export default class PasswordPager extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.nav.push(
+                                this.props.nav.navigate(
+                                    'param',
                                     {
-                                        id: 'param',
-                                        params: {
-                                            title: '选择系列',
-                                            type: 1,//series
-                                            searchKey: this.state.supply,//if key
-                                            setSelect: (select) => {
-                                                this.setState({series: select})
-                                            }
-                                        },
-                                    }
+                                        title: '选择系列',
+                                        type: 1,//series
+                                        searchKey: this.state.supply,//if key
+                                        setSelect: (select) => {
+                                            this.setState({series: select})
+                                        }
+                                    },
                                 );
                             }}>
                             <Text style={{

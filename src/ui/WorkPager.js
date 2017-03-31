@@ -70,12 +70,12 @@ export default class WorkPager extends Component {
                     {
                         text: '确定', onPress: () => {
                         this.setState({isLoading: true});
-                        ApiService.createWork(this.state.date, this.state.isNeedCar, this.state.carType, this.state.carMember, this.state.remarkStr,JSON.stringify(this.state.items))
+                        ApiService.createWork(this.state.date, this.state.isNeedCar, this.state.carType, this.state.carMember, this.state.remarkStr, JSON.stringify(this.state.items))
                             .then((responseJson) => {
                                 this.setState({isLoading: false});
                                 if (!responseJson.IsErr) {
                                     Toast.show('操作成功');
-                                    this.props.nav.pop()
+                                    this.props.nav.goBack(null);
                                 } else Toast.show(responseJson.ErrDesc);
                             })
                             .done();
@@ -163,12 +163,9 @@ export default class WorkPager extends Component {
                          isActionByText={true}
                          actionArray={['提交']}
                          functionArray={[
-                             () => {
-                                 this.props.nav.pop()
-                             },
-                             () => {
-                                 this._createWork()
-                             }]}/>
+                             () => this.props.nav.goBack(null),
+                             () => this._createWork()
+                         ]}/>
                 <ScrollView>
                     <View style={{
                         flexDirection: 'column',
@@ -225,9 +222,9 @@ export default class WorkPager extends Component {
 
 
                     <TouchableOpacity onPress={() => {
-                        this.props.nav.push({
-                            id: 'add',
-                            params: {
+                        this.props.nav.navigate(
+                            'add',
+                            {
                                 addWork: (array) => {
                                     console.log(array);
                                     this.state.items = this.state.items.concat(array);
@@ -235,7 +232,7 @@ export default class WorkPager extends Component {
                                     this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items),});
                                 }
                             },
-                        })
+                        )
                     }}>
                         <View
                             style={styles.card}>

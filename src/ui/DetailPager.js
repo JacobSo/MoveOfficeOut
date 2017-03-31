@@ -71,22 +71,20 @@ export default class SearchPager extends Component {
 
                         if (this.props.task.DailyRecordState === 2 && App.account === this.props.task.Creator) {
                             //sign work
-                            this.props.nav.push({
-                                id: 'sign',
-                                params: {
-                                    position: sectionID,
-                                    task: this.props.task,
-                                    commentWork: (resultArray) => {
-                                        this.state.items = JSON.parse(JSON.stringify(resultArray));
-                                        // console.log('-----------------update'+JSON.stringify( this.state.items));
+                            this.props.nav.navigate('sign',{
+                                position: sectionID,
+                                task: this.props.task,
+                                commentWork: (resultArray) => {
+                                    this.state.items = JSON.parse(JSON.stringify(resultArray));
+                                    // console.log('-----------------update'+JSON.stringify( this.state.items));
 
-                                        this.setState({
-                                            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-                                        });
+                                    this.setState({
+                                        dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                                    });
 
-                                    }
-                                },
+                                }
                             });
+
                         } else {
                             let type = -1;
                             if (this.props.task.DailyRecordState === 3 && App.workType.indexOf('项目专员') > -1 && App.account !== this.props.task.Creator) {
@@ -96,21 +94,19 @@ export default class SearchPager extends Component {
                             } else Toast.show('当前你不需要操作本工作');
 
                             if (type !== -1) {
-                                this.props.nav.push({
-                                    id: 'comment',
-                                    params: {
-                                        type: type,//1 full star
-                                        position: sectionID,
-                                        task: this.props.task,
-                                        commentWork: (resultArray) => {
-                                            this.state.items = JSON.parse(JSON.stringify(resultArray));
-                                            //    console.log('-----------------update'+JSON.stringify( this.state.items));
-                                            this.setState({
-                                                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-                                            });
-                                        }
-                                    },
-                                });
+                                this.props.nav.navigate('comment',{
+                                    type: type,//1 full star
+                                    position: sectionID,
+                                    task: this.props.task,
+                                    commentWork: (resultArray) => {
+                                        this.state.items = JSON.parse(JSON.stringify(resultArray));
+                                        //    console.log('-----------------update'+JSON.stringify( this.state.items));
+                                        this.setState({
+                                            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                                        });
+                                    }
+                                },);
+
                             }
 
                         }
@@ -199,19 +195,13 @@ export default class SearchPager extends Component {
         if (this.props.task.CarType === '') {
             Toast.show('不需要车牌');
         } else {
-            this.props.nav.push(
-                {
-                    id: 'param',
-                    params: {
-                        title: '选择车牌',
-                        type: 2,//2 car
-                        searchKey: this.props.task.Guid,
-                        setSelect: (select) => {
-                            this.setState({carNumber: select})
-                        }
-                    },
-                }
-            );
+            this.props.nav.navigate('param',{
+                title: '选择车牌',
+                type: 2,//2 car
+                searchKey: this.props.task.Guid,
+                setSelect: (select) => {
+                    this.setState({carNumber: select})
+                }},);
         }
 
 
@@ -317,7 +307,8 @@ export default class SearchPager extends Component {
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
-                    this.props.nav.pop();
+                   // this.props.nav.pop();
+                    this.props.nav.goBack(null);
                 } else {
                     Toast.show(responseJson.ErrDesc)
                 }
@@ -331,7 +322,8 @@ export default class SearchPager extends Component {
                 this.setState({isLoading: false});
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
-                    this.props.nav.pop();
+                    //this.props.nav.pop();
+                    this.props.nav.goBack(null);
                 } else {
                     Toast.show(responseJson.ErrDesc)
                 }
@@ -354,7 +346,10 @@ export default class SearchPager extends Component {
                          actionArray={this._getActionStr()}
                          functionArray={[
                              () => {
-                                 this.props.nav.pop()
+                                // this.props.nav.pop()
+                                 this.props.nav.onGoBack()
+                                 this.props.nav.goBack();
+
                              }
                          ].concat(this._getActionFunc())}/>
                 <ScrollView>

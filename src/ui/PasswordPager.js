@@ -55,14 +55,12 @@ export default class PasswordPager extends Component {
                                     //
                                     if (!responseJson.IsErr) {
                                         Toast.show('修改成功');
-                                        this.props.nav.push({
-                                            id: 'login',
-                                        });
+                                        this.props.nav.navigate('login');
                                     } else {
                                         Toast.show(responseJson.ErrDesc)
                                     }
                                 }
-                            ).done(()=>this.setState({isLoading: !this.state.isLoading}));
+                            ).done(() => this.setState({isLoading: !this.state.isLoading}));
 
                     }
                     },
@@ -87,12 +85,9 @@ export default class PasswordPager extends Component {
                          isActionByText={true}
                          actionArray={['提交']}
                          functionArray={[
-                             () => {
-                                 this.props.nav.pop()
-                             },
-                             () => {
-                                 this._password()
-                             }]}/>
+                             () => this.props.nav.goBack(null),
+                             () => this._password()
+                         ]}/>
 
                 <KeyboardAvoidingView behavior='position'>
                     <ScrollView

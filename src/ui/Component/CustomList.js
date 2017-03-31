@@ -31,13 +31,7 @@ export default class CustomList extends Component {
             isRefreshing: true,
             isEndUp: false
         };
-        this.listener = this.props.nav.navigationContext.addListener('didfocus', (event) => {
-            console.log(event.target._currentRoute.id);
-            if (event.target._currentRoute.id === 'main') {
-                this._onRefresh();
 
-            }
-        });
     }
 
     static propTypes = {
@@ -129,13 +123,11 @@ export default class CustomList extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={ (rowData, rowID, sectionID) => <MainItem key={sectionID} task={rowData} func={() => {
-
-                        this.props.nav.push({
-                            id: 'detail',
-                            params: {
-                                task: rowData,
-                            }
-                        })
+                        this.props.nav.navigate(
+                            'detail',
+                            {task: rowData,
+                               },
+                        );
                     }}/>
                     }/>)
         }

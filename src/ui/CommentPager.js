@@ -57,7 +57,7 @@ export default class CommentPager extends Component {
                     }
                     this.props.commentWork(this.state.task.list);
                     this.setState({isLoading: false});
-                    this.props.nav.pop()
+                    this.props.nav.goBack(null)
                 } else Toast.show(responseJson.ErrDesc);
             })
 
@@ -100,7 +100,7 @@ export default class CommentPager extends Component {
                     actionArray={['提交评价']}
                     functionArray={[
                         () => {
-                            this.props.nav.pop()
+                            this.props.nav.goBack(null)
                         },
                         () => {
                             this._comment();
