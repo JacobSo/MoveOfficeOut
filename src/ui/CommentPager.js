@@ -60,7 +60,6 @@ export default class CommentPager extends Component {
                     this.props.nav.goBack(null)
                 } else Toast.show(responseJson.ErrDesc);
             })
-
             .done();
     }
 
@@ -79,12 +78,10 @@ export default class CommentPager extends Component {
                 </View>
             </View>);
         }
-
     }
 
     render() {
         return (
-
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background

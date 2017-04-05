@@ -10,7 +10,7 @@ import {
     ListView,
     Text,
     Image,
-    TouchableOpacity,
+    InteractionManager,
     TextInput,
     Alert
 } from 'react-native';
@@ -26,11 +26,14 @@ import Toast from 'react-native-root-toast';
 import Loading from 'react-native-loading-spinner-overlay';
 import {DetailItem} from "./Component/DetailItem";
 import InputDialog from "./Component/InputDialog";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {mainActions} from "../actions/MainAction";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
 
-export default class SearchPager extends Component {
+ class DetailPager extends Component {
 
     constructor(props) {
         super(props);
@@ -53,10 +56,14 @@ export default class SearchPager extends Component {
     }
 
     componentDidMount() {
-        console.log('----------detail componentDidMount-----------------');
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+        InteractionManager.runAfterInteractions(() => {
+        //    console.log('----------detail componentDidMount-----------------');
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+            });
+
         });
+
     }
 
     _setList() {
@@ -308,6 +315,7 @@ export default class SearchPager extends Component {
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
                    // this.props.nav.pop();
+                    this.props.actions.refreshList(true);
                     this.props.nav.goBack(null);
                 } else {
                     Toast.show(responseJson.ErrDesc)
@@ -323,6 +331,8 @@ export default class SearchPager extends Component {
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
                     //this.props.nav.pop();
+                    this.props.actions.refreshList(true);
+
                     this.props.nav.goBack(null);
                 } else {
                     Toast.show(responseJson.ErrDesc)
@@ -374,4 +384,16 @@ export default class SearchPager extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+ //   console.log(JSON.stringify(state));
 
+    return {
+        refreshList: state.mainStore.refreshList
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(mainActions, dispatch)
+    }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DetailPager);

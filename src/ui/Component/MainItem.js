@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Alert, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
+import {View, Alert, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
 import Color from '../../constant/Color';
 
 const {width, height} = Dimensions.get('window');
@@ -29,7 +29,7 @@ export class MainItem extends Component {
 
     render() {
         return (
-            <TouchableOpacity
+            <TouchableWithoutFeedback
                 onPress={ this.props.func}>
                 <View style={styles.mainContainer}>
                     <View style={styles.iconContainer}>
@@ -58,7 +58,7 @@ export class MainItem extends Component {
                         <Text >申请人</Text>
                         <Text >{this.props.task.Creator}</Text>
                     </View>
-                </View></TouchableOpacity>
+                </View></TouchableWithoutFeedback>
         );
     }
 }

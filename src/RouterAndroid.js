@@ -19,14 +19,7 @@ import WorkSignPager from "./ui/WorkSignPager";
 
 let _navigator;
 const {width, height} = Dimensions.get('window');
-BackAndroid.addEventListener('hardwareBackPress', () => {
-    if (['main', 'login'].indexOf(_navigator.getCurrentRoutes()[_navigator.getCurrentRoutes().length - 1].id) > -1) {
-        return false;
-    }
 
-    _navigator.pop();
-    return true;
-});
 
 
 export default class RouterAndroid extends Component {

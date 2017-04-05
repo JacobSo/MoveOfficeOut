@@ -11,49 +11,34 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    Alert,
-    NativeModules,
     KeyboardAvoidingView, ScrollView,
 } from 'react-native';
+import Loading from 'react-native-loading-spinner-overlay';
+
 import Toast from 'react-native-root-toast';
 import CheckBox from 'react-native-check-box';
 import ApiService from '../network/ApiService';
 import Color from '../constant/Color';
 import App from '../constant/Application';
-import AndroidModule from '../module/AndoridCommontModule'
-import IosModule from '../module/IosCommontModule'
+import {NavigationActions,} from 'react-navigation';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
+
 export default class LoginPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
             account: '张发',
-            pwd: '321',
-            check: false
+            pwd: '123',
+            isLoading: false,
+            check: false,
         };
-
-
-    }
-
-    componentWillMount() {
-        //  console.log("componentWillMount---login---");
-        //      this._autoLogin()
-
-    }
-
-    _test(){
-        //AndroidModule.testToast();
-        IosModule.pgyUpdateSEL();
     }
 
 
     _autoLogin() {
         App.initAccount(() => {
             if (App.session && App.account && App.workType && App.department) {
-               /* this.props.nav.push({
-                    id: 'main',
-                });*/
                 this.props.nav.navigate('main',)
             }
         });
@@ -64,30 +49,34 @@ export default class LoginPager extends Component {
             Toast.show("信息不能为空");
             return
         }
-
+        this.setState({isLoading: true});
         ApiService.loginFuc(this.state.account, this.state.pwd)
             .then((responseJson) => {
-                console.log(responseJson);
+                //  console.log(responseJson);
+
                 if (!responseJson.IsErr) {
-                    Toast.show('登录成功');
+                    //  Toast.show('登录成功');
                     App.saveAccount(
                         App.session = responseJson.uniqueIdentifier,
                         App.account = responseJson.UserName,
                         App.department = responseJson.DptName,
                         App.workType = responseJson.WorkType,
                         this.state.check);
-     /*               this.props.nav.push({
-                        id: 'main',
-                    });*/
-                    this.props.nav.navigate('main',)
+
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({routeName: 'main'})
+                        ]
+                    });
+                    this.props.nav.dispatch(resetAction)
                 } else {
                     Toast.show(responseJson.ErrDesc, {});
                 }
-            })
+            }).done(this.setState({isLoading: false}));
     }
 
     render() {
-        //console.log("render---login---");
         return (
             <KeyboardAvoidingView behavior={'padding'}>
                 <ScrollView>
@@ -116,20 +105,19 @@ export default class LoginPager extends Component {
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={this.state.check}
-                                onClick={() => this.setState({check: !this.state.check}) }
+                                onClick={() => this.setState({check: !this.state.check})}
                                 rightText={'自动登录'}/>
                         </View>
 
                         <View style={{backgroundColor: 'white', padding: 16}}>
-                            <TouchableOpacity onPress={() => this._login()}>
+                            <TouchableOpacity onPress={() => this._login(this.state.account, this.state.pwd)}>
                                 <View style={styles.button}>
                                     <Text style={{color: 'white'}}>登录</Text>
                                 </View></TouchableOpacity></View>
-
+                        <Loading visible={this.state.isLoading}/>
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-
         );
     }
 }

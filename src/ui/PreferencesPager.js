@@ -26,10 +26,6 @@ export default class PreferencesPager extends Component {
         super(props);
     }
 
-    onActionSelected() {
-
-    }
-
         render() {
         return (
             <View style={{

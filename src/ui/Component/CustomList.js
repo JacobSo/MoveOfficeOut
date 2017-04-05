@@ -18,7 +18,11 @@ import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
 import ApiService from '../../network/ApiService';
 import Color from '../../constant/Color';
-export default class CustomList extends Component {
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {mainActions} from "../../actions/MainAction";
+
+class CustomList extends Component {
 
     constructor(props) {
         super(props);
@@ -39,14 +43,22 @@ export default class CustomList extends Component {
         nav: PropTypes.any.isRequired
     };
 
+    componentWillReceiveProps(newProps) {
+    //    console.log(JSON.stringify(newProps) + '-------------------------')
+        if (newProps.refreshList)
+            this._onRefresh()
+
+    }
+
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            this._onRefresh()
+            this._onRefresh();
+
         });
     }
 
     _onRefresh() {
-        console.log('_refresh');
+      //  console.log('_refresh');
         this.state.page = 1;
         this.state.isRefreshing = true;
         ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
@@ -57,12 +69,12 @@ export default class CustomList extends Component {
                 isRefreshing: false,
                 isEndUp: responseJson.list.length === 0
             });
-
+            this.props.actions.refreshList(false);
         }).done()
     }
 
     _onLoad() {
-        console.log('_load');
+        //console.log('_load');
         if (this.state.items.length >= 10) {
             this.setState({
                 //  isRefreshing: true,
@@ -79,11 +91,13 @@ export default class CustomList extends Component {
                 if (this.state.isEndUp) {
                     Toast.show('已经没有了', {});
                 }
+                this.props.actions.refreshList(false);
             }).done()
         }
     }
 
     render() {
+
         if (this.state.items.length === 0) {
             return (
                 <ScrollView
@@ -123,19 +137,18 @@ export default class CustomList extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={ (rowData, rowID, sectionID) => <MainItem key={sectionID} task={rowData} func={() => {
-                        this.props.nav.navigate(
-                            'detail',
-                            {task: rowData,
-                               },
-                        );
+                            this.props.actions.refreshList(false);
+                            this.props.nav.navigate(
+                                'detail',
+                                {task: rowData,},
+                            );
                     }}/>
                     }/>)
         }
+
     }
 
-    componentWillUnmount() {
-        this.listener && this.listener.remove();
-    }
+
 }
 
 const styles = StyleSheet.create(
@@ -159,3 +172,17 @@ const styles = StyleSheet.create(
             elevation: 2
         },
     });
+
+const mapStateToProps = (state) => {
+ //   console.log(JSON.stringify(state));
+
+    return {
+        refreshList: state.mainStore.refreshList
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(mainActions, dispatch)
+    }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CustomList);

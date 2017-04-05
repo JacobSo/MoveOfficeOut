@@ -54,7 +54,7 @@ export default class SearchPager extends Component {
     }
 
     _onRefresh() {
-        console.log('_refresh');
+      //  console.log('_refresh');
         this.state.page = 1;
         ApiService.searchItems(this.state.page, this.state.type, this.state.supply, this.state.series, this.state.beginTime, this.state.endTime)
             .then((responseJson) => {
@@ -69,7 +69,7 @@ export default class SearchPager extends Component {
     }
 
     _onLoad() {
-        console.log('_load');
+      //  console.log('_load');
         this.setState({
             //  isRefreshing: true,
             page: this.state.page + 1

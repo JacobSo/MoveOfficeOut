@@ -23,9 +23,12 @@ import RadioForm from 'react-native-simple-radio-button';
 import Moment from 'moment';
 import Loading from 'react-native-loading-spinner-overlay';
 import DatePicker from '../ui/Component/DatePicker';
+import {bindActionCreators} from "redux";
+import {mainActions} from "../actions/MainAction";
+import {connect} from "react-redux";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-export default class WorkPager extends Component {
+ class WorkPager extends Component {
 
     constructor(props) {
         super(props);
@@ -74,6 +77,7 @@ export default class WorkPager extends Component {
                             .then((responseJson) => {
                                 this.setState({isLoading: false});
                                 if (!responseJson.IsErr) {
+                                    this.props.actions.refreshList(true);
                                     Toast.show('操作成功');
                                     this.props.nav.goBack(null);
                                 } else Toast.show(responseJson.ErrDesc);
@@ -226,9 +230,9 @@ export default class WorkPager extends Component {
                             'add',
                             {
                                 addWork: (array) => {
-                                    console.log(array);
+                                //    console.log(array);
                                     this.state.items = this.state.items.concat(array);
-                                    console.log(this.state.items);
+                                  //  console.log(this.state.items);
                                     this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items),});
                                 }
                             },
@@ -292,3 +296,17 @@ const styles = StyleSheet.create(
         },
 
     });
+
+const mapStateToProps = (state) => {
+  //  console.log(JSON.stringify(state));
+
+    return {
+        refreshList: state.mainStore.refreshList
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(mainActions, dispatch)
+    }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(WorkPager);

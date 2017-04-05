@@ -34,7 +34,9 @@ export default class PasswordPager extends Component {
     }
 
     componentDidMount() {
-        this._getData();
+        InteractionManager.runAfterInteractions(() => {
+            this._getData();
+        });
     }
 
     _getData() {
@@ -43,7 +45,7 @@ export default class PasswordPager extends Component {
             if (this.props.type === 2) {
                 ApiService.getCarList()
                     .then((responseJson) => {
-                        console.log(responseJson);
+                       // console.log(responseJson);
                         this.state.items = responseJson.list;
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
@@ -53,7 +55,7 @@ export default class PasswordPager extends Component {
             } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
-                        console.log(responseJson);
+                     //   console.log(responseJson);
                         this.state.items = responseJson.list;
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
@@ -75,7 +77,7 @@ export default class PasswordPager extends Component {
                         this.props.setSelect(rowData);
                     } else Toast.show(responseJson.ErrDesc)
                 })
-                .done( this.props.nav.goBack(null))
+                .done(this.props.nav.goBack(null))
         } else {
             this.props.setSelect(rowData);
             this.props.nav.goBack(null);
@@ -142,7 +144,7 @@ export default class PasswordPager extends Component {
                            placeholder="搜索"
                            onChangeText={(text) => {
                                this._search(text).then((array) => {
-                                   console.log(array);
+                            //       console.log(array);
                                    this.setState({
                                        dataSource: this.state.dataSource.cloneWithRows(array),
                                    });

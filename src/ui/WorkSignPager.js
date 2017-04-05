@@ -42,6 +42,9 @@ export default class WorkSignPager extends Component {
                         this.props.nav.goBack(null);
                     } else Toast.show(responseJson.ErrDesc);
                 })
+                .catch((error) => {
+                    console.error(error)
+                })
                 .done(this.setState({isLoading: false}));
         } else Toast.show('未填写内容');
 
@@ -51,7 +54,6 @@ export default class WorkSignPager extends Component {
 
     render() {
         return (
-
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background

@@ -15,15 +15,15 @@ import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-vie
 import Color from '../constant/Color';
 import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {mainActions} from "../actions/MainAction";
 export default class MainPager extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            isFloat: false,
-        };
-
-
+            floatButtonVisible: true
+        }
     }
 
     _get() {
@@ -42,7 +42,8 @@ export default class MainPager extends Component {
                         tabBarActiveTextColor='white'
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white'}}
-                        onScroll={(position) => this.setState({isFloat: position === 0})}>
+                        onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }
+                    >
                         <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav}/>
                         <CustomList tabLabel='审核与评分' type="1,3" nav={this.props.nav}/>
                     </ScrollableTabView>)
@@ -54,7 +55,7 @@ export default class MainPager extends Component {
                         tabBarActiveTextColor='white'
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white'}}
-                        onScroll={(position) => this.setState({isFloat: position === 0})}>
+                        onChangeTab={({i}) =>  this.setState({floatButtonVisible: (i === 0)})}>
                         <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav}/>
                         <CustomList tabLabel='已完结' type="3,4" nav={this.props.nav}/>
                     </ScrollableTabView>
@@ -64,6 +65,7 @@ export default class MainPager extends Component {
     }
 
     render() {
+      //  console.log("main:render");
         return (
             <View style={{
                 flex: 1,
@@ -79,17 +81,18 @@ export default class MainPager extends Component {
                     isActionByText={false}
                     actionArray={[require("../drawable/search.png"), require("../drawable/setting.png")]}
                     functionArray={[
-                        () =>  this.props.nav.navigate('search'),
-                        () =>  this.props.nav.navigate('preferences')
+                        () => this.props.nav.navigate('search'),
+                        () => this.props.nav.navigate('preferences')
                     ]}/>
 
                 {this._get()}
                 {
                     (() => {
-                        if (this.state.isFloat) {
+                        if (this.state.floatButtonVisible) {
                             return (
                                 <FloatButton drawable={require('../drawable/add.png')} action={() => {
                                     this.props.nav.navigate('work');
+                             //       console.log(JSON.stringify(this.props))
                                 }}/>)
                         } else return null;
                     })()
@@ -99,7 +102,6 @@ export default class MainPager extends Component {
 
         )
     }
-
-
 }
+
 

@@ -15,35 +15,39 @@ import WorkAddPager from "./ui/WorkAddPager";
 import ParamPager from "./ui/ParamPager";
 import CommentPager from "./ui/CommentPager";
 import WorkSignPager from "./ui/WorkSignPager";
-import {
-    StackNavigator,
-} from 'react-navigation';
+import { Provider } from 'react-redux';
+import store from './stores/Store'
+
+import {StackNavigator,} from 'react-navigation';
 import {Platform, Navigator, BackAndroid, Dimensions, Text, View, StatusBar} from 'react-native';
 const {width, height} = Dimensions.get('window');
 
-_renderScreen = (pager) => {
 
-        return(
-    <View
-        style={{
-            width: width,
-            height: height,
-        }}>
-        { (()=>{if (Platform.OS === 'ios')
-           return  <View style={{width: width, height: 20, backgroundColor: Color.colorPrimaryDark}}/>
-        })()}
-        <StatusBar
-            backgroundColor={Color.colorPrimaryDark}
-            barStyle="light-content"
-            networkActivityIndicatorVisible={true}
-            hidden={false}/>
-        {pager}
-    </View>)
+_renderScreen = (pager) => {
+    return (
+        <Provider store={store}>
+        <View
+            style={{
+                width: width,
+                height: height,
+            }}>
+            { (() => {
+                if (Platform.OS === 'ios')
+                    return <View style={{width: width, height: 20, backgroundColor: Color.colorPrimaryDark}}/>
+            })()}
+            <StatusBar
+                backgroundColor={Color.colorPrimaryDark}
+                barStyle="light-content"
+                networkActivityIndicatorVisible={true}
+                hidden={false}/>
+            {pager}
+        </View>
+        </Provider>)
 
 };
 
 
-const MainScreen = ({navigation}) => _renderScreen( <MainPager {...navigation.state.params} nav={navigation}/>);
+const MainScreen = ({navigation}) => _renderScreen(<MainPager {...navigation.state.params} nav={navigation}/>);
 const PreferencesScreen = ({navigation}) => _renderScreen(<PreferencesPager {...navigation.state.params} nav={navigation}/>);
 const PasswordScreen = ({navigation}) => _renderScreen(<PasswordPager {...navigation.state.params} nav={navigation}/>);
 const WorkScreen = ({navigation}) => _renderScreen(<WorkPager {...navigation.state.params} nav={navigation}/>);
@@ -90,6 +94,6 @@ const SimpleStack = StackNavigator({
         screen: LoginScreen,
     },
 
-}, { initialRouteName: 'login',headerMode: 'none'});
+}, {initialRouteName: 'login', headerMode: 'none',});
 
 export default SimpleStack;

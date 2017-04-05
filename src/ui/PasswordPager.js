@@ -15,7 +15,7 @@ import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import ApiService from '../network/ApiService';
-
+import {NavigationActions,} from 'react-navigation';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class PasswordPager extends Component {
@@ -55,7 +55,13 @@ export default class PasswordPager extends Component {
                                     //
                                     if (!responseJson.IsErr) {
                                         Toast.show('修改成功');
-                                        this.props.nav.navigate('login');
+                                        const resetAction = NavigationActions.reset({
+                                            index: 0,
+                                            actions: [
+                                                NavigationActions.navigate({ routeName: 'login'})
+                                            ]
+                                        });
+                                        this.props.nav.dispatch(resetAction)
                                     } else {
                                         Toast.show(responseJson.ErrDesc)
                                     }
