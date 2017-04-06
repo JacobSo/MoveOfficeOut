@@ -17,7 +17,7 @@ import CommentPager from "./ui/CommentPager";
 import WorkSignPager from "./ui/WorkSignPager";
 import { Provider } from 'react-redux';
 import store from './stores/Store'
-
+import codePush from 'react-native-code-push'
 import {StackNavigator,} from 'react-navigation';
 import {Platform, Navigator, BackAndroid, Dimensions, Text, View, StatusBar} from 'react-native';
 const {width, height} = Dimensions.get('window');

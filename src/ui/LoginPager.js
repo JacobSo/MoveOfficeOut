@@ -21,8 +21,8 @@ import ApiService from '../network/ApiService';
 import Color from '../constant/Color';
 import App from '../constant/Application';
 import {NavigationActions,} from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import CheckBox from "react-native-check-box";
+
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -30,8 +30,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            account: '',
-            pwd: '',
+            account: '张发',
+            pwd: '123',
             isLoading: false,
             check: false,
         };
@@ -105,7 +105,6 @@ export default class LoginPager extends Component {
                             登录
                         </Text>
 
-
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
 
@@ -117,14 +116,14 @@ export default class LoginPager extends Component {
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
                                        onChangeText={(text) => this.setState({pwd: text})}/>
-{/*
+
 
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={this.state.check}
                                 onClick={() => this.setState({check: !this.state.check})}
                                 rightText={'自动登录'}/>
-*/}
+
 
                         </View>
 

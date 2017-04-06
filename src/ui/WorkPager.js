@@ -12,7 +12,7 @@ import {
     ListView,
     TouchableOpacity,
     TextInput,
-    Switch, Alert
+    Switch, Alert, KeyboardAvoidingView
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Color from '../constant/Color';
@@ -28,7 +28,7 @@ import {mainActions} from "../actions/MainAction";
 import {connect} from "react-redux";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
- class WorkPager extends Component {
+class WorkPager extends Component {
 
     constructor(props) {
         super(props);
@@ -41,7 +41,7 @@ const {width, height} = Dimensions.get('window');
             isCarVisible: false,
             isRemarkVisible: false,
             isNeedCar: false,
-            carType: '',
+            carType: '公司车辆',//defaulcdt value
             carMember: '',
             remarkStr: '',
             items: [],
@@ -154,102 +154,108 @@ const {width, height} = Dimensions.get('window');
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: Color.background
-            }}>
-
-                <Toolbar title={['外出申请']}
-                         color={Color.colorPrimaryDark}
-                         elevation={0}
-                         isHomeUp={true}
-                         isAction={true}
-                         isActionByText={true}
-                         actionArray={['提交']}
-                         functionArray={[
-                             () => this.props.nav.goBack(null),
-                             () => this._createWork()
-                         ]}/>
+            <KeyboardAvoidingView behavior={'padding'}>
                 <ScrollView>
                     <View style={{
-                        flexDirection: 'column',
-                        backgroundColor: Color.colorPrimaryDark,
-                        alignItems: 'center',
+                        flex: 1,
+                        backgroundColor: Color.background
                     }}>
 
-                        <View style={styles.control}>
-                            <Image style={styles.ctrlIcon} source={require('../drawable/clock.png')}/>
-                            <DatePicker
-                                date={this.state.date}
-                                mode="date"
-                                placeholder="对接时间"
-                                format="YYYY-MM-DD"
-                                minDate={this.dateStr}
-                                confirmBtnText="确认"
-                                cancelBtnText="取消"
-                                showIcon={false}
-                                onDateChange={(date) => {
-                                    this.setState({date: date})
-                                }}
-                            />
-                        </View>
-                        <TouchableOpacity onPress={() => {
-                            this.setState({isCarVisible: !this.state.isCarVisible});
-                        }}>
-                            <View style={styles.control}>
-                                <Image style={styles.ctrlIcon} source={require('../drawable/car.png')}/>
-                                <Text style={{color: 'white'}}>
-                                    {this.state.isNeedCar ? (this.state.carType + '  ' + this.state.carMember) : '不申请车辆'}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        {
-                            this._carView()
-                        }
-                        <TouchableOpacity onPress={() => {
-                            this.setState({isRemarkVisible: !this.state.isRemarkVisible});
-                        }}>
-                            <View style={styles.control}>
-                                <Image style={styles.ctrlIcon} source={require('../drawable/remark.png')}/>
-                                <Text numberOfLines={1}
-                                      style={{color: 'white',}}>{this.state.remarkStr === '' ? '备注' : this.state.remarkStr}</Text>
-                            </View></TouchableOpacity>
-                        {this._remarkView()}
+                        <Toolbar title={['外出申请']}
+                                 color={Color.colorPrimaryDark}
+                                 elevation={0}
+                                 isHomeUp={true}
+                                 isAction={true}
+                                 isActionByText={true}
+                                 actionArray={['提交']}
+                                 functionArray={[
+                                     () => this.props.nav.goBack(null),
+                                     () => this._createWork()
+                                 ]}/>
+                        <ScrollView>
+                            <View style={{
+                                flexDirection: 'column',
+                                backgroundColor: Color.colorPrimaryDark,
+                                alignItems: 'center',
+                            }}>
 
-                    </View>
-
-                    <ListView
-                        dataSource={this.state.dataSource}
-                        enableEmptySections={true}
-                        renderRow={ (rowData) => <WorkItem work={rowData} func={() => {
-                        }}/>}/>
-
-
-                    <TouchableOpacity onPress={() => {
-                        this.props.nav.navigate(
-                            'add',
-                            {
-                                addWork: (array) => {
-                                //    console.log(array);
-                                    this.state.items = this.state.items.concat(array);
-                                  //  console.log(this.state.items);
-                                    this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items),});
+                                <View style={styles.control}>
+                                    <Image style={styles.ctrlIcon} source={require('../drawable/clock.png')}/>
+                                    <DatePicker
+                                        date={this.state.date}
+                                        mode="date"
+                                        placeholder="对接时间"
+                                        format="ddd, DDDD MMM YYYY"
+                                        locale="pt-br"
+                                        minDate={this.dateStr}
+                                        confirmBtnText="确认"
+                                        cancelBtnText="取消"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({date: date})
+                                        }}
+                                    />
+                                </View>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({isCarVisible: !this.state.isCarVisible});
+                                }}>
+                                    <View style={styles.control}>
+                                        <Image style={styles.ctrlIcon} source={require('../drawable/car.png')}/>
+                                        <Text numberOfLines={1}
+                                            style={{color: 'white',width:200}}>
+                                            {this.state.isNeedCar ? (this.state.carType + '  ' + this.state.carMember) : '不申请车辆'}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {
+                                    this._carView()
                                 }
-                            },
-                        )
-                    }}>
-                        <View
-                            style={styles.card}>
-                            <Image style={styles.ctrlIcon} source={require('../drawable/pin_add.png')}/>
-                            <Text style={{fontSize: 15}}>添加工作</Text>
-                            <Text style={{fontSize: 12}}>添加外出工作事项，可添加多项</Text>
-                        </View>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({isRemarkVisible: !this.state.isRemarkVisible});
+                                }}>
+                                    <View style={styles.control}>
+                                        <Image style={styles.ctrlIcon} source={require('../drawable/remark.png')}/>
+                                        <Text numberOfLines={1}
+                                              style={{color: 'white',width: 200,}}>{this.state.remarkStr === '' ? '备注' : this.state.remarkStr}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {this._remarkView()}
 
-                    </TouchableOpacity>
-                </ScrollView>
-                <Loading visible={this.state.isLoading}/>
+                            </View>
 
-            </View>
+                            <ListView
+                                dataSource={this.state.dataSource}
+                                enableEmptySections={true}
+                                renderRow={ (rowData) => <WorkItem work={rowData} func={() => {
+                                }}/>}/>
+
+
+                            <TouchableOpacity onPress={() => {
+                                this.props.nav.navigate(
+                                    'add',
+                                    {
+                                        addWork: (array) => {
+                                            //    console.log(array);
+                                            this.state.items = this.state.items.concat(array);
+                                            //  console.log(this.state.items);
+                                            this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items),});
+                                        }
+                                    },
+                                )
+                            }}>
+                                <View
+                                    style={styles.card}>
+                                    <Image style={styles.ctrlIcon} source={require('../drawable/pin_add.png')}/>
+                                    <Text style={{fontSize: 15}}>添加工作</Text>
+                                    <Text style={{fontSize: 12}}>添加外出工作事项，可添加多项</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                        </ScrollView>
+                        <Loading visible={this.state.isLoading}/>
+
+                    </View></ScrollView>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -292,13 +298,12 @@ const styles = StyleSheet.create(
             marginLeft: 10,
             marginRight: 10,
             color: 'white',
-            marginBottom: 16
         },
 
     });
 
 const mapStateToProps = (state) => {
-  //  console.log(JSON.stringify(state));
+    //  console.log(JSON.stringify(state));
 
     return {
         refreshList: state.mainStore.refreshList
