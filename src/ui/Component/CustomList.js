@@ -45,8 +45,10 @@ class CustomList extends Component {
 
     componentWillReceiveProps(newProps) {
     //    console.log(JSON.stringify(newProps) + '-------------------------')
-        if (newProps.refreshList)
-            this._onRefresh()
+        InteractionManager.runAfterInteractions(() => {
+            if (newProps.refreshList)
+                this._onRefresh()
+        });
 
     }
 

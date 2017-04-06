@@ -8,15 +8,12 @@ import {
     StyleSheet,
     ScrollView,
     Alert,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    KeyboardAvoidingView
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import PreferencesTextItem from './Component/PreferencesTextItem'
 import App from '../constant/Application';
+import {NavigationActions} from "react-navigation";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
@@ -26,7 +23,7 @@ export default class PreferencesPager extends Component {
         super(props);
     }
 
-        render() {
+    render() {
         return (
             <View style={{
                 flex: 1,
@@ -40,7 +37,7 @@ export default class PreferencesPager extends Component {
                          isAction={false}
                          isActionByText={false}
                          actionArray={[]}
-                         functionArray={[() =>  this.props.nav.goBack(null)]}/>
+                         functionArray={[() => this.props.nav.goBack(null)]}/>
                 <ScrollView  >
                     <View>
                         <PreferencesTextItem
@@ -56,8 +53,23 @@ export default class PreferencesPager extends Component {
                                         '注销',
                                         '注销当前账号，返回登录页面',
                                         [
-                                            {text: '取消', onPress: () =>{}},
-                                            {text: '确定', onPress: () =>  this.props.nav.navigate('login')},
+                                            {
+                                                text: '取消', onPress: () => {
+                                            }
+                                            },
+                                            {
+                                                text: '确定', onPress: () =>
+                                            {
+                                                App.saveAccount('','','','',false);
+                                                const resetAction = NavigationActions.reset({
+                                                    index: 0,
+                                                    actions: [
+                                                        NavigationActions.navigate({routeName: 'login'})
+                                                    ]
+                                                });
+                                                this.props.nav.dispatch(resetAction)
+                                            }
+                                            },
                                         ]
                                     )
                                 },
@@ -65,17 +77,17 @@ export default class PreferencesPager extends Component {
                                 () => {
                                 }]}/>
 
-                    </View>
-                </ScrollView>
-            </View>
-        )
-    }
-}
-const styles = StyleSheet.create({
-    toolbar: {
-        height: 55,
-        backgroundColor: Color.colorPrimary,
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-});
+                                </View>
+                                </ScrollView>
+                                </View>
+                                )
+                            }
+                        }
+                        const styles=StyleSheet.create({
+                        toolbar: {
+                        height: 55,
+                        backgroundColor: Color.colorPrimary,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }
+                    });
