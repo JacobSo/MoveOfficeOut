@@ -107,23 +107,27 @@ export default class LoginPager extends Component {
 
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
-
+                            <View style={{borderBottomWidth:1,borderBottomColor:Color.line,}}>
                             <TextInput style={styles.textInput}
                                        placeholder="请输入登录账号"
                                        returnKeyType={'done'}
                                        blurOnSubmit={true}
+                                       clearButtonMode={'always'}
                                        underlineColorAndroid="transparent"
-                                       onChangeText={(text) => this.setState({account: text})}/>
+                                       onChangeText={(text) => this.setState({account: text})}/></View>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
+
+                            <View style={{borderBottomWidth:1,borderBottomColor:Color.line,}}>
                             <TextInput style={styles.textInput}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
                                        returnKeyType={'done'}
                                        underlineColorAndroid="transparent"
                                        blurOnSubmit={true}
+                                       clearButtonMode={'always'}
                                        onChangeText={(text) => this.setState({pwd: text})}/>
 
-
+                            </View>
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={this.state.check}
@@ -182,5 +186,6 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderColor: Color.line,
         borderBottomWidth: 1,
+        padding:0
     }
 });
