@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {
     View,
     ScrollView,
-    ListView,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
@@ -71,10 +71,11 @@ export default class PasswordPager extends Component {
                 <ScrollView>
                     <View style={{backgroundColor: 'white', flexDirection: 'column', margin: 16}}>
                         <Text style={{color: Color.colorPrimary,}}>对接内容</Text>
-                        <TextInput style={{width: width - 32, height: 65,}}
+                        <TextInput style={styles.textInput}
                                    multiline={true}
                                    placeholder="输入对接内容"
                                    returnKeyType={'done'}
+                                   underlineColorAndroid="transparent"
                                    blurOnSubmit={true}
                                    onChangeText={(text) => this.setState({WorkContent: text})}/>
                         <Text style={{color: Color.colorPrimary, marginTop: 16}}>对接方式</Text>
@@ -110,12 +111,7 @@ export default class PasswordPager extends Component {
                                 } }
                                 rightText={'走访'}/>
                         </View>
-                        <View style={{
-                            marginTop: 16,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
+                        <View style={styles.textContainer}>
                             <Text style={{color: Color.colorPrimary,}}>供应商与系列</Text>
                             <TouchableOpacity
                                 onPress={() => {
@@ -139,10 +135,7 @@ export default class PasswordPager extends Component {
                                 );
                             }}
                         >
-                            <Text style={{
-                                margin: 16,
-                                fontSize: 15
-                            }}>{this.state.SupplierName === '' ? '选择供应商' : this.state.SupplierName}</Text>
+                            <Text style={styles.titleText}>{this.state.SupplierName === '' ? '选择供应商' : this.state.SupplierName}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
@@ -158,10 +151,7 @@ export default class PasswordPager extends Component {
                                     },
                                 );
                             }}>
-                            <Text style={{
-                                marginLeft: 16,
-                                fontSize: 15
-                            }}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
+                            <Text style={styles.titleText}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
                         </TouchableOpacity>
 
 
@@ -172,3 +162,22 @@ export default class PasswordPager extends Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    textInput: {
+        width: width - 32,
+        height: 65,
+        borderColor: Color.line,
+        borderBottomWidth: 1,
+    },
+    titleText: {
+        margin: 10,
+        paddingTop:16,
+        fontSize: 15
+    },
+    textContainer:{
+        marginTop: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    }
+});

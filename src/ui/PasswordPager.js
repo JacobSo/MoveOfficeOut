@@ -8,7 +8,9 @@ import {
     ScrollView,
     Text,
     Alert,
-    TextInput, KeyboardAvoidingView,
+    TextInput,
+    KeyboardAvoidingView,
+    StyleSheet
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -77,7 +79,6 @@ export default class PasswordPager extends Component {
 
     render() {
         return (
-
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background
@@ -103,25 +104,28 @@ export default class PasswordPager extends Component {
 
                         <View style={{backgroundColor: Color.background, flexDirection: 'column', margin: 16}}>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>旧密码</Text>
-                            <TextInput style={{width: width, height: 65,}}
+                            <TextInput style={styles.textInput}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
                                        returnKeyType={'done'}
                                        blurOnSubmit={true}
+                                       underlineColorAndroid="transparent"
                                        onChangeText={(text) => this.setState({oldPwd: text})}/>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>新密码</Text>
-                            <TextInput style={{width: width, height: 65,}}
+                            <TextInput style={styles.textInput}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
                                        returnKeyType={'done'}
                                        blurOnSubmit={true}
+                                       underlineColorAndroid="transparent"
                                        onChangeText={(text) => this.setState({newPwd: text})}/>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>确认密码</Text>
-                            <TextInput style={{width: width, height: 65,}}
+                            <TextInput style={styles.textInput}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
                                        returnKeyType={'done'}
                                        blurOnSubmit={true}
+                                       underlineColorAndroid="transparent"
                                        onChangeText={(text) => this.setState({confirmPwd: text})}/>
 
                         </View>
@@ -134,3 +138,12 @@ export default class PasswordPager extends Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    textInput: {
+        width: width,
+        height: 65,
+        marginRight: 10,
+        borderColor: Color.line,
+        borderBottomWidth: 1,
+    }
+});

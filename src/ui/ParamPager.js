@@ -8,7 +8,9 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    InteractionManager, TextInput, KeyboardAvoidingView, ScrollView,
+    InteractionManager,
+    TextInput,
+    StyleSheet,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -140,8 +142,11 @@ export default class PasswordPager extends Component {
                              }
                          ]}/>
 
-                <TextInput style={{width: width - 32, height: 45, marginLeft: 10, marginRight: 10}}
+                <TextInput style={styles.textInput}
                            placeholder="搜索"
+                           returnKeyType={'done'}
+                           blurOnSubmit={true}
+                           underlineColorAndroid="transparent"
                            onChangeText={(text) => {
                                this._search(text).then((array) => {
                             //       console.log(array);
@@ -157,8 +162,9 @@ export default class PasswordPager extends Component {
                         <TouchableOpacity onPress={() => {
                             this._setSelect(rowData);
                         }}>
-                            <Text style={{padding: 16}}>{rowData}</Text>
-                        </TouchableOpacity>}/>
+                            <Text style={{padding: 20}}>{rowData}</Text>
+                        </TouchableOpacity>
+                    }/>
 
 
                 <Loading visible={this.state.isLoading}/>
@@ -167,3 +173,13 @@ export default class PasswordPager extends Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    textInput: {
+        width: width - 32,
+        height: 45,
+        marginLeft: 10,
+        marginRight: 10,
+        borderColor: Color.line,
+        borderBottomWidth: 1,
+    }
+});

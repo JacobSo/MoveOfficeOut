@@ -116,6 +116,7 @@ export default class SearchPager extends Component {
 
                 <DatePicker
                     date={this.state.beginTime}
+                    maxDate={this.state.endTime===''?'2047-7-1':this.state.endTime}
                     mode="date"
                     placeholder="开始日期"
                     format="YYYY-MM-DD"
@@ -131,6 +132,7 @@ export default class SearchPager extends Component {
                 />
                 <DatePicker
                     date={this.state.endTime}
+                    minDate={this.state.beginTime===''?'1997-7-1':this.state.beginTime}
                     mode="date"
                     placeholder="结束日期"
                     format="YYYY-MM-DD"

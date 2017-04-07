@@ -108,16 +108,18 @@ export default class LoginPager extends Component {
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
 
-                            <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
+                            <TextInput style={styles.textInput}
                                        placeholder="请输入登录账号"
                                        returnKeyType={'done'}
                                        blurOnSubmit={true}
+                                       underlineColorAndroid="transparent"
                                        onChangeText={(text) => this.setState({account: text})}/>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
-                            <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
+                            <TextInput style={styles.textInput}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
                                        returnKeyType={'done'}
+                                       underlineColorAndroid="transparent"
                                        blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({pwd: text})}/>
 
@@ -171,6 +173,14 @@ const styles = StyleSheet.create({
         backgroundColor: Color.colorPrimary,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
 
+    textInput: {
+        width: width - 32,
+        height: 65,
+        marginLeft: 10,
+        marginRight: 10,
+        borderColor: Color.line,
+        borderBottomWidth: 1,
+    }
 });

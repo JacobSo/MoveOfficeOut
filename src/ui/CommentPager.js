@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    ListView,
+    StyleSheet,
     Text,
     TouchableOpacity,
     InteractionManager, TextInput, KeyboardAvoidingView, ScrollView,
@@ -82,13 +82,10 @@ export default class CommentPager extends Component {
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: Color.background
-            }}>
-
+            <View>
                 <Toolbar
-                    title={[('对' + this.props.task.Creator + '的工作评价'), (this.props.task.list[this.props.position].Series + '/' + this.props.task.list[this.props.position].SupplierName)]}
+                    title={[('对' + this.props.task.Creator + '的工作评价'),
+                        (this.props.task.list[this.props.position].Series + '/' + this.props.task.list[this.props.position].SupplierName)]}
                     color={Color.colorPrimary}
                     elevation={2}
                     isHomeUp={true}
@@ -110,25 +107,27 @@ export default class CommentPager extends Component {
                             height:height
                         }}>
                         <View>
-                <Text style={{color: Color.colorPrimary, margin: 16}}>对接内容</Text>
+                <Text style={styles.titleStyle}>对接内容</Text>
                 <Text style={{
                     marginLeft: 16,
                     marginRight: 16
                 }}>{this.props.task.list[this.props.position].WorkResult}</Text>
 
 
-                <Text style={{color: Color.colorPrimary, margin: 16,}}>工作评分</Text>
+                <Text style={styles.titleStyle}>工作评分</Text>
                 {this._fullView()}
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starC: select})}/>
                     <Text style={{margin: 16,width:65,textAlign:'right'}}>进度反馈详细程度</Text>
                 </View>
 
-                <Text style={{color: Color.colorPrimary, margin: 16}}>工作评价与建议</Text>
-                <TextInput style={{width: width - 32, height: 45, marginLeft: 10, marginRight: 10}}
+                <Text style={styles.titleStyle}>工作评价与建议</Text>
+                <TextInput style={styles.textInput}
                            placeholder="在此输入"
+                           multiline={true}
                            returnKeyType={'done'}
                            blurOnSubmit={true}
+                           underlineColorAndroid="transparent"
                            onChangeText={(text) => {
                                 this.setState({comment:text})
                            }}/>
@@ -140,3 +139,19 @@ export default class CommentPager extends Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    titleStyle: {
+        color: Color.colorPrimary,
+        margin: 16,
+    },
+
+
+    textInput: {
+        width: width - 32,
+        height: 65,
+        marginLeft: 10,
+        marginRight: 10,
+        borderColor: Color.line,
+        borderBottomWidth: 1,
+    }
+});

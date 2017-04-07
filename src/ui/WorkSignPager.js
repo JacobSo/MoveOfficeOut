@@ -54,11 +54,7 @@ export default class WorkSignPager extends Component {
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: Color.background
-            }}>
-
+            <View>
                 <Toolbar
                     title={['对接工作']}
                     color={Color.colorPrimary}
@@ -71,13 +67,22 @@ export default class WorkSignPager extends Component {
                         () => this.props.nav.goBack(null),
                         () => this._sign()
                     ]}/>
-                <KeyboardAvoidingView behavior='position'>
-                    <ScrollView
-                        style={{
-                            backgroundColor: Color.background,
-                        }}><View>
-                        <Text style={{color: Color.colorPrimary, margin: 16}}>对接内容</Text>
 
+                <ScrollView>
+                    <View style={{height: height}}>
+                        <Text style={styles.titleStyle}>对接结果反馈</Text>
+                        <TextInput style={styles.textInput}
+                                   multiline={true}
+                                   placeholder="在此输入"
+                                   returnKeyType={'done'}
+                                   underlineColorAndroid="transparent"
+                                   blurOnSubmit={true}
+                                   onChangeText={(text) => {
+                                       this.setState({comment: text})
+                                   }}/>
+
+
+                        <Text style={styles.titleStyle}>对接内容</Text>
                         <View style={styles.textStyle}>
                             <Text >系列</Text>
                             <Text
@@ -99,23 +104,10 @@ export default class WorkSignPager extends Component {
                                 style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].WorkContent}</Text>
                         </View>
 
-                        <Text style={{color: Color.colorPrimary, margin: 16}}>对接结果反馈</Text>
 
-                        <TextInput style={{width: width - 32, height: 70, marginLeft: 10, marginRight: 10,}}
-                                   multiline={true}
-                                   placeholder="在此输入"
-                                   returnKeyType={'done'}
-                                   blurOnSubmit={true}
-                            //onFocus={() =>{_scrollView.scrollToEnd()}}
-                                   onChangeText={(text) => {
-                                       this.setState({comment: text})
-                                   }}/>
                     </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-                <Loading visible={this.state.isLoading}/>
-            </View>
-
+                </ScrollView>
+                <Loading visible={this.state.isLoading}/></View>
         )
     }
 }
@@ -146,4 +138,16 @@ const styles = StyleSheet.create(
             height: 1,
 
         },
+        textInput: {
+            width: width - 32,
+            height: 75,
+            marginLeft: 10,
+            marginRight: 10,
+            borderColor: Color.line,
+            borderBottomWidth: 1,
+        },
+        titleStyle:{
+            color: Color.colorPrimary,
+            margin: 16
+        }
     });
