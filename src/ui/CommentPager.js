@@ -83,7 +83,10 @@ export default class CommentPager extends Component {
     render() {
         return (
 
-            <View>
+            <View style={{
+                backgroundColor: Color.background,
+                height:height
+            }}>
                 <Toolbar
                     title={[('对' + this.props.task.Creator + '的工作评价'),
                         (this.props.task.list[this.props.position].Series + '/' + this.props.task.list[this.props.position].SupplierName)]}
@@ -102,7 +105,9 @@ export default class CommentPager extends Component {
                         }
                     ]}/>
                 <KeyboardAvoidingView behavior='position' >
-                    <ScrollView>
+                    <ScrollView
+                        style={{ backgroundColor: Color.background,}}
+                        >
                         <View>
                 <Text style={styles.titleStyle}>对接内容</Text>
                 <Text style={{

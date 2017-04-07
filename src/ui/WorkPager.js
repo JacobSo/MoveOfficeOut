@@ -164,7 +164,7 @@ class WorkPager extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior={'padding'}>
+                <View style={{backgroundColor:Color.background,height:height}}>
                 <Toolbar title={['外出申请']}
                          color={Color.colorPrimaryDark}
                          elevation={0}
@@ -181,7 +181,7 @@ class WorkPager extends Component {
                         backgroundColor: Color.background
                     }}>
 
-                        <KeyboardAvoidingView behavior={'padding'}>
+                        <KeyboardAvoidingView behavior={'position'}>
                             <ScrollView>
                             <View style={{
                                 flexDirection: 'column',
@@ -264,8 +264,7 @@ class WorkPager extends Component {
                         <Loading visible={this.state.isLoading}/>
 
                     </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                </ScrollView></View>
         )
     }
 }
