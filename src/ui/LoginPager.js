@@ -107,7 +107,8 @@ export default class LoginPager extends Component {
 
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
-                            <View style={{borderBottomWidth:1,borderBottomColor:Color.line,}}>
+
+                            <View style={styles.borderBottomLine}>
                             <TextInput style={styles.textInput}
                                        placeholder="请输入登录账号"
                                        returnKeyType={'done'}
@@ -117,7 +118,7 @@ export default class LoginPager extends Component {
                                        onChangeText={(text) => this.setState({account: text})}/></View>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
 
-                            <View style={{borderBottomWidth:1,borderBottomColor:Color.line,}}>
+                            <View style={styles.borderBottomLine}>
                             <TextInput style={styles.textInput}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
@@ -184,8 +185,11 @@ const styles = StyleSheet.create({
         height: 65,
         marginLeft: 10,
         marginRight: 10,
-        borderColor: Color.line,
-        borderBottomWidth: 1,
-        padding:0
+    },
+    borderBottomLine:{
+        borderBottomWidth:1,
+        borderBottomColor:Color.line,
+        borderBottomLeftRadius:16,
+        borderBottomRightRadius:16,
     }
 });
