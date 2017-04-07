@@ -128,8 +128,9 @@ class WorkPager extends Component {
                                onChangeText={(text) => this.setState({carMember: text})}
                                editable={this.state.isNeedCar}
                                multiline={true}
-                               value={this.state.carMember}>
-                    </TextInput>
+                               underlineColorAndroid={Color.colorAccent}
+                               value={this.state.carMember}/>
+                    <View  style={{width: width - 32, height: 1, marginLeft: 10, marginRight: 10, backgroundColor: Color.colorAccent}}/>
                 </View>
             )
         } else {
@@ -149,6 +150,7 @@ class WorkPager extends Component {
                                onChangeText={(text) => this.setState({remarkStr: text})}
                                multiline={true}
                                value={this.state.remarkStr}
+                               underlineColorAndroid={Color.colorAccent}
                   />
             )
         } else {
@@ -303,6 +305,8 @@ const styles = StyleSheet.create(
             marginLeft: 10,
             marginRight: 10,
             color: 'white',
+            padding:0
+
         },
 
     });
