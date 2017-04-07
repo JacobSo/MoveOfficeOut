@@ -305,7 +305,9 @@ const styles = StyleSheet.create(
             marginLeft: 10,
             marginRight: 10,
             color: 'white',
-            padding:0
+            borderColor:Color.colorAccent,
+            borderBottomWidth:2,
+            marginBottom:10,
 
         },
 
