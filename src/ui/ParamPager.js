@@ -141,7 +141,7 @@ export default class PasswordPager extends Component {
                                  this.popupDialog.show();
                              }
                          ]}/>
-
+                <View style={styles.borderBottomLine}>
                 <TextInput style={styles.textInput}
                            placeholder="搜索"
                            returnKeyType={'done'}
@@ -154,7 +154,7 @@ export default class PasswordPager extends Component {
                                        dataSource: this.state.dataSource.cloneWithRows(array),
                                    });
                                })
-                           }}/>
+                           }}/></View>
                 <ListView
                     dataSource={this.state.dataSource}
                     enableEmptySections={true}
@@ -177,9 +177,15 @@ const styles = StyleSheet.create({
     textInput: {
         width: width - 32,
         height: 45,
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 16,
+        marginRight: 16,
         borderColor: Color.line,
         borderBottomWidth: 1,
+    },
+    borderBottomLine:{
+        borderBottomWidth:1,
+        borderBottomColor:Color.line,
+        borderBottomLeftRadius:16,
+        borderBottomRightRadius:16,
     }
 });

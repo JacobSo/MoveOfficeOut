@@ -82,6 +82,7 @@ export default class CommentPager extends Component {
 
     render() {
         return (
+
             <View>
                 <Toolbar
                     title={[('对' + this.props.task.Creator + '的工作评价'),
@@ -101,11 +102,7 @@ export default class CommentPager extends Component {
                         }
                     ]}/>
                 <KeyboardAvoidingView behavior='position' >
-                    <ScrollView
-                        style={{
-                            backgroundColor: Color.background,
-                            height:height
-                        }}>
+                    <ScrollView>
                         <View>
                 <Text style={styles.titleStyle}>对接内容</Text>
                 <Text style={{
@@ -131,8 +128,8 @@ export default class CommentPager extends Component {
                            onChangeText={(text) => {
                                 this.setState({comment:text})
                            }}/>
-                        </View></ScrollView></KeyboardAvoidingView>
-
+                        </View>
+                    </ScrollView></KeyboardAvoidingView>
                 <Loading visible={this.state.isLoading}/>
             </View>
 
@@ -149,8 +146,8 @@ const styles = StyleSheet.create({
     textInput: {
         width: width - 32,
         height: 65,
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 16,
+        marginRight: 16,
         borderColor: Color.line,
         borderBottomWidth: 1,
     }
