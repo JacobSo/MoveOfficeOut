@@ -110,11 +110,15 @@ export default class LoginPager extends Component {
 
                             <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
                                        placeholder="请输入登录账号"
+                                       returnKeyType={'done'}
+                                       blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({account: text})}/>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
                             <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10}}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
+                                       returnKeyType={'done'}
+                                       blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({pwd: text})}/>
 
 

@@ -106,16 +106,22 @@ export default class PasswordPager extends Component {
                             <TextInput style={{width: width, height: 65,}}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
+                                       returnKeyType={'done'}
+                                       blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({oldPwd: text})}/>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>新密码</Text>
                             <TextInput style={{width: width, height: 65,}}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
+                                       returnKeyType={'done'}
+                                       blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({newPwd: text})}/>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>确认密码</Text>
                             <TextInput style={{width: width, height: 65,}}
                                        placeholder="请输入密码"
                                        secureTextEntry={true}
+                                       returnKeyType={'done'}
+                                       blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({confirmPwd: text})}/>
 
                         </View>

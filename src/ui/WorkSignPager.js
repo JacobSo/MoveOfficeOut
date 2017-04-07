@@ -104,6 +104,8 @@ export default class WorkSignPager extends Component {
                         <TextInput style={{width: width - 32, height: 70, marginLeft: 10, marginRight: 10,}}
                                    multiline={true}
                                    placeholder="在此输入"
+                                   returnKeyType={'done'}
+                                   blurOnSubmit={true}
                             //onFocus={() =>{_scrollView.scrollToEnd()}}
                                    onChangeText={(text) => {
                                        this.setState({comment: text})

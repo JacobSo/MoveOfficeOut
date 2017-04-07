@@ -36,6 +36,8 @@ export default class InputDialog extends Component {
                     }}>{this.props.str[0]}</Text>
                     <TextInput style={{width: width - 64, height: 65, marginLeft: 10, marginRight: 10}}
                                placeholder={this.props.str[1]}
+                               returnKeyType={'done'}
+                               blurOnSubmit={true}
                                onChangeText={this.props.action[1]}/>
                     <View style={{right: 0, flexDirection: 'row', position: 'absolute', bottom: 0}}>
 

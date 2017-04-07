@@ -127,6 +127,8 @@ export default class CommentPager extends Component {
                 <Text style={{color: Color.colorPrimary, margin: 16}}>工作评价与建议</Text>
                 <TextInput style={{width: width - 32, height: 45, marginLeft: 10, marginRight: 10}}
                            placeholder="在此输入"
+                           returnKeyType={'done'}
+                           blurOnSubmit={true}
                            onChangeText={(text) => {
                                 this.setState({comment:text})
                            }}/>

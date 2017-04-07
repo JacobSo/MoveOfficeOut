@@ -74,6 +74,8 @@ export default class PasswordPager extends Component {
                         <TextInput style={{width: width - 32, height: 65,}}
                                    multiline={true}
                                    placeholder="输入对接内容"
+                                   returnKeyType={'done'}
+                                   blurOnSubmit={true}
                                    onChangeText={(text) => this.setState({WorkContent: text})}/>
                         <Text style={{color: Color.colorPrimary, marginTop: 16}}>对接方式</Text>
                         <View style={{flexDirection: 'column'}}>

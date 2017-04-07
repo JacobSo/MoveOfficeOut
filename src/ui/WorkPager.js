@@ -129,6 +129,8 @@ class WorkPager extends Component {
                                editable={this.state.isNeedCar}
                                multiline={true}
                                underlineColorAndroid="transparent"
+                               returnKeyType={'done'}
+                               blurOnSubmit={true}
                                value={this.state.carMember}/>
 
                 </View>
@@ -151,6 +153,8 @@ class WorkPager extends Component {
                                multiline={true}
                                value={this.state.remarkStr}
                                underlineColorAndroid="transparent"
+                               returnKeyType={'done'}
+                               blurOnSubmit={true}
                   />
             )
         } else {
