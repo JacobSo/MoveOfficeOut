@@ -127,6 +127,7 @@ class WorkPager extends Component {
                                placeholderTextColor={Color.background}
                                onChangeText={(text) => this.setState({carMember: text})}
                                editable={this.state.isNeedCar}
+                               multiline={true}
                                value={this.state.carMember}>
                     </TextInput>
                 </View>
@@ -140,12 +141,15 @@ class WorkPager extends Component {
     _remarkView() {
         if (this.state.isRemarkVisible) {
             return (
-                <View>
+
+
                     <TextInput style={styles.textRemark}
                                placeholder="备注"
                                placeholderTextColor={Color.background}
-                               onChangeText={(text) => this.setState({remarkStr: text})}/>
-                </View>
+                               onChangeText={(text) => this.setState({remarkStr: text})}
+                               multiline={true}
+                               value={this.state.remarkStr}
+                  />
             )
         } else {
             return ( null)
@@ -155,24 +159,25 @@ class WorkPager extends Component {
     render() {
         return (
             <KeyboardAvoidingView behavior={'padding'}>
+                <Toolbar title={['外出申请']}
+                         color={Color.colorPrimaryDark}
+                         elevation={0}
+                         isHomeUp={true}
+                         isAction={true}
+                         isActionByText={true}
+                         actionArray={['提交']}
+                         functionArray={[
+                             () => this.props.nav.goBack(null),
+                             () => this._createWork()
+                         ]}/>
                 <ScrollView>
                     <View style={{
-                        flex: 1,
                         backgroundColor: Color.background
                     }}>
 
-                        <Toolbar title={['外出申请']}
-                                 color={Color.colorPrimaryDark}
-                                 elevation={0}
-                                 isHomeUp={true}
-                                 isAction={true}
-                                 isActionByText={true}
-                                 actionArray={['提交']}
-                                 functionArray={[
-                                     () => this.props.nav.goBack(null),
-                                     () => this._createWork()
-                                 ]}/>
-                        <ScrollView>
+
+                        <KeyboardAvoidingView behavior={'padding'}>
+                            <ScrollView>
                             <View style={{
                                 flexDirection: 'column',
                                 backgroundColor: Color.colorPrimaryDark,
@@ -185,8 +190,7 @@ class WorkPager extends Component {
                                         date={this.state.date}
                                         mode="date"
                                         placeholder="对接时间"
-                                        format="ddd, DDDD MMM YYYY"
-                                        locale="pt-br"
+                                        format="YYYY-MM-DD"
                                         minDate={this.dateStr}
                                         confirmBtnText="确认"
                                         cancelBtnText="取消"
@@ -251,10 +255,11 @@ class WorkPager extends Component {
                                 </View>
 
                             </TouchableOpacity>
-                        </ScrollView>
+                        </ScrollView></KeyboardAvoidingView>
                         <Loading visible={this.state.isLoading}/>
 
-                    </View></ScrollView>
+                    </View>
+                </ScrollView>
             </KeyboardAvoidingView>
         )
     }
