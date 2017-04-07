@@ -185,6 +185,9 @@ const styles = StyleSheet.create({
         height: 65,
         marginLeft: 10,
         marginRight: 10,
+        padding:0,
+        borderBottomWidth:1,
+        borderBottomColor:Color.line
     },
     borderBottomLine:{
         borderBottomWidth:1,
