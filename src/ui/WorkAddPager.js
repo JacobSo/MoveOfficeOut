@@ -25,9 +25,10 @@ export default class PasswordPager extends Component {
         super(props);
         this.state = {
             isLoading: false,
-            supply: '',
-            series: '',
-            content: '',
+            SupplierName: '',
+            Series: '',
+            WorkContent: '',
+            VisitingMode: '',
             wayCall: false,
             wayQQ: false,
             wayMeet: false,
@@ -53,11 +54,16 @@ export default class PasswordPager extends Component {
                                  this.props.nav.goBack(null)
                              },
                              () => {
-                                 if (this.state.content === '' || this.state.series === '' || this.state.supply === '' ||
+                                 if (this.state.WorkContent === '' || this.state.Series === '' || this.state.SupplierName === '' ||
                                      (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)) {
                                      Toast.show('填写不完整');
                                  } else {
                                      //       console.log(this.state);
+                                     this.setState({
+                                         VisitingMode:( (this.state.wayQQ ? "QQ" : "") +
+                                         (this.state.wayCall ? "电话" : "") +
+                                         (this.state.wayMeet ? "走访" : ""))
+                                     });
                                      this.props.addWork([this.state]);
                                      this.props.nav.goBack(null)
                                  }
@@ -68,28 +74,37 @@ export default class PasswordPager extends Component {
                         <TextInput style={{width: width - 32, height: 65,}}
                                    multiline={true}
                                    placeholder="输入对接内容"
-                                   onChangeText={(text) => this.setState({content: text})}/>
+                                   onChangeText={(text) => this.setState({WorkContent: text})}/>
                         <Text style={{color: Color.colorPrimary, marginTop: 16}}>对接方式</Text>
                         <View style={{flexDirection: 'column'}}>
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={false}
                                 onClick={() => {
-                                    this.setState({wayCall: !this.state.wayCall})
+                                    this.setState({wayCall: !this.state.wayCall,
+                                        VisitingMode:( (this.state.wayQQ ? "QQ " : "") +
+                                        (!this.state.wayCall ? "电话 " : "") +
+                                        (this.state.wayMeet ? "走访" : ""))})
+
                                 } }
                                 rightText={'电话'}/>
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={false}
                                 onClick={() => {
-                                    this.setState({wayQQ: !this.state.wayQQ})
+                                    this.setState({wayQQ: !this.state.wayQQ,
+                                        VisitingMode:( (!this.state.wayQQ ? "QQ " : "") +
+                                        (this.state.wayCall ? "电话 " : "") +
+                                        (this.state.wayMeet ? "走访" : ""))})
                                 }}
                                 rightText={'QQ'}/>
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={false}
                                 onClick={() => {
-                                    this.setState({wayMeet: !this.state.wayMeet})
+                                    this.setState({wayMeet: !this.state.wayMeet, VisitingMode:( (this.state.wayQQ ? "QQ " : "") +
+                                    (this.state.wayCall ? "电话 " : "") +
+                                    (!this.state.wayMeet ? "走访" : ""))})
                                 } }
                                 rightText={'走访'}/>
                         </View>
@@ -102,7 +117,7 @@ export default class PasswordPager extends Component {
                             <Text style={{color: Color.colorPrimary,}}>供应商与系列</Text>
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.setState({supply: '', series: ''})
+                                    this.setState({SupplierName: '', Series: ''})
                                 }}>
                                 <Text>清空</Text>
                             </TouchableOpacity>
@@ -113,10 +128,10 @@ export default class PasswordPager extends Component {
                                     'param',
                                     {
                                         title: '选择供应商',
-                                        type: 0,//supply
-                                        searchKey: this.state.series,//if key
+                                        type: 0,//SupplierName
+                                        searchKey: this.state.Series,//if key
                                         setSelect: (select) => {
-                                            this.setState({supply: select})
+                                            this.setState({SupplierName: select})
                                         }
                                     },
                                 );
@@ -125,7 +140,7 @@ export default class PasswordPager extends Component {
                             <Text style={{
                                 margin: 16,
                                 fontSize: 15
-                            }}>{this.state.supply === '' ? '选择供应商' : this.state.supply}</Text>
+                            }}>{this.state.SupplierName === '' ? '选择供应商' : this.state.SupplierName}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
@@ -133,10 +148,10 @@ export default class PasswordPager extends Component {
                                     'param',
                                     {
                                         title: '选择系列',
-                                        type: 1,//series
-                                        searchKey: this.state.supply,//if key
+                                        type: 1,//Series
+                                        searchKey: this.state.SupplierName,//if key
                                         setSelect: (select) => {
-                                            this.setState({series: select})
+                                            this.setState({Series: select})
                                         }
                                     },
                                 );
@@ -144,7 +159,7 @@ export default class PasswordPager extends Component {
                             <Text style={{
                                 marginLeft: 16,
                                 fontSize: 15
-                            }}>{this.state.series === '' ? '选择系列' : this.state.series}</Text>
+                            }}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
                         </TouchableOpacity>
 
 

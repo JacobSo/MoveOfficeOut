@@ -122,15 +122,15 @@ class WorkPager extends Component {
                         disabled={!this.state.isNeedCar}
                     />
 
-                    <TextInput style={{width: width - 32, height: 65, marginLeft: 10, marginRight: 10, color: 'white'}}
+                    <TextInput style={styles.textRemark}
                                placeholder="陪同人"
                                placeholderTextColor={Color.background}
                                onChangeText={(text) => this.setState({carMember: text})}
                                editable={this.state.isNeedCar}
                                multiline={true}
-                               underlineColorAndroid={Color.colorAccent}
+                               underlineColorAndroid="transparent"
                                value={this.state.carMember}/>
-                    <View  style={{width: width - 32, height: 1, marginLeft: 10, marginRight: 10, backgroundColor: Color.colorAccent}}/>
+
                 </View>
             )
         } else {
@@ -150,7 +150,7 @@ class WorkPager extends Component {
                                onChangeText={(text) => this.setState({remarkStr: text})}
                                multiline={true}
                                value={this.state.remarkStr}
-                               underlineColorAndroid={Color.colorAccent}
+                               underlineColorAndroid="transparent"
                   />
             )
         } else {
@@ -176,7 +176,6 @@ class WorkPager extends Component {
                     <View style={{
                         backgroundColor: Color.background
                     }}>
-
 
                         <KeyboardAvoidingView behavior={'padding'}>
                             <ScrollView>
