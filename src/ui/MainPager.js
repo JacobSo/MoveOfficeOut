@@ -6,24 +6,33 @@
 import React, {Component} from 'react';
 import {
     View,
-
+    Platform
 } from 'react-native';
-import Toast from 'react-native-root-toast';
 import FloatButton from './Component/FloatButton';
 import Toolbar from './Component/Toolbar';
 import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-view';
 import Color from '../constant/Color';
 import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {mainActions} from "../actions/MainAction";
+import AndroidModule from '../module/AndoridCommontModule'
+import IosModule from '../module/IosCommontModule'
 export default class MainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
             floatButtonVisible: true
         }
+    }
+
+    componentDidMount() {
+        this._bindPush();
+    }
+
+   static _bindPush() {
+        if (Platform.OS === 'ios')
+            IosModule.bindPushAccount(App.account);
+        else
+            AndroidModule.bindPushAccount(App.account);
     }
 
     _get() {
@@ -55,7 +64,7 @@ export default class MainPager extends Component {
                         tabBarActiveTextColor='white'
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white'}}
-                        onChangeTab={({i}) =>  this.setState({floatButtonVisible: (i === 0)})}>
+                        onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)})}>
                         <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav}/>
                         <CustomList tabLabel='已完结' type="3,4" nav={this.props.nav}/>
                     </ScrollableTabView>
@@ -65,7 +74,7 @@ export default class MainPager extends Component {
     }
 
     render() {
-      //  console.log("main:render");
+        //  console.log("main:render");
         return (
             <View style={{
                 flex: 1,
@@ -92,7 +101,7 @@ export default class MainPager extends Component {
                             return (
                                 <FloatButton drawable={require('../drawable/add.png')} action={() => {
                                     this.props.nav.navigate('work');
-                             //       console.log(JSON.stringify(this.props))
+                                    //       console.log(JSON.stringify(this.props))
                                 }}/>)
                         } else return null;
                     })()

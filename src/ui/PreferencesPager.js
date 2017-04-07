@@ -2,25 +2,34 @@
  * Created by Administrator on 2017/3/13.
  */
 'use strict';
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     View,
-    StyleSheet,
     ScrollView,
     Alert,
+    Platform,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import PreferencesTextItem from './Component/PreferencesTextItem'
 import App from '../constant/Application';
+import AndroidModule from '../module/AndoridCommontModule'
+import IosModule from '../module/IosCommontModule'
 import {NavigationActions} from "react-navigation";
-const Dimensions = require('Dimensions');
-const {width, height} = Dimensions.get('window');
-import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 export default class PreferencesPager extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            version: this._getVersion(),
+        };
+    }
+
+    _getVersion() {
+        if (Platform.OS === 'ios') {
+        } else {
+            AndroidModule.getVersionName((str) => this.setState({version: str}));
+        }
     }
 
     render() {
@@ -45,7 +54,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 [App.account, App.department + '-' + App.workType],
                                 ['修改密码', '点击修改密码'],
-                                ['检查更新', '当前版本：']
+                                ['检查更新', '当前版本：' + this.state.version]
                             ]}
                             functions={[
                                 () => {
@@ -58,9 +67,13 @@ export default class PreferencesPager extends Component {
                                             }
                                             },
                                             {
-                                                text: '确定', onPress: () =>
-                                            {
-                                                App.saveAccount('','','','',false);
+                                                text: '确定', onPress: () => {
+                                                if (Platform.OS === 'ios')
+                                                    IosModule.unbindPushAccount(App.account);
+                                                 else
+                                                    AndroidModule.unbindPushAccount(App.account);
+
+                                                App.saveAccount('', '', '', '', false);
                                                 const resetAction = NavigationActions.reset({
                                                     index: 0,
                                                     actions: [
@@ -75,19 +88,12 @@ export default class PreferencesPager extends Component {
                                 },
                                 () => this.props.nav.navigate('password'),
                                 () => {
+                                    AndroidModule.checkUpdate();
                                 }]}/>
 
-                                </View>
-                                </ScrollView>
-                                </View>
-                                )
-                            }
-                        }
-                        const styles=StyleSheet.create({
-                        toolbar: {
-                        height: 55,
-                        backgroundColor: Color.colorPrimary,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }
-                    });
+                    </View>
+                </ScrollView>
+            </View>
+        )
+    }
+}
