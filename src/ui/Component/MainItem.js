@@ -70,7 +70,10 @@ const styles = StyleSheet.create(
             alignItems: 'flex-start',
             backgroundColor: 'white',
             elevation: 2,
-            margin: 16,
+            marginBottom: 32,
+            marginLeft: 16,
+            marginRight: 16,
+            marginTop: 10,
         },
 
         iconContainer: {
