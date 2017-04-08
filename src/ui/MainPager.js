@@ -28,7 +28,7 @@ export default class MainPager extends Component {
         this._bindPush();
     }
 
-   static _bindPush() {
+    _bindPush() {
         if (Platform.OS === 'ios')
             IosModule.bindPushAccount(App.account);
         else

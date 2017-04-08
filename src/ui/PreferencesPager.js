@@ -27,6 +27,7 @@ export default class PreferencesPager extends Component {
 
     _getVersion() {
         if (Platform.OS === 'ios') {
+            IosModule.getVersionName((str) => {this.setState({version: str})})
         } else {
             AndroidModule.getVersionName((str) => this.setState({version: str}));
         }
@@ -69,9 +70,9 @@ export default class PreferencesPager extends Component {
                                             {
                                                 text: '确定', onPress: () => {
                                                 if (Platform.OS === 'ios')
-                                                    IosModule.unbindPushAccount(App.account);
+                                                    IosModule.unbindPushAccount('');
                                                  else
-                                                    AndroidModule.unbindPushAccount(App.account);
+                                                    AndroidModule.unbindPushAccount();
 
                                                 App.saveAccount('', '', '', '', false);
                                                 const resetAction = NavigationActions.reset({
@@ -88,7 +89,11 @@ export default class PreferencesPager extends Component {
                                 },
                                 () => this.props.nav.navigate('password'),
                                 () => {
-                                    AndroidModule.checkUpdate();
+                                    if (Platform.OS === 'ios'){
+                                        IosModule.checkUpdate('');
+                                    }else{
+                                        AndroidModule.checkUpdate();
+                                    }
                                 }]}/>
 
                     </View>

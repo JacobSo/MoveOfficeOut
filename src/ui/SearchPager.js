@@ -103,7 +103,9 @@ export default class SearchPager extends Component {
                 onEndReached={() => this._onLoad()}
                 enableEmptySections={true}
                 renderRow={ (rowData) => <MainItem task={rowData} func={() => {
-                    this.props.nav.navigate('detail', {task: rowData,})
+                    this.props.nav.navigate(
+                        'detail',
+                        {task: rowData,},)
                 }}/>
                 }/>
         };
