@@ -7,8 +7,10 @@ import {
     View,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    InteractionManager, TextInput, KeyboardAvoidingView, ScrollView,
+    Platform,
+    TextInput,
+    KeyboardAvoidingView,
+    ScrollView,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -16,8 +18,6 @@ import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import App from '../constant/Application';
 import ApiService from '../network/ApiService';
-import CheckBox from 'react-native-check-box';
-import InputDialog from "./Component/InputDialog";
 import StarSeek from "./Component/StarSeek";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -85,7 +85,8 @@ export default class CommentPager extends Component {
 
             <View style={{
                 backgroundColor: Color.background,
-                height:height
+                height:height,
+                marginBottom:25
             }}>
                 <Toolbar
                     title={[('对' + this.props.task.Creator + '的工作评价'),
@@ -104,7 +105,13 @@ export default class CommentPager extends Component {
                             this._comment();
                         }
                     ]}/>
-                <KeyboardAvoidingView behavior='position' >
+                <KeyboardAvoidingView behavior='position'
+                                      keyboardVerticalOffset={
+                                          Platform.select({
+                                              ios: () => 0,
+                                              android: () => 30
+                                          })()
+                                      }>
                     <ScrollView
                         style={{ backgroundColor: Color.background,}}
                         >
@@ -123,7 +130,7 @@ export default class CommentPager extends Component {
                     <Text style={{margin: 16,width:65,textAlign:'right'}}>进度反馈详细程度</Text>
                 </View>
 
-                <Text style={styles.titleStyle}>工作评价与建议</Text>
+                <Text style={{ color: Color.colorPrimary,marginLeft:16,marginTop:16}}>工作评价与建议</Text>
                 <TextInput style={styles.textInput}
                            placeholder="在此输入"
                            multiline={true}
@@ -150,7 +157,7 @@ const styles = StyleSheet.create({
 
     textInput: {
         width: width - 32,
-        height: 65,
+        height: 55,
         marginLeft: 16,
         marginRight: 16,
         borderColor: Color.line,

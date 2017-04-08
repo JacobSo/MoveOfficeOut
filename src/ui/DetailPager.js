@@ -70,6 +70,7 @@ const {width, height} = Dimensions.get('window');
         return <ListView
             dataSource={this.state.dataSource}
             enableEmptySections={true}
+            style={{marginBottom:25}}
             renderRow={ (rowData, rowID, sectionID) =>
                 <DetailItem
                     status={this.props.task.DailyRecordState}

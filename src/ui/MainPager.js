@@ -50,7 +50,7 @@ export default class MainPager extends Component {
                         tabBarBackgroundColor={Color.colorPrimary}
                         tabBarActiveTextColor='white'
                         tabBarInactiveTextColor={Color.background}
-                        tabBarUnderlineStyle={{backgroundColor: 'white'}}
+                        tabBarUnderlineStyle={{backgroundColor: 'white',}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }
                     >
                         <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav}/>

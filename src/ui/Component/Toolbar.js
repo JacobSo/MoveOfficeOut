@@ -26,7 +26,7 @@ export default class Toolbar extends Component {
     _getHomeUp() {
         if (this.props.isHomeUp) {
             return (
-                <TouchableOpacity onPress={this.props.functionArray[0]}>
+                <TouchableOpacity onPress={this.props.functionArray[0]} style={{paddingTop:16,paddingRight:32,paddingBottom:16}}>
                     <Image style={styles.home}
                            source={ require('../../drawable/action_back.png')}/></TouchableOpacity>)
         }
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         resizeMode: 'contain',
-        marginRight:16,
     },
 
     actionBackground: {

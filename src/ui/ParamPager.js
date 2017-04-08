@@ -156,6 +156,7 @@ export default class PasswordPager extends Component {
                                })
                            }}/></View>
                 <ListView
+                    style={{marginBottom:25}}
                     dataSource={this.state.dataSource}
                     enableEmptySections={true}
                     renderRow={ (rowData) =>

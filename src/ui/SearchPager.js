@@ -99,7 +99,7 @@ export default class SearchPager extends Component {
         } else {
             return <ListView
                 dataSource={this.state.dataSource}
-                //  pageSize={2}
+                style={{marginBottom:25}}
                 onEndReached={() => this._onLoad()}
                 enableEmptySections={true}
                 renderRow={ (rowData) => <MainItem task={rowData} func={() => {

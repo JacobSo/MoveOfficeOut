@@ -233,6 +233,7 @@ class WorkPager extends Component {
                             </View>
 
                             <ListView
+                                style={{marginBottom:25}}
                                 dataSource={this.state.dataSource}
                                 enableEmptySections={true}
                                 renderRow={ (rowData) => <WorkItem work={rowData} func={() => {

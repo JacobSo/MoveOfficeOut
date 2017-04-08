@@ -70,7 +70,7 @@ export default class WorkSignPager extends Component {
 
                 <ScrollView>
                     <View style={{height: height}}>
-                        <Text style={styles.titleStyle}>对接结果反馈</Text>
+                        <Text style={{   color: Color.colorPrimary,marginTop:16,marginLeft:16}}>对接结果反馈</Text>
                         <TextInput style={styles.textInput}
                                    multiline={true}
                                    placeholder="在此输入"
@@ -140,7 +140,7 @@ const styles = StyleSheet.create(
         },
         textInput: {
             width: width - 32,
-            height: 75,
+            height: 55,
             marginLeft: 10,
             marginRight: 10,
             borderColor: Color.line,
