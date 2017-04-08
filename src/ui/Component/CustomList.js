@@ -77,7 +77,7 @@ class CustomList extends Component {
 
     _onLoad() {
         //console.log('_load');
-        if (this.state.items.length >= 10) {
+        if (this.state.items.length >= 10&&!this.state.isEndUp) {
             this.setState({
                 //  isRefreshing: true,
                 page: this.state.page + 1

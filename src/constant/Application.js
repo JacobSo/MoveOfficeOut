@@ -35,7 +35,7 @@ export  default  class Application extends Component {
         this.department = department;
         this.workType = workType;
         this.check = check;
-        console.log("---" + session + "---" + account + "---" + department + "---" + workType)
+        console.log("---" + session + "---" + account + "---" + department + "---" + workType);
         AsyncStorage.multiSet([['session', check ? session : ''], ['account', check ? account : ''], ['department', check ? department : ''],
             ['workType', check ? workType : ''], ['check', check?'1':'0']])
             .then(() => {

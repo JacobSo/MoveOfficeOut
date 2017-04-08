@@ -20,12 +20,12 @@ export default class MainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            floatButtonVisible: true
+            floatButtonVisible: App.workType !== '数据专员'&&App.workType !== '助理'&&App.workType!=='项目专员管理人'
         }
     }
 
     componentDidMount() {
-        this._bindPush();
+      // this._bindPush();
     }
 
     _bindPush() {
@@ -51,8 +51,7 @@ export default class MainPager extends Component {
                         tabBarActiveTextColor='white'
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white',}}
-                        onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }
-                    >
+                        onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
                         <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav}/>
                         <CustomList tabLabel='审核与评分' type="1,3" nav={this.props.nav}/>
                     </ScrollableTabView>)

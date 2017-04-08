@@ -73,7 +73,7 @@ class WorkPager extends Component {
                     {
                         text: '确定', onPress: () => {
                         this.setState({isLoading: true});
-                        ApiService.createWork(this.state.date, this.state.isNeedCar, this.state.carType, this.state.carMember, this.state.remarkStr, JSON.stringify(this.state.items))
+                        ApiService.createWork(this.state.date, this.state.isNeedCar,  this.state.isNeedCar?this.state.carType:'', this.state.carMember, this.state.remarkStr, JSON.stringify(this.state.items))
                             .then((responseJson) => {
                                 this.setState({isLoading: false});
                                 if (!responseJson.IsErr) {
