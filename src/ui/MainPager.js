@@ -16,23 +16,53 @@ import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
+import codePush from "react-native-code-push";
+
 export default class MainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            floatButtonVisible: App.workType !== '数据专员'&&App.workType !== '助理'&&App.workType!=='项目专员管理人'
+            floatButtonVisible: App.workType !== '数据专员' && App.workType !== '助理' && App.workType !== '项目专员管理人'
         }
     }
 
     componentDidMount() {
-      // this._bindPush();
+        // this._bindPush();
+        codePush.sync();
     }
+
+
 
     _bindPush() {
         if (Platform.OS === 'ios')
             IosModule.bindPushAccount(App.account);
         else
             AndroidModule.bindPushAccount(App.account);
+    }
+
+    sync() {
+        CodePush.sync();
+
+    }
+
+    /** Update pops a confirmation dialog, and then immediately reboots the app */
+
+    syncImmediate() {
+        CodePush.sync(
+            {
+                installMode: CodePush.InstallMode.IMMEDIATE,//启动模式三种：ON_NEXT_RESUME、ON_NEXT_RESTART、IMMEDIATE
+                updateDialog: {
+                    appendReleaseDescription: true,//是否显示更新description，默认为false
+                    descriptionPrefix: "更新内容：",//更新说明的前缀。 默认是” Description:
+                    mandatoryContinueButtonLabel: "立即更新",//强制更新的按钮文字，默认为continue
+                    mandatoryUpdateMessage: "",//- 强制更新时，更新通知. Defaults to “An update is available that must be installed.”.
+                    optionalIgnoreButtonLabel: '稍后',//非强制更新时，取消按钮文字,默认是ignore
+                    optionalInstallButtonLabel: '后台更新',//非强制更新时，确认文字. Defaults to “Install”
+                    optionalUpdateMessage: '有新版本了，是否更新？',//非强制更新时，更新通知. Defaults to “An update is available. Would you like to install it?”.
+                    title: '更新提示'//要显示的更新通知的标题. Defaults to “Update available”.
+                },
+            },
+        );
     }
 
     _get() {
@@ -112,4 +142,4 @@ export default class MainPager extends Component {
     }
 }
 
-
+MainPager = codePush(MainPager);

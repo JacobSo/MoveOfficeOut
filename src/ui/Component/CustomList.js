@@ -44,7 +44,7 @@ class CustomList extends Component {
     };
 
     componentWillReceiveProps(newProps) {
-    //    console.log(JSON.stringify(newProps) + '-------------------------')
+        //    console.log(JSON.stringify(newProps) + '-------------------------')
         InteractionManager.runAfterInteractions(() => {
             if (newProps.refreshList)
                 this._onRefresh()
@@ -60,14 +60,16 @@ class CustomList extends Component {
     }
 
     _onRefresh() {
-      //  console.log('_refresh');
-        this.state.page = 1;
-        this.state.isRefreshing = true;
+        //  console.log('_refresh');
+        this.setState({
+            page: 1,
+            isRefreshing: true
+        });
         ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
             //  console.log(responseJson);
-            this.state.items = responseJson.list;
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                items: responseJson.list,
+                dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
                 isRefreshing: false,
                 isEndUp: responseJson.list.length === 0
             });
@@ -77,7 +79,7 @@ class CustomList extends Component {
 
     _onLoad() {
         //console.log('_load');
-        if (this.state.items.length >= 10&&!this.state.isEndUp) {
+        if (this.state.items.length >= 10 && !this.state.isEndUp) {
             this.setState({
                 //  isRefreshing: true,
                 page: this.state.page + 1
@@ -99,7 +101,6 @@ class CustomList extends Component {
     }
 
     render() {
-
         if (this.state.items.length === 0) {
             return (
                 <ScrollView
@@ -139,11 +140,11 @@ class CustomList extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={ (rowData, rowID, sectionID) => <MainItem key={sectionID} task={rowData} func={() => {
-                            this.props.actions.refreshList(false);
-                            this.props.nav.navigate(
-                                'detail',
-                                {task: rowData,},
-                            );
+                        this.props.actions.refreshList(false);
+                        this.props.nav.navigate(
+                            'detail',
+                            {task: rowData,},
+                        );
                     }}/>
                     }/>)
         }
@@ -176,7 +177,7 @@ const styles = StyleSheet.create(
     });
 
 const mapStateToProps = (state) => {
- //   console.log(JSON.stringify(state));
+    //   console.log(JSON.stringify(state));
 
     return {
         refreshList: state.mainStore.refreshList

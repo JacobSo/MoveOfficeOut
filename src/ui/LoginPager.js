@@ -21,7 +21,7 @@ import ApiService from '../network/ApiService';
 import Color from '../constant/Color';
 import App from '../constant/Application';
 import {NavigationActions,} from 'react-navigation';
-import CheckBox from "react-native-check-box";
+import CheckBox from "../ui/Component/CheckBox";
 
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');

@@ -8,10 +8,12 @@ import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.facebook.react.ReactApplication;
+
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.microsoft.codepush.react.CodePush;
 import com.moveofficeout.react.ReactModulePackage;
 import com.pgyersdk.crash.PgyCrashManager;
 
@@ -27,6 +29,12 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
         @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
@@ -36,6 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new CodePush("h6osdCgokeQ3JHV73bVaP222Cbk-NJYO7qa3M", getApplicationContext(), BuildConfig.DEBUG),
                     new ReactModulePackage()
             );
         }
