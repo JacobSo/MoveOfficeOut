@@ -19,10 +19,13 @@ import { Provider } from 'react-redux';
 import store from './stores/Store'
 import {StackNavigator,} from 'react-navigation';
 import {Platform, Navigator, BackAndroid, Dimensions, Text, View, StatusBar} from 'react-native';
+import codePush from 'react-native-code-push'
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
+    console.log("screen1");
+    codePush.sync();
     return (
         <Provider store={store}>
         <View

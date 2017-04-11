@@ -30,14 +30,14 @@ export default class InputDialog extends Component {
                 <View style={styles.layoutContainer}>
 
                     <Text style={styles.titleStyle}>{this.props.str[0]}</Text>
-<View style={styles.borderBottomLine}>
-                    <TextInput style={styles.textInput}
-                               placeholder={this.props.str[1]}
-                               returnKeyType={'done'}
-                               blurOnSubmit={true}
-                               underlineColorAndroid="transparent"
-                               onChangeText={this.props.action[1]}/>
-</View>
+                    <View style={styles.borderBottomLine}>
+                        <TextInput style={styles.textInput}
+                                   placeholder={this.props.str[1]}
+                                   returnKeyType={'done'}
+                                   blurOnSubmit={true}
+                                   underlineColorAndroid="transparent"
+                                   onChangeText={this.props.action[1]}/>
+                    </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={this.props.action[2]}>
                             <Text style={{margin: 16}}>取消</Text>
@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0
     },
-    borderBottomLine:{
-        borderBottomWidth:1,
-        borderBottomColor:Color.line,
-        borderBottomLeftRadius:16,
-        borderBottomRightRadius:16,
+    borderBottomLine: {
+        borderBottomWidth: 1,
+        borderBottomColor: Color.line,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
     }
 });

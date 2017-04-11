@@ -6,8 +6,10 @@ import React, {Component} from 'react';
 import {
     View,
     ScrollView,
-    Alert,
+    Alert, Dimensions,
     Platform,
+    Text,
+    StyleSheet
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -16,6 +18,9 @@ import App from '../constant/Application';
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
 import {NavigationActions} from "react-navigation";
+import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
+const {width, height} = Dimensions.get('window');
+
 export default class PreferencesPager extends Component {
 
     constructor(props) {
@@ -27,7 +32,9 @@ export default class PreferencesPager extends Component {
 
     _getVersion() {
         if (Platform.OS === 'ios') {
-            IosModule.getVersionName((str) => {this.setState({version: str})})
+            IosModule.getVersionName((str) => {
+                this.setState({version: str})
+            })
         } else {
             AndroidModule.getVersionName((str) => this.setState({version: str}));
         }
@@ -55,7 +62,8 @@ export default class PreferencesPager extends Component {
                             items={[
                                 [App.account, App.department + '-' + App.workType],
                                 ['修改密码', '点击修改密码'],
-                                ['检查更新', '当前版本：' + this.state.version]
+                                ['检查更新', '当前版本：' + this.state.version],
+                                ['此版本更新记录', "v12"]
                             ]}
                             functions={[
                                 () => {
@@ -71,7 +79,7 @@ export default class PreferencesPager extends Component {
                                                 text: '确定', onPress: () => {
                                                 if (Platform.OS === 'ios')
                                                     IosModule.unbindPushAccount('');
-                                                 else
+                                                else
                                                     AndroidModule.unbindPushAccount();
 
                                                 App.saveAccount('', '', '', '', false);
@@ -89,16 +97,58 @@ export default class PreferencesPager extends Component {
                                 },
                                 () => this.props.nav.navigate('password'),
                                 () => {
-                                    if (Platform.OS === 'ios'){
+                                    if (Platform.OS === 'ios') {
                                         IosModule.checkUpdate('');
-                                    }else{
+                                    } else {
                                         AndroidModule.checkUpdate();
                                     }
+                                },
+                                () => {
+                                    this.popupDialog.show();
                                 }]}/>
 
                     </View>
                 </ScrollView>
+
+                <PopupDialog
+                    ref={(popupDialog) => {
+                        this.popupDialog = popupDialog;
+                    }}
+                    width={width - 32}
+                    height={200}>
+                    <View style={styles.layoutContainer}>
+                        <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
+                        <ScrollView>
+                            <Text style={styles.contentStyle}>
+                                v11:测试更新第11版
+                            </Text>
+                            <Text style={styles.contentStyle}>
+                                v12:测试强制更新
+                            </Text>
+                        </ScrollView>
+                    </View>
+                </PopupDialog>
             </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    layoutContainer: {
+        width: width - 32,
+        flexDirection: 'column',
+        height: 200,
+        backgroundColor: 'white'
+    },
+
+    titleStyle: {
+        fontSize: 18,
+        marginLeft: 16,
+        marginTop: 16,
+        color: Color.black_semi_transparent
+    },
+
+    contentStyle: {
+        marginLeft: 16,
+        marginTop: 16,
+    },
+});

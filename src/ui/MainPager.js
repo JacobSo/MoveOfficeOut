@@ -16,7 +16,6 @@ import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
-import codePush from "react-native-code-push";
 
 export default class MainPager extends Component {
     constructor(props) {
@@ -28,7 +27,6 @@ export default class MainPager extends Component {
 
     componentDidMount() {
         // this._bindPush();
-        codePush.sync();
     }
 
 
@@ -142,4 +140,3 @@ export default class MainPager extends Component {
     }
 }
 
-MainPager = codePush(MainPager);
