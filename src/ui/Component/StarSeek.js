@@ -6,8 +6,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import Color from "../../constant/Color"
+import {View,  TouchableOpacity, Image,  } from 'react-native';
 export default class StarSeek extends Component {
     static propTypes = {
         onSelect: PropTypes.func.isRequired,//

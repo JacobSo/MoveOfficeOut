@@ -7,12 +7,9 @@ import {
     View,
     StyleSheet,
     ScrollView,
-    Button,
     Text,
     Image,
     TouchableOpacity,
-    TextInput,
-    Switch,
     ListView
 } from 'react-native';
 import Color from '../constant/Color';
@@ -23,7 +20,6 @@ import Moment from 'moment';
 import DatePicker from '../ui/Component/DatePicker';
 import ApiService from "../network/ApiService";
 import {MainItem} from "./Component/MainItem";
-import StarSeek from "./Component/StarSeek";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class SearchPager extends Component {

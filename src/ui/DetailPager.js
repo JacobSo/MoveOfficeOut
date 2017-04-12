@@ -5,22 +5,17 @@
 import React, {Component, PropTypes} from 'react';
 import {
     View,
-    StyleSheet,
     ScrollView,
     ListView,
     Text,
     Image,
     InteractionManager,
-    TextInput,
     Alert
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Moment from 'moment';
-import DatePicker from '../ui/Component/DatePicker';
 import ApiService from '../network/ApiService';
-import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
 import  App from '../constant/Application'
 import Toast from 'react-native-root-toast';
 import Loading from 'react-native-loading-spinner-overlay';

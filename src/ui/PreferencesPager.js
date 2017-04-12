@@ -120,7 +120,7 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                                v11:测试更新第11版
+                                v11:测试更新第11版测试更新第11版测试更新第11版测试更新第11版测试更新第11版
                             </Text>
                             <Text style={styles.contentStyle}>
                                 v12:测试强制更新
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginLeft: 16,
         marginTop: 16,
+        marginBottom:16,
         color: Color.black_semi_transparent
     },
 
     contentStyle: {
-        marginLeft: 16,
-        marginTop: 16,
+        margin: 16,
     },
 });

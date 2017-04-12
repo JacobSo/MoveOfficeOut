@@ -6,7 +6,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet, ToastAndroid} from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet,} from 'react-native';
 import Color from "../../constant/Color"
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');

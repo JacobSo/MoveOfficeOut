@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Alert, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 
 const {width, height} = Dimensions.get('window');
@@ -58,7 +58,7 @@ export class WorkItem extends Component {
 
                     </View>
                     <View style={styles.line}/>
-                    <View style={{flexDirection: 'row', width: width -48, justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', width: width - 48, justifyContent: 'space-between'}}>
                         <View style={{flexDirection: 'column',}}>
                             <Text style={{marginBottom: 16,}}>系列</Text>
                             <Text style={{marginBottom: 16}}>供应商</Text>
@@ -67,7 +67,7 @@ export class WorkItem extends Component {
                         <View style={{flexDirection: 'column',}}>
                             <Text style={{marginBottom: 16, textAlign: 'right'}}>{this.props.work.Series}</Text>
                             <Text style={{marginBottom: 16, textAlign: 'right'}}>{this.props.work.SupplierName}</Text>
-                            <Text style={{textAlign: 'right',width:200}}>{this.props.work.WorkContent}</Text>
+                            <Text style={{textAlign: 'right', width: 200}}>{this.props.work.WorkContent}</Text>
                         </View>
                     </View>
 

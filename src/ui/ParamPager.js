@@ -17,7 +17,6 @@ import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import ApiService from '../network/ApiService';
-import CheckBox from 'react-native-check-box';
 import InputDialog from "./Component/InputDialog";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');

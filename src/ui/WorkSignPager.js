@@ -5,17 +5,15 @@
 import React, {Component} from 'react';
 import {
     View,
-    KeyboardAvoidingView,
     Text,
     StyleSheet,
-    InteractionManager, TextInput, ScrollView,
+     TextInput,
+    ScrollView,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
-import App from '../constant/Application';
 import ApiService from '../network/ApiService';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');

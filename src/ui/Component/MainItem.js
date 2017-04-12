@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Alert, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
+import {View,  Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
 import Color from '../../constant/Color';
 
 const {width, height} = Dimensions.get('window');

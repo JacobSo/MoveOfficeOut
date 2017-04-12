@@ -6,7 +6,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet, ToastAndroid,TouchableWithoutFeedback} from 'react-native';
+import {View,  Image, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import Color from "../../constant/Color"
 export default class FloatButton extends Component {
     static propTypes = {

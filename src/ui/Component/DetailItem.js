@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Alert, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
+import {View,  Text, StyleSheet, Dimensions,  TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import App from '../../constant/Application'
 const {width, height} = Dimensions.get('window');
