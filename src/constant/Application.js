@@ -11,6 +11,8 @@ export  default  class Application extends Component {
     static department;
     static check;
 
+
+
     static initAccount(callback) {
         AsyncStorage.getAllKeys((err, keys) => {
             AsyncStorage.multiGet(keys, (err, stores) => {

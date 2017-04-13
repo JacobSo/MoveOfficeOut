@@ -101,7 +101,6 @@ export default class LoginPager extends Component {
         return (
             <KeyboardAvoidingView behavior={'padding'}>
                 <ScrollView>
-
                     <View style={styles.container}>
                         <View style={{width: width, alignItems: 'flex-start'}}>
                             <Image style={styles.logo}

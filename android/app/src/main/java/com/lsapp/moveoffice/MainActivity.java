@@ -1,7 +1,6 @@
-package com.moveofficeout;
+package com.lsapp.moveoffice;
 
 import com.facebook.react.ReactActivity;
-import com.microsoft.codepush.react.CodePush;
 
 public class MainActivity extends ReactActivity {
 

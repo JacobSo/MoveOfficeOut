@@ -51,13 +51,13 @@ const {width, height} = Dimensions.get('window');
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+     //   InteractionManager.runAfterInteractions(() => {
         //    console.log('----------detail componentDidMount-----------------');
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
             });
 
-        });
+     //   });
 
     }
 

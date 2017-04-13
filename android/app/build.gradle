@@ -20,8 +20,8 @@ android {
         applicationId "com.lsapp.moveoffice.out"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 7
+        versionName "2.0.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
             abiFilters 'armeabi', 'x86'
@@ -45,11 +45,11 @@ android {
     }
     buildTypes {
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", '"'+properties.getProperty("code_push_key_production")+'"'
+            buildConfigField "String", "CODEPUSH_KEY", '"'+properties.getProperty("code_push_key_staging")+'"'
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
-            buildConfigField "String", "CODEPUSH_KEY", '"'+properties.getProperty("code_push_key_staging")+'"'
+            buildConfigField "String", "CODEPUSH_KEY", '"'+properties.getProperty("code_push_key_production")+'"'
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
         }
