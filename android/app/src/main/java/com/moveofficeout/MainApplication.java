@@ -44,10 +44,12 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new CodePush("h6osdCgokeQ3JHV73bVaP222Cbk-NJYO7qa3M", getApplicationContext(), BuildConfig.DEBUG),
+            new CodePush("4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M", getApplicationContext(), BuildConfig.DEBUG),
                     new ReactModulePackage()
             );
         }
+        //product: 4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M
+        //stage:h6osdCgokeQ3JHV73bVaP222Cbk-NJYO7qa3M
     };
 
     @Override

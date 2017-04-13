@@ -25,7 +25,7 @@ export default class PasswordPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+         //   isLoading: false,
             editContent: '',
             items: [],
             dataSource: new ListView.DataSource({
@@ -35,13 +35,13 @@ export default class PasswordPager extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+       // InteractionManager.runAfterInteractions(() => {
             this._getData();
-        });
+   //     });
     }
 
     _getData() {
-        this.setState({isLoading: true});
+     //   this.setState({isLoading: true});
         InteractionManager.runAfterInteractions(() => {
             if (this.props.type === 2) {
                 ApiService.getCarList()
@@ -52,7 +52,7 @@ export default class PasswordPager extends Component {
                             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                         });
                     })
-                    .done(this.setState({isLoading: false}))
+                    .done()
             } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
@@ -62,7 +62,7 @@ export default class PasswordPager extends Component {
                             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                         });
                     })
-                    .done(this.setState({isLoading: false}))
+                    .done()
             }
 
         });
@@ -70,7 +70,7 @@ export default class PasswordPager extends Component {
 
     _setSelect(rowData) {
         if (this.props.type === 2) {//car
-            this.setState({isLoading: true});
+        //    this.setState({isLoading: true});
             ApiService.addCar(this.props.searchKey, rowData)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {
@@ -167,7 +167,7 @@ export default class PasswordPager extends Component {
                     }/>
 
 
-                <Loading visible={this.state.isLoading}/>
+              {/*  <Loading visible={this.state.isLoading}/>*/}
                 {this._editDialog()}
             </View>
         )

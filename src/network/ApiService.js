@@ -4,8 +4,12 @@
 'use strict';
 import React, {Component} from 'react';
 //let BASE_URL = 'http://192.168.1.190:8806/outapply/';
-let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
+let BASE_URL = 'http://119.145.166.182:8806/outapply/';
+//let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
+import {NetInfo,} from 'react-native';
+
+import Toast from 'react-native-root-toast';
 
 export  default  class ApiService extends Component {
 
@@ -25,9 +29,17 @@ export  default  class ApiService extends Component {
                 return response;
             })
             .then((response) => response.json())
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.log(error);
+                NetInfo.fetch().done((status) => {
+                    console.log('Status:' + status);
+                    if (status === 'NONE')
+                        Toast.show("没有网络");
+                    else
+                        Toast.show("出错了，请稍后再试");
+                });
+            });
     }
-
 
     static loginFuc(name, pwd) {
         let method = 'User/ToLogin';

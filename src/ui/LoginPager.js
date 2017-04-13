@@ -12,7 +12,9 @@ import {
     TextInput,
     InteractionManager,
     TouchableOpacity,
-    KeyboardAvoidingView, ScrollView,
+    KeyboardAvoidingView,
+    ScrollView,
+    NetInfo,
 } from 'react-native';
 
 import Loading from 'react-native-loading-spinner-overlay';
@@ -30,8 +32,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            account: '张发',
-            pwd: '123',
+            account: '',
+            pwd: '',
             isLoading: false,
             check: false,
         };
@@ -40,6 +42,7 @@ export default class LoginPager extends Component {
 
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
+
         InteractionManager.runAfterInteractions(() => {
             this._autoLogin()
         });
@@ -65,6 +68,7 @@ export default class LoginPager extends Component {
     }
 
     _login() {
+
         if (this.state.account.length === 0 || this.state.pwd.length === 0) {
             Toast.show("信息不能为空");
             return
@@ -72,22 +76,25 @@ export default class LoginPager extends Component {
         this.setState({isLoading: true});
         ApiService.loginFuc(this.state.account, this.state.pwd)
             .then((responseJson) => {
-                //  console.log(responseJson);
+                if (undefined !== responseJson) {
+                    console.log(responseJson);
+                    if (!responseJson.IsErr) {
+                        //  Toast.show('登录成功');
+                        App.saveAccount(
+                            App.session = responseJson.uniqueIdentifier,
+                            App.account = responseJson.UserName,
+                            App.department = responseJson.DptName,
+                            App.workType = responseJson.WorkType,
+                            this.state.check);
 
-                if (!responseJson.IsErr) {
-                    //  Toast.show('登录成功');
-                    App.saveAccount(
-                        App.session = responseJson.uniqueIdentifier,
-                        App.account = responseJson.UserName,
-                        App.department = responseJson.DptName,
-                        App.workType = responseJson.WorkType,
-                        this.state.check);
-
-                    this._toMain();
-                } else {
-                    Toast.show(responseJson.ErrDesc, {});
+                        this._toMain();
+                    } else {
+                        Toast.show(responseJson.ErrDesc, {});
+                    }
                 }
-            }).done(this.setState({isLoading: false}));
+
+            })
+            .done(this.setState({isLoading: false}));
     }
 
     render() {
@@ -109,24 +116,24 @@ export default class LoginPager extends Component {
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
 
                             <View style={styles.borderBottomLine}>
-                            <TextInput style={styles.textInput}
-                                       placeholder="请输入登录账号"
-                                       returnKeyType={'done'}
-                                       blurOnSubmit={true}
-                                       clearButtonMode={'always'}
-                                       underlineColorAndroid="transparent"
-                                       onChangeText={(text) => this.setState({account: text})}/></View>
+                                <TextInput style={styles.textInput}
+                                           placeholder="请输入登录账号"
+                                           returnKeyType={'done'}
+                                           blurOnSubmit={true}
+                                           clearButtonMode={'always'}
+                                           underlineColorAndroid="transparent"
+                                           onChangeText={(text) => this.setState({account: text})}/></View>
                             <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
 
                             <View style={styles.borderBottomLine}>
-                            <TextInput style={styles.textInput}
-                                       placeholder="请输入密码"
-                                       secureTextEntry={true}
-                                       returnKeyType={'done'}
-                                       underlineColorAndroid="transparent"
-                                       blurOnSubmit={true}
-                                       clearButtonMode={'always'}
-                                       onChangeText={(text) => this.setState({pwd: text})}/>
+                                <TextInput style={styles.textInput}
+                                           placeholder="请输入密码"
+                                           secureTextEntry={true}
+                                           returnKeyType={'done'}
+                                           underlineColorAndroid="transparent"
+                                           blurOnSubmit={true}
+                                           clearButtonMode={'always'}
+                                           onChangeText={(text) => this.setState({pwd: text})}/>
 
                             </View>
                             <CheckBox
@@ -142,7 +149,9 @@ export default class LoginPager extends Component {
                             <TouchableOpacity onPress={() => this._login(this.state.account, this.state.pwd)}>
                                 <View style={styles.button}>
                                     <Text style={{color: 'white'}}>登录</Text>
-                                </View></TouchableOpacity></View>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                         <Loading visible={this.state.isLoading}/>
                     </View>
                 </ScrollView>
@@ -185,14 +194,14 @@ const styles = StyleSheet.create({
         height: 65,
         marginLeft: 10,
         marginRight: 10,
-        padding:0,
-        borderBottomWidth:1,
-        borderBottomColor:Color.line
+        padding: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: Color.line
     },
-    borderBottomLine:{
-        borderBottomWidth:1,
-        borderBottomColor:Color.line,
-        borderBottomLeftRadius:16,
-        borderBottomRightRadius:16,
+    borderBottomLine: {
+        borderBottomWidth: 1,
+        borderBottomColor: Color.line,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
     }
 });

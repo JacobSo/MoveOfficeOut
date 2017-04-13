@@ -109,7 +109,7 @@ export default class MainPager extends Component {
             }}>
 
                 <Toolbar
-                    elevation={0}
+                    elevation={3}
                     title={[App.account, App.department + '-' + App.workType]}
                     color={Color.colorPrimary}
                     isHomeUp={false}

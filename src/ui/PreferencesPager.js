@@ -63,7 +63,7 @@ export default class PreferencesPager extends Component {
                                 [App.account, App.department + '-' + App.workType],
                                 ['修改密码', '点击修改密码'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v18"]
+                                ['此版本更新记录', "v1"]
                             ]}
                             functions={[
                                 () => {
@@ -120,29 +120,9 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                                v11:测试更新第11版测试更新第11版测试更新第11版测试更新第11版测试更新第11版
+                               v1:初始版本
                             </Text>
-                            <Text style={styles.contentStyle}>
-                                v12:测试强制更新
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v13:ios测试更新
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v14:ios测试更新2
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v15:ios测试更新3
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v16:ios测试更新4
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v17:ios测试更新5
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v18:ios测试更新6
-                            </Text>
+
                         </ScrollView>
                     </View>
                 </PopupDialog>

@@ -14,7 +14,7 @@ import {
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import CheckBox from 'react-native-check-box';
+import CheckBox from '../ui/Component/CheckBox';
 import Toast from 'react-native-root-toast';
 
 const Dimensions = require('Dimensions');
