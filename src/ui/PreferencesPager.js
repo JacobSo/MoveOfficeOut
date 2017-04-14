@@ -120,7 +120,7 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                               v1:初始版本
+                               v1:初始版本...
                             </Text>
 
                         </ScrollView>

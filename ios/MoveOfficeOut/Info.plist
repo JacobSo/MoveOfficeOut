@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>MoveOfficeOut</string>
+	<string>外协工作记录</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,7 +23,7 @@
 	<key>CFBundleVersion</key>
 	<string>6</string>
 	<key>CodePushDeploymentKey</key>
-	<string>_HekqENH3XVXYkXM1C9WiNprQw4-NJYO7qa3M</string>
+	<string>h2WsmpSbwlyipEeTGUSm2SbdAN-0NJYO7qa3M</string>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
