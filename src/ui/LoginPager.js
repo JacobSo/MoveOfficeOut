@@ -14,7 +14,6 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     ScrollView,
-    NetInfo,
 } from 'react-native';
 
 import Loading from 'react-native-loading-spinner-overlay';
@@ -29,9 +28,10 @@ const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
 export default class LoginPager extends Component {
+    //构造方法
     constructor(props) {
-        super(props);
-        this.state = {
+        super(props);//父组件传递的属性
+        this.state = {//本页面的状态
             account: '',
             pwd: '',
             isLoading: false,
@@ -39,7 +39,7 @@ export default class LoginPager extends Component {
         };
     }
 
-
+//组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
 
@@ -48,7 +48,7 @@ export default class LoginPager extends Component {
         });
 
     }
-
+//导航器-页面跳转
     _toMain() {
         const resetAction = NavigationActions.reset({
             index: 0,
@@ -58,7 +58,7 @@ export default class LoginPager extends Component {
         });
         this.props.nav.dispatch(resetAction)
     }
-
+//自动登录判断
     _autoLogin() {
         App.initAccount(() => {
             if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== '') {
@@ -66,9 +66,8 @@ export default class LoginPager extends Component {
             }
         });
     }
-
+//登录请求
     _login() {
-
         if (this.state.account.length === 0 || this.state.pwd.length === 0) {
             Toast.show("信息不能为空");
             return
@@ -96,24 +95,24 @@ export default class LoginPager extends Component {
             })
             .done(this.setState({isLoading: false}));
     }
-
+//渲染（生命周期）
     render() {
         return (
             <KeyboardAvoidingView behavior={'padding'}>
                 <ScrollView>
                     <View style={styles.container}>
-                        <View style={{width: width, alignItems: 'flex-start'}}>
+                        <View style={{width: width,}}>
                             <Image style={styles.logo}
-                                   source={require('../drawable/logo_white.png')}/></View>
+                                   source={require('../drawable/logo_white.png')}/>
+                        </View>
+
                         <Text style={styles.welcome}>外协工作记录</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
-                        <Text style={{width: width, textAlign: 'center', color: 'white', fontSize: 18, margin: 16}}>
-                            登录
-                        </Text>
+                        <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
 
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
-                            <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10}}>账号</Text>
 
+                            <Text style={styles.textTitle}>账号</Text>
                             <View style={styles.borderBottomLine}>
                                 <TextInput style={styles.textInput}
                                            placeholder="请输入登录账号"
@@ -122,8 +121,8 @@ export default class LoginPager extends Component {
                                            clearButtonMode={'always'}
                                            underlineColorAndroid="transparent"
                                            onChangeText={(text) => this.setState({account: text})}/></View>
-                            <Text style={{color: Color.colorPrimary, marginLeft: 10, marginTop: 10,}}>密码</Text>
 
+                            <Text style={styles.textTitle}>密码</Text>
                             <View style={styles.borderBottomLine}>
                                 <TextInput style={styles.textInput}
                                            placeholder="请输入密码"
@@ -135,6 +134,7 @@ export default class LoginPager extends Component {
                                            onChangeText={(text) => this.setState({pwd: text})}/>
 
                             </View>
+
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={this.state.check}
@@ -142,9 +142,6 @@ export default class LoginPager extends Component {
                                 rightText={'自动登录'}/>
 
 
-                        </View>
-
-                        <View style={{backgroundColor: 'white', padding: 16}}>
                             <TouchableOpacity onPress={() => this._login(this.state.account, this.state.pwd)}>
                                 <View style={styles.button}>
                                     <Text style={{color: 'white'}}>登录</Text>
@@ -158,25 +155,22 @@ export default class LoginPager extends Component {
         );
     }
 }
-
+//样式
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: Color.colorPrimary,
-        justifyContent: 'flex-start',
         height: height,
     },
     logo: {
         width: 100,
         height: 45,
-        margin: 16
+        margin: 16,
     },
 
     welcome: {
-        width: width,
         fontSize: 25,
-        textAlign: 'center',
         margin: 10,
         color: 'white'
     },
@@ -184,8 +178,15 @@ const styles = StyleSheet.create({
         width: width - 44,
         height: 55,
         backgroundColor: Color.colorPrimary,
+        margin:16,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    textTitle: {
+        color: Color.colorPrimary,
+        marginLeft: 10,
+        marginTop: 10,
     },
 
     textInput: {
