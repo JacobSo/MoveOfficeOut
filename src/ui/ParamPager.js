@@ -53,21 +53,26 @@ export default class PasswordPager extends Component {
             if (this.props.type === 2) {
                 ApiService.getCarList()
                     .then((responseJson) => {
-                        // console.log(responseJson);
-                        this.state.items = responseJson.list;
-                        this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-                        });
+                         console.log(responseJson);
+                        if (!responseJson.IsErr) {
+                            this.state.items = responseJson.list;
+                            this.setState({
+                                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                            });
+                        }else Toast.show(responseJson.ErrDesc)
+
                     })
                     .done(this.setState({isLoading: false}))
             } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
-                        //   console.log(responseJson);
-                        this.state.items = responseJson.list;
-                        this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-                        });
+                           console.log(responseJson);
+                        if (!responseJson.IsErr) {
+                            this.state.items = responseJson.list;
+                            this.setState({
+                                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                            });
+                        }else Toast.show(responseJson.ErrDesc)
                     })
                     .done(this.setState({isLoading: false}))
 
@@ -221,9 +226,13 @@ export default class PasswordPager extends Component {
                                         enableEmptySections={true}
                                         renderRow={ (rowData, sectionID, rowID) =>
                                             <TouchableOpacity onPress={() => {
-                                                this.state.selectItems.splice(rowID, 1);
+                                                console.log(sectionID+','+rowID);
+                                                let temp = JSON.parse(JSON.stringify(this.state.selectItems));
+                                                temp.splice(rowID, 1);
+                                                console.log(JSON.stringify(this.state.selectItems));
                                                 this.setState({
-                                                    selectDataSource: this.state.selectDataSource.cloneWithRows(this.state.selectItems),
+                                                    selectDataSource: this.state.selectDataSource.cloneWithRows(temp),
+                                                    selectItems:temp
                                                 });
                                             }}>
                                                 <Text style={{padding: 20}}>{rowData}</Text>
