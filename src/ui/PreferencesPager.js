@@ -27,9 +27,14 @@ export default class PreferencesPager extends Component {
         super(props);
         this.state = {
             version: this._getVersion(),
+            department:''
         };
     }
-
+    componentDidMount() {
+        let array='';
+        App.dptList.map((x,index)=>{array = array+App.dptList[index].dptname+'，'});
+        this.setState({department:array.substring(0,array.length-1)})
+    }
     _getVersion() {
         if (Platform.OS === 'ios') {
             IosModule.getVersionName((str) => {
@@ -60,10 +65,10 @@ export default class PreferencesPager extends Component {
                         <PreferencesTextItem
                             group="常规"
                             items={[
-                                [App.account, App.department + '-' + App.workType],
+                                [App.account, '注销登录'],
+                                [App.workType,this.state.department],
                                 ['修改密码', '点击修改密码'],
-                                ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v1"]
+
                             ]}
                             functions={[
                                 () => {
@@ -95,7 +100,16 @@ export default class PreferencesPager extends Component {
                                         ]
                                     )
                                 },
+                                ()=>{},
                                 () => this.props.nav.navigate('password'),
+                            ]}/>
+                        <PreferencesTextItem
+                            group="应用"
+                            items={[
+                                ['检查更新', '当前版本：' + this.state.version],
+                                ['此版本更新记录', "v1"]
+                            ]}
+                            functions={[
                                 () => {
                                     if (Platform.OS === 'ios') {
                                         IosModule.checkUpdate('');
@@ -106,7 +120,6 @@ export default class PreferencesPager extends Component {
                                 () => {
                                     this.popupDialog.show();
                                 }]}/>
-
                     </View>
                 </ScrollView>
 
@@ -120,7 +133,7 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                               v1:初始版本...
+                                v1:初始版本...
                             </Text>
 
                         </ScrollView>
@@ -142,7 +155,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginLeft: 16,
         marginTop: 16,
-        marginBottom:16,
+        marginBottom: 16,
         color: Color.black_semi_transparent
     },
 

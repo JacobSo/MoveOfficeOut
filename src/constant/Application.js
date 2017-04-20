@@ -10,7 +10,7 @@ export  default  class Application extends Component {
     static workType;
     static department;
     static check;
-
+    static dptList;
 
 
     static initAccount(callback) {
@@ -25,21 +25,23 @@ export  default  class Application extends Component {
                     if (key === "account") this.account = value;
                     if (key === "workType") this.workType = value;
                     if (key === "department") this.department = value;
-                    if (key === "check") this.check = value==='1';
+                    if (key === "check") this.check = value === '1';
+                    if (key === "dptList") this.dptList = value;
                 });
             }).then(callback).done();
         });
     }
 
-    static saveAccount(session, account, department, workType, check) {
+    static saveAccount(session, account, department, workType, check, dptList) {
         this.session = session;
         this.account = account;
         this.department = department;
         this.workType = workType;
         this.check = check;
+        this.dptList = dptList;
         console.log("---" + session + "---" + account + "---" + department + "---" + workType);
         AsyncStorage.multiSet([['session', check ? session : ''], ['account', check ? account : ''], ['department', check ? department : ''],
-            ['workType', check ? workType : ''], ['check', check?'1':'0']])
+            ['workType', check ? workType : ''], ['check', check ? '1' : '0'], ['dptList', check ? dptList : '']])
             .then(() => {
                     console.log("save success!");
                 },

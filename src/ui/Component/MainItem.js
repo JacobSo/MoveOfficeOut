@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View,  Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
 import Color from '../../constant/Color';
 
 const {width, height} = Dimensions.get('window');
@@ -28,6 +28,7 @@ export class MainItem extends Component {
     };
 
     render() {
+     //   console.log(JSON.stringify(this.props.task));
         return (
             <TouchableWithoutFeedback
                 onPress={ this.props.func}>
@@ -41,7 +42,10 @@ export class MainItem extends Component {
                         <Text style={{marginLeft: -16}}>{this.props.task.DailyRecordStateName}</Text>
                         <View style={styles.line}/>
                     </View>
-
+                    <View style={styles.textStyle}>
+                        <Text >部门：</Text>
+                        <Text >{this.props.task.DptName}</Text>
+                    </View>
                     <View style={styles.textStyle}>
                         <Text >申请日期</Text>
                         <Text >{this.props.task.CreateDate}</Text>
@@ -58,6 +62,7 @@ export class MainItem extends Component {
                         <Text >申请人</Text>
                         <Text >{this.props.task.Creator}</Text>
                     </View>
+
                 </View></TouchableWithoutFeedback>
         );
     }

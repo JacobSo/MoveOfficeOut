@@ -14,7 +14,7 @@ properties.load( inputStream )
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.lsapp.moveoffice.out"
@@ -81,7 +81,7 @@ android {
 
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
+    compile "com.android.support:appcompat-v7:23.4.0"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.aliyun.ams:alicloud-android-push:3.0.1@aar'
     compile 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
