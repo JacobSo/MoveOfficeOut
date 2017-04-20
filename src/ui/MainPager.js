@@ -29,16 +29,12 @@ export default class MainPager extends Component {
          this._bindPush();
     }
 
-
-
     _bindPush() {
         if (Platform.OS === 'ios')
             IosModule.bindPushAccount(App.account);
         else
             AndroidModule.bindPushAccount(App.account);
     }
-
-
 
     _get() {
         if (App.workType === '数据专员') {
@@ -87,7 +83,7 @@ export default class MainPager extends Component {
 
                 <Toolbar
                     elevation={0}
-                    title={[App.account, App.department + '-' + App.workType]}
+                    title={[App.account, App.workType]}
                     color={Color.colorPrimary}
                     isHomeUp={false}
                     isAction={true}

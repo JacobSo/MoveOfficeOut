@@ -4,8 +4,8 @@
 'use strict';
 import React, {Component} from 'react';
 //let BASE_URL = 'http://192.168.1.190:8806/outapply/';
-let BASE_URL = 'http://119.145.166.182:8806/outapply/';
-//let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
+//let BASE_URL = 'http://119.145.166.182:8806/outapply/';
+let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
 import {NetInfo,} from 'react-native';
 
@@ -100,7 +100,7 @@ export  default  class ApiService extends Component {
 
     }
 
-    static createWork(date, isCar, catSrc, member, remark, work) {
+    static createWork(date, isCar, catSrc, member, remark, work,dpt) {
         let method = 'DailyRecord/CreateDailyRecord';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
@@ -110,7 +110,8 @@ export  default  class ApiService extends Component {
             CarType: catSrc,
             FollowPeson: member,
             Remark: remark,
-            listWorkDetail: work
+            listWorkDetail: work,
+            Dptid:dpt,
         });
 
         return this._request(method, param);

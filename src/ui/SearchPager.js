@@ -207,7 +207,8 @@ export default class SearchPager extends Component {
                                     searchKey: this.state.series,//if key
                                     setSelect: (select) => {
                                         this.setState({supply: select})
-                                    }
+                                    },
+                                    isMulti:false,
                                 },
                             );
                         }}>
@@ -239,7 +240,8 @@ export default class SearchPager extends Component {
                                     searchKey: this.state.supply,//if key
                                     setSelect: (select) => {
                                         this.setState({series: select})
-                                    }
+                                    },
+                                    isMulti:false,
                                 },
                             );
                         }}>

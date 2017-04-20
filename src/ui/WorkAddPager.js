@@ -130,7 +130,8 @@ export default class PasswordPager extends Component {
                                         searchKey: this.state.Series,//if key
                                         setSelect: (select) => {
                                             this.setState({SupplierName: select})
-                                        }
+                                        },
+                                        isMulti:true,
                                     },
                                 );
                             }}
@@ -147,7 +148,8 @@ export default class PasswordPager extends Component {
                                         searchKey: this.state.SupplierName,//if key
                                         setSelect: (select) => {
                                             this.setState({Series: select})
-                                        }
+                                        },
+                                        isMulti:true,
                                     },
                                 );
                             }}>

@@ -25,44 +25,52 @@ export default class PasswordPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-         //   isLoading: false,
+            isMulti: this.props.isMulti,
+            isLoading: false,
             editContent: '',
             items: [],
             dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+
+            selectItems: [],
+            selectDataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
         }
     }
 
     componentDidMount() {
-       // InteractionManager.runAfterInteractions(() => {
-            this._getData();
-   //     });
+        // InteractionManager.runAfterInteractions(() => {
+        this._getData();
+        //     });
     }
 
+
     _getData() {
-     //   this.setState({isLoading: true});
+        this.setState({isLoading: true});
         InteractionManager.runAfterInteractions(() => {
             if (this.props.type === 2) {
                 ApiService.getCarList()
                     .then((responseJson) => {
-                       // console.log(responseJson);
+                        // console.log(responseJson);
                         this.state.items = responseJson.list;
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                         });
                     })
-                    .done()
+                    .done(this.setState({isLoading: false}))
             } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
-                     //   console.log(responseJson);
+                        //   console.log(responseJson);
                         this.state.items = responseJson.list;
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                         });
                     })
-                    .done()
+                    .done(this.setState({isLoading: false}))
+
             }
 
         });
@@ -70,7 +78,6 @@ export default class PasswordPager extends Component {
 
     _setSelect(rowData) {
         if (this.props.type === 2) {//car
-        //    this.setState({isLoading: true});
             ApiService.addCar(this.props.searchKey, rowData)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {
@@ -85,10 +92,25 @@ export default class PasswordPager extends Component {
         }
     }
 
+    _addSelect(rowData) {
+        let isExist = false;
+        this.state.selectItems.map((x, index) => {
+            if (this.state.selectItems[index] === rowData) {
+                isExist = true;
+            }
+        });
+        console.log(JSON.stringify(this.state.selectItems));
+        if (!isExist) {
+            this.state.selectItems.push(rowData);
+            this.setState({
+                selectDataSource: this.state.selectDataSource.cloneWithRows(this.state.selectItems),
+            });
+        }
+    }
+
     async  _search(text) {
         return this.state.items.filter((item) => item.toLowerCase().indexOf(text.toLowerCase()) > -1);
     }
-
 
     _editDialog() {
         return (
@@ -106,8 +128,13 @@ export default class PasswordPager extends Component {
                     },
                     () => {
                         if (this.state.editContent) {
-                            this._setSelect(this.state.editContent)
-                            this.popupDialog.dismiss();
+                            if (this.state.isMulti) {
+                                this._addSelect(this.state.editContent);
+                                this.popupDialog.dismiss();
+                            } else {
+                                this._setSelect(this.state.editContent);
+                                this.popupDialog.dismiss();
+                            }
 
                         } else {
                             Toast.show('未填写内容')
@@ -119,7 +146,6 @@ export default class PasswordPager extends Component {
 
     render() {
         return (
-
             <View style={{
                 flex: 1,
                 backgroundColor: 'white'
@@ -131,43 +157,85 @@ export default class PasswordPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={['填写']}
+                         actionArray={['填写',this.state.isMulti?'完成':null]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
                              },
                              () => {
                                  this.popupDialog.show();
-                             }
+                             },
+                             this.state.isMulti?()=>{
+                             this._setSelect(this.state.selectItems.toString())
+                             }:null
                          ]}/>
                 <View style={styles.borderBottomLine}>
-                <TextInput style={styles.textInput}
-                           placeholder="搜索"
-                           returnKeyType={'done'}
-                           blurOnSubmit={true}
-                           underlineColorAndroid="transparent"
-                           onChangeText={(text) => {
-                               this._search(text).then((array) => {
-                            //       console.log(array);
-                                   this.setState({
-                                       dataSource: this.state.dataSource.cloneWithRows(array),
-                                   });
-                               })
-                           }}/></View>
-                <ListView
-                    style={{marginBottom:25}}
-                    dataSource={this.state.dataSource}
-                    enableEmptySections={true}
-                    renderRow={ (rowData) =>
-                        <TouchableOpacity onPress={() => {
-                            this._setSelect(rowData);
-                        }}>
-                            <Text style={{padding: 20}}>{rowData}</Text>
-                        </TouchableOpacity>
-                    }/>
+                    <TextInput style={styles.textInput}
+                               placeholder="搜索"
+                               returnKeyType={'done'}
+                               blurOnSubmit={true}
+                               underlineColorAndroid="transparent"
+                               onChangeText={(text) => {
+                                   this._search(text).then((array) => {
+                                       //       console.log(array);
+                                       this.setState({
+                                           dataSource: this.state.dataSource.cloneWithRows(array),
+                                       });
+                                   })
+                               }}/></View>
+                {
+                    (() => {
+                        if (this.state.isMulti)
+                            return (
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{flex: 1, margin: 16, color: Color.colorPrimary}}>全部</Text>
+                                    <Text style={{flex: 1, padding: 16, color: Color.colorPrimary}}>选中</Text>
+                                </View>
+                            );
+                        else return null;
+                    })()
+                }
 
+                <View style={{flexDirection: 'row'}}>
+                    <ListView
+                        style={{marginBottom: 25, flex: 1}}
+                        dataSource={this.state.dataSource}
+                        enableEmptySections={true}
+                        renderRow={ (rowData, sectionID, rowID) =>
+                            <TouchableOpacity onPress={() => {
+                                if (this.state.isMulti) {
+                                    this._addSelect(rowData);
+                                } else
+                                    this._setSelect(rowData);
+                            }}>
+                                <Text style={{padding: 20}}>{rowData}</Text>
+                            </TouchableOpacity>
+                        }/>
+                    {
+                        (() => {
+                            if (this.state.isMulti)
+                                return (
+                                    <ListView
+                                        style={{marginBottom: 25, flex: 1}}
+                                        dataSource={this.state.selectDataSource}
+                                        enableEmptySections={true}
+                                        renderRow={ (rowData, sectionID, rowID) =>
+                                            <TouchableOpacity onPress={() => {
+                                                this.state.selectItems.splice(rowID, 1);
+                                                this.setState({
+                                                    selectDataSource: this.state.selectDataSource.cloneWithRows(this.state.selectItems),
+                                                });
+                                            }}>
+                                                <Text style={{padding: 20}}>{rowData}</Text>
+                                            </TouchableOpacity>
+                                        }/>
+                                );
+                            else return null;
+                        })()
+                    }
 
-              {/*  <Loading visible={this.state.isLoading}/>*/}
+                </View>
+                <Loading visible={this.state.isLoading}/>
                 {this._editDialog()}
             </View>
         )
@@ -182,10 +250,10 @@ const styles = StyleSheet.create({
         borderColor: Color.line,
         borderBottomWidth: 1,
     },
-    borderBottomLine:{
-        borderBottomWidth:1,
-        borderBottomColor:Color.line,
-        borderBottomLeftRadius:16,
-        borderBottomRightRadius:16,
+    borderBottomLine: {
+        borderBottomWidth: 1,
+        borderBottomColor: Color.line,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
     }
 });

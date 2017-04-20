@@ -32,8 +32,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',
-            pwd: '',
+            account: '张发',
+            pwd: '123',
             isLoading: false,
             check: false,
         };
@@ -42,12 +42,12 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-
         InteractionManager.runAfterInteractions(() => {
             this._autoLogin()
         });
 
     }
+
 //导航器-页面跳转
     _toMain() {
         const resetAction = NavigationActions.reset({
@@ -58,14 +58,16 @@ export default class LoginPager extends Component {
         });
         this.props.nav.dispatch(resetAction)
     }
+
 //自动登录判断
     _autoLogin() {
         App.initAccount(() => {
-            if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== '') {
+            if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== ''&&App.dptList) {
                 this._toMain();
             }
         });
     }
+
 //登录请求
     _login() {
         if (this.state.account.length === 0 || this.state.pwd.length === 0) {
@@ -84,17 +86,18 @@ export default class LoginPager extends Component {
                             App.account = responseJson.UserName,
                             App.department = responseJson.DptName,
                             App.workType = responseJson.WorkType,
-                            this.state.check);
+                            this.state.check,
+                            App.dptList = responseJson.Dptlist);
 
                         this._toMain();
                     } else {
                         Toast.show(responseJson.ErrDesc, {});
                     }
                 }
-
             })
             .done(this.setState({isLoading: false}));
     }
+
 //渲染（生命周期）
     render() {
         return (
@@ -149,7 +152,9 @@ export default class LoginPager extends Component {
                             </TouchableOpacity>
                         </View>
                         <Loading visible={this.state.isLoading}/>
+
                     </View>
+
                 </ScrollView>
             </KeyboardAvoidingView>
         );
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
         width: width - 44,
         height: 55,
         backgroundColor: Color.colorPrimary,
-        margin:16,
+        margin: 16,
         alignItems: 'center',
         justifyContent: 'center'
     },
