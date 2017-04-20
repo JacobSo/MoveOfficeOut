@@ -178,10 +178,10 @@ class WorkPager extends Component {
             });
             //  console.log(JSON.stringify(dataArray));
             return (
-                <View style={{height: 50 * dataArray.length,}}>
+                <View style={{height: 65 * dataArray.length,}}>
                     <RadioForm
                         buttonColor={Color.colorAccent}
-                        labelStyle={{color: 'white',}}
+                        labelStyle={{color: 'white',margin:16}}
                         radio_props={dataArray}
                         initial={this.state.departmentPosition}
                         onPress={(value) => {
@@ -192,7 +192,7 @@ class WorkPager extends Component {
                                 departmentPosition: value,
                             });
                         }}
-                        style={{marginTop: 16, right: 25, position: 'absolute',}}
+                        style={{marginTop: 16, right: 0, position: 'absolute',}}
                     />
                 </View>)
         }
