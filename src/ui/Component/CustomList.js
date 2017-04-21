@@ -67,12 +67,14 @@ class CustomList extends Component {
         });
         ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
             //  console.log(responseJson);
-            this.setState({
-                items: responseJson.list,
-                dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
-                isRefreshing: false,
-                isEndUp: responseJson.list.length === 0
-            });
+            if (!responseJson.IsErr) {
+                this.setState({
+                    items: responseJson.list,
+                    dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
+                    isRefreshing: false,
+                    isEndUp: responseJson.list.length === 0
+                });
+            }else Toast.show(responseJson.ErrDesc);
             this.props.actions.refreshList(false);
         }).done()
     }
@@ -86,15 +88,17 @@ class CustomList extends Component {
             });
             ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
                 // console.log(responseJson);
-                this.state.items = this.state.items.concat(responseJson.list);
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-                    isRefreshing: false,
-                    isEndUp: responseJson.list.length === 0
-                });
-                if (this.state.isEndUp) {
-                    Toast.show('已经没有了', {});
-                }
+                if (!responseJson.IsErr) {
+                    this.state.items = this.state.items.concat(responseJson.list);
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                        isRefreshing: false,
+                        isEndUp: responseJson.list.length === 0
+                    });
+                    if (this.state.isEndUp) {
+                        Toast.show('已经没有了', {});
+                    }
+                }else Toast.show(responseJson.ErrDesc);
                 this.props.actions.refreshList(false);
             }).done()
         }

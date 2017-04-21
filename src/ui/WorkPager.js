@@ -46,13 +46,19 @@ class WorkPager extends Component {
             carType: '公司车辆',//defaulcdt value
             carMember: '',
             remarkStr: '',
-            departmentName: '',
-            departmentId: '',
+            departmentName: (App.dptList?App.dptList[0].dptname:''),
+            departmentId: (App.dptList?App.dptList[0].dptid:''),
             departmentPosition: 0,
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
+
+
+            /*                      this.setState({
+             departmentId: App.dptList[0].dptid,
+             departmentName: App.dptList[0].dptname
+             });*/
         };
     }
 
@@ -62,7 +68,7 @@ class WorkPager extends Component {
             Toast.show('请添加工作');
         } else if (this.state.date === '') {
             Toast.show('请选择对接时间');
-        }else if(this.state.departmentId===''){
+        } else if (this.state.departmentId === '') {
             Toast.show('请选择部门');
         } else {
             Alert.alert(
@@ -181,7 +187,7 @@ class WorkPager extends Component {
                 <View style={{height: 55 * dataArray.length,}}>
                     <RadioForm
                         buttonColor={Color.colorAccent}
-                        labelStyle={{color: 'white',margin:10}}
+                        labelStyle={{color: 'white', margin: 10}}
                         radio_props={dataArray}
                         initial={this.state.departmentPosition}
                         onPress={(value) => {
@@ -259,13 +265,6 @@ class WorkPager extends Component {
                                                         </View>
                                                     </TouchableOpacity>
                                                 )
-                                            } else {
-                                                this.setState({
-                                                    departmentId: App.dptList[0].dptid,
-                                                    departmentName: App.dptList[0].dptname
-                                                });
-                                                return null;
-
                                             }
                                         })()
                                     }
