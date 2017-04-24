@@ -141,7 +141,7 @@ export default class PreferencesPager extends Component {
                                 v1:初始版本...
                             </Text>
                             <Text style={styles.contentStyle}>
-                                v2:新增多部门归属，创建工作可以多选系列与供应商
+                                v2(debug):新增多部门归属，创建工作可以多选系列与供应商
                             </Text>
                         </ScrollView>
                     </View>
