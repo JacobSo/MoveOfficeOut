@@ -42,9 +42,9 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-        InteractionManager.runAfterInteractions(() => {
+    /*    InteractionManager.runAfterInteractions(() => {
             this._autoLogin()
-        });
+        });*/
 
     }
 
@@ -78,7 +78,7 @@ export default class LoginPager extends Component {
         ApiService.loginFuc(this.state.account, this.state.pwd)
             .then((responseJson) => {
                 if (undefined !== responseJson) {
-                    console.log(responseJson);
+                  //  console.log(responseJson);
                     if (!responseJson.IsErr) {
                         //  Toast.show('登录成功');
                         App.saveAccount(

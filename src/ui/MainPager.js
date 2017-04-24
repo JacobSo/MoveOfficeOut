@@ -27,6 +27,7 @@ export default class MainPager extends Component {
 
     componentDidMount() {
          this._bindPush();
+      //  App.initAccount(()=>{})
     }
 
     _bindPush() {
