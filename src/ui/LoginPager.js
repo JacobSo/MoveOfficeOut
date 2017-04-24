@@ -62,7 +62,7 @@ export default class LoginPager extends Component {
 //自动登录判断
     _autoLogin() {
         App.initAccount(() => {
-            if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== ''&&App.dptList) {
+            if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== '' && App.dptList) {
                 this._toMain();
             }
         });
@@ -135,7 +135,6 @@ export default class LoginPager extends Component {
                                            blurOnSubmit={true}
                                            clearButtonMode={'always'}
                                            onChangeText={(text) => this.setState({pwd: text})}/>
-
                             </View>
 
                             <CheckBox

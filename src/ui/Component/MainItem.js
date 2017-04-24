@@ -43,7 +43,7 @@ export class MainItem extends Component {
                         <View style={styles.line}/>
                     </View>
                     <View style={styles.textStyle}>
-                        <Text >部门：</Text>
+                        <Text >提交组别</Text>
                         <Text >{this.props.task.DptName}</Text>
                     </View>
                     <View style={styles.textStyle}>

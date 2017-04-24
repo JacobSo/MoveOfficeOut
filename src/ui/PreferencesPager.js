@@ -27,14 +27,18 @@ export default class PreferencesPager extends Component {
         super(props);
         this.state = {
             version: this._getVersion(),
-            department:''
+            department: ''
         };
     }
+
     componentDidMount() {
-        let array='';
-        App.dptList.map((x,index)=>{array = array+App.dptList[index].dptname+'，'});
-        this.setState({department:array.substring(0,array.length-1)})
+        let array = '';
+        App.dptList.map((x, index) => {
+            array = array + App.dptList[index].dptname + '，'
+        });
+        this.setState({department: array.substring(0, array.length - 1)})
     }
+
     _getVersion() {
         if (Platform.OS === 'ios') {
             IosModule.getVersionName((str) => {
@@ -60,13 +64,13 @@ export default class PreferencesPager extends Component {
                          isActionByText={false}
                          actionArray={[]}
                          functionArray={[() => this.props.nav.goBack(null)]}/>
-                <ScrollView  >
+                <ScrollView>
                     <View>
                         <PreferencesTextItem
                             group="常规"
                             items={[
                                 [App.account, '注销登录'],
-                                [App.workType,this.state.department],
+                                [App.workType, this.state.department],
                                 ['修改密码', '点击修改密码'],
 
                             ]}
@@ -100,7 +104,8 @@ export default class PreferencesPager extends Component {
                                         ]
                                     )
                                 },
-                                ()=>{},
+                                () => {
+                                },
                                 () => this.props.nav.navigate('password'),
                             ]}/>
                         <PreferencesTextItem
