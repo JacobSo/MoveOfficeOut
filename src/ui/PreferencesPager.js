@@ -113,7 +113,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v2"]
+                                ['此版本更新记录', "v3"]
                             ]}
                             functions={[
                                 () => {
@@ -143,6 +143,9 @@ export default class PreferencesPager extends Component {
                             </Text>
                             <Text style={styles.contentStyle}>
                                 v2(debug):新增多部门归属，创建工作可以多选系列与供应商
+                            </Text>
+                            <Text style={styles.contentStyle}>
+                                v3:修复v2自动登录bug
                             </Text>
                         </ScrollView>
                     </View>
