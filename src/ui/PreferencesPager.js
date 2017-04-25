@@ -32,6 +32,7 @@ export default class PreferencesPager extends Component {
     }
 
     componentDidMount() {
+        console.log(JSON.stringify(App.dptList));
         let array = '';
         App.dptList.map((x, index) => {
             array = array + App.dptList[index].dptname + '，'

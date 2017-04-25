@@ -26,7 +26,7 @@ export  default  class Application extends Component {
                     if (key === "workType") this.workType = value;
                     if (key === "department") this.department = value;
                     if (key === "check") this.check = value === '1';
-                    if (key === "dptList") this.dptList = value;
+                    if (key === "dptList"&&value) this.dptList = JSON.parse(value);
                 });
             }).then(callback).done();
         });
@@ -39,9 +39,9 @@ export  default  class Application extends Component {
         this.workType = workType;
         this.check = check;
         this.dptList = dptList;
-        console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+dptList);
+        console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+JSON.stringify(dptList));
         AsyncStorage.multiSet([['session', check ? session : ''], ['account', check ? account : ''], ['department', check ? department : ''],
-            ['workType', check ? workType : ''], ['check', check ? '1' : '0'], ['dptList', check ? dptList+'' : '']])
+            ['workType', check ? workType : ''], ['check', check ? '1' : '0'], ['dptList', check ? JSON.stringify(dptList)+'' : '']])
             .then(() => {
                    console.log("save success!");
                 },
