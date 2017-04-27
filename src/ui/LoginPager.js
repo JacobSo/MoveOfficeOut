@@ -107,8 +107,8 @@ export default class LoginPager extends Component {
                         <View style={{width: width,}}>
                             <Image style={styles.logo}
                                    source={require('../drawable/logo_white.png')}/>
-                        </View>
 
+                        </View>
                         <Text style={styles.welcome}>外协工作记录</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
                         <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
@@ -150,10 +150,12 @@ export default class LoginPager extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
+                        <Text style={{color:'white',right:0,width:width-16}}>版本：2.0.0_v4</Text>
+
+
                         <Loading visible={this.state.isLoading}/>
 
                     </View>
-
                 </ScrollView>
             </KeyboardAvoidingView>
         );
