@@ -150,7 +150,6 @@ export default class LoginPager extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{color:'white',right:0,width:width-16}}>版本：2.0.0_v4</Text>
 
 
                         <Loading visible={this.state.isLoading}/>
