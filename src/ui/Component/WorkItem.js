@@ -65,8 +65,8 @@ export class WorkItem extends Component {
                             <Text style={{}}>对接内容</Text>
                         </View>
                         <View style={{flexDirection: 'column',}}>
-                            <Text style={{marginBottom: 16, textAlign: 'right'}}>{this.props.work.Series}</Text>
-                            <Text style={{marginBottom: 16, textAlign: 'right'}}>{this.props.work.SupplierName}</Text>
+                            <Text style={{marginBottom: 16, textAlign: 'right', width: 200}}>{this.props.work.Series}</Text>
+                            <Text style={{marginBottom: 16, textAlign: 'right', width: 200}}>{this.props.work.SupplierName}</Text>
                             <Text style={{textAlign: 'right', width: 200}}>{this.props.work.WorkContent}</Text>
                         </View>
                     </View>
