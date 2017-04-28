@@ -139,7 +139,11 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                                v4:修复创建工作多系列供应商时的显示问题
+                                v4:{'\n'}
+                                1.修复创建工作多系列供应商时的显示问题{'\n'}
+                                2.修复加载重复问题{'\n'}
+                                3.修复刷新与加载最后一页的混淆问题{'\n'}
+                                4.主页列表添加滚动动顶部/刷新按钮{'\n'}
                             </Text>
                             <Text style={styles.contentStyle}>
                                 v3:修复v2自动登录bug

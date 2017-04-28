@@ -12,7 +12,9 @@ import {
     StyleSheet,
     Text,
     RefreshControl,
-    InteractionManager, ScrollView,
+    InteractionManager,
+    ScrollView,
+    Dimensions, TouchableWithoutFeedback, TouchableOpacity,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
@@ -21,6 +23,7 @@ import Color from '../../constant/Color';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {mainActions} from "../../actions/MainAction";
+const {width, height} = Dimensions.get('window');
 
 class CustomList extends Component {
 
@@ -33,7 +36,8 @@ class CustomList extends Component {
             }),
             page: 1,
             isRefreshing: true,
-            isEndUp: false
+            isEndUp: false,
+            isTopTips: false,
         };
 
     }
@@ -62,9 +66,11 @@ class CustomList extends Component {
     _onRefresh() {
         //  console.log('_refresh');
         this.setState({
-            page: 1,
-            isRefreshing: true
+
+            isRefreshing: true,
+            isTopTips:false,
         });
+        this.state.page = 1;
         ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
             //  console.log(responseJson);
             if (!responseJson.IsErr) {
@@ -74,7 +80,7 @@ class CustomList extends Component {
                     isRefreshing: false,
                     isEndUp: responseJson.list.length === 0
                 });
-            }else Toast.show(responseJson.ErrDesc);
+            } else Toast.show(responseJson.ErrDesc);
             this.props.actions.refreshList(false);
         }).done()
     }
@@ -82,10 +88,11 @@ class CustomList extends Component {
     _onLoad() {
         //console.log('_load');
         if (this.state.items.length >= 10 && !this.state.isEndUp) {
-            this.setState({
-                //  isRefreshing: true,
-                page: this.state.page + 1
-            });
+            /*            this.setState({
+             //  isRefreshing: true,
+             page: this.state.page + 1
+             });*/
+            this.state.page = this.state.page + 1;
             ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
                 // console.log(responseJson);
                 if (!responseJson.IsErr) {
@@ -93,12 +100,14 @@ class CustomList extends Component {
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                         isRefreshing: false,
-                        isEndUp: responseJson.list.length === 0
+                        isEndUp: responseJson.list.length === 0,
+                        isTopTips:true,
                     });
                     if (this.state.isEndUp) {
                         Toast.show('已经没有了', {});
                     }
-                }else Toast.show(responseJson.ErrDesc);
+
+                } else Toast.show(responseJson.ErrDesc);
                 this.props.actions.refreshList(false);
             }).done()
         }
@@ -125,43 +134,84 @@ class CustomList extends Component {
             );
         } else {
             return (
-                <ListView
-                    style={styles.tabView}
-                    dataSource={this.state.dataSource}
-                    //  pageSize={2}
-                    onEndReached={() => {
-                        this._onLoad()
-                    }}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="Loading..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />}
-                    enableEmptySections={true}
-                    renderRow={ (rowData, rowID, sectionID) => <MainItem key={sectionID} task={rowData} func={() => {
-                        this.props.actions.refreshList(false);
-                        this.props.nav.navigate(
-                            'detail',
-                            {task: rowData,},
-                        );
-                    }}/>
-                    }/>)
+                <View style={{flex: 1, alignItems: 'center'}}>
+
+                    <ListView
+                        ref="scrollView"
+                        style={styles.tabView}
+                        dataSource={this.state.dataSource}
+                        //  pageSize={2}
+                        onEndReached={() => {
+                            this._onLoad()
+                        }}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={() => this._onRefresh()}
+                                tintColor={Color.colorBlueGrey}//ios
+                                title="刷新中..."//ios
+                                titleColor='white'
+                                colors={[Color.colorPrimary]}
+                                progressBackgroundColor="white"
+                            />}
+                        enableEmptySections={true}
+                        renderRow={ (rowData, rowID, sectionID) =>
+                            <MainItem key={sectionID} task={rowData}
+                                      func={() => {
+                                          this.props.actions.refreshList(false);
+                                          this.props.nav.navigate(
+                                              'detail',
+                                              {task: rowData,},
+                                          );
+                                      }}/>
+                        }/>
+                    {
+                        (() => {
+                            if (this.state.isTopTips) {
+                                return (
+                                    <TouchableOpacity
+                                        style={{
+                                            flex: 1,
+                                            width: 100,
+                                            height: 35,
+                                            left: width / 2 - 50,
+                                            top: 0,
+                                            position: 'absolute',
+                                            elevation: 5,
+                                            marginTop: 16,
+                                            backgroundColor: Color.colorPrimary_semi_transparent,
+                                            borderRadius: 50,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+
+                                        onPress={() => {
+                                            this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
+
+                                            this._onRefresh()
+                                        }}
+
+                                    >
+                                        <Text
+                                            style={{
+                                                color: 'white',
+                                            }}>返回顶部
+                                        </Text>
+                                    </TouchableOpacity>
+                                );
+                            }
+                        })()
+
+                    }
+
+                </View>)
         }
-
     }
-
-
 }
 
 const styles = StyleSheet.create(
     {
         tabView: {
-            flex: 1,
             backgroundColor: Color.trans,
         },
         card: {

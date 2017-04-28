@@ -26,8 +26,8 @@ export default class MainPager extends Component {
     }
 
     componentDidMount() {
-         this._bindPush();
-      //  App.initAccount(()=>{})
+        this._bindPush();
+        //  App.initAccount(()=>{})
     }
 
     _bindPush() {
@@ -56,7 +56,8 @@ export default class MainPager extends Component {
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
                         <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav}/>
                         <CustomList tabLabel='审核与评分' type="1,3" nav={this.props.nav}/>
-                    </ScrollableTabView>)
+                    </ScrollableTabView>
+                )
             } else {
                 return (
                     <ScrollableTabView
