@@ -66,8 +66,7 @@ class CustomList extends Component {
     _onRefresh() {
         //  console.log('_refresh');
         this.setState({
-
-            isRefreshing: true,
+            isRefreshing: !this.state.isTopTips,
             isTopTips:false,
         });
         this.state.page = 1;
@@ -186,7 +185,8 @@ class CustomList extends Component {
                                         }}
 
                                         onPress={() => {
-                                            this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
+
+                                                this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
 
                                             this._onRefresh()
                                         }}
@@ -213,6 +213,7 @@ const styles = StyleSheet.create(
     {
         tabView: {
             backgroundColor: Color.trans,
+            width:width
         },
         card: {
             borderWidth: 1,
