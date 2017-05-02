@@ -142,6 +142,7 @@ class CustomList extends Component {
                         style={styles.tabView}
                         dataSource={this.state.dataSource}
                         //  pageSize={2}
+                        onChangeVisibleRows={(visibleRows, changedRows)=>{console.log('visibleRows:'+visibleRows+',changedRows:'+changedRows)}}
                         onEndReached={
                             () => {
                                 this._onLoad()
