@@ -67,7 +67,7 @@ class CustomList extends Component {
         //  console.log('_refresh');
         this.setState({
             isRefreshing: !this.state.isTopTips,
-            isTopTips:false,
+            isTopTips: false,
         });
         this.state.page = 1;
         ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
@@ -100,7 +100,7 @@ class CustomList extends Component {
                         dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                         isRefreshing: false,
                         isEndUp: responseJson.list.length === 0,
-                        isTopTips:true,
+                        isTopTips: true,
                     });
                     if (this.state.isEndUp) {
                         Toast.show('已经没有了', {});
@@ -125,7 +125,9 @@ class CustomList extends Component {
                             titleColor='white'
                             colors={[Color.colorPrimary]}
                             progressBackgroundColor="white"
-                        />}>
+                        />
+                    }
+                >
                     <View
                         style={styles.card}>
                         <Text>没有数据</Text>
@@ -140,9 +142,11 @@ class CustomList extends Component {
                         style={styles.tabView}
                         dataSource={this.state.dataSource}
                         //  pageSize={2}
-                        onEndReached={() => {
-                            this._onLoad()
-                        }}
+                        onEndReached={
+                            () => {
+                                this._onLoad()
+                            }
+                        }
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -169,42 +173,21 @@ class CustomList extends Component {
                             if (this.state.isTopTips) {
                                 return (
                                     <TouchableOpacity
-                                        style={{
-                                            flex: 1,
-                                            width: 100,
-                                            height: 35,
-                                            left: width / 2 - 50,
-                                            top: 0,
-                                            position: 'absolute',
-                                            elevation: 5,
-                                            marginTop: 16,
-                                            backgroundColor: Color.colorPrimary_semi_transparent,
-                                            borderRadius: 50,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}
-
-                                        onPress={() => {
-
+                                        style={styles.topButton}
+                                        onPress={
+                                            () => {
                                                 this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
-
-                                            this._onRefresh()
-                                        }}
-
-                                    >
-                                        <Text
-                                            style={{
-                                                color: 'white',
-                                            }}>返回顶部
-                                        </Text>
+                                                this._onRefresh()
+                                            }
+                                        }>
+                                        <Text style={{color: 'white',}}>返回顶部</Text>
                                     </TouchableOpacity>
                                 );
                             }
                         })()
-
                     }
-
-                </View>)
+                </View>
+            )
         }
     }
 }
@@ -213,7 +196,7 @@ const styles = StyleSheet.create(
     {
         tabView: {
             backgroundColor: Color.trans,
-            width:width
+            width: width
         },
         card: {
             borderWidth: 1,
@@ -229,11 +212,23 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             elevation: 2
         },
+        topButton: {
+            flex: 1,
+            width: 100,
+            height: 35,
+            left: width / 2 - 50,
+            top: 0,
+            position: 'absolute',
+            elevation: 5,
+            marginTop: 16,
+            backgroundColor: Color.colorPrimary_semi_transparent,
+            borderRadius: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+        }
     });
 
 const mapStateToProps = (state) => {
-    //   console.log(JSON.stringify(state));
-
     return {
         refreshList: state.mainStore.refreshList
     }
