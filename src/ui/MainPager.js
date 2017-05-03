@@ -58,7 +58,7 @@ export default class MainPager extends Component {
                         <CustomList tabLabel='审核与评分' type="1,3" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
-            } else {
+            } else {//板木驻场工程师
                 return (
                     <ScrollableTabView
                         initialPage={0}
