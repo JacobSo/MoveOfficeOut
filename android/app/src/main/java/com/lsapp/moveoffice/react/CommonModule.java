@@ -94,6 +94,11 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
 
+    @ReactMethod
+    public void getShareUser(Callback callback) {
+        callback.invoke(MainApplication.get(getCurrentActivity()).getShareUser(),
+                MainApplication.get(getCurrentActivity()).getSharePwd());
+    }
 
     @ReactMethod
     public void show() {

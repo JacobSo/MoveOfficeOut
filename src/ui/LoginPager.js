@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     ScrollView,
+    Platform,
 } from 'react-native';
 
 import Loading from 'react-native-loading-spinner-overlay';
@@ -23,7 +24,8 @@ import Color from '../constant/Color';
 import App from '../constant/Application';
 import {NavigationActions,} from 'react-navigation';
 import CheckBox from "../ui/Component/CheckBox";
-
+import AndroidModule from '../module/AndoridCommontModule'
+import IosModule from '../module/IosCommontModule'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -43,17 +45,17 @@ export default class LoginPager extends Component {
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
         InteractionManager.runAfterInteractions(() => {
-            this._autoLogin()
+            this._shareLogin();
         });
 
     }
 
 //导航器-页面跳转
-    _toMain() {
+    _launchPager(page) {
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-                NavigationActions.navigate({routeName: 'main'})
+                NavigationActions.navigate({routeName: page})
             ]
         });
         this.props.nav.dispatch(resetAction)
@@ -63,9 +65,33 @@ export default class LoginPager extends Component {
     _autoLogin() {
         App.initAccount(() => {
             if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== '' && App.dptList) {
-                this._toMain();
+                this._launchPager("main");
             }
         });
+    }
+
+    _shareLogin() {
+        if (Platform.OS === 'android') {
+            AndroidModule.getShareUser((user, pwd) => {
+                if (App.session && App.account && user === App.account) {
+                    this._launchPager("work");
+                } else if (user && pwd) {
+                    App.isShare = true;
+
+                    this.state.account = user;
+                    this.state.pwd = pwd;
+                    this.state.check = true;
+                    this._login();
+                } else {
+                    this._autoLogin();
+                }
+                //    Toast.show(user+":"+pwd)
+            });
+        }else{
+
+        }
+
+
     }
 
 //登录请求
@@ -78,7 +104,7 @@ export default class LoginPager extends Component {
         ApiService.loginFuc(this.state.account, this.state.pwd)
             .then((responseJson) => {
                 if (undefined !== responseJson) {
-                  //  console.log(responseJson);
+                    //  console.log(responseJson);
                     if (!responseJson.IsErr) {
                         //  Toast.show('登录成功');
                         App.saveAccount(
@@ -88,18 +114,21 @@ export default class LoginPager extends Component {
                             App.workType = responseJson.WorkType,
                             this.state.check,
                             App.dptList = responseJson.Dptlist);
-
-                        this._toMain();
+                        if (App.isShare)
+                            this._launchPager("work");
+                        else
+                            this._launchPager("main");
                     } else {
                         Toast.show(responseJson.ErrDesc, {});
                     }
                 }
             })
-            .done(this.setState({isLoading: false}));
+        //  .done(this.setState({isLoading: false}));
     }
 
 //渲染（生命周期）
     render() {
+        console.log("login:render");
         return (
             <KeyboardAvoidingView behavior={'padding'}>
                 <ScrollView>
@@ -107,7 +136,6 @@ export default class LoginPager extends Component {
                         <View style={{width: width,}}>
                             <Image style={styles.logo}
                                    source={require('../drawable/logo_white.png')}/>
-
                         </View>
                         <Text style={styles.welcome}>外协工作记录</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
@@ -157,6 +185,7 @@ export default class LoginPager extends Component {
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
+
         );
     }
 }

@@ -20,12 +20,11 @@ import store from './stores/Store'
 import {StackNavigator,} from 'react-navigation';
 import {Platform, Dimensions, View, StatusBar} from 'react-native';
 import codePush from 'react-native-code-push'
-import App from "./constant/Application";
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
-    console.log("screen1");
+  //  console.log("screen1");
     codePush.sync();
     return (
         <Provider store={store}>

@@ -23,6 +23,8 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
     private final static String TAG = "MainApplication";
     private CloudPushService pushService;
+    private String shareUser = null;
+    private String sharePwd = null;
 
     public static MainApplication get(Context context) {
         return (MainApplication) context.getApplicationContext();
@@ -57,7 +59,21 @@ public class MainApplication extends Application implements ReactApplication {
         return mReactNativeHost;
     }
 
+    public String getShareUser() {
+        return shareUser;
+    }
 
+    public void setShareUser(String shareUser) {
+        this.shareUser = shareUser;
+    }
+
+    public String getSharePwd() {
+        return sharePwd;
+    }
+
+    public void setSharePwd(String sharePwd) {
+        this.sharePwd = sharePwd;
+    }
 
     @Override
     public void onCreate() {

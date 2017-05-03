@@ -12,7 +12,10 @@ import {
     ListView,
     TouchableOpacity,
     TextInput,
-    Switch, Alert, KeyboardAvoidingView
+    Switch, Alert,
+    KeyboardAvoidingView,
+    BackAndroid,
+    Platform,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Color from '../constant/Color';
@@ -46,8 +49,8 @@ class WorkPager extends Component {
             carType: '公司车辆',//defaulcdt value
             carMember: '',
             remarkStr: '',
-            departmentName: (App.dptList?App.dptList[0].dptname:''),
-            departmentId: (App.dptList?App.dptList[0].dptid:''),
+            departmentName: (App.dptList ? App.dptList[0].dptname : ''),
+            departmentId: (App.dptList ? App.dptList[0].dptid : ''),
             departmentPosition: 0,
             items: [],
             dataSource: new ListView.DataSource({
@@ -96,7 +99,7 @@ class WorkPager extends Component {
                                 if (!responseJson.IsErr) {
                                     this.props.actions.refreshList(true);
                                     Toast.show('操作成功');
-                                    this.props.nav.goBack(null);
+                                    this._backFunc();
                                 } else Toast.show(responseJson.ErrDesc);
                             })
                             .done();
@@ -104,6 +107,18 @@ class WorkPager extends Component {
                     },
                 ]
             )
+        }
+    }
+
+    _backFunc() {
+        if (App.isShare) {
+            if (Platform.OS === 'android') {
+                BackAndroid.exitApp();
+            }else{
+
+            }
+        } else {
+            this.props.nav.goBack(null);
         }
     }
 
@@ -215,7 +230,9 @@ class WorkPager extends Component {
                          isActionByText={true}
                          actionArray={['提交']}
                          functionArray={[
-                             () => this.props.nav.goBack(null),
+                             () => {
+                                this._backFunc();
+                             },
                              () => this._createWork()
                          ]}/>
                 <ScrollView>
