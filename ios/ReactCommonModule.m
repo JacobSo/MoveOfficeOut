@@ -44,8 +44,6 @@ RCT_EXPORT_METHOD(unbindPushAccount:(NSString *)un)
 RCT_EXPORT_METHOD(checkUpdate:(NSString *)un)
 {
   NSLog(@"check update");
-
-
  // [[PgyUpdateManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
   [[PgyUpdateManager sharedPgyManager]checkUpdate];
  // [[PgyUpdateManager sharedPgyManager] checkUpdateWithDelegete:self selector:@selector(updateMethod:)];
@@ -66,20 +64,17 @@ RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)
 {
 
   NSString *user = ((AppDelegate *)[UIApplication sharedApplication].delegate).userName;
-  
-  NSLog(@"%@",user);
-  
   NSString *pwd = ((AppDelegate *)[UIApplication sharedApplication].delegate).password;
-  
   NSArray *arrays = [NSArray arrayWithObjects:user,pwd,nil];
-  
-  
-  NSLog(@"%@",user);
   callback(arrays);
 
-//  callback(((AppDelegate *)[UIApplication sharedApplication].delegate).arrays);
 }
+RCT_EXPORT_METHOD(logoutShareAccount){
+  ((AppDelegate *)[UIApplication sharedApplication].delegate).userName = nil;
+ ((AppDelegate *)[UIApplication sharedApplication].delegate).password = nil;
 
+  
+}
 
 @end
 
