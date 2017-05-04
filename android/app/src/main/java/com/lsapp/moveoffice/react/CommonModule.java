@@ -101,6 +101,12 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void logoutShareAccount() {
+        MainApplication.get(getCurrentActivity()).setSharePwd(null);
+        MainApplication.get(getCurrentActivity()).setShareUser(null);
+    }
+
+    @ReactMethod
     public void show() {
         Toast.makeText(getCurrentActivity(), "test", Toast.LENGTH_SHORT).show();
     }

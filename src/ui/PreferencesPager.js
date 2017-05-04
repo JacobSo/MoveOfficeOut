@@ -87,10 +87,15 @@ export default class PreferencesPager extends Component {
                                             },
                                             {
                                                 text: '确定', onPress: () => {
-                                                if (Platform.OS === 'ios')
+                                                if (Platform.OS === 'ios'){
                                                     IosModule.unbindPushAccount('');
-                                                else
+                                                    IosModule.logoutShareAccount();
+
+                                                }
+                                                else{
                                                     AndroidModule.unbindPushAccount();
+                                                    AndroidModule.logoutShareAccount();
+                                                }
 
                                                 App.saveAccount('', '', '', '', false);
                                                 const resetAction = NavigationActions.reset({

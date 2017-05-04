@@ -99,7 +99,8 @@ class WorkPager extends Component {
                                 if (!responseJson.IsErr) {
                                     this.props.actions.refreshList(true);
                                     Toast.show('操作成功');
-                                    this._backFunc();
+                                    this.props.nav.goBack(null);
+
                                 } else Toast.show(responseJson.ErrDesc);
                             })
                             .done();
@@ -110,17 +111,6 @@ class WorkPager extends Component {
         }
     }
 
-    _backFunc() {
-        if (App.isShare) {
-            if (Platform.OS === 'android') {
-                BackAndroid.exitApp();
-            }else{
-
-            }
-        } else {
-            this.props.nav.goBack(null);
-        }
-    }
 
     _carView() {
         if (this.state.isCarVisible) {
@@ -231,7 +221,7 @@ class WorkPager extends Component {
                          actionArray={['提交']}
                          functionArray={[
                              () => {
-                                this._backFunc();
+                                 this.props.nav.goBack(null);
                              },
                              () => this._createWork()
                          ]}/>

@@ -45,7 +45,7 @@ export default class LoginPager extends Component {
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
         InteractionManager.runAfterInteractions(() => {
-            this._shareLogin();
+            this._requestShareInfo();
         });
 
     }
@@ -62,7 +62,7 @@ export default class LoginPager extends Component {
     }
 
 //自动登录判断
-    _autoLogin() {
+    _localLogin() {
         App.initAccount(() => {
             if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== '' && App.dptList) {
                 this._launchPager("main");
@@ -70,38 +70,28 @@ export default class LoginPager extends Component {
         });
     }
 
-    _shareLogin() {
+    _shareLogin(user, pwd) {
+        if (App.session && App.account && user === App.account) {
+            this._launchPager("main");
+        } else if (user && pwd) {
+            this.state.account = user;
+            this.state.pwd = pwd;
+            this.state.check = true;
+            this._login();
+        } else {
+            this._localLogin();
+        }
+        //    Toast.show(user+":"+pwd)
+    }
+
+    _requestShareInfo() {
         if (Platform.OS === 'android') {
             AndroidModule.getShareUser((user, pwd) => {
-                if (App.session && App.account && user === App.account) {
-                    this._launchPager("work");
-                } else if (user && pwd) {
-                    App.isShare = true;
-
-                    this.state.account = user;
-                    this.state.pwd = pwd;
-                    this.state.check = true;
-                    this._login();
-                } else {
-                    this._autoLogin();
-                }
-                //    Toast.show(user+":"+pwd)
+                this._shareLogin(user, pwd);
             });
-        }else{
+        } else {
             IosModule.getShareUser((user, pwd) => {
-                if (App.session && App.account && user === App.account) {
-                    this._launchPager("work");
-                } else if (user && pwd) {
-                    App.isShare = true;
-
-                    this.state.account = user;
-                    this.state.pwd = pwd;
-                    this.state.check = true;
-                    this._login();
-                } else {
-                    this._autoLogin();
-                }
-                   Toast.show(user+":"+pwd)
+                this._shareLogin(user, pwd);
             });
         }
 
@@ -128,9 +118,7 @@ export default class LoginPager extends Component {
                             App.workType = responseJson.WorkType,
                             this.state.check,
                             App.dptList = responseJson.Dptlist);
-                        if (App.isShare)
-                            this._launchPager("work");
-                        else
+
                             this._launchPager("main");
                     } else {
                         Toast.show(responseJson.ErrDesc, {});
@@ -142,7 +130,7 @@ export default class LoginPager extends Component {
 
 //渲染（生命周期）
     render() {
-        console.log("login:render");
+        // console.log("login:render");
         return (
             <KeyboardAvoidingView behavior={'padding'}>
                 <ScrollView>
@@ -185,14 +173,12 @@ export default class LoginPager extends Component {
                                 onClick={() => this.setState({check: !this.state.check})}
                                 rightText={'自动登录'}/>
 
-
                             <TouchableOpacity onPress={() => this._login(this.state.account, this.state.pwd)}>
                                 <View style={styles.button}>
                                     <Text style={{color: 'white'}}>登录</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
-
 
                         <Loading visible={this.state.isLoading}/>
 
@@ -246,6 +232,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Color.line
     },
+
     borderBottomLine: {
         borderBottomWidth: 1,
         borderBottomColor: Color.line,
