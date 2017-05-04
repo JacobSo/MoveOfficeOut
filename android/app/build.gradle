@@ -90,6 +90,7 @@ dependencies {
     compile 'com.pgyersdk:sdk:2.2.2'
 
     compile project(path: ':react-native-code-push')
+    compile project(path: ':react-native-interactable')
 }
 
 // Run this once to be able to run the application with BUCK
