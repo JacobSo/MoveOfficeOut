@@ -88,7 +88,21 @@ export default class LoginPager extends Component {
                 //    Toast.show(user+":"+pwd)
             });
         }else{
+            IosModule.getShareUser((user, pwd) => {
+                if (App.session && App.account && user === App.account) {
+                    this._launchPager("work");
+                } else if (user && pwd) {
+                    App.isShare = true;
 
+                    this.state.account = user;
+                    this.state.pwd = pwd;
+                    this.state.check = true;
+                    this._login();
+                } else {
+                    this._autoLogin();
+                }
+                   Toast.show(user+":"+pwd)
+            });
         }
 
 

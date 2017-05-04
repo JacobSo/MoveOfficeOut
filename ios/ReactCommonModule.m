@@ -10,6 +10,10 @@
 #import <CloudPushSDK/CloudPushSDK.h>
 #import <PgySDK/PgyManager.h>
 #import <PgyUpdate/PgyUpdateManager.h>
+
+#import "AppDelegate.h"
+
+
 @implementation ReactCommonModule
 
 RCT_EXPORT_MODULE();
@@ -57,6 +61,25 @@ RCT_EXPORT_METHOD(getVersionName:(RCTResponseSenderBlock)callback)
   NSLog(@"当前应用软件版本:%@",appCurVersion);
  callback(@[appCurVersion]);
 }
+
+RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)
+{
+
+  NSString *user = ((AppDelegate *)[UIApplication sharedApplication].delegate).userName;
+  
+  NSLog(@"%@",user);
+  
+  NSString *pwd = ((AppDelegate *)[UIApplication sharedApplication].delegate).password;
+  
+  NSArray *arrays = [NSArray arrayWithObjects:user,pwd,nil];
+  
+  
+  NSLog(@"%@",user);
+  callback(arrays);
+
+//  callback(((AppDelegate *)[UIApplication sharedApplication].delegate).arrays);
+}
+
 
 @end
 

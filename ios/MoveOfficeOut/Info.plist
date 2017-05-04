@@ -24,6 +24,17 @@
 	<string>6</string>
 	<key>CodePushDeploymentKey</key>
 	<string>h2WsmpSbwlyipEeTGUSm2SbdAN-0NJYO7qa3M</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>OutHee</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>com.linshi.OutHee</string>
+		</dict>
+	</array>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>

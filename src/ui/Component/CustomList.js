@@ -77,7 +77,8 @@ class CustomList extends Component {
                     items: responseJson.list,
                     dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
                     isRefreshing: false,
-                    isEndUp: responseJson.list.length === 0
+                    isEndUp: responseJson.list.length === 0,
+                    isTopTips:false,
                 });
             } else Toast.show(responseJson.ErrDesc);
             this.props.actions.refreshList(false);

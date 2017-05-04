@@ -12,5 +12,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-
+@property (nonatomic,strong) NSString *userName;
+@property (nonatomic,strong) NSString *password;
+@property (nonatomic,strong) NSMutableArray *arrays;
 @end

@@ -51,6 +51,30 @@
   return YES;
 }
 
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  NSString *canshu = url.absoluteString;
+  NSString *ceShiString = [canshu substringFromIndex:9];
+  NSString *strA = [ceShiString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+  NSArray *array = [strA componentsSeparatedByString:@"?"];
+  
+//username
+  NSString *username = array[0];
+  NSString *password = array.lastObject;
+  
+  NSLog(@"%@-%@",username,password);
+  self.userName = username;
+  self.password = password;
+  
+  
+  self.arrays = [NSMutableArray arrayWithObjects:username,password,nil];
+
+  return NO;
+}
+
+
+
 -(void)pgyUpdateSEL
 {
   [[PgyManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
