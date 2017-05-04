@@ -9,7 +9,6 @@ import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.facebook.react.ReactApplication;
 import com.wix.interactable.Interactable;
-import com.wix.interactable.Interactable;
 
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
