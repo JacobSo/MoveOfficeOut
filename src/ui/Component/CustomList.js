@@ -14,7 +14,9 @@ import {
     RefreshControl,
     InteractionManager,
     ScrollView,
-    Dimensions, TouchableWithoutFeedback, TouchableOpacity,
+    Dimensions,
+    TouchableOpacity,
+    Animated,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
@@ -23,12 +25,18 @@ import Color from '../../constant/Color';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {mainActions} from "../../actions/MainAction";
+import Interactable from 'react-native-interactable';
 const {width, height} = Dimensions.get('window');
-
+const Screen = {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height - 150
+};
 class CustomList extends Component {
 
     constructor(props) {
         super(props);
+        this._deltaY = new Animated.Value(Screen.height - 55);
+
         this.state = {
             items: [],
             dataSource: new ListView.DataSource({
@@ -38,6 +46,8 @@ class CustomList extends Component {
             isRefreshing: true,
             isEndUp: false,
             isTopTips: false,
+                initialPosition: 'unknown',
+                lastPosition: 'unknown',
         };
 
     }
@@ -53,16 +63,28 @@ class CustomList extends Component {
             if (newProps.refreshList)
                 this._onRefresh()
         });
-
     }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this._onRefresh();
-
+        });
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                let initialPosition = JSON.stringify(position);
+                this.setState({initialPosition});
+            },
+            (error) => alert(JSON.stringify(error)),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
+        this.watchID = navigator.geolocation.watchPosition((position) => {
+            let lastPosition = JSON.stringify(position);
+            this.setState({lastPosition});
         });
     }
-
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID);
+    }
     _onRefresh() {
         //  console.log('_refresh');
         this.setState({
@@ -71,14 +93,14 @@ class CustomList extends Component {
         });
         this.state.page = 1;
         ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
-            //  console.log(responseJson);
+              console.log(responseJson);
             if (!responseJson.IsErr) {
                 this.setState({
                     items: responseJson.list,
                     dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
                     isRefreshing: false,
                     isEndUp: responseJson.list.length === 0,
-                    isTopTips:false,
+                    isTopTips: false,
                 });
             } else Toast.show(responseJson.ErrDesc);
             this.props.actions.refreshList(false);
@@ -113,6 +135,10 @@ class CustomList extends Component {
         }
     }
 
+    _getWorkView(){
+
+    }
+
     render() {
         if (this.state.items.length === 0) {
             return (
@@ -136,14 +162,15 @@ class CustomList extends Component {
             );
         } else {
             return (
-                <View style={{flex: 1, alignItems: 'center'}}>
-
+                <View style={{flex: 1, alignItems: 'center',}}>
                     <ListView
                         ref="scrollView"
                         style={styles.tabView}
                         dataSource={this.state.dataSource}
                         //  pageSize={2}
-                        onChangeVisibleRows={(visibleRows, changedRows)=>{console.log('visibleRows:'+visibleRows+',changedRows:'+changedRows)}}
+                        onChangeVisibleRows={(visibleRows, changedRows) => {
+                            console.log('visibleRows:' + visibleRows + ',changedRows:' + changedRows)
+                        }}
                         onEndReached={
                             () => {
                                 this._onLoad()
@@ -170,6 +197,31 @@ class CustomList extends Component {
                                           );
                                       }}/>
                         }/>
+
+
+                    <View style={styles.panelContainer}>
+                        <Interactable.View
+                            verticalOnly={true}
+                            snapPoints={[{y: 40}, {y: Screen.height - 45}, {y: Screen.height - 45}]}
+                            boundaries={{top: -300}}
+                            initialPosition={{y: Screen.height - 45}}
+                            animatedValueY={this._deltaY}>
+                            <View style={styles.panel}>
+                               {/* <View style={styles.panelHeader}>
+                                    <View style={styles.panelHandle} />
+                                </View>*/}
+                                <Text style={styles.panelTitle}> {this.state.lastPosition}</Text>
+                                <Text style={styles.panelSubtitle}> {this.state.initialPosition}</Text>
+                                <View style={styles.panelButton}>
+                                    <Text style={styles.panelButtonTitle}>出发</Text>
+                                </View>
+
+                                <ScrollView horizontal={true}>
+
+                                </ScrollView>
+                            </View>
+                        </Interactable.View>
+                    </View>
                     {
                         (() => {
                             if (this.state.isTopTips) {
@@ -188,6 +240,7 @@ class CustomList extends Component {
                             }
                         })()
                     }
+
                 </View>
             )
         }
@@ -196,6 +249,7 @@ class CustomList extends Component {
 
 const styles = StyleSheet.create(
     {
+
         tabView: {
             backgroundColor: Color.trans,
             width: width
@@ -227,7 +281,48 @@ const styles = StyleSheet.create(
             borderRadius: 50,
             alignItems: 'center',
             justifyContent: 'center',
-        }
+        },
+
+
+        panelContainer: {
+            position: 'absolute',
+            left: 0,
+            right: 0
+        },
+        panel: {
+            height: Screen.height + 300,
+            padding: 16,
+            backgroundColor: '#f7f5eee8',
+        },
+
+        panelTitle: {
+            fontSize: 18,
+        },
+        panelSubtitle: {
+            fontSize: 15,
+            color: 'gray',
+        },
+        panelButton: {
+            padding: 16,
+            backgroundColor: Color.colorPrimary,
+            alignItems: 'center',
+            marginVertical: 10
+        },
+        panelButtonTitle: {
+            fontSize: 17,
+            fontWeight: 'bold',
+            color: 'white'
+        },
+/*        panelHandle: {
+            width: 40,
+            height: 8,
+            borderRadius: 4,
+            backgroundColor: '#00000040',
+            marginBottom: 10
+        },
+        panelHeader: {
+            alignItems: 'center'
+        },*/
     });
 
 const mapStateToProps = (state) => {

@@ -6,7 +6,8 @@
 import React, {Component} from 'react';
 import {
     View,
-    Platform
+    Platform,
+
 } from 'react-native';
 import FloatButton from './Component/FloatButton';
 import Toolbar from './Component/Toolbar';
@@ -21,8 +22,9 @@ export default class MainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            floatButtonVisible: App.workType !== '数据专员' && App.workType !== '助理' && App.workType !== '项目专员管理人'
-        }
+            floatButtonVisible: App.workType !== '数据专员' && App.workType !== '助理' && App.workType !== '项目专员管理人',
+        };
+
     }
 
     componentDidMount() {
@@ -51,6 +53,7 @@ export default class MainPager extends Component {
                         initialPage={0}
                         tabBarBackgroundColor={Color.colorPrimary}
                         tabBarActiveTextColor='white'
+                        locked ={false}
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white',}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
@@ -108,6 +111,7 @@ export default class MainPager extends Component {
                         } else return null;
                     })()
                 }
+
 
             </View>
 
