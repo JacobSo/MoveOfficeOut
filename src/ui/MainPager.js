@@ -74,7 +74,7 @@ export default class MainPager extends Component {
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white'}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)})}>
-                        <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav} finishFunc={this.popupDialog.show()}/>
+                        <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav}  finishFunc={()=>this.popupDialog.show()}/>
                         <CustomList tabLabel='已完结' type="3,4" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )

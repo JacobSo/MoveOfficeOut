@@ -34,7 +34,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '张发',
+            account: '孙小伟',
             pwd: '123',
             isLoading: false,
             check: false,
@@ -109,6 +109,7 @@ export default class LoginPager extends Component {
             .then((responseJson) => {
                 if (undefined !== responseJson) {
                     //  console.log(responseJson);
+                    this.setState({isLoading: false});
                     if (!responseJson.IsErr) {
                         //  Toast.show('登录成功');
                         App.saveAccount(
@@ -121,7 +122,7 @@ export default class LoginPager extends Component {
 
                             this._launchPager("main");
                     } else {
-                        Toast.show(responseJson.ErrDesc, {});
+                        Toast.show(responseJson.ErrDesc);
                     }
                 }
             })
