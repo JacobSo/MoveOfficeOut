@@ -413,7 +413,7 @@ class CustomList extends Component {
                                                                   elevation: 5,
                                                               }}>
                                                                   <Text>系列：{rowData.Series}</Text>
-                                                                  <Text>供应商：{rowData.QSupplierName}</Text>
+                                                                  <Text>供应商：{rowData.SupplierName}</Text>
                                                                   <Text>对接内容：{rowData.WorkContent}</Text>
                                                                   {
                                                                       (() => {
