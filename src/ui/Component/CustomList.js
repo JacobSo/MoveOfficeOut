@@ -73,10 +73,20 @@ class CustomList extends Component {
             selectType: "",
 
         };
-        PubSub.subscribe( 'finish', (msg,data)=>{
+        PubSub.subscribe('finish', (msg, data) => {
+            let isAllFinish = true;
             this.state.editContent = data;
-            this._sign();
-        } );
+            if(!this.state.editContent){
+                this.state.todayTask[0].list.map((data) => {
+                    if (data.Signtype !== 2) {
+                        isAllFinish = false;
+                        Toast.show('没有完成全部签到，必须填写备注说明')
+                    }
+                });            }
+
+            if (isAllFinish)
+                this._sign();
+        });
     }
 
     static propTypes = {
@@ -99,24 +109,24 @@ class CustomList extends Component {
 
         if (this.props.type === '5' || this.props.type === '0,1,2') {//page need location
             if (Platform.OS === 'ios') {
-/*                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                      //  let longitude = JSON.stringify(position.coords.longitude);//精度
-                       // let latitude = JSON.stringify(position.coords.latitude);//纬度
-                       // console.log(longitude + latitude);
+                /*                navigator.geolocation.getCurrentPosition(
+                 (position) => {
+                 //  let longitude = JSON.stringify(position.coords.longitude);//精度
+                 // let latitude = JSON.stringify(position.coords.latitude);//纬度
+                 // console.log(longitude + latitude);
 
-                      //  let initialPosition = JSON.stringify(position);
-                      //  this.setState({initialPosition});
-                     //   this._confirmDialog("title",initialPosition);
-                    },
-                    (error) => this.setState({address: "未有位置信息",}),
-                    {enableHighAccuracy: false, timeout: 30000}
-                );*/
+                 //  let initialPosition = JSON.stringify(position);
+                 //  this.setState({initialPosition});
+                 //   this._confirmDialog("title",initialPosition);
+                 },
+                 (error) => this.setState({address: "未有位置信息",}),
+                 {enableHighAccuracy: false, timeout: 30000}
+                 );*/
                 this.watchID = navigator.geolocation.watchPosition((position) => {
                     //let lastPosition = JSON.stringify(position);
-                   // this.setState({lastPosition});
-                    this.fetchData(position.coords.longitude,position.coords.latitude);
-                   // Toast.show(lastPosition)
+                    // this.setState({lastPosition});
+                    this.fetchData(position.coords.longitude, position.coords.latitude);
+                    // Toast.show(lastPosition)
                 });
             } else {
                 AndroidModule.getLocation((address, lat, lng) => {
@@ -138,8 +148,8 @@ class CustomList extends Component {
     }
 
 
-    fetchData=(longitude,latitude)=>{
-        fetch('http://restapi.amap.com/v3/geocode/regeo?output=json&location='+longitude+','+latitude+'&key=129f4ccb1a1709b2a4be5e3d0716b426',{
+    fetchData = (longitude, latitude) => {
+        fetch('http://restapi.amap.com/v3/geocode/regeo?output=json&location=' + longitude + ',' + latitude + '&key=129f4ccb1a1709b2a4be5e3d0716b426', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -147,8 +157,8 @@ class CustomList extends Component {
             },
 
         })
-            .then((response)=>response.json())
-            .then((responseBody)=>{
+            .then((response) => response.json())
+            .then((responseBody) => {
                 console.log(JSON.stringify(responseBody));
                 this.setState({
                     address: responseBody.regeocode.formatted_address,
@@ -156,7 +166,7 @@ class CustomList extends Component {
                     lng: longitude,
                 });
 
-            }).catch((error)=>{
+            }).catch((error) => {
             console.log(error);
         })
     };
@@ -193,7 +203,7 @@ class CustomList extends Component {
                 .then((responseJson) => {
                     console.log(responseJson);
                     if (!responseJson.IsErr) {
-                        if(responseJson.list.length!==0){
+                        if (responseJson.list.length !== 0) {
                             this.setState({
                                 isTodayTask: responseJson.list.length !== 0,
                                 todayTask: responseJson.list,
@@ -255,14 +265,13 @@ class CustomList extends Component {
     }
 
 
-
     _sign() {
-        this.setState({isLoading:true});
+        this.setState({isLoading: true});
         ApiService.taskSign(this.state.selectGuid, this.state.lat, this.state.lng, this.state.address, this.state.selectType, this.state.editContent)
             .then((responseJson) => {
                 console.log("--------" + responseJson);
                 if (!responseJson.IsErr) {
-                    this.setState({isLoading:false});
+                    this.setState({isLoading: false});
                     Toast.show("签到完成");
                     this._todayTask();
                 } else Toast.show(responseJson.ErrDesc);
@@ -339,11 +348,11 @@ class CustomList extends Component {
                                         <Animated.View style={[styles.panelContainer, {
                                             backgroundColor: 'black',
                                             opacity: this._deltaY.interpolate({
-                                                inputRange: [0, Screen.height-100],
+                                                inputRange: [0, Screen.height - 100],
                                                 outputRange: [0.5, 0],
                                                 extrapolateRight: 'clamp'
                                             })
-                                        }]} />
+                                        }]}/>
                                         <Interactable.View
 
                                             verticalOnly={true}
@@ -411,16 +420,16 @@ class CustomList extends Component {
                                                                   {
                                                                       (() => {
                                                                           if (rowData.VisitingMode.indexOf('走访') > -1)
-                                                                              if(rowData.Signtype===2){
-                                                                              return (<Text               style={{
-                                                                                  padding: 16,
-                                                                                  backgroundColor: Color.line,
-                                                                                  alignItems: 'center',
-                                                                                  textAlign:'center',
-                                                                                  marginVertical: 10,
-                                                                                  color:'white'
-                                                                              }}>已完成</Text>)
-                                                                              }else{
+                                                                              if (rowData.Signtype === 2) {
+                                                                                  return (<Text style={{
+                                                                                      padding: 16,
+                                                                                      backgroundColor: Color.line,
+                                                                                      alignItems: 'center',
+                                                                                      textAlign: 'center',
+                                                                                      marginVertical: 10,
+                                                                                      color: 'white'
+                                                                                  }}>已完成</Text>)
+                                                                              } else {
                                                                                   return (
                                                                                       <TouchableOpacity
                                                                                           style={{
@@ -430,14 +439,18 @@ class CustomList extends Component {
                                                                                               marginVertical: 10
                                                                                           }}
                                                                                           onPress={() => {
-                                                                                              if (this.state.todayTask[0].Signtype === 0) {
+                                                                                              let isFinish = true;
+                                                                                              this.state.todayTask[0].list.map((data) => {
+                                                                                                  if (data.Signtype === 1 && data !== rowData) {
+                                                                                                      isFinish = false;
+                                                                                                      Toast.show('没有完成上一个签到，不可操作')
+                                                                                                  }
+                                                                                              });
+                                                                                              if (this.state.todayTask[0].Signtype === 0 && isFinish) {
                                                                                                   this._confirmDialog(rowData.Signtype === -1 ? "到达供应商" : "离开供应商", "当前位置：" + this.state.address,);
                                                                                                   this.state.selectGuid = rowData.Guid;
                                                                                                   this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
-                                                                                              } else {
-                                                                                                  Toast.show("请先点击出发")
                                                                                               }
-
                                                                                           }}>
                                                                                           <Text
                                                                                               style={styles.panelButtonTitle}>{rowData.Signtype === -1 ? '到达' : '完成'}</Text>
@@ -526,9 +539,9 @@ const styles = StyleSheet.create(
             position: 'absolute',
             left: 0,
             right: 0,
-           height:1
-           // bottom:0,
-           // top:0
+            height: 1
+            // bottom:0,
+            // top:0
         },
         panel: {
             height: Screen.height + 300,
