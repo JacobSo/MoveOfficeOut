@@ -99,20 +99,24 @@ class CustomList extends Component {
 
         if (this.props.type === '5' || this.props.type === '0,1,2') {//page need location
             if (Platform.OS === 'ios') {
-                navigator.geolocation.getCurrentPosition(
+/*                navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        let longitude = JSON.stringify(position.coords.longitude);//精度
-                        let latitude = JSON.stringify(position.coords.latitude);//纬度
-                        console.log(longitude + latitude);
-                        let initialPosition = JSON.stringify(position);
-                        this.setState({initialPosition});
+                      //  let longitude = JSON.stringify(position.coords.longitude);//精度
+                       // let latitude = JSON.stringify(position.coords.latitude);//纬度
+                       // console.log(longitude + latitude);
+
+                      //  let initialPosition = JSON.stringify(position);
+                      //  this.setState({initialPosition});
+                     //   this._confirmDialog("title",initialPosition);
                     },
-                    (error) => alert(JSON.stringify(error)),
+                    (error) => this.setState({address: "未有位置信息",}),
                     {enableHighAccuracy: false, timeout: 30000}
-                );
+                );*/
                 this.watchID = navigator.geolocation.watchPosition((position) => {
-                    let lastPosition = JSON.stringify(position);
-                    this.setState({lastPosition});
+                    //let lastPosition = JSON.stringify(position);
+                   // this.setState({lastPosition});
+                    this.fetchData(position.coords.longitude,position.coords.latitude);
+                   // Toast.show(lastPosition)
                 });
             } else {
                 AndroidModule.getLocation((address, lat, lng) => {
@@ -132,6 +136,31 @@ class CustomList extends Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
     }
+
+
+    fetchData=(longitude,latitude)=>{
+        fetch('http://restapi.amap.com/v3/geocode/regeo?output=json&location='+longitude+','+latitude+'&key=129f4ccb1a1709b2a4be5e3d0716b426',{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+
+        })
+            .then((response)=>response.json())
+            .then((responseBody)=>{
+                console.log(JSON.stringify(responseBody));
+                this.setState({
+                    address: responseBody.regeocode.formatted_address,
+                    lat: latitude,
+                    lng: longitude,
+                });
+
+            }).catch((error)=>{
+            console.log(error);
+        })
+    };
+
 
     _onRefresh() {
         //  console.log('_refresh');
@@ -305,7 +334,18 @@ class CustomList extends Component {
                             if (this.state.isTodayTask && this.state.todayTask[0].Signtype !== 3) {
                                 return (
                                     <View style={styles.panelContainer}>
+
+
+                                        <Animated.View style={[styles.panelContainer, {
+                                            backgroundColor: 'black',
+                                            opacity: this._deltaY.interpolate({
+                                                inputRange: [0, Screen.height-100],
+                                                outputRange: [0.5, 0],
+                                                extrapolateRight: 'clamp'
+                                            })
+                                        }]} />
                                         <Interactable.View
+
                                             verticalOnly={true}
                                             snapPoints={[{y: 40}, {y: Screen.height - 45}, {y: Screen.height - 45}]}
                                             boundaries={{top: -300}}
@@ -450,7 +490,7 @@ const styles = StyleSheet.create(
     {
         tabView: {
             backgroundColor: Color.trans,
-            width: width
+            width: width,
         },
         card: {
             borderWidth: 1,
@@ -485,7 +525,10 @@ const styles = StyleSheet.create(
         panelContainer: {
             position: 'absolute',
             left: 0,
-            right: 0
+            right: 0,
+           height:1
+           // bottom:0,
+           // top:0
         },
         panel: {
             height: Screen.height + 300,
