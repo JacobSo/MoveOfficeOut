@@ -107,6 +107,14 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getLocation(Callback callback) {
+        callback.invoke(MainApplication.get(getCurrentActivity()).getAddress(),
+                MainApplication.get(getCurrentActivity()).getGeoLat(),
+                MainApplication.get(getCurrentActivity()).getGeoLng());
+    }
+
+
+    @ReactMethod
     public void show() {
         Toast.makeText(getCurrentActivity(), "test", Toast.LENGTH_SHORT).show();
     }

@@ -26,6 +26,9 @@ public class MainApplication extends Application implements ReactApplication {
     private CloudPushService pushService;
     private String shareUser = null;
     private String sharePwd = null;
+    private Double geoLat = 0.0;
+    private Double geoLng = 0.0;
+    private String address = null;
 
     public static MainApplication get(Context context) {
         return (MainApplication) context.getApplicationContext();
@@ -47,7 +50,6 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new Interactable(),
             new Interactable(),
             new CodePush("4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M", getApplicationContext(), BuildConfig.DEBUG),
                     new ReactModulePackage()
@@ -143,5 +145,27 @@ public class MainApplication extends Application implements ReactApplication {
         }
     }
 
+    public Double getGeoLat() {
+        return geoLat;
+    }
 
+    public void setGeoLat(Double geoLat) {
+        this.geoLat = geoLat;
+    }
+
+    public Double getGeoLng() {
+        return geoLng;
+    }
+
+    public void setGeoLng(Double geoLng) {
+        this.geoLng = geoLng;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

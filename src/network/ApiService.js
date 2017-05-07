@@ -198,4 +198,30 @@ export  default  class ApiService extends Component {
 
         return this._request(method, param);
     }
+
+    static getToday() {
+        let method = 'Sign/getTodayTask';
+        let param = JSON.stringify({
+            uniqueIdentifier: App.session,
+            username:App.account
+        });
+
+        return this._request(method, param);
+    }
+
+    static taskSign(guid, lat, lng, address, type,remark) {
+        let method = 'Sign/punchclock';
+        let param = JSON.stringify({
+            uniqueIdentifier: App.session,
+            username:App.account,
+            recordordetailguid:guid,
+            latitude: lat,
+            longitude: lng,
+            Address: address,
+            remark: remark,
+            signtype: type,
+        });
+
+        return this._request(method, param);
+    }
 }

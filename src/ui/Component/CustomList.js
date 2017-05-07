@@ -17,6 +17,7 @@ import {
     Dimensions,
     TouchableOpacity,
     Animated,
+    Platform, Image, Alert,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
@@ -26,11 +27,17 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {mainActions} from "../../actions/MainAction";
 import Interactable from 'react-native-interactable';
+import Loading from 'react-native-loading-spinner-overlay';
+
+import AndroidModule from '../../module/AndoridCommontModule'
+const PubSub = require('pubsub-js');
 const {width, height} = Dimensions.get('window');
 const Screen = {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - 150
 };
+
+
 class CustomList extends Component {
 
     constructor(props) {
@@ -46,10 +53,30 @@ class CustomList extends Component {
             isRefreshing: true,
             isEndUp: false,
             isTopTips: false,
-                initialPosition: 'unknown',
-                lastPosition: 'unknown',
-        };
+            isLoading: false,
 
+            initialPosition: 'unknown',
+            lastPosition: 'unknown',
+
+
+            isTodayTask: false,
+            todayTask: [],
+            todayTaskItem: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+
+            address: "未有位置信息",
+            lat: "0.0",
+            lng: "0.0",
+            editContent: "",
+            selectGuid: "",
+            selectType: "",
+
+        };
+        PubSub.subscribe( 'finish', (msg,data)=>{
+            this.state.editContent = data;
+            this._sign();
+        } );
     }
 
     static propTypes = {
@@ -69,22 +96,43 @@ class CustomList extends Component {
         InteractionManager.runAfterInteractions(() => {
             this._onRefresh();
         });
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                let initialPosition = JSON.stringify(position);
-                this.setState({initialPosition});
-            },
-            (error) => alert(JSON.stringify(error)),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        );
-        this.watchID = navigator.geolocation.watchPosition((position) => {
-            let lastPosition = JSON.stringify(position);
-            this.setState({lastPosition});
-        });
+
+        if (this.props.type === '5' || this.props.type === '0,1,2') {//page need location
+            if (Platform.OS === 'ios') {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        let longitude = JSON.stringify(position.coords.longitude);//精度
+                        let latitude = JSON.stringify(position.coords.latitude);//纬度
+                        console.log(longitude + latitude);
+                        let initialPosition = JSON.stringify(position);
+                        this.setState({initialPosition});
+                    },
+                    (error) => alert(JSON.stringify(error)),
+                    {enableHighAccuracy: false, timeout: 30000}
+                );
+                this.watchID = navigator.geolocation.watchPosition((position) => {
+                    let lastPosition = JSON.stringify(position);
+                    this.setState({lastPosition});
+                });
+            } else {
+                AndroidModule.getLocation((address, lat, lng) => {
+                    if (address)
+                        this.setState({
+                            address: address,
+                            lat: lat,
+                            lng: lng,
+                        })
+                });
+            }
+        }
+
+
     }
+
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
     }
+
     _onRefresh() {
         //  console.log('_refresh');
         this.setState({
@@ -92,19 +140,43 @@ class CustomList extends Component {
             isTopTips: false,
         });
         this.state.page = 1;
-        ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
-              console.log(responseJson);
-            if (!responseJson.IsErr) {
-                this.setState({
-                    items: responseJson.list,
-                    dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
-                    isRefreshing: false,
-                    isEndUp: responseJson.list.length === 0,
-                    isTopTips: false,
-                });
-            } else Toast.show(responseJson.ErrDesc);
-            this.props.actions.refreshList(false);
-        }).done()
+        ApiService.getItems(this.state.page, this.props.type)
+            .then((responseJson) => {
+                console.log(responseJson);
+                if (!responseJson.IsErr) {
+                    this.setState({
+                        items: responseJson.list,
+                        dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
+                        isRefreshing: false,
+                        isEndUp: responseJson.list.length === 0,
+                        isTopTips: false,
+                    });
+                } else Toast.show(responseJson.ErrDesc);
+                this.props.actions.refreshList(false);
+            }).done();
+        this._todayTask();
+
+    }
+
+    _todayTask() {
+        if (this.props.type === '5' || this.props.type === '0,1,2') {
+            ApiService.getToday()
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    if (!responseJson.IsErr) {
+                        if(responseJson.list.length!==0){
+                            this.setState({
+                                isTodayTask: responseJson.list.length !== 0,
+                                todayTask: responseJson.list,
+                                todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list[0].list),
+                            })
+                        }
+
+
+                    } else Toast.show(responseJson.ErrDesc);
+                    this.props.actions.refreshList(false);
+                }).done();
+        }
     }
 
     _onLoad() {
@@ -135,8 +207,38 @@ class CustomList extends Component {
         }
     }
 
-    _getWorkView(){
+    _confirmDialog(title, content) {
+        Alert.alert(
+            title,
+            content,
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this._sign();
+                }
+                },
+            ]
+        )
+    }
 
+
+
+    _sign() {
+        this.setState({isLoading:true});
+        ApiService.taskSign(this.state.selectGuid, this.state.lat, this.state.lng, this.state.address, this.state.selectType, this.state.editContent)
+            .then((responseJson) => {
+                console.log("--------" + responseJson);
+                if (!responseJson.IsErr) {
+                    this.setState({isLoading:false});
+                    Toast.show("签到完成");
+                    this._todayTask();
+                } else Toast.show(responseJson.ErrDesc);
+                this.props.actions.refreshList(false);
+            }).done();
     }
 
     render() {
@@ -198,30 +300,127 @@ class CustomList extends Component {
                                       }}/>
                         }/>
 
+                    {
+                        (() => {
+                            if (this.state.isTodayTask && this.state.todayTask[0].Signtype !== 3) {
+                                return (
+                                    <View style={styles.panelContainer}>
+                                        <Interactable.View
+                                            verticalOnly={true}
+                                            snapPoints={[{y: 40}, {y: Screen.height - 45}, {y: Screen.height - 45}]}
+                                            boundaries={{top: -300}}
+                                            initialPosition={{y: Screen.height - 45}}
+                                            animatedValueY={this._deltaY}>
+                                            <View style={styles.panel}>
 
-                    <View style={styles.panelContainer}>
-                        <Interactable.View
-                            verticalOnly={true}
-                            snapPoints={[{y: 40}, {y: Screen.height - 45}, {y: Screen.height - 45}]}
-                            boundaries={{top: -300}}
-                            initialPosition={{y: Screen.height - 45}}
-                            animatedValueY={this._deltaY}>
-                            <View style={styles.panel}>
-                               {/* <View style={styles.panelHeader}>
-                                    <View style={styles.panelHandle} />
-                                </View>*/}
-                                <Text style={styles.panelTitle}> {this.state.lastPosition}</Text>
-                                <Text style={styles.panelSubtitle}> {this.state.initialPosition}</Text>
-                                <View style={styles.panelButton}>
-                                    <Text style={styles.panelButtonTitle}>出发</Text>
-                                </View>
+                                                <Text style={styles.panelTitle}>今日外出签到</Text>
+                                                <Text style={styles.panelSubtitle}>{this.state.todayTask[0].list.length}个对接任务</Text>
 
-                                <ScrollView horizontal={true}>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-around',
+                                                }}>
+                                                    <TouchableOpacity
+                                                        style={styles.panelButtonWhite}
+                                                        onPress={() => {
+                                                            this.props.nav.navigate(
+                                                                'detail',
+                                                                {task: this.state.todayTask[0]})
+                                                        }}>
+                                                        <Text>查看详情</Text>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity
+                                                        style={styles.panelButton}
+                                                        onPress={() => {
+                                                            this.state.selectGuid = this.state.todayTask[0].Guid;
+                                                            if (this.state.todayTask[0].Signtype === -1) {
+                                                                this._confirmDialog("出发签到", "是否开始外出工作,当前位置：" + this.state.address);
+                                                                this.state.selectType = 0;
+                                                            } else {
+                                                                this.props.finishFunc();
+                                                                this.state.selectType = 3;
+                                                            }
+                                                        }}>
+                                                        <Text
+                                                            style={styles.panelButtonTitle}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    width: width - 64
+                                                }}>
+                                                    <Image style={{width: 25, height: 25, resizeMode: 'contain'}}
+                                                           source={require('../../drawable/location_success.png')}/>
+                                                    <Text>{this.state.address}</Text>
+                                                </View>
+                                                <ListView horizontal={true}
+                                                          dataSource={this.state.todayTaskItem}
+                                                          renderRow={(rowData, rowID, sectionID) =>
+                                                              <View style={{
+                                                                  margin: 16,
+                                                                  padding: 16,
+                                                                  backgroundColor: 'white',
+                                                                  borderRadius: 10,
+                                                                  elevation: 5,
+                                                              }}>
+                                                                  <Text>系列：{rowData.Series}</Text>
+                                                                  <Text>供应商：{rowData.QSupplierName}</Text>
+                                                                  <Text>对接内容：{rowData.WorkContent}</Text>
+                                                                  {
+                                                                      (() => {
+                                                                          if (rowData.VisitingMode.indexOf('走访') > -1)
+                                                                              if(rowData.Signtype===2){
+                                                                              return (<Text               style={{
+                                                                                  padding: 16,
+                                                                                  backgroundColor: Color.line,
+                                                                                  alignItems: 'center',
+                                                                                  textAlign:'center',
+                                                                                  marginVertical: 10,
+                                                                                  color:'white'
+                                                                              }}>已完成</Text>)
+                                                                              }else{
+                                                                                  return (
+                                                                                      <TouchableOpacity
+                                                                                          style={{
+                                                                                              padding: 16,
+                                                                                              backgroundColor: Color.colorPrimary,
+                                                                                              alignItems: 'center',
+                                                                                              marginVertical: 10
+                                                                                          }}
+                                                                                          onPress={() => {
+                                                                                              if (this.state.todayTask[0].Signtype === 0) {
+                                                                                                  this._confirmDialog(rowData.Signtype === -1 ? "到达供应商" : "离开供应商", "当前位置：" + this.state.address,);
+                                                                                                  this.state.selectGuid = rowData.Guid;
+                                                                                                  this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
+                                                                                              } else {
+                                                                                                  Toast.show("请先点击出发")
+                                                                                              }
 
-                                </ScrollView>
-                            </View>
-                        </Interactable.View>
-                    </View>
+                                                                                          }}>
+                                                                                          <Text
+                                                                                              style={styles.panelButtonTitle}>{rowData.Signtype === -1 ? '到达' : '完成'}</Text>
+                                                                                      </TouchableOpacity>
+                                                                                  )
+                                                                              }
+
+                                                                      })()
+
+                                                                  }
+
+                                                              </View>}
+                                                />
+
+                                            </View>
+
+                                        </Interactable.View>
+
+                                    </View>)
+                            }
+                        })()
+                    }
+
                     {
                         (() => {
                             if (this.state.isTopTips) {
@@ -240,7 +439,7 @@ class CustomList extends Component {
                             }
                         })()
                     }
-
+                    <Loading visible={this.state.isLoading}/>
                 </View>
             )
         }
@@ -249,7 +448,6 @@ class CustomList extends Component {
 
 const styles = StyleSheet.create(
     {
-
         tabView: {
             backgroundColor: Color.trans,
             width: width
@@ -303,26 +501,34 @@ const styles = StyleSheet.create(
             color: 'gray',
         },
         panelButton: {
+            flex: 1,
             padding: 16,
             backgroundColor: Color.colorPrimary,
             alignItems: 'center',
             marginVertical: 10
         },
+        panelButtonWhite: {
+            flex: 1,
+            padding: 16,
+            backgroundColor: 'white',
+            alignItems: 'center',
+            marginVertical: 10
+        },
         panelButtonTitle: {
-            fontSize: 17,
             fontWeight: 'bold',
             color: 'white'
         },
-/*        panelHandle: {
-            width: 40,
-            height: 8,
-            borderRadius: 4,
-            backgroundColor: '#00000040',
-            marginBottom: 10
-        },
-        panelHeader: {
-            alignItems: 'center'
-        },*/
+
+        /*        panelHandle: {
+         width: 40,
+         height: 8,
+         borderRadius: 4,
+         backgroundColor: '#00000040',
+         marginBottom: 10
+         },
+         panelHeader: {
+         alignItems: 'center'
+         },*/
     });
 
 const mapStateToProps = (state) => {

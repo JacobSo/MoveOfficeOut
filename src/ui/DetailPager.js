@@ -311,12 +311,13 @@ const {width, height} = Dimensions.get('window');
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
                    // this.props.nav.pop();
+                    this.setState({isLoading: false});
                     this.props.actions.refreshList(true);
                     this.props.nav.goBack(null);
                 } else {
                     Toast.show(responseJson.ErrDesc)
                 }
-            }).done(this.setState({isLoading: false}));
+            }).done();
     }
 
     _delete() {

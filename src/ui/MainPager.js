@@ -12,11 +12,14 @@ import {
 import FloatButton from './Component/FloatButton';
 import Toolbar from './Component/Toolbar';
 import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-view';
+import InputDialog from "./Component/InputDialog";
+
 import Color from '../constant/Color';
 import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
+const PubSub = require('pubsub-js');
 
 export default class MainPager extends Component {
     constructor(props) {
@@ -37,6 +40,7 @@ export default class MainPager extends Component {
             IosModule.bindPushAccount(App.account);
         else
             AndroidModule.bindPushAccount(App.account);
+
     }
 
     _get() {
@@ -57,7 +61,7 @@ export default class MainPager extends Component {
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white',}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
-                        <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav}/>
+                        <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav} finishFunc={()=>this.popupDialog.show()}/>
                         <CustomList tabLabel='审核与评分' type="1,3" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
@@ -70,14 +74,34 @@ export default class MainPager extends Component {
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white'}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)})}>
-                        <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav}/>
+                        <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav} finishFunc={this.popupDialog.show()}/>
                         <CustomList tabLabel='已完结' type="3,4" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
             }
         }
     }
+    _finishDialog() {
+        return (
+            <InputDialog
+                action={[
+                    (popupDialog) => {
+                        this.popupDialog = popupDialog;
+                    },
+                    (text) => {
+                        this.setState({editContent: text})
+                    },
+                    () => {
+                        this.setState({editContent: ''});
+                        this.popupDialog.dismiss();
+                    },
+                    () => {
+                        PubSub.publish( 'finish', this.state.editContent );
+                        this.popupDialog.dismiss();
 
+                    }
+                ]} str={['完成签到', '备注，如无特殊情况，可忽略']}/>)
+    }
     render() {
         //  console.log("main:render");
         return (
@@ -111,6 +135,7 @@ export default class MainPager extends Component {
                         } else return null;
                     })()
                 }
+                {this._finishDialog()}
 
 
             </View>
