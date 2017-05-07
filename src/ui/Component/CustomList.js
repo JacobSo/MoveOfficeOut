@@ -307,10 +307,6 @@ class CustomList extends Component {
                         ref="scrollView"
                         style={styles.tabView}
                         dataSource={this.state.dataSource}
-                        //  pageSize={2}
-                        onChangeVisibleRows={(visibleRows, changedRows) => {
-                            console.log('visibleRows:' + visibleRows + ',changedRows:' + changedRows)
-                        }}
                         onEndReached={
                             () => {
                                 this._onLoad()
@@ -406,6 +402,8 @@ class CustomList extends Component {
                                                 </View>
                                                 <ListView horizontal={true}
                                                           dataSource={this.state.todayTaskItem}
+                                                          enableEmptySections={true}
+                                                          removeClippedSubviews={false}
                                                           renderRow={(rowData, rowID, sectionID) =>
                                                               <View style={{
                                                                   margin: 16,
