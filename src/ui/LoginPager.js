@@ -34,8 +34,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: 'cs',
-            pwd: '123',
+            account: '',
+            pwd: '',
             isLoading: false,
             check: false,
         };
@@ -63,8 +63,12 @@ export default class LoginPager extends Component {
 //自动登录判断
     _localLogin() {
         App.initAccount(() => {
-            if (App.check && App.session !== '' && App.account !== '' && App.workType !== '' && App.department !== '' && App.dptList) {
-                this._launchPager("main");
+            if (App.check && App.account !== '' && App.pwd !== '') {
+                //   this._launchPager("main");
+                this.state.account = App.account;
+                this.state.pwd = App.pwd;
+                this.state.check = true;
+                this._login();
             }
         });
     }
@@ -115,10 +119,11 @@ export default class LoginPager extends Component {
                             App.department = responseJson.DptName,
                             App.workType = responseJson.WorkType,
                             this.state.check,
-                            App.dptList = responseJson.Dptlist);
-                            if(responseJson.WorkType)
-                                this._launchPager("main");
-                            else Toast.show('没有工作类型，无法登陆')
+                            App.dptList = responseJson.Dptlist,
+                            this.state.pwd);
+                        if (responseJson.WorkType)
+                            this._launchPager("main");
+                        else Toast.show('没有工作类型，无法登陆')
                     } else {
                         Toast.show(responseJson.ErrDesc);
                     }
