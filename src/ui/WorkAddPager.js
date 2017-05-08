@@ -34,7 +34,7 @@ export default class PasswordPager extends Component {
             wayQQ: this.props.existData.wayQQ,
             wayMeet: this.props.existData.wayMeet,
         };
-      //  console.log(JSON.stringify(this.state))
+        //  console.log(JSON.stringify(this.state))
     }
 
     render() {
@@ -52,10 +52,10 @@ export default class PasswordPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={true}
-                    actionArray={['删除','完成']}
+                    actionArray={['删除', '完成']}
                     functionArray={[
                         () => {
-                            if(this.state.SupplierName||this.state.Series||this.state.WorkContent){
+                            if (this.state.SupplierName || this.state.Series || this.state.WorkContent) {
                                 Alert.alert(
                                     '退出编辑？',
                                     '放弃当前填写内容？退出后不可恢复',
@@ -71,12 +71,12 @@ export default class PasswordPager extends Component {
                                         },
                                     ]
                                 );
-                            }else{
+                            } else {
                                 this.props.nav.goBack(null)
                             }
 
                         },
-                        ()=>{
+                        () => {
                             Alert.alert(
                                 '删除工作项',
                                 '删除当前工作项？删除后不可恢复',
@@ -148,6 +148,7 @@ export default class PasswordPager extends Component {
                                     })
                                 }}
                                 rightText={'QQ'}/>
+
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={this.state.wayMeet}
@@ -156,22 +157,31 @@ export default class PasswordPager extends Component {
                                         wayMeet: !this.state.wayMeet, VisitingMode: ( (this.state.wayQQ ? "QQ " : "") +
                                         (this.state.wayCall ? "电话 " : "") +
                                         (!this.state.wayMeet ? "走访" : ""))
-                                    })
+                                    });
+                                    if (this.state.SupplierName.split(',').length > 1) {
+                                        Toast.show("请重新选择供应商");
+                                        this.setState({SupplierName: '',})
+                                    }
                                 } }
                                 rightText={'走访'}/>
+
+
                         </View>
                         <View style={styles.textContainer}>
                             <Text style={{color: Color.colorPrimary,}}>供应商与系列</Text>
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.setState({SupplierName: '', Series: ''})
+                                    this.setState({
+                                        SupplierName: '',
+                                        Series: ''
+                                    })
                                 }}>
                                 <Text>清空</Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity
                             onPress={() => {
-                                if(this.state.wayCall||this.state.wayMeet||this.state.wayQQ){
+                                if (this.state.wayCall || this.state.wayMeet || this.state.wayQQ) {
                                     this.props.nav.navigate(
                                         'param',
                                         {
@@ -185,7 +195,7 @@ export default class PasswordPager extends Component {
                                             existData: this.state.SupplierName ? this.state.SupplierName.split(',') : []
                                         },
                                     );
-                                }else{
+                                } else {
                                     Toast.show("请先选择对接方式")
                                 }
 
@@ -196,7 +206,7 @@ export default class PasswordPager extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                if(this.state.wayCall||this.state.wayMeet||this.state.wayQQ){
+                                if (this.state.wayCall || this.state.wayMeet || this.state.wayQQ) {
                                     this.props.nav.navigate(
                                         'param',
                                         {
@@ -210,7 +220,7 @@ export default class PasswordPager extends Component {
                                             existData: this.state.Series ? this.state.Series.split(',') : []
                                         },
                                     );
-                                }else{
+                                } else {
                                     Toast.show("请先选择对接方式")
                                 }
 
