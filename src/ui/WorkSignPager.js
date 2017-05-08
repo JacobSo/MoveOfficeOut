@@ -84,22 +84,22 @@ export default class WorkSignPager extends Component {
                         <View style={styles.textStyle}>
                             <Text >系列</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].Series}</Text>
+                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].Series}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >供应商</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].SupplierName}</Text>
+                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].SupplierName}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >对接方式</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].VisitingMode}</Text>
+                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].VisitingMode}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >对接内容</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.items[this.props.position].WorkContent}</Text>
+                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].WorkContent}</Text>
                         </View>
 
 

@@ -10,6 +10,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    Alert,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -25,54 +26,96 @@ export default class PasswordPager extends Component {
         super(props);
         this.state = {
             isLoading: false,
-            SupplierName: '',
-            Series: '',
-            WorkContent: '',
-            VisitingMode: '',
-            wayCall: false,
-            wayQQ: false,
-            wayMeet: false,
-        }
+            SupplierName: this.props.existData.SupplierName,
+            Series: this.props.existData.Series,
+            WorkContent: this.props.existData.WorkContent,
+            VisitingMode: this.props.existData.VisitingMode,
+            wayCall: this.props.existData.wayCall,
+            wayQQ: this.props.existData.wayQQ,
+            wayMeet: this.props.existData.wayMeet,
+        };
+      //  console.log(JSON.stringify(this.state))
     }
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: 'white'
-            }}>
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: 'white'
+                }}>
 
-                <Toolbar title={['新增工作']}
-                         color={Color.colorPrimary}
-                         elevation={2}
-                         isHomeUp={true}
-                         isAction={true}
-                         isActionByText={true}
-                         actionArray={['完成']}
-                         functionArray={[
-                             () => {
-                                 this.props.nav.goBack(null)
-                             },
-                             () => {
-                                 if (this.state.WorkContent === '' || this.state.Series === '' || this.state.SupplierName === '' ||
-                                     (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)) {
-                                     Toast.show('填写不完整');
-                                 } else {
-                                     //       console.log(this.state);
-                                     this.setState({
-                                         VisitingMode:( (this.state.wayQQ ? "QQ" : "") +
-                                         (this.state.wayCall ? "电话" : "") +
-                                         (this.state.wayMeet ? "走访" : ""))
-                                     });
-                                     this.props.addWork([this.state]);
-                                     this.props.nav.goBack(null)
-                                 }
-                             }]}/>
+                <Toolbar
+                    title={['新增工作']}
+                    color={Color.colorPrimary}
+                    elevation={2}
+                    isHomeUp={true}
+                    isAction={true}
+                    isActionByText={true}
+                    actionArray={['删除','完成']}
+                    functionArray={[
+                        () => {
+                            if(this.state.SupplierName||this.state.Series||this.state.WorkContent){
+                                Alert.alert(
+                                    '退出编辑？',
+                                    '放弃当前填写内容？退出后不可恢复',
+                                    [
+                                        {
+                                            text: '取消', onPress: () => {
+                                        }
+                                        },
+                                        {
+                                            text: '确定', onPress: () => {
+                                            this.props.nav.goBack(null)
+                                        }
+                                        },
+                                    ]
+                                );
+                            }else{
+                                this.props.nav.goBack(null)
+                            }
+
+                        },
+                        ()=>{
+                            Alert.alert(
+                                '删除工作项',
+                                '删除当前工作项？删除后不可恢复',
+                                [
+                                    {
+                                        text: '取消', onPress: () => {
+                                    }
+                                    },
+                                    {
+                                        text: '确定', onPress: () => {
+                                        this.props.deleteData();
+                                        this.props.nav.goBack(null)
+                                    }
+                                    },
+                                ]
+                            );
+
+                        },
+                        () => {
+                            if (this.state.WorkContent === '' || this.state.Series === '' || this.state.SupplierName === '' ||
+                                (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)) {
+                                Toast.show('填写不完整');
+                            } else {
+                                //       console.log(this.state);
+                                this.setState({
+                                    VisitingMode: ( (this.state.wayQQ ? "QQ" : "") +
+                                    (this.state.wayCall ? "电话" : "") +
+                                    (this.state.wayMeet ? "走访" : ""))
+                                });
+                                this.props.addWork([this.state]);
+                                this.props.nav.goBack(null)
+                            }
+                        }]}/>
                 <ScrollView>
                     <View style={{backgroundColor: 'white', flexDirection: 'column', margin: 16}}>
                         <Text style={{color: Color.colorPrimary,}}>对接内容</Text>
                         <TextInput style={styles.textInput}
                                    multiline={true}
+                                   defaultValue={this.state.WorkContent}
                                    placeholder="输入对接内容"
                                    returnKeyType={'done'}
                                    underlineColorAndroid="transparent"
@@ -82,32 +125,38 @@ export default class PasswordPager extends Component {
                         <View style={{flexDirection: 'column'}}>
                             <CheckBox
                                 style={{padding: 10}}
-                                isChecked={false}
+                                isChecked={this.state.wayCall}
                                 onClick={() => {
-                                    this.setState({wayCall: !this.state.wayCall,
-                                        VisitingMode:( (this.state.wayQQ ? "QQ " : "") +
+                                    this.setState({
+                                        wayCall: !this.state.wayCall,
+                                        VisitingMode: ( (this.state.wayQQ ? "QQ " : "") +
                                         (!this.state.wayCall ? "电话 " : "") +
-                                        (this.state.wayMeet ? "走访" : ""))})
+                                        (this.state.wayMeet ? "走访" : ""))
+                                    })
 
                                 } }
                                 rightText={'电话'}/>
                             <CheckBox
                                 style={{padding: 10}}
-                                isChecked={false}
+                                isChecked={this.state.wayQQ}
                                 onClick={() => {
-                                    this.setState({wayQQ: !this.state.wayQQ,
-                                        VisitingMode:( (!this.state.wayQQ ? "QQ " : "") +
+                                    this.setState({
+                                        wayQQ: !this.state.wayQQ,
+                                        VisitingMode: ( (!this.state.wayQQ ? "QQ " : "") +
                                         (this.state.wayCall ? "电话 " : "") +
-                                        (this.state.wayMeet ? "走访" : ""))})
+                                        (this.state.wayMeet ? "走访" : ""))
+                                    })
                                 }}
                                 rightText={'QQ'}/>
                             <CheckBox
                                 style={{padding: 10}}
-                                isChecked={false}
+                                isChecked={this.state.wayMeet}
                                 onClick={() => {
-                                    this.setState({wayMeet: !this.state.wayMeet, VisitingMode:( (this.state.wayQQ ? "QQ " : "") +
-                                    (this.state.wayCall ? "电话 " : "") +
-                                    (!this.state.wayMeet ? "走访" : ""))})
+                                    this.setState({
+                                        wayMeet: !this.state.wayMeet, VisitingMode: ( (this.state.wayQQ ? "QQ " : "") +
+                                        (this.state.wayCall ? "电话 " : "") +
+                                        (!this.state.wayMeet ? "走访" : ""))
+                                    })
                                 } }
                                 rightText={'走访'}/>
                         </View>
@@ -131,12 +180,14 @@ export default class PasswordPager extends Component {
                                         setSelect: (select) => {
                                             this.setState({SupplierName: select})
                                         },
-                                        isMulti:true,
+                                        isMulti: true,
+                                        existData: this.state.SupplierName ? this.state.SupplierName.split(',') : []
                                     },
                                 );
                             }}
                         >
-                            <Text style={styles.titleText}>{this.state.SupplierName === '' ? '选择供应商' : this.state.SupplierName}</Text>
+                            <Text
+                                style={styles.titleText}>{this.state.SupplierName === '' ? '选择供应商' : this.state.SupplierName}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
@@ -149,14 +200,14 @@ export default class PasswordPager extends Component {
                                         setSelect: (select) => {
                                             this.setState({Series: select})
                                         },
-                                        isMulti:true,
+                                        isMulti: true,
+                                        existData: this.state.Series ? this.state.Series.split(',') : []
                                     },
                                 );
                             }}>
-                            <Text style={styles.titleText}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
+                            <Text
+                                style={styles.titleText}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
                         </TouchableOpacity>
-
-
                     </View>
                 </ScrollView>
                 <Loading visible={this.state.isLoading}/>
@@ -173,10 +224,10 @@ const styles = StyleSheet.create({
     },
     titleText: {
         margin: 10,
-        paddingTop:16,
+        paddingTop: 16,
         fontSize: 15
     },
-    textContainer:{
+    textContainer: {
         marginTop: 16,
         flexDirection: 'row',
         justifyContent: 'space-between',

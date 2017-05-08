@@ -149,7 +149,9 @@ export default class PreferencesPager extends Component {
                                 2.新增签到功能{'\n'}
                                 3.修复供应商/系列列表底部显示问题{'\n'}
                                 4.去掉ios通知红标(待验证){'\n'}
-                                5.{'\n'}
+                                5.修复填写工作内容显示问题{'\n'}
+                                6.新增工作增加编辑和删除功能{'\n'}
+                                7.{'\n'}
                             </Text>
                         </ScrollView>
                     </View>

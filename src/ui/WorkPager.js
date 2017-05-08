@@ -56,12 +56,6 @@ class WorkPager extends Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-
-
-            /*                      this.setState({
-             departmentId: App.dptList[0].dptid,
-             departmentName: App.dptList[0].dptname
-             });*/
         };
     }
 
@@ -212,25 +206,46 @@ class WorkPager extends Component {
     render() {
         return (
             <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-20}>
-            <View style={{backgroundColor: Color.background, height: height}}>
-                <Toolbar title={['外出申请']}
-                         color={Color.colorPrimaryDark}
-                         elevation={0}
-                         isHomeUp={true}
-                         isAction={true}
-                         isActionByText={true}
-                         actionArray={['提交']}
-                         functionArray={[
-                             () => {
-                                 this.props.nav.goBack(null);
-                             },
-                             () => this._createWork()
-                         ]}/>
+                <View style={{backgroundColor: Color.background, height: height}}>
+                    <Toolbar title={['外出申请']}
+                             color={Color.colorPrimaryDark}
+                             elevation={0}
+                             isHomeUp={true}
+                             isAction={true}
+                             isActionByText={true}
+                             actionArray={['提交']}
+                             functionArray={[
+                                 () => {
+                                     if (this.state.items.length === 0) {
+                                         this.props.nav.goBack(null)
+                                     }else{
+                                         Alert.alert(
+                                             '退出创建？',
+                                             '放弃当编辑的工作？退出后不可恢复',
+                                             [
+                                                 {
+                                                     text: '取消', onPress: () => {
+                                                 }
+                                                 },
+                                                 {
+                                                     text: '确定', onPress: () => {
+                                                     this.props.nav.goBack(null)
+                                                 }
+                                                 },
+                                             ]
+                                         );
+                                     }
 
-                <ScrollView>
-                    <View style={{
-                        backgroundColor: Color.background
-                    }}>
+
+
+                                 },
+                                 () => this._createWork()
+                             ]}/>
+
+                    <ScrollView>
+                        <View style={{
+                            backgroundColor: Color.background
+                        }}>
 
 
                             <ScrollView>
@@ -313,8 +328,30 @@ class WorkPager extends Component {
                                     style={{marginBottom: 25}}
                                     dataSource={this.state.dataSource}
                                     enableEmptySections={true}
-                                    renderRow={ (rowData) => <WorkItem work={rowData} func={() => {
-                                    }}/>}/>
+                                    renderRow={ (rowData, sectionID, rowID) =>
+                                        <WorkItem
+                                            work={rowData}
+                                            func={() => {
+                                                this.props.nav.navigate(
+                                                    'add',
+                                                    {
+                                                        addWork: (array) => {
+                                                            //    console.log(array);
+                                                            this.state.items[rowID] = array[0];
+                                                              console.log(JSON.stringify(array[0]));
+                                                              console.log(JSON.stringify( this.state.items));
+
+                                                            this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),});
+                                                        },
+                                                        existData: rowData,
+                                                        deleteData:()=>{
+                                                            this.state.items.splice(rowID);
+                                                            this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),});
+
+                                                        }
+                                                    },
+                                                )
+                                            }}/>}/>
 
 
                                 <TouchableOpacity onPress={() => {
@@ -326,6 +363,19 @@ class WorkPager extends Component {
                                                 this.state.items = this.state.items.concat(array);
                                                 //  console.log(this.state.items);
                                                 this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items),});
+                                            },
+                                            existData: {
+                                                isLoading: false,
+                                                SupplierName: "",
+                                                Series: '',
+                                                WorkContent: '',
+                                                VisitingMode: '',
+                                                wayCall: false,
+                                                wayQQ: false,
+                                                wayMeet: false,
+                                            },
+                                            deleteData:()=>{
+
                                             }
                                         },
                                     )
@@ -339,10 +389,10 @@ class WorkPager extends Component {
 
                                 </TouchableOpacity>
                             </ScrollView>
-                        <Loading visible={this.state.isLoading}/>
+                            <Loading visible={this.state.isLoading}/>
 
-                    </View>
-                </ScrollView></View></KeyboardAvoidingView>
+                        </View>
+                    </ScrollView></View></KeyboardAvoidingView>
         )
     }
 }

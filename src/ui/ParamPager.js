@@ -33,7 +33,7 @@ export default class PasswordPager extends Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
 
-            selectItems: [],
+            selectItems: this.props.existData,
             selectDataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
@@ -71,6 +71,8 @@ export default class PasswordPager extends Component {
                             this.state.items = responseJson.list;
                             this.setState({
                                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                                selectDataSource: this.state.selectDataSource.cloneWithRows(this.state.selectItems),
+
                             });
                         }else Toast.show(responseJson.ErrDesc)
                     })
