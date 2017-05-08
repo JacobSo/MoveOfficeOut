@@ -17,7 +17,7 @@ import {
     Dimensions,
     TouchableOpacity,
     Animated,
-    Platform, Image, Alert,
+    Platform, Image, Alert, DeviceEventEmitter,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
@@ -40,6 +40,11 @@ const Screen = {
 
 class CustomList extends Component {
 
+    static propTypes = {
+        type: PropTypes.string.isRequired,
+        nav: PropTypes.any.isRequired
+    };
+
     constructor(props) {
         super(props);
         this._deltaY = new Animated.Value(Screen.height - 55);
@@ -55,10 +60,6 @@ class CustomList extends Component {
             isTopTips: false,
             isLoading: false,
 
-            initialPosition: 'unknown',
-            lastPosition: 'unknown',
-
-
             isTodayTask: false,
             todayTask: [],
             todayTaskItem: new ListView.DataSource({
@@ -73,26 +74,24 @@ class CustomList extends Component {
             selectType: "",
 
         };
+
         PubSub.subscribe('finish', (msg, data) => {
             let isAllFinish = true;
             this.state.editContent = data;
-            if(!this.state.editContent&&this.state.todayTask){
+            if (!this.state.editContent && this.state.todayTask) {
                 this.state.todayTask[0].list.map((data) => {
-                    if (data.Signtype !== 2) {
+                    if (data.Signtype !== 2&&data.VisitingMode.indexOf('走访')>-1) {
                         isAllFinish = false;
                         Toast.show('没有完成全部签到，必须填写备注说明')
                     }
-                });            }
+                });
+            }
 
             if (isAllFinish)
                 this._sign();
         });
     }
 
-    static propTypes = {
-        type: PropTypes.string.isRequired,
-        nav: PropTypes.any.isRequired
-    };
 
     componentWillReceiveProps(newProps) {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
@@ -109,43 +108,31 @@ class CustomList extends Component {
 
         if (this.props.type === '5' || this.props.type === '0,1,2') {//page need location
             if (Platform.OS === 'ios') {
-                /*                navigator.geolocation.getCurrentPosition(
-                 (position) => {
-                 //  let longitude = JSON.stringify(position.coords.longitude);//精度
-                 // let latitude = JSON.stringify(position.coords.latitude);//纬度
-                 // console.log(longitude + latitude);
-
-                 //  let initialPosition = JSON.stringify(position);
-                 //  this.setState({initialPosition});
-                 //   this._confirmDialog("title",initialPosition);
-                 },
-                 (error) => this.setState({address: "未有位置信息",}),
-                 {enableHighAccuracy: false, timeout: 30000}
-                 );*/
                 this.watchID = navigator.geolocation.watchPosition((position) => {
-                    //let lastPosition = JSON.stringify(position);
-                    // this.setState({lastPosition});
                     this.fetchData(position.coords.longitude, position.coords.latitude);
-                    // Toast.show(lastPosition)
                 });
             } else {
-                AndroidModule.getLocation((address, lat, lng) => {
-                    if (address)
-                        this.setState({
-                            address: address,
-                            lat: lat,
-                            lng: lng,
-                        })
-                });
+                DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange)
             }
         }
-
-
     }
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
+        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
     }
+
+    onAndroidLocationChange = (e) => {
+        // Toast.show(e.address + ":" + e.lat + ":" + e.lng)
+        if (this.state.address !== e.address) {
+            this.setState({
+                address: e.address,
+                lat: e.lat,
+                lng: e.lng,
+            })
+        }
+
+    };
 
 
     fetchData = (longitude, latitude) => {
@@ -269,7 +256,7 @@ class CustomList extends Component {
         this.setState({isLoading: true});
         ApiService.taskSign(this.state.selectGuid, this.state.lat, this.state.lng, this.state.address, this.state.selectType, this.state.editContent)
             .then((responseJson) => {
-                console.log("--------" + responseJson);
+                //     console.log("--------" + responseJson);
                 if (!responseJson.IsErr) {
                     this.setState({isLoading: false});
                     Toast.show("签到完成");
@@ -280,6 +267,7 @@ class CustomList extends Component {
     }
 
     render() {
+        console.log('render');
         if (this.state.items.length === 0) {
             return (
                 <ScrollView
@@ -293,8 +281,7 @@ class CustomList extends Component {
                             colors={[Color.colorPrimary]}
                             progressBackgroundColor="white"
                         />
-                    }
-                >
+                    }>
                     <View
                         style={styles.card}>
                         <Text>没有数据</Text>
@@ -340,8 +327,6 @@ class CustomList extends Component {
                             if (this.state.isTodayTask && this.state.todayTask[0].Signtype !== 3) {
                                 return (
                                     <View style={styles.panelContainer}>
-
-
                                         <Animated.View style={[styles.panelContainer, {
                                             backgroundColor: 'black',
                                             opacity: this._deltaY.interpolate({
@@ -351,17 +336,15 @@ class CustomList extends Component {
                                             })
                                         }]}/>
                                         <Interactable.View
-
                                             verticalOnly={true}
                                             snapPoints={[{y: 40}, {y: Screen.height - 45}, {y: Screen.height - 45}]}
                                             boundaries={{top: -300}}
                                             initialPosition={{y: Screen.height - 45}}
-                                            animatedValueY={this._deltaY}>
+                                            animatedValueY={this._deltaY}
+                                        >
                                             <View style={styles.panel}>
-
                                                 <Text style={styles.panelTitle}>今日外出签到</Text>
                                                 <Text style={styles.panelSubtitle}>{this.state.todayTask[0].list.length}个对接任务</Text>
-
                                                 <View style={{
                                                     flexDirection: 'row',
                                                     alignItems: 'center',
@@ -415,7 +398,8 @@ class CustomList extends Component {
                                                               }}>
                                                                   <Text>系列：{rowData.Series}</Text>
                                                                   <Text>供应商：{rowData.SupplierName}</Text>
-                                                                  <Text>对接内容：{rowData.WorkContent}</Text>
+                                                                  <Text style={{width:200}}
+                                                                        numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
                                                                   {
                                                                       (() => {
                                                                           if (rowData.VisitingMode.indexOf('走访') > -1)

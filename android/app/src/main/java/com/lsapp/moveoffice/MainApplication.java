@@ -2,12 +2,16 @@ package com.lsapp.moveoffice;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.facebook.react.ReactApplication;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.wix.interactable.Interactable;
 
 import com.facebook.react.ReactNativeHost;
@@ -29,14 +33,14 @@ public class MainApplication extends Application implements ReactApplication {
     private Double geoLat = 0.0;
     private Double geoLng = 0.0;
     private String address = null;
+    private static final ReactModulePackage reactModulePackage = new ReactModulePackage();
 
     public static MainApplication get(Context context) {
         return (MainApplication) context.getApplicationContext();
     }
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-
-    @Override
+        @Override
     protected String getJSBundleFile() {
       return CodePush.getJSBundleFile();
     }
@@ -52,12 +56,15 @@ public class MainApplication extends Application implements ReactApplication {
                     new MainReactPackage(),
             new Interactable(),
             new CodePush("4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M", getApplicationContext(), BuildConfig.DEBUG),
-                    new ReactModulePackage()
+                    reactModulePackage
             );
         }
         //product: 4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M
         //stage:h6osdCgokeQ3JHV73bVaP222Cbk-NJYO7qa3M
     };
+    public static ReactModulePackage getReactPackage() {
+        return reactModulePackage;
+    }
 
     @Override
     public ReactNativeHost getReactNativeHost() {

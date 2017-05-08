@@ -15,11 +15,12 @@ import java.util.List;
  */
 
 public class ReactModulePackage implements ReactPackage{
-
+    public CommonModule commonModule;
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+        commonModule = new CommonModule(reactContext);
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new CommonModule(reactContext));
+        modules.add(commonModule);
         return modules;
     }
 

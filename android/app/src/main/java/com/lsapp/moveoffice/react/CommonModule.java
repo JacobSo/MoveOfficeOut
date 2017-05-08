@@ -4,12 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.lsapp.moveoffice.MainApplication;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -113,6 +118,15 @@ public class CommonModule extends ReactContextBaseJavaModule {
                 MainApplication.get(getCurrentActivity()).getGeoLng());
     }
 
+
+    public void callLocationChange(String address,String lat,String lng) {
+        WritableMap params = Arguments.createMap();
+        params.putString("address", address);
+        params.putString("lat", lat);
+        params.putString("lng", lng);
+        getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("callLocationChange", params);
+    }
 
     @ReactMethod
     public void show() {

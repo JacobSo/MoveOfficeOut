@@ -13,6 +13,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.facebook.react.ReactActivity;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.zuni.library.utils.zContextUtil;
 import com.zuni.library.utils.zPermissionUtils;
 
@@ -28,7 +29,9 @@ public class MainActivity extends ReactActivity {
                 MainApplication.get(MainActivity.this).setGeoLng(aMapLocation.getLongitude());
                 MainApplication.get(MainActivity.this).setAddress(aMapLocation.getAddress());
 
-                Log.d(TAG, ": " + aMapLocation.getAddress());
+                Log.d(TAG, ":11 " + aMapLocation.getAddress());
+                MainApplication.getReactPackage().commonModule.callLocationChange(aMapLocation.getAddress(),aMapLocation.getLatitude()+"",aMapLocation.getLongitude()+"");
+
            /*     Log.d(TAG, ": " + aMapLocation.getCountry());//中国
                 Log.d(TAG, ": " + aMapLocation.getProvince());//省
                 Log.d(TAG, ": " + aMapLocation.getCity());//市

@@ -4,8 +4,8 @@
 'use strict';
 import React, {Component} from 'react';
 //let BASE_URL = 'http://192.168.1.190:8806/outapply/';
-let BASE_URL = 'http://119.145.166.182:8806/outapply/';
-//let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
+//let BASE_URL = 'http://119.145.166.182:8806/outapply/';
+let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
 import {NetInfo,} from 'react-native';
 
