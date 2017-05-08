@@ -20,7 +20,7 @@ export  default  class Application extends Component {
                 stores.map((result, i, store) => {
                     let key = store[i][0];
                     let value = store[i][1];
-                            console.log("---" + key + "---" + value);
+                            //console.log("---" + key + "---" + value);
 
                     if (key === "session") this.session = value;
                     if (key === "account") this.account = value;
@@ -43,7 +43,7 @@ export  default  class Application extends Component {
         this.check = check;
         this.dptList = dptList;
         this.pwd = pwd;
-        console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+JSON.stringify(dptList)+'-----'+pwd);
+       // console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+JSON.stringify(dptList)+'-----'+pwd);
         AsyncStorage.multiSet([['session', check ? session : ''], ['account', check ? account : ''], ['department', check ? department : ''],
             ['workType', check ? workType : ''], ['check', check ? '1' : '0'], ['dptList', check ?  JSON.stringify(dptList) + '' : ''],   ['pwd', check ? pwd : ''],])
             .then(() => {
