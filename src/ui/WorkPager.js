@@ -211,6 +211,7 @@ class WorkPager extends Component {
 
     render() {
         return (
+            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-20}>
             <View style={{backgroundColor: Color.background, height: height}}>
                 <Toolbar title={['外出申请']}
                          color={Color.colorPrimaryDark}
@@ -225,12 +226,13 @@ class WorkPager extends Component {
                              },
                              () => this._createWork()
                          ]}/>
+
                 <ScrollView>
                     <View style={{
                         backgroundColor: Color.background
                     }}>
 
-                        <KeyboardAvoidingView behavior={'position'}>
+
                             <ScrollView>
                                 <View style={{
                                     flexDirection: 'column',
@@ -336,11 +338,11 @@ class WorkPager extends Component {
                                     </View>
 
                                 </TouchableOpacity>
-                            </ScrollView></KeyboardAvoidingView>
+                            </ScrollView>
                         <Loading visible={this.state.isLoading}/>
 
                     </View>
-                </ScrollView></View>
+                </ScrollView></View></KeyboardAvoidingView>
         )
     }
 }

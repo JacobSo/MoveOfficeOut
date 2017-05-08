@@ -176,14 +176,14 @@
   // 内容
   NSString *content = [aps valueForKey:@"alert"];
   // badge数量
-  NSInteger badge = [[aps valueForKey:@"badge"] integerValue];
+//  NSInteger badge = 0;//[[aps valueForKey:@"badge"] integerValue];
   // 播放声音
   NSString *sound = [aps valueForKey:@"sound"];
   // 取得Extras字段内容
   NSString *Extras = [userInfo valueForKey:@"Extras"]; //服务端中Extras字段，key是自己定义的
-  NSLog(@"content = [%@], badge = [%ld], sound = [%@], Extras = [%@]", content, (long)badge, sound, Extras);
+  NSLog(@"content = [%@], sound = [%@], Extras = [%@]", content, sound, Extras);
   // iOS badge 清0
-  application.applicationIconBadgeNumber = 0;
+//  application.applicationIconBadgeNumber = 0;
   // 通知打开回执上报
   // [CloudPushSDK handleReceiveRemoteNotification:userInfo];(Deprecated from v1.8.1)
   [CloudPushSDK sendNotificationAck:userInfo];
