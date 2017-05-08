@@ -76,7 +76,7 @@ class CustomList extends Component {
         PubSub.subscribe('finish', (msg, data) => {
             let isAllFinish = true;
             this.state.editContent = data;
-            if(!this.state.editContent){
+            if(!this.state.editContent&&this.state.todayTask){
                 this.state.todayTask[0].list.map((data) => {
                     if (data.Signtype !== 2) {
                         isAllFinish = false;
