@@ -11,7 +11,7 @@ export  default  class Application extends Component {
     static department;
     static check;
     static dptList;
-    static pwd;
+    static pwd='';
 
 
     static initAccount(callback) {

@@ -7,7 +7,7 @@ import {
     View,
     Text,
     StyleSheet,
-     TextInput,
+    TextInput,
     ScrollView,
 } from 'react-native';
 import Color from '../constant/Color';
@@ -68,7 +68,7 @@ export default class WorkSignPager extends Component {
 
                 <ScrollView>
                     <View style={{height: height}}>
-                        <Text style={{   color: Color.colorPrimary,marginTop:16,marginLeft:16}}>对接结果反馈</Text>
+                        <Text style={{color: Color.colorPrimary, marginTop: 16, marginLeft: 16}}>对接结果反馈</Text>
                         <TextInput style={styles.textInput}
                                    multiline={true}
                                    placeholder="在此输入"
@@ -84,22 +84,22 @@ export default class WorkSignPager extends Component {
                         <View style={styles.textStyle}>
                             <Text >系列</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].Series}</Text>
+                                style={styles.textItem}>{this.state.items[this.props.position].Series}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >供应商</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].SupplierName}</Text>
+                                style={styles.textItem}>{this.state.items[this.props.position].SupplierName}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >对接方式</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].VisitingMode}</Text>
+                                style={styles.textItem}>{this.state.items[this.props.position].VisitingMode}</Text>
                         </View>
                         <View style={styles.textStyle}>
                             <Text >对接内容</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent,width:200}}>{this.state.items[this.props.position].WorkContent}</Text>
+                                style={styles.textItem}>{this.state.items[this.props.position].WorkContent}</Text>
                         </View>
 
 
@@ -144,8 +144,13 @@ const styles = StyleSheet.create(
             borderColor: Color.line,
             borderBottomWidth: 1,
         },
-        titleStyle:{
+        titleStyle: {
             color: Color.colorPrimary,
             margin: 16
+        },
+        textItem: {
+            color: Color.black_semi_transparent,
+            width: 200,
+            textAlign: 'right'
         }
     });
