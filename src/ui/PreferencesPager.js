@@ -118,7 +118,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v4"]
+                                ['此版本更新记录', "v1"]
                             ]}
                             functions={[
                                 () => {
@@ -144,20 +144,12 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                                v4:{'\n'}
-                                1.修复创建工作多系列供应商时的显示问题{'\n'}
-                                2.修复加载重复问题{'\n'}
-                                3.修复刷新与加载最后一页的混淆问题{'\n'}
-                                4.主页列表添加滚动动顶部/刷新按钮{'\n'}
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v3:修复v2自动登录bug
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v2(debug):新增多部门归属，创建工作可以多选系列与供应商
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v1:初始版本...
+                                v1:{'\n'}
+                                1.新增支持板木研发调用{'\n'}
+                                2.新增签到功能{'\n'}
+                                3.修复供应商/系列列表底部显示问题{'\n'}
+                                4.去掉ios通知红标(待验证){'\n'}
+                                5.{'\n'}
                             </Text>
                         </ScrollView>
                     </View>

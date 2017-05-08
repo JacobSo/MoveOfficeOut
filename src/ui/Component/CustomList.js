@@ -396,8 +396,8 @@ class CustomList extends Component {
                                                                   borderRadius: 10,
                                                                   elevation: 5,
                                                               }}>
-                                                                  <Text>系列：{rowData.Series}</Text>
-                                                                  <Text>供应商：{rowData.SupplierName}</Text>
+                                                                  <Text  style={{width:200}} numberOfLines={1}>系列：{rowData.Series}</Text>
+                                                                  <Text  style={{width:200}} numberOfLines={1}>供应商：{rowData.SupplierName}</Text>
                                                                   <Text style={{width:200}}
                                                                         numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
                                                                   {

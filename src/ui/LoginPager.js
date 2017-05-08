@@ -47,7 +47,6 @@ export default class LoginPager extends Component {
         InteractionManager.runAfterInteractions(() => {
             this._requestShareInfo();
         });
-
     }
 
 //导航器-页面跳转
@@ -94,8 +93,6 @@ export default class LoginPager extends Component {
                 this._shareLogin(user, pwd);
             });
         }
-
-
     }
 
 //登录请求
