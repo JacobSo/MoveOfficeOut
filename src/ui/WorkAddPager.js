@@ -171,19 +171,24 @@ export default class PasswordPager extends Component {
                         </View>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.nav.navigate(
-                                    'param',
-                                    {
-                                        title: '选择供应商',
-                                        type: 0,//SupplierName
-                                        searchKey: this.state.Series,//if key
-                                        setSelect: (select) => {
-                                            this.setState({SupplierName: select})
+                                if(this.state.wayCall||this.state.wayMeet||this.state.wayQQ){
+                                    this.props.nav.navigate(
+                                        'param',
+                                        {
+                                            title: '选择供应商',
+                                            type: 0,//SupplierName
+                                            searchKey: this.state.Series,//if key
+                                            setSelect: (select) => {
+                                                this.setState({SupplierName: select})
+                                            },
+                                            isMulti: !this.state.wayMeet,
+                                            existData: this.state.SupplierName ? this.state.SupplierName.split(',') : []
                                         },
-                                        isMulti: true,
-                                        existData: this.state.SupplierName ? this.state.SupplierName.split(',') : []
-                                    },
-                                );
+                                    );
+                                }else{
+                                    Toast.show("请先选择对接方式")
+                                }
+
                             }}
                         >
                             <Text
@@ -191,19 +196,24 @@ export default class PasswordPager extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.nav.navigate(
-                                    'param',
-                                    {
-                                        title: '选择系列',
-                                        type: 1,//Series
-                                        searchKey: this.state.SupplierName,//if key
-                                        setSelect: (select) => {
-                                            this.setState({Series: select})
+                                if(this.state.wayCall||this.state.wayMeet||this.state.wayQQ){
+                                    this.props.nav.navigate(
+                                        'param',
+                                        {
+                                            title: '选择系列',
+                                            type: 1,//Series
+                                            searchKey: this.state.SupplierName,//if key
+                                            setSelect: (select) => {
+                                                this.setState({Series: select})
+                                            },
+                                            isMulti: true,
+                                            existData: this.state.Series ? this.state.Series.split(',') : []
                                         },
-                                        isMulti: true,
-                                        existData: this.state.Series ? this.state.Series.split(',') : []
-                                    },
-                                );
+                                    );
+                                }else{
+                                    Toast.show("请先选择对接方式")
+                                }
+
                             }}>
                             <Text
                                 style={styles.titleText}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>

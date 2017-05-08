@@ -38,12 +38,12 @@ export default class CheckBox extends Component {
         onClick: React.PropTypes.func.isRequired,
         isChecked: React.PropTypes.bool
 
-    }
+    };
     static defaultProps = {
         isChecked: false,
         leftTextStyle: {},
         rightTextStyle: {}
-    }
+    };
 
     _renderLeft() {
         if (this.props.leftTextView)return this.props.leftTextView;
