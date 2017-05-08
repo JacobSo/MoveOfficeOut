@@ -203,8 +203,9 @@ export default class PasswordPager extends Component {
 
                 <View style={{flexDirection: 'row'}}>
                     <ListView
-                        style={{marginBottom: 25, flex: 1}}
+                        style={{marginBottom: 180, flex: 1}}
                         dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
                         enableEmptySections={true}
                         renderRow={ (rowData, sectionID, rowID) =>
                             <TouchableOpacity onPress={() => {
@@ -221,8 +222,9 @@ export default class PasswordPager extends Component {
                             if (this.state.isMulti)
                                 return (
                                     <ListView
-                                        style={{marginBottom: 25, flex: 1}}
+                                        style={{marginBottom: 180, flex: 1}}
                                         dataSource={this.state.selectDataSource}
+                                        removeClippedSubviews={false}
                                         enableEmptySections={true}
                                         renderRow={ (rowData, sectionID, rowID) =>
                                             <TouchableOpacity onPress={() => {

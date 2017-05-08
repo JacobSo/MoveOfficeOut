@@ -307,6 +307,7 @@ class CustomList extends Component {
                         ref="scrollView"
                         style={styles.tabView}
                         dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
                         onEndReached={
                             () => {
                                 this._onLoad()
