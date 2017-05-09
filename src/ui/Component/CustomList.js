@@ -80,7 +80,7 @@ class CustomList extends Component {
             this.state.editContent = data;
             if (!this.state.editContent && this.state.todayTask) {
                 this.state.todayTask[0].list.map((data) => {
-                    if (data.Signtype !== 2&&data.VisitingMode.indexOf('走访')>-1) {
+                    if (data.Signtype !== 2 && data.VisitingMode.indexOf('走访') > -1) {
                         isAllFinish = false;
                         Toast.show('没有完成全部签到，必须填写备注说明')
                     }
@@ -285,8 +285,7 @@ class CustomList extends Component {
                     <View
                         style={styles.card}>
                         <Text>没有数据</Text>
-                    </View></ScrollView>
-            );
+                    </View></ScrollView>);
         } else {
             return (
                 <View style={{flex: 1, alignItems: 'center',}}>
@@ -295,11 +294,7 @@ class CustomList extends Component {
                         style={styles.tabView}
                         dataSource={this.state.dataSource}
                         removeClippedSubviews={false}
-                        onEndReached={
-                            () => {
-                                this._onLoad()
-                            }
-                        }
+                        onEndReached={() => this._onLoad()}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -311,7 +306,7 @@ class CustomList extends Component {
                                 progressBackgroundColor="white"
                             />}
                         enableEmptySections={true}
-                        renderRow={ (rowData, rowID, sectionID) =>
+                        renderRow={(rowData, rowID, sectionID) =>
                             <MainItem key={sectionID} task={rowData}
                                       func={() => {
                                           this.props.actions.refreshList(false);
@@ -338,18 +333,13 @@ class CustomList extends Component {
                                         <Interactable.View
                                             verticalOnly={true}
                                             snapPoints={[{y: 40}, {y: Screen.height - 45}, {y: Screen.height - 45}]}
-                                            boundaries={{top: -300}}
+                                            boundaries={{top: 0}}
                                             initialPosition={{y: Screen.height - 45}}
-                                            animatedValueY={this._deltaY}
-                                        >
+                                            animatedValueY={this._deltaY}>
                                             <View style={styles.panel}>
                                                 <Text style={styles.panelTitle}>今日外出签到</Text>
                                                 <Text style={styles.panelSubtitle}>{this.state.todayTask[0].list.length}个对接任务</Text>
-                                                <View style={{
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-around',
-                                                }}>
+                                                <View style={styles.panelButtonContainer}>
                                                     <TouchableOpacity
                                                         style={styles.panelButtonWhite}
                                                         onPress={() => {
@@ -360,7 +350,7 @@ class CustomList extends Component {
                                                         <Text>查看详情</Text>
                                                     </TouchableOpacity>
                                                     <TouchableOpacity
-                                                        style={styles.panelButton}
+                                                        style={this.state.todayTask[0].Signtype === -1 ? styles.panelButton : styles.panelButtonEnd}
                                                         onPress={() => {
                                                             this.state.selectGuid = this.state.todayTask[0].Guid;
                                                             if (this.state.todayTask[0].Signtype === -1) {
@@ -375,81 +365,56 @@ class CustomList extends Component {
                                                             style={styles.panelButtonTitle}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}</Text>
                                                     </TouchableOpacity>
                                                 </View>
-                                                <View style={{
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    width: width - 64
-                                                }}>
+                                                <View style={styles.locationContainer}>
                                                     <Image style={{width: 25, height: 25, resizeMode: 'contain'}}
                                                            source={require('../../drawable/location_success.png')}/>
                                                     <Text>{this.state.address}</Text>
                                                 </View>
-                                                <ListView horizontal={true}
-                                                          dataSource={this.state.todayTaskItem}
-                                                          enableEmptySections={true}
-                                                          removeClippedSubviews={false}
-                                                          renderRow={(rowData, rowID, sectionID) =>
-                                                              <View style={{
-                                                                  margin: 16,
-                                                                  padding: 16,
-                                                                  backgroundColor: 'white',
-                                                                  borderRadius: 10,
-                                                                  elevation: 5,
-                                                              }}>
-                                                                  <Text  style={{width:200}} numberOfLines={1}>系列：{rowData.Series}</Text>
-                                                                  <Text  style={{width:200}} numberOfLines={1}>供应商：{rowData.SupplierName}</Text>
-                                                                  <Text style={{width:200}}
-                                                                        numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
-                                                                  {
-                                                                      (() => {
-                                                                          if (rowData.VisitingMode.indexOf('走访') > -1)
-                                                                              if (rowData.Signtype === 2) {
-                                                                                  return (<Text style={{
-                                                                                      padding: 16,
-                                                                                      backgroundColor: Color.line,
-                                                                                      alignItems: 'center',
-                                                                                      textAlign: 'center',
-                                                                                      marginVertical: 10,
-                                                                                      color: 'white'
-                                                                                  }}>已完成</Text>)
-                                                                              } else {
-                                                                                  return (
-                                                                                      <TouchableOpacity
-                                                                                          style={{
-                                                                                              padding: 16,
-                                                                                              backgroundColor: Color.colorPrimary,
-                                                                                              alignItems: 'center',
-                                                                                              marginVertical: 10
-                                                                                          }}
-                                                                                          onPress={() => {
-                                                                                              let isFinish = true;
-                                                                                              this.state.todayTask[0].list.map((data) => {
-                                                                                                  if (data.Signtype === 1 && data !== rowData) {
-                                                                                                      isFinish = false;
-                                                                                                      Toast.show('没有完成上一个签到，不可操作')
-                                                                                                  }
-                                                                                              });
-                                                                                              if (this.state.todayTask[0].Signtype === 0 && isFinish) {
-                                                                                                  this._confirmDialog(rowData.Signtype === -1 ? "到达供应商" : "离开供应商", "当前位置：" + this.state.address,);
-                                                                                                  this.state.selectGuid = rowData.Guid;
-                                                                                                  this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
-                                                                                              }
-                                                                                          }}>
-                                                                                          <Text
-                                                                                              style={styles.panelButtonTitle}>{rowData.Signtype === -1 ? '到达' : '完成'}</Text>
-                                                                                      </TouchableOpacity>
-                                                                                  )
-                                                                              }
-
-                                                                      })()
-
-                                                                  }
-
-                                                              </View>}
-                                                />
-
+                                                <ListView
+                                                    horizontal={true}
+                                                    dataSource={this.state.todayTaskItem}
+                                                    enableEmptySections={true}
+                                                    removeClippedSubviews={false}
+                                                    renderRow={(rowData, rowID, sectionID) =>
+                                                        <View style={styles.signListItem}>
+                                                            <Text style={{width: 200}}
+                                                                  numberOfLines={1}>系列：{rowData.Series}</Text>
+                                                            <Text style={{width: 200}}
+                                                                  numberOfLines={1}>供应商：{rowData.SupplierName}</Text>
+                                                            <Text style={{width: 200}}
+                                                                  numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
+                                                            {
+                                                                (() => {
+                                                                    if (rowData.VisitingMode.indexOf('走访') > -1)
+                                                                        if (rowData.Signtype === 2) {
+                                                                            return (<Text
+                                                                                style={styles.finishBtn}>已完成</Text>)
+                                                                        } else {
+                                                                            return (
+                                                                                <TouchableOpacity
+                                                                                    style={rowData.Signtype === -1 ? styles.normalBtn : styles.endBtn}
+                                                                                    onPress={() => {
+                                                                                        let isFinish = true;
+                                                                                        this.state.todayTask[0].list.map((data) => {
+                                                                                            if (data.Signtype === 1 && data !== rowData) {
+                                                                                                isFinish = false;
+                                                                                                Toast.show('没有完成上一个签到，不可操作')
+                                                                                            }
+                                                                                        });
+                                                                                        if (this.state.todayTask[0].Signtype === 0 && isFinish) {
+                                                                                            this._confirmDialog(rowData.Signtype === -1 ? "到达供应商" : "离开供应商", "当前位置：" + this.state.address,);
+                                                                                            this.state.selectGuid = rowData.Guid;
+                                                                                            this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
+                                                                                        }
+                                                                                    }}>
+                                                                                    <Text
+                                                                                        style={styles.panelButtonTitle}>{rowData.Signtype === -1 ? '到达' : '完成'}</Text>
+                                                                                </TouchableOpacity>
+                                                                            )
+                                                                        }
+                                                                })()}
+                                                        </View>}/>
                                             </View>
-
                                         </Interactable.View>
 
                                     </View>)
@@ -463,11 +428,10 @@ class CustomList extends Component {
                                 return (
                                     <TouchableOpacity
                                         style={styles.topButton}
-                                        onPress={
-                                            () => {
-                                                this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
-                                                this._onRefresh()
-                                            }
+                                        onPress={() => {
+                                            this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
+                                            this._onRefresh()
+                                        }
                                         }>
                                         <Text style={{color: 'white',}}>返回顶部</Text>
                                     </TouchableOpacity>
@@ -516,18 +480,14 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             justifyContent: 'center',
         },
-
-
         panelContainer: {
             position: 'absolute',
             left: 0,
             right: 0,
             height: 1
-            // bottom:0,
-            // top:0
         },
         panel: {
-            height: Screen.height + 300,
+            height: Screen.height ,
             padding: 16,
             backgroundColor: '#f7f5eee8',
         },
@@ -546,6 +506,13 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             marginVertical: 10
         },
+        panelButtonEnd: {
+            flex: 1,
+            padding: 16,
+            backgroundColor: Color.colorAccent,
+            alignItems: 'center',
+            marginVertical: 10
+        },
         panelButtonWhite: {
             flex: 1,
             padding: 16,
@@ -558,16 +525,43 @@ const styles = StyleSheet.create(
             color: 'white'
         },
 
-        /*        panelHandle: {
-         width: 40,
-         height: 8,
-         borderRadius: 4,
-         backgroundColor: '#00000040',
-         marginBottom: 10
-         },
-         panelHeader: {
-         alignItems: 'center'
-         },*/
+        panelButtonContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+        },
+        signListItem: {
+            margin: 16,
+            padding: 16,
+            backgroundColor: 'white',
+            borderRadius: 10,
+            elevation: 5,
+        },
+        finishBtn: {
+            padding: 16,
+            backgroundColor: Color.line,
+            alignItems: 'center',
+            textAlign: 'center',
+            marginVertical: 10,
+            color: 'white'
+        },
+        normalBtn: {
+            padding: 16,
+            backgroundColor: Color.colorPrimary,
+            alignItems: 'center',
+            marginVertical: 10
+        },
+        endBtn: {
+            padding: 16,
+            backgroundColor: Color.colorAccent,
+            alignItems: 'center',
+            marginVertical: 10
+        },
+        locationContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: width - 64
+        }
     });
 
 const mapStateToProps = (state) => {

@@ -118,7 +118,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v1"]
+                                ['此版本更新记录', "v2"]
                             ]}
                             functions={[
                                 () => {
@@ -143,6 +143,10 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
+                            <Text style={styles.contentStyle}>
+                                v2:{'\n'}
+                                1.修复搜索选择功能{'\n'}
+                            </Text>
                             <Text style={styles.contentStyle}>
                                 v1:{'\n'}
                                 1.新增支持板木研发调用{'\n'}

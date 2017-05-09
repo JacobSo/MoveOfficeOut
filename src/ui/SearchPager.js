@@ -209,6 +209,7 @@ export default class SearchPager extends Component {
                                         this.setState({supply: select})
                                     },
                                     isMulti:false,
+                                    existData: this.state.supply ? this.state.supply.split(',') : []
                                 },
                             );
                         }}>
@@ -242,6 +243,7 @@ export default class SearchPager extends Component {
                                         this.setState({series: select})
                                     },
                                     isMulti:false,
+                                    existData: this.state.series ? this.state.series.split(',') : []
                                 },
                             );
                         }}>

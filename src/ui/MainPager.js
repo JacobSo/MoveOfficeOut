@@ -61,8 +61,9 @@ export default class MainPager extends Component {
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white',}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
-                        <CustomList tabLabel='我的外出任务' type="5" nav={this.props.nav} finishFunc={()=>this.popupDialog.show()}/>
-                        <CustomList tabLabel='审核与评分' type="1,3" nav={this.props.nav}/>
+                        <CustomList tabLabel='外出任务' type="5" nav={this.props.nav} finishFunc={()=>this.popupDialog.show()}/>
+                        <CustomList tabLabel='审核' type="1" nav={this.props.nav}/>
+                        <CustomList tabLabel='评分' type="3" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
             } else {// +板木驻场工程师

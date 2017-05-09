@@ -230,32 +230,39 @@ const {width, height} = Dimensions.get('window');
 
     _finishDialog() {
         let allFinish = true;
+        let allSign = true;
         this.props.task.list.map((work, index) => {
             if (!work.WorkResult) {
-
                 allFinish = false;
             }
-
+            if(work.VisitingMode.indexOf("走访")>-1&& this.props.task.Signtype!==3){
+                allSign = false;
+            }
         });
 
         if (!allFinish) {
             Toast.show('还有未对接内容');
             return;
         }
+
+/*        if(!allSign){
+            Toast.show('还没完成签到');
+            return;
+        }*/
         if ((this.props.task.CarType === '公司车辆' || this.props.task.CarType === '私车公用') && !this.props.task.CarNumber) {
             Toast.show('请先联系助理，填写公司车牌号码');
             return;
         }
         Alert.alert(
-            '完结',
-            '是否完结当前任务？',
+            allSign?'完结':'未完成签到',
+            allSign?'是否完结当前任务？':'你的签到还没完成，是否坚持提交？',
             [
                 {
                     text: '取消', onPress: () => {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
+                    text: '提交', onPress: () => {
                     this._finish(2)
                 }
                 },
@@ -353,9 +360,7 @@ const {width, height} = Dimensions.get('window');
                          actionArray={this._getActionStr()}
                          functionArray={[
                              () => {
-                                // this.props.nav.pop()
                                  this.props.nav.goBack();
-
                              }
                          ].concat(this._getActionFunc())}/>
                 <ScrollView>

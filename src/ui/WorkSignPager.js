@@ -45,10 +45,7 @@ export default class WorkSignPager extends Component {
                 })
                 .done(this.setState({isLoading: false}));
         } else Toast.show('未填写内容');
-
-
     }
-
 
     render() {
         return (
