@@ -114,12 +114,12 @@ export default class LoginPager extends Component {
                     if (!responseJson.IsErr) {
                         //  Toast.show('登录成功');
                         App.saveAccount(
-                            responseJson.uniqueIdentifier,
-                            responseJson.UserName,
-                            responseJson.DptName,
-                            responseJson.WorkType,
+                            App.session = responseJson.uniqueIdentifier,
+                            App.account = responseJson.UserName,
+                            App.department = responseJson.DptName,
+                            App.workType = responseJson.WorkType,
                             this.state.check,
-                            responseJson.Dptlist,
+                            App.dptList = responseJson.Dptlist,
                             this.state.pwd);
                         if (responseJson.WorkType)
                             this._launchPager("main");
