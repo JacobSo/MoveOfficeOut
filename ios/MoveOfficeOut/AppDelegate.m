@@ -69,7 +69,7 @@
   
   
   self.arrays = [NSMutableArray arrayWithObjects:username,password,nil];
-
+  
   return NO;
 }
 
@@ -117,6 +117,8 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
   }
+  application.applicationIconBadgeNumber = 0;
+
 }
 
 
@@ -183,7 +185,7 @@
   NSString *Extras = [userInfo valueForKey:@"Extras"]; //服务端中Extras字段，key是自己定义的
   NSLog(@"content = [%@], sound = [%@], Extras = [%@]", content, sound, Extras);
   // iOS badge 清0
-//  application.applicationIconBadgeNumber = 0;
+  application.applicationIconBadgeNumber = 0;
   // 通知打开回执上报
   // [CloudPushSDK handleReceiveRemoteNotification:userInfo];(Deprecated from v1.8.1)
   [CloudPushSDK sendNotificationAck:userInfo];
