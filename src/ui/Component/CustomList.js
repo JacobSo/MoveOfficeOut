@@ -362,14 +362,17 @@ class CustomList extends Component {
                                                             }
                                                         }}>
                                                         <Text
-                                                            style={styles.panelButtonTitle}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}</Text>
+                                                            style={styles.panelButtonTitle}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}
+                                                        </Text>
                                                     </TouchableOpacity>
                                                 </View>
+
                                                 <View style={styles.locationContainer}>
                                                     <Image style={{width: 25, height: 25, resizeMode: 'contain'}}
                                                            source={require('../../drawable/location_success.png')}/>
                                                     <Text>{this.state.address}</Text>
                                                 </View>
+
                                                 <ListView
                                                     horizontal={true}
                                                     dataSource={this.state.todayTaskItem}
@@ -392,7 +395,8 @@ class CustomList extends Component {
                                                                         } else {
                                                                             return (
                                                                                 <TouchableOpacity
-                                                                                    style={rowData.Signtype === -1 ? styles.normalBtn : styles.endBtn}
+                                                                                    style={rowData.Signtype === -1 ?
+                                                                                        styles.normalBtn : styles.endBtn}
                                                                                     onPress={() => {
                                                                                         let isFinish = true;
                                                                                         this.state.todayTask[0].list.map((data) => {
@@ -402,13 +406,17 @@ class CustomList extends Component {
                                                                                             }
                                                                                         });
                                                                                         if (this.state.todayTask[0].Signtype === 0 && isFinish) {
-                                                                                            this._confirmDialog(rowData.Signtype === -1 ? "到达供应商" : "离开供应商", "当前位置：" + this.state.address,);
+                                                                                            this._confirmDialog(rowData.Signtype === -1 ?
+                                                                                                "到达供应商" : "离开供应商",
+                                                                                                "当前位置：" + this.state.address,);
                                                                                             this.state.selectGuid = rowData.Guid;
                                                                                             this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
                                                                                         }
                                                                                     }}>
                                                                                     <Text
-                                                                                        style={styles.panelButtonTitle}>{rowData.Signtype === -1 ? '到达' : '完成'}</Text>
+                                                                                        style={styles.panelButtonTitle}>
+                                                                                        {rowData.Signtype === -1 ? '到达' : '完成'}
+                                                                                    </Text>
                                                                                 </TouchableOpacity>
                                                                             )
                                                                         }
@@ -416,7 +424,6 @@ class CustomList extends Component {
                                                         </View>}/>
                                             </View>
                                         </Interactable.View>
-
                                     </View>)
                             }
                         })()
@@ -487,7 +494,7 @@ const styles = StyleSheet.create(
             height: 1
         },
         panel: {
-            height: Screen.height ,
+            height: Screen.height,
             padding: 16,
             backgroundColor: '#f7f5eee8',
         },

@@ -47,7 +47,6 @@ export  default  class ApiService extends Component {
             username: name,
             pwd: pwd,
         });
-
         return this._request(method, param);
     }
 

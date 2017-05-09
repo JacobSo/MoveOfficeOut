@@ -110,16 +110,16 @@ export default class LoginPager extends Component {
             .then((responseJson) => {
                 if (undefined !== responseJson) {
                     //  console.log(responseJson);
-                 //   this.setState({isLoading: false});
+                       this.setState({isLoading: false});
                     if (!responseJson.IsErr) {
                         //  Toast.show('登录成功');
                         App.saveAccount(
                             responseJson.uniqueIdentifier,
-                             responseJson.UserName,
-                             responseJson.DptName,
+                            responseJson.UserName,
+                            responseJson.DptName,
                             responseJson.WorkType,
                             this.state.check,
-                             responseJson.Dptlist,
+                            responseJson.Dptlist,
                             this.state.pwd);
                         if (responseJson.WorkType)
                             this._launchPager("main");
@@ -129,7 +129,7 @@ export default class LoginPager extends Component {
                     }
                 }
             })
-       //   .done(this.setState({isLoading: false}));
+        //   .done(this.setState({isLoading: false}));
     }
 
 //渲染（生命周期）

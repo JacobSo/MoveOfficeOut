@@ -146,6 +146,8 @@ export default class PreferencesPager extends Component {
                             <Text style={styles.contentStyle}>
                                 v2:{'\n'}
                                 1.修复搜索选择功能{'\n'}
+                                2.拆分审核与评分两个功能模块{'\n'}
+                                3.签到状态加颜色区分{'\n'}
                             </Text>
                             <Text style={styles.contentStyle}>
                                 v1:{'\n'}
