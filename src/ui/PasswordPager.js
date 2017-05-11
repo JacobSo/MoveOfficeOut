@@ -51,7 +51,7 @@ export default class PasswordPager extends Component {
                     },
                     {
                         text: '确定', onPress: () => {
-                        this.setState({isLoading: !this.state.isLoading});
+                        this.setState({isLoading: true});
                         ApiService.setPassword(this.state.oldPwd, this.state.confirmPwd)
                             .then((responseJson) => {
                                     //
@@ -60,15 +60,25 @@ export default class PasswordPager extends Component {
                                         const resetAction = NavigationActions.reset({
                                             index: 0,
                                             actions: [
-                                                NavigationActions.navigate({ routeName: 'login'})
+                                                NavigationActions.navigate({routeName: 'login'})
                                             ]
                                         });
                                         this.props.nav.dispatch(resetAction)
                                     } else {
                                         Toast.show(responseJson.ErrDesc)
+                                        setTimeout(() => {
+                                            this.setState({isLoading: false})
+                                        }, 100);
                                     }
                                 }
-                            ).done(() => this.setState({isLoading: !this.state.isLoading}));
+                            )
+                            .catch((error) => {
+                                console.log(error);
+                                Toast.show("出错了，请稍后再试");
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }).done();
 
                     }
                     },
@@ -105,32 +115,32 @@ export default class PasswordPager extends Component {
                         <View style={{backgroundColor: Color.background, flexDirection: 'column', margin: 16}}>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>旧密码</Text>
                             <View style={styles.borderBottomLine}>
-                            <TextInput style={styles.textInput}
-                                       placeholder="请输入密码"
-                                       secureTextEntry={true}
-                                       returnKeyType={'done'}
-                                       blurOnSubmit={true}
-                                       underlineColorAndroid="transparent"
-                                       onChangeText={(text) => this.setState({oldPwd: text})}/></View>
+                                <TextInput style={styles.textInput}
+                                           placeholder="请输入密码"
+                                           secureTextEntry={true}
+                                           returnKeyType={'done'}
+                                           blurOnSubmit={true}
+                                           underlineColorAndroid="transparent"
+                                           onChangeText={(text) => this.setState({oldPwd: text})}/></View>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>新密码</Text>
                             <View style={styles.borderBottomLine}>
 
-                            <TextInput style={styles.textInput}
-                                       placeholder="请输入密码"
-                                       secureTextEntry={true}
-                                       returnKeyType={'done'}
-                                       blurOnSubmit={true}
-                                       underlineColorAndroid="transparent"
-                                       onChangeText={(text) => this.setState({newPwd: text})}/></View>
+                                <TextInput style={styles.textInput}
+                                           placeholder="请输入密码"
+                                           secureTextEntry={true}
+                                           returnKeyType={'done'}
+                                           blurOnSubmit={true}
+                                           underlineColorAndroid="transparent"
+                                           onChangeText={(text) => this.setState({newPwd: text})}/></View>
                             <Text style={{color: Color.colorPrimary, marginTop: 16}}>确认密码</Text>
                             <View style={styles.borderBottomLine}>
-                            <TextInput style={styles.textInput}
-                                       placeholder="请输入密码"
-                                       secureTextEntry={true}
-                                       returnKeyType={'done'}
-                                       blurOnSubmit={true}
-                                       underlineColorAndroid="transparent"
-                                       onChangeText={(text) => this.setState({confirmPwd: text})}/>
+                                <TextInput style={styles.textInput}
+                                           placeholder="请输入密码"
+                                           secureTextEntry={true}
+                                           returnKeyType={'done'}
+                                           blurOnSubmit={true}
+                                           underlineColorAndroid="transparent"
+                                           onChangeText={(text) => this.setState({confirmPwd: text})}/>
                             </View>
 
                         </View>
@@ -151,8 +161,8 @@ const styles = StyleSheet.create({
         borderColor: Color.line,
         borderBottomWidth: 1,
     },
-    borderBottomLine:{
-        borderBottomWidth:1,
-        borderBottomColor:Color.line,
+    borderBottomLine: {
+        borderBottomWidth: 1,
+        borderBottomColor: Color.line,
     }
 });

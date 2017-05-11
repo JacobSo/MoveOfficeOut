@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-import Loading from 'react-native-loading-spinner-overlay';
 import CheckBox from '../ui/Component/CheckBox';
 import Toast from 'react-native-root-toast';
 
@@ -25,7 +24,6 @@ export default class PasswordPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
             SupplierName: this.props.existData.SupplierName,
             Series: this.props.existData.Series,
             WorkContent: this.props.existData.WorkContent,
@@ -230,7 +228,6 @@ export default class PasswordPager extends Component {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-                <Loading visible={this.state.isLoading}/>
             </View>
         )
     }

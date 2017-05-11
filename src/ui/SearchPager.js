@@ -61,7 +61,12 @@ export default class SearchPager extends Component {
                     isEndUp: responseJson.list.length === 0
                 });
                 this._setList()
-            }).done()
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+            })
+            .done()
     }
 
     _onLoad() {
@@ -82,7 +87,12 @@ export default class SearchPager extends Component {
                 if (this.state.isEndUp) {
                     Toast.show('已经没有了', {});
                 }
-            }).done()
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+            })
+            .done()
     }
 
     _setList() {

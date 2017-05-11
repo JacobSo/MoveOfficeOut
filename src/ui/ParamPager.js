@@ -85,6 +85,7 @@ export default class PasswordPager extends Component {
 
     _setSelect(rowData) {
         if (this.props.type === 2) {//car
+
             ApiService.addCar(this.props.searchKey, rowData)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {

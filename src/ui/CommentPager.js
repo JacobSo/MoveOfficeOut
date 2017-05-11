@@ -1,5 +1,7 @@
 /**
  * Created by Administrator on 2017/3/13.
+ *
+ * loading usage
  */
 'use strict';
 import React, {Component} from 'react';
@@ -56,25 +58,38 @@ export default class CommentPager extends Component {
                         this.state.task.list[this.props.position].ShuJuSuggest = this.state.comment;
                     }
                     this.props.commentWork(this.state.task.list);
-                    this.setState({isLoading: false});
+
                     this.props.nav.goBack(null)
-                } else Toast.show(responseJson.ErrDesc);
+                } else {
+                    Toast.show(responseJson.ErrDesc);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
             })
             .done();
     }
 
     _fullView() {
-        if(this.props.type===0){
+        if (this.props.type === 0) {
             return null
-        }else{
+        } else {
             return (<View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starA: select})}/>
-                    <Text style={{margin: 16,textAlign:'right'}}>工作效率</Text>
+                    <Text style={{margin: 16, textAlign: 'right'}}>工作效率</Text>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starB: select})}/>
-                    <Text style={{margin: 16,textAlign:'right'}}>结果质量</Text>
+                    <Text style={{margin: 16, textAlign: 'right'}}>结果质量</Text>
                 </View>
             </View>);
         }
@@ -82,11 +97,10 @@ export default class CommentPager extends Component {
 
     render() {
         return (
-
             <View style={{
                 backgroundColor: Color.background,
-                height:height,
-                marginBottom:25
+                height: height,
+                marginBottom: 25
             }}>
                 <Toolbar
                     title={[('对' + this.props.task.Creator + '的工作评价'),
@@ -113,33 +127,33 @@ export default class CommentPager extends Component {
                                           })()
                                       }>
                     <ScrollView
-                        style={{ backgroundColor: Color.background,}}
-                        >
+                        style={{backgroundColor: Color.background,}}
+                    >
                         <View>
-                <Text style={styles.titleStyle}>对接内容</Text>
-                <Text style={{
-                    marginLeft: 16,
-                    marginRight: 16
-                }}>{this.props.task.list[this.props.position].WorkResult}</Text>
+                            <Text style={styles.titleStyle}>对接内容</Text>
+                            <Text style={{
+                                marginLeft: 16,
+                                marginRight: 16
+                            }}>{this.props.task.list[this.props.position].WorkResult}</Text>
 
 
-                <Text style={styles.titleStyle}>工作评分</Text>
-                {this._fullView()}
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starC: select})}/>
-                    <Text style={{margin: 16,width:65,textAlign:'right'}}>进度反馈详细程度</Text>
-                </View>
+                            <Text style={styles.titleStyle}>工作评分</Text>
+                            {this._fullView()}
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starC: select})}/>
+                                <Text style={{margin: 16, width: 65, textAlign: 'right'}}>进度反馈详细程度</Text>
+                            </View>
 
-                <Text style={{ color: Color.colorPrimary,marginLeft:16,marginTop:16}}>工作评价与建议</Text>
-                <TextInput style={styles.textInput}
-                           placeholder="在此输入"
-                           multiline={true}
-                           returnKeyType={'done'}
-                           blurOnSubmit={true}
-                           underlineColorAndroid="transparent"
-                           onChangeText={(text) => {
-                                this.setState({comment:text})
-                           }}/>
+                            <Text style={{color: Color.colorPrimary, marginLeft: 16, marginTop: 16}}>工作评价与建议</Text>
+                            <TextInput style={styles.textInput}
+                                       placeholder="在此输入"
+                                       multiline={true}
+                                       returnKeyType={'done'}
+                                       blurOnSubmit={true}
+                                       underlineColorAndroid="transparent"
+                                       onChangeText={(text) => {
+                                           this.setState({comment: text})
+                                       }}/>
                         </View>
                     </ScrollView></KeyboardAvoidingView>
                 <Loading visible={this.state.isLoading}/>

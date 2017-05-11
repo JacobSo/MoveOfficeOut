@@ -1,5 +1,7 @@
 /**
  * Created by Administrator on 2017/3/13.
+ *
+ * loading usage
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
@@ -318,30 +320,49 @@ const {width, height} = Dimensions.get('window');
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
                    // this.props.nav.pop();
-                    this.setState({isLoading: false});
                     this.props.actions.refreshList(true);
                     this.props.nav.goBack(null);
                 } else {
-                    Toast.show(responseJson.ErrDesc)
+                    Toast.show(responseJson.ErrDesc);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
                 }
-            }).done();
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            })
+            .done();
     }
 
     _delete() {
         this.setState({isLoading: true});
         ApiService.deleteWork(this.props.task.Guid)
             .then((responseJson) => {
-                this.setState({isLoading: false});
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
                     //this.props.nav.pop();
                     this.props.actions.refreshList(true);
-
                     this.props.nav.goBack(null);
                 } else {
-                    Toast.show(responseJson.ErrDesc)
+                    Toast.show(responseJson.ErrDesc);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
                 }
             })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            })
+            .done();
     }
 
     render() {

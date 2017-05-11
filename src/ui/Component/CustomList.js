@@ -76,10 +76,14 @@ class CustomList extends Component {
         };
 
         PubSub.subscribe('finish', (msg, data) => {
+            console.log("PubSub:start");
             let isAllFinish = true;
             this.state.editContent = data;
-            if (!this.state.editContent && this.state.todayTask) {
+            console.log("PubSub:" + JSON.stringify(this.state));
+            if (!this.state.editContent && this.state.todayTask[0] && this.state.todayTask[0].list) {
+                console.log("PubSub:if");
                 this.state.todayTask[0].list.map((data) => {
+                    console.log("PubSub:loop");
                     if (data.Signtype !== 2 && data.VisitingMode.indexOf('走访') > -1) {
                         isAllFinish = false;
                         Toast.show('没有完成全部签到，必须填写备注说明')
@@ -120,6 +124,7 @@ class CustomList extends Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
         DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+        PubSub.clearAllSubscriptions();
     }
 
     onAndroidLocationChange = (e) => {
@@ -179,6 +184,10 @@ class CustomList extends Component {
                     });
                 } else Toast.show(responseJson.ErrDesc);
                 this.props.actions.refreshList(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
             }).done();
         this._todayTask();
 
@@ -195,23 +204,28 @@ class CustomList extends Component {
                                 isTodayTask: responseJson.list.length !== 0,
                                 todayTask: responseJson.list,
                                 todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list[0].list),
+                                isLoading: false
                             })
                         }
 
 
                     } else Toast.show(responseJson.ErrDesc);
                     this.props.actions.refreshList(false);
-                }).done();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    Toast.show("出错了，请稍后再试");
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                })
+                .done();
         }
     }
 
     _onLoad() {
         //console.log('_load');
         if (this.state.items.length >= 10 && !this.state.isEndUp) {
-            /*            this.setState({
-             //  isRefreshing: true,
-             page: this.state.page + 1
-             });*/
             this.state.page = this.state.page + 1;
             ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
                 // console.log(responseJson);
@@ -258,12 +272,24 @@ class CustomList extends Component {
             .then((responseJson) => {
                 //     console.log("--------" + responseJson);
                 if (!responseJson.IsErr) {
-                    this.setState({isLoading: false});
                     Toast.show("签到完成");
                     this._todayTask();
-                } else Toast.show(responseJson.ErrDesc);
+                } else {
+                    Toast.show(responseJson.ErrDesc);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
                 this.props.actions.refreshList(false);
-            }).done();
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            })
+            .done();
     }
 
     render() {

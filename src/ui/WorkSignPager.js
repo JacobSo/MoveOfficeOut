@@ -1,5 +1,7 @@
 /**
  * Created by Administrator on 2017/3/13.
+ *
+ * loading usage
  */
 'use strict';
 import React, {Component} from 'react';
@@ -22,6 +24,7 @@ export default class WorkSignPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             comment: '',
             items: this.props.task.list,
         }
@@ -38,12 +41,21 @@ export default class WorkSignPager extends Component {
                         //    console.log('----------'+JSON.stringify(this.state.items));
                         this.props.commentWork(this.state.items);
                         this.props.nav.goBack(null);
-                    } else Toast.show(responseJson.ErrDesc);
+                    } else {
+                        Toast.show(responseJson.ErrDesc);
+                        setTimeout(() => {
+                            this.setState({isLoading: false})
+                        }, 100);
+                    }
                 })
                 .catch((error) => {
-                    console.error(error)
+                    console.log(error);
+                    Toast.show("出错了，请稍后再试");
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
                 })
-                .done(this.setState({isLoading: false}));
+                .done();
         } else Toast.show('未填写内容');
     }
 

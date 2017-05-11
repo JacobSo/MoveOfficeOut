@@ -1,5 +1,7 @@
 /**
  * Created by Administrator on 2017/3/13.
+ *
+ * loading usage
  */
 'use strict';
 
@@ -34,8 +36,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',
-            pwd: '',
+            account: '张发',
+            pwd: '123',
             isLoading: false,
             check: false,
         };
@@ -110,7 +112,6 @@ export default class LoginPager extends Component {
             .then((responseJson) => {
                 if (undefined !== responseJson) {
                     //  console.log(responseJson);
-                       this.setState({isLoading: false});
                     if (!responseJson.IsErr) {
                         //  Toast.show('登录成功');
                         App.saveAccount(
@@ -126,10 +127,20 @@ export default class LoginPager extends Component {
                         else Toast.show('没有工作类型，无法登陆')
                     } else {
                         Toast.show(responseJson.ErrDesc);
+                        setTimeout(() => {
+                            this.setState({isLoading: false})
+                        }, 100);
                     }
                 }
             })
-        //   .done(this.setState({isLoading: false}));
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            })
+            .done();
     }
 
 //渲染（生命周期）
@@ -183,7 +194,6 @@ export default class LoginPager extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-
                         <Loading visible={this.state.isLoading}/>
 
                     </View>

@@ -1,5 +1,7 @@
 /**
  * Created by Administrator on 2017/3/13.
+ *
+ * loading usage
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
@@ -32,8 +34,9 @@ import App from '../constant/Application';
 import {connect} from "react-redux";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-class WorkPager extends Component {
+const carList = ["公司车辆","私车公用","其他"];
 
+class WorkPager extends Component {
     constructor(props) {
         super(props);
         let date = new Date();
@@ -46,7 +49,7 @@ class WorkPager extends Component {
             isRemarkVisible: false,
             isDepartmentVisible: false,
             isNeedCar: false,
-            carType: '公司车辆',//defaulcdt value
+            carType: carList[0],//defaulcdt value
             carMember: '',
             remarkStr: '',
             departmentName: (App.dptList ? App.dptList[0].dptname : ''),
@@ -89,15 +92,24 @@ class WorkPager extends Component {
                             this.state.departmentId
                         )
                             .then((responseJson) => {
-                                this.setState({isLoading: false});
                                 if (!responseJson.IsErr) {
                                     this.props.actions.refreshList(true);
                                     Toast.show('操作成功');
                                     this.props.nav.goBack(null);
-
-                                } else Toast.show(responseJson.ErrDesc);
+                                } else {
+                                    Toast.show(responseJson.ErrDesc);
+                                    setTimeout(() => {
+                                        this.setState({isLoading: false})
+                                    }, 100);
+                                }
                             })
-                            .done();
+                            .catch((error) => {
+                                console.log(error);
+                                Toast.show("出错了，请稍后再试");
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }).done();
                     }
                     },
                 ]
@@ -125,15 +137,17 @@ class WorkPager extends Component {
                     </View>
                     <RadioForm
                         buttonColor={this.state.isNeedCar ? Color.colorAccent : Color.content}
-                        labelStyle={{color: 'white', marginRight: 36}}
+                        labelStyle={{color: 'white', margin: 10}}
                         radio_props={ [
-                            {label: '公司车辆', value: 0},
-                            {label: '私车公用', value: 1}
+                            {label: carList[0], value: 0},
+                            {label: carList[1], value: 1},
+                            {label: carList[2], value: 2},
+
                         ]}
                         initial={0}
-                        formHorizontal={true}
-                        onPress={(value) => this.setState({carType: (value === 0 ? '公司车辆' : '私车公用')})}
-                        style={{margin: 16}}
+                        formHorizontal={false}
+                        onPress={(value) => this.setState({carType: carList[value]})}
+                        style={{margin: 16,height:100,width:200}}
                         disabled={!this.state.isNeedCar}
                     />
 
@@ -365,7 +379,6 @@ class WorkPager extends Component {
                                                 this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items),});
                                             },
                                             existData: {
-                                                isLoading: false,
                                                 SupplierName: "",
                                                 Series: '',
                                                 WorkContent: '',
