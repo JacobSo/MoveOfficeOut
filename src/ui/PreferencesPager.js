@@ -97,7 +97,7 @@ export default class PreferencesPager extends Component {
                                                     AndroidModule.logoutShareAccount();
                                                 }
 
-                                                App.saveAccount('', '', '', '', false);
+                                                App.saveAccount('','', '', '', false);
                                                 const resetAction = NavigationActions.reset({
                                                     index: 0,
                                                     actions: [
@@ -118,7 +118,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v2"]
+                                ['此版本更新记录', "v3"]
                             ]}
                             functions={[
                                 () => {
@@ -143,6 +143,11 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
+                            <Text style={styles.contentStyle}>
+                                v3:{'\n'}
+                                1.新增车牌选项{'\n'}
+                                2.fix bugs{'\n'}
+                            </Text>
                             <Text style={styles.contentStyle}>
                                 v2:{'\n'}
                                 1.修复搜索选择功能{'\n'}

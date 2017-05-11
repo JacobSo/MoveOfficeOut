@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 export  default  class Application extends Component {
     static session;
-    static account;
+    static account='';
     static workType;
     static department;
     static check;

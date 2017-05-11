@@ -293,7 +293,7 @@ class CustomList extends Component {
     }
 
     render() {
-        console.log('render');
+      //  console.log('render');
         if (this.state.items.length === 0) {
             return (
                 <ScrollView
