@@ -156,7 +156,7 @@ class WorkPager extends Component {
                                placeholderTextColor={Color.background}
                                onChangeText={(text) => this.setState({carMember: text})}
                                editable={this.state.isNeedCar}
-                               multiline={false}
+                               multiline={true}
                                underlineColorAndroid="transparent"
                                returnKeyType={'done'}
                                blurOnSubmit={true}
@@ -443,9 +443,9 @@ const styles = StyleSheet.create(
             resizeMode: 'contain'
         },
         textRemark: {
-            width: width - 32,
-            height: 45,
-            margin: 16,
+            width: width - 64,
+            height:45,
+            margin: 32,
             color: 'white',
             borderColor: Color.colorAccent,
             borderBottomWidth: 2,
