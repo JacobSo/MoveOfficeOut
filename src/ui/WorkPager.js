@@ -445,7 +445,9 @@ const styles = StyleSheet.create(
         textRemark: {
             width: width - 64,
             height:45,
-            margin: 32,
+            marginLeft: 32,
+            marginRight: 32,
+            marginTop: 16,
             color: 'white',
             borderColor: Color.colorAccent,
             borderBottomWidth: 2,
