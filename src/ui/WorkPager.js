@@ -123,9 +123,9 @@ class WorkPager extends Component {
             return (
                 <View>
                     <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
-                        <Text style={{margin: 16, color: 'white'}}>申请车辆</Text>
+                        <Text style={{margin:16,paddingLeft:16, color: 'white',textAlign:"center"}}>申请车辆</Text>
                         <Switch
-                            style={{margin: 16}}
+                            style={{marginRight: 32}}
                             onValueChange={(value) => {
                                 this.setState({isNeedCar: value});
                                 if (!value) {
@@ -147,7 +147,7 @@ class WorkPager extends Component {
                         initial={0}
                         formHorizontal={false}
                         onPress={(value) => this.setState({carType: carList[value]})}
-                        style={{margin: 16,height:100,width:200}}
+                        style={{marginLeft: 32,marginBottom:16,height:100,width:width-64}}
                         disabled={!this.state.isNeedCar}
                     />
 
@@ -156,7 +156,7 @@ class WorkPager extends Component {
                                placeholderTextColor={Color.background}
                                onChangeText={(text) => this.setState({carMember: text})}
                                editable={this.state.isNeedCar}
-                               multiline={true}
+                               multiline={false}
                                underlineColorAndroid="transparent"
                                returnKeyType={'done'}
                                blurOnSubmit={true}
@@ -197,7 +197,7 @@ class WorkPager extends Component {
             });
             //  console.log(JSON.stringify(dataArray));
             return (
-                <View style={{height: 55 * dataArray.length,}}>
+                <View style={{height: 55 * dataArray.length,width:width-64, justifyContent: 'space-between',}}>
                     <RadioForm
                         buttonColor={Color.colorAccent}
                         labelStyle={{color: 'white', margin: 10}}
@@ -211,7 +211,7 @@ class WorkPager extends Component {
                                 departmentPosition: value,
                             });
                         }}
-                        style={{marginTop: 16, right: 0, position: 'absolute',}}
+                        style={{marginTop: 16,}}
                     />
                 </View>)
         }
@@ -444,9 +444,8 @@ const styles = StyleSheet.create(
         },
         textRemark: {
             width: width - 32,
-            height: 65,
-            marginLeft: 10,
-            marginRight: 10,
+            height: 45,
+            margin: 16,
             color: 'white',
             borderColor: Color.colorAccent,
             borderBottomWidth: 2,
