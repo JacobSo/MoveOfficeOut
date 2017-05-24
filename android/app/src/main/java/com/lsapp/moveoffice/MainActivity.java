@@ -13,7 +13,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.facebook.react.ReactActivity;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.zuni.library.utils.zContextUtil;
 import com.zuni.library.utils.zPermissionUtils;
 

@@ -7,10 +7,10 @@ import {AsyncStorage} from 'react-native';
 export  default  class Application extends Component {
     static session;
     static account='';
-    static workType;
+    static workType='';
     static department;
     static check;
-    static dptList;
+    static dptList="";
     static pwd='';
 
 

@@ -19,6 +19,7 @@ import com.lsapp.moveoffice.MainApplication;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.zuni.library.utils.zBitmapUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,6 +128,12 @@ public class CommonModule extends ReactContextBaseJavaModule {
         getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("callLocationChange", params);
     }
+
+    @ReactMethod
+    public void getImageBase64(String path,Callback callback) {
+        callback.invoke(zBitmapUtil.bitmapToString(path,30));
+    }
+
 
     @ReactMethod
     public void show() {

@@ -36,7 +36,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: 'cs',
+            account: '陈枢明',
             pwd: '123',
             isLoading: false,
             check: false,
@@ -123,7 +123,7 @@ export default class LoginPager extends Component {
                             App.dptList = responseJson.Dptlist,
                             this.state.pwd);
                         if (responseJson.WorkType)
-                            this._launchPager("main");
+                            this._launchPager("wdMain");
                         else Toast.show('没有工作类型，无法登陆')
                     } else {
                         Toast.show(responseJson.ErrDesc);

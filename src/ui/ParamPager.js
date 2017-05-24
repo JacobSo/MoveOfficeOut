@@ -165,7 +165,7 @@ export default class PasswordPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={['填写',this.state.isMulti?'完成':null]}
+                         actionArray={[this.props.title==="选择供应商"?null:'填写',this.state.isMulti?'完成':null]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)

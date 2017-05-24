@@ -87,17 +87,17 @@ export default class PreferencesPager extends Component {
                                             },
                                             {
                                                 text: '确定', onPress: () => {
-                                                if (Platform.OS === 'ios'){
+                                                if (Platform.OS === 'ios') {
                                                     IosModule.unbindPushAccount('');
                                                     IosModule.logoutShareAccount();
 
                                                 }
-                                                else{
+                                                else {
                                                     AndroidModule.unbindPushAccount();
                                                     AndroidModule.logoutShareAccount();
                                                 }
 
-                                                App.saveAccount('','', '', '', false);
+                                                App.saveAccount('', '', '', '', false);
                                                 const resetAction = NavigationActions.reset({
                                                     index: 0,
                                                     actions: [
@@ -143,6 +143,17 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
+                            <Text style={styles.contentStyle}>
+                                v4:{'\n'}
+                                1.助理新增查看审核模块{'\n'}
+                                2.增加launcher处理合并多部门app{'\n'}
+                                3.关闭供应商填写{'\n'}
+                                4.修复工作页面完成时签到提示？
+                                5.增加没有定位提示？
+                                6.修复删除工作问题？
+                                7.签到距离提示？
+                                8.签到规则更新？
+                            </Text>
                             <Text style={styles.contentStyle}>
                                 v3:{'\n'}
                                 1.新增车牌选项{'\n'}

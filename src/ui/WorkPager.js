@@ -359,7 +359,7 @@ class WorkPager extends Component {
                                                         },
                                                         existData: rowData,
                                                         deleteData:()=>{
-                                                            this.state.items.splice(rowID);
+                                                            this.state.items.splice(rowID,1);
                                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),});
 
                                                         }

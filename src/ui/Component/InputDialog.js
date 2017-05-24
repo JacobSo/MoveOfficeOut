@@ -25,8 +25,7 @@ export default class InputDialog extends Component {
             <PopupDialog
                 ref={this.props.action[0]}
                 width={width - 32}
-                height={200}
-            >
+                height={200}>
                 <View style={styles.layoutContainer}>
 
                     <Text style={styles.titleStyle}>{this.props.str[0]}</Text>

@@ -15,7 +15,6 @@ const mainActions = {
     refreshList: (refresh) => ({
         type: ActionType.MAIN_REFRESH,
         refreshList: refresh
-
     }),
 
 };

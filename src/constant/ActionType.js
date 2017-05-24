@@ -4,3 +4,4 @@
 
 export const MAIN_FLOAT_VISIBLE = 'MAIN_FLOAT_VISIBLE';
 export const MAIN_REFRESH = 'MAIN_REFRESH';
+export const WD_PRODUCT = 'WD_PRODUCT';

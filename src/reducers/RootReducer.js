@@ -4,7 +4,9 @@
 
 import {combineReducers} from "redux";
 import mainReducer from '../reducers/MainReducer'
+import wdReducer from '../reducers/WdReducer'
 
 export default combineReducers({
     mainStore:mainReducer,
+    wdStore:wdReducer,
 })

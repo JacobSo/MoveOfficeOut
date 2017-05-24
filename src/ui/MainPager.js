@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    Platform,
+    Platform, Button,
 
 } from 'react-native';
 import FloatButton from './Component/FloatButton';
@@ -19,6 +19,7 @@ import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
+import Drawer from "react-native-drawer";
 const PubSub = require('pubsub-js');
 
 export default class MainPager extends Component {
@@ -47,7 +48,18 @@ export default class MainPager extends Component {
         if (App.workType === '数据专员') {
             return (<CustomList tabLabel='进行中' type="3" nav={this.props.nav}/>)
         } else if (App.workType === '助理') {
-            return (<CustomList tabLabel='进行中' type="2" nav={this.props.nav}/>)
+            return (
+                <ScrollableTabView
+                    initialPage={0}
+                    tabBarBackgroundColor={Color.colorPrimary}
+                    tabBarActiveTextColor='white'
+                    locked ={false}
+                    tabBarInactiveTextColor={Color.background}
+                    tabBarUnderlineStyle={{backgroundColor: 'white',}}>
+
+                <CustomList tabLabel='进行中' type="2" nav={this.props.nav}/>
+                <CustomList tabLabel='待审核' type="1" nav={this.props.nav}/>
+                </ScrollableTabView>)
         } else if (App.workType.indexOf('项目专员管理人') > -1) {
             return (<CustomList tabLabel='进行中' type="1,3" nav={this.props.nav}/>)
         } else {
@@ -103,6 +115,7 @@ export default class MainPager extends Component {
                     }
                 ]} str={['完成签到', '备注，如无特殊情况，可忽略']}/>)
     }
+
     render() {
         //  console.log("main:render");
         return (
@@ -118,10 +131,10 @@ export default class MainPager extends Component {
                     isHomeUp={false}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../drawable/search.png"), require("../drawable/setting.png")]}
+                    actionArray={[require("../drawable/search.png"), require("../drawable/app_launcher.png")]}
                     functionArray={[
                         () => this.props.nav.navigate('search'),
-                        () => this.props.nav.navigate('preferences')
+                        () => this.props.nav.navigate('launcher'),
                     ]}/>
 
                 {this._get()}
@@ -137,10 +150,7 @@ export default class MainPager extends Component {
                     })()
                 }
                 {this._finishDialog()}
-
-
             </View>
-
         )
     }
 }

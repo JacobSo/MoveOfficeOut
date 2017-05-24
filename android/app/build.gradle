@@ -84,10 +84,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-interactable')
-    compile project(':react-native-code-push')
-    compile project(path: ':react-native-code-push')
-    compile project(path: ':react-native-interactable')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.facebook.react:react-native:+'
@@ -98,6 +94,10 @@ dependencies {
     compile 'com.pgyersdk:sdk:2.2.2'
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
     compile project(path: ':library')
+    compile project(path: ':react-native-image-picker')
+    compile project(path: ':react-native-code-push')
+    compile project(path: ':react-native-interactable')
+    compile project(':react-native-sqlite-storage')
 }
 
 // Run this once to be able to run the application with BUCK

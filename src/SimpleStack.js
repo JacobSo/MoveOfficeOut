@@ -20,12 +20,19 @@ import store from './stores/Store'
 import {StackNavigator,} from 'react-navigation';
 import {Platform, Dimensions, View, StatusBar} from 'react-native';
 import codePush from 'react-native-code-push'
+import WdMainPager from "./ui/WoodDevelop/WdMainPager";
+import WdProductListPager from "./ui/WoodDevelop/WdProductListPager";
+import LauncherPager from "./ui/LauncherPager";
+import WdProductDetailPager from "./ui/WoodDevelop/WdProductDetailPager";
+import WdProductFilterPager from "./ui/WoodDevelop/WdProductFilterPager";
+import WdPostPager from "./ui/WoodDevelop/WdPostPager";
+import WdReviewPager from "./ui/WoodDevelop/WdReviewPager";
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
-  //  console.log("screen1");
-    codePush.sync();
+    //  console.log("screen1");
+    //  codePush.sync();
     return (
         <Provider store={store}>
             <View
@@ -45,9 +52,9 @@ _renderScreen = (pager) => {
                 {pager}
             </View>
         </Provider>)
-
 };
 
+const LauncherScreen = ({navigation}) => _renderScreen(<LauncherPager {...navigation.state.params} nav={navigation}/>);
 
 const MainScreen = ({navigation}) => _renderScreen(<MainPager {...navigation.state.params} nav={navigation}/>);
 const PreferencesScreen = ({navigation}) => _renderScreen(<PreferencesPager {...navigation.state.params}
@@ -62,7 +69,22 @@ const CommentScreen = ({navigation}) => _renderScreen(<CommentPager {...navigati
 const WorkSignScreen = ({navigation}) => _renderScreen(<WorkSignPager {...navigation.state.params} nav={navigation}/>);
 const LoginScreen = ({navigation}) => _renderScreen(<LoginPager {...navigation.state.params} nav={navigation}/>);
 
+const WdMainScreen = ({navigation}) => _renderScreen(<WdMainPager {...navigation.state.params} nav={navigation}/>);
+const WdProductListScreen = ({navigation}) => _renderScreen(<WdProductListPager {...navigation.state.params}
+                                                                                nav={navigation}/>);
+const WdProductDetailScreen = ({navigation}) => _renderScreen(<WdProductDetailPager {...navigation.state.params}
+                                                                                    nav={navigation}/>);
+const WdProductFilterScreen = ({navigation}) => _renderScreen(<WdProductFilterPager {...navigation.state.params}
+                                                                                    nav={navigation}/>);
+const WdPostScreen = ({navigation}) => _renderScreen(<WdPostPager {...navigation.state.params}
+                                                                                    nav={navigation}/>);
+const WdReviewScreen = ({navigation}) => _renderScreen(<WdReviewPager {...navigation.state.params}
+                                                                                    nav={navigation}/>);
+
 const SimpleStack = StackNavigator({
+    launcher: {
+        screen: LauncherScreen,
+    },
     main: {
         screen: MainScreen,
     },
@@ -97,6 +119,24 @@ const SimpleStack = StackNavigator({
         screen: LoginScreen,
     },
 
+    wdMain: {
+        screen: WdMainScreen,
+    },
+    wdProduct: {
+        screen: WdProductListScreen,
+    },
+    wdDetail: {
+        screen: WdProductDetailScreen,
+    },
+    wdFilter: {
+        screen: WdProductFilterScreen,
+    },
+    wdPost: {
+        screen: WdPostScreen,
+    },
+    wdReview: {
+        screen: WdReviewScreen,
+    },
 }, {
     initialRouteName: 'login',
     headerMode: 'none',

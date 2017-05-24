@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Library</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="confirm">确定</string>
+    <string name="set_begin_time">设置开始时间</string>
+    <string name="set_end_time">设置结束时间</string>
+</resources>

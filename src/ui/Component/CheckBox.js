@@ -40,7 +40,7 @@ export default class CheckBox extends Component {
 
     };
     static defaultProps = {
-        isChecked: false,
+        isChecked: true,
         leftTextStyle: {},
         rightTextStyle: {}
     };
