@@ -111,6 +111,7 @@ export default class Toolbar extends Component {
                                 returnKeyType={'done'}
                                 blurOnSubmit={true}
                                 placeholderTextColor={'white'}
+                                selectionColor={'white'}
                                 underlineColorAndroid="transparent"
                                 onChangeText={(text)=>this.props.searchFunc(text)}/>)
         }
@@ -179,7 +180,9 @@ const styles = StyleSheet.create({
         height: 45,
         marginLeft: 16,
         marginRight: 16,
+        paddingBottom:16,
         borderColor: Color.line,
         borderBottomWidth: 1,
+        color:'white'
     },
 });

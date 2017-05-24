@@ -16,8 +16,6 @@ import {
     TextInput,
     Switch, Alert,
     KeyboardAvoidingView,
-    BackAndroid,
-    Platform,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Color from '../constant/Color';

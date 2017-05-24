@@ -50,6 +50,7 @@ let sqLite = new SQLite();
     }
 
     componentWillUnmount(){
+        App.mainColor = Color.colorDeepOrange
         sqLite.close();
     }
 
@@ -159,15 +160,6 @@ let sqLite = new SQLite();
     }
 
     render() {
-
-/*        let realm = new Realm({
-            schema: [{name: 'Dog', properties: {name: 'string'}}]
-        });
-
-        realm.write(() => {
-            realm.create('Dog', {name: 'Rex'});
-        });
-        console.log('insert:'+realm.objects('Dog').length)*/
         return (
             <View style={{
                 flex: 1,

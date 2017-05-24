@@ -87,7 +87,7 @@ class WdProductListPager extends Component {
                     this.popupDialog = popupDialog;
                 }}
                 width={width - 32}
-                height={55*4}>
+                height={50*4}>
                 <View style={styles.layoutContainer}>
                     <TouchableOpacity onPress={() => {
                         this.popupDialog.dismiss();
@@ -121,7 +121,7 @@ class WdProductListPager extends Component {
 
     getHeaderView() {
         if (this.state.isHeader) {
-            return (<View>
+            return (<View style={{backgroundColor:'white'}}>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity
                         onPress={() => {
@@ -189,12 +189,15 @@ class WdProductListPager extends Component {
                         }}>
                         <Text style={{margin: 16}}>系列信息
                         </Text></TouchableOpacity>
-                    <Button style={{marginRight: 10, marginLeft: 10}}
-                            title="生成报告"
-                            onPress={
-                                () => this.popupDialog.show()
-                            }
-                            color={Color.colorAccent}/>
+
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.popupDialog.show()
+                        }}>
+                        <Text style={{marginRight: 10, marginLeft: 10,color:Color.colorDeepOrange}}>生成报告
+                        </Text></TouchableOpacity>
+
                 </View>
             </View>)
         }
@@ -338,7 +341,7 @@ const styles = StyleSheet.create(
         },
         layoutContainer: {
             width: width - 32,
-            height: 55*4,
+            height: 50*4,
             backgroundColor: 'white'
         },
     });

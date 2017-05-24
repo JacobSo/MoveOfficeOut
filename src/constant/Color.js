@@ -35,6 +35,7 @@ export  default  class  extends Component {
 
     static colorOrange = "#FF9800";//
     static colorDeepOrange = "#FF5722";
+    static colorDeepOrangeDark = "#E64A19";
     static colorBrown = "#795548";
     static colorGrey = "#9E9E9E";
     static colorBlueGrey = "#607D8B";//

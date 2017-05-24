@@ -66,7 +66,7 @@ export class WdFilterItem extends Component {
                 onPress={ this.props.func}
                 style={styles.mainContainer}>
                     <Text style={{
-                        width:width/4,
+                        width:width/3-10,
                         backgroundColor: this.state.statusColor,
                         color: 'white',
                         textAlign: 'center'
@@ -93,14 +93,11 @@ const styles = StyleSheet.create(
         mainContainer: {
             flexDirection: 'column',
             alignItems: 'center',
+
             backgroundColor: 'white',
-            width:width/4,
             height:200,
             elevation: 2,
-            marginBottom: 32,
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 10,
+            margin: 5,
         },
     });
 

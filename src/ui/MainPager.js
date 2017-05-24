@@ -19,7 +19,6 @@ import App from '../constant/Application';
 import CustomList from "./Component/CustomList";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
-import Drawer from "react-native-drawer";
 const PubSub = require('pubsub-js');
 
 export default class MainPager extends Component {

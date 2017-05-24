@@ -4,6 +4,8 @@
 
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
+import Color from '../constant/Color';
+
 export  default  class Application extends Component {
     static session;
     static account='';
@@ -12,6 +14,7 @@ export  default  class Application extends Component {
     static check;
     static dptList="";
     static pwd='';
+    static mainColor=Color.colorPrimaryDark;
 
 
     static initAccount(callback) {

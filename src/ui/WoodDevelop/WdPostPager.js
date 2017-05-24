@@ -408,7 +408,6 @@ const styles = StyleSheet.create({
     textInput: {
         width: width,
         height: 200,
-        marginRight: 10,
         borderColor: Color.line,
         borderBottomWidth: 1,
         textAlign: "left",
