@@ -5,11 +5,7 @@
 import React, {Component, PropTypes} from 'react';
 import {View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {WdActions} from "../../actions/WdAction";
-import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
-import RNFetchBlob from "react-native-fetch-blob";
+import {CachedImage, ImageCache} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
 export class WdProductItem extends Component {
     static propTypes = {
@@ -23,13 +19,12 @@ export class WdProductItem extends Component {
             statusText: "未开始",
             statusColor: Color.content,
             isAllFinish: false,
-            imageView: <View/>
+
         }
     }
 
     componentDidMount() {
         this.setStatus();
-        //    this.setImageView();
         this.getImageLocalPath();
     }
 

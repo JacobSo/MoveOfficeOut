@@ -86,10 +86,13 @@ export class WdFilterItem extends Component {
                 <Text style={{
                     margin: 10,
                     fontSize: 15,
-
+                    width: 90,
+                    textAlign:'center'
                 }}>{this.props.product.ItemName}</Text>
                 <Text
-                    style={{marginLeft: 10, marginRight: 10}}>{ this.props.product.ItemRemark}</Text>
+                    style={{marginLeft: 10, marginRight: 10, width: 90,
+                        textAlign:'center'
+                    }}>{ this.props.product.ItemRemark}</Text>
             </TouchableOpacity>
         );
     }
