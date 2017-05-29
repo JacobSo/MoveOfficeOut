@@ -19,6 +19,7 @@ import {WdActions} from "../../actions/WdAction";
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import {CachedImage} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
 
 class WdProductDetailPager extends Component {
@@ -125,7 +126,7 @@ class WdProductDetailPager extends Component {
 
             }}>
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={["产品详情"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
@@ -135,11 +136,13 @@ class WdProductDetailPager extends Component {
                     functionArray={[() => this.props.nav.goBack(null)]}
                 />
                 <ScrollView><View style={{alignItems: "center", marginBottom: 16}}>
-                    <Image
-                        resizeMode="contain"
-                        style={{width: width, height: 150,}}
-                        source={{uri: this.props.product.pImage}}
-                    />
+                    <View style={{width: width, height: 150,}}>
+                        <CachedImage
+                            resizeMode="contain"
+                            indicator={require('../../drawable/empty_image.png')}
+                            style={{width: width, height: 150,}}
+                            source={{uri: this.props.product.pImage}}/>
+                    </View>
 
                     <View style={styles.textStyle}>
                         <Text >名称</Text>

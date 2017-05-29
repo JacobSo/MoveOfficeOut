@@ -221,7 +221,7 @@ class WorkPager extends Component {
                 <View style={{backgroundColor: Color.background, height: height}}>
                     <Toolbar title={['外出申请']}
                              color={Color.colorPrimaryDark}
-                             elevation={0}
+                             elevation={2}
                              isHomeUp={true}
                              isAction={true}
                              isActionByText={true}

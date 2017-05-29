@@ -308,7 +308,11 @@ export  default  class Sqlite extends Component {
             db.executeSql('SELECT * FROM ' + TABLE_W_D_Q + " where wdq_index = '" + index + "' AND wdq_ReviewType=" + step + ";",
                 [],
                 (results) => {
-                    resolve(results.rows.item(0));
+                    let temp = null;
+                    if (results.rows.item(0)) {
+                        temp = results.rows.item(0);
+                    }
+                    resolve(temp);
                     console.log("getWdDraftContent:" + JSON.stringify(results.rows.item(0)))
                 }, (err) => console.log("getWdDraftContent  err:" + JSON.stringify(err)));
         })

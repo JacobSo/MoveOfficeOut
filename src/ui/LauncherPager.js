@@ -50,7 +50,7 @@ export default class LauncherPager extends Component {
             }}>
 
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={["供应链管理"]}
                     color={Color.colorPrimary}
                     isHomeUp={false}

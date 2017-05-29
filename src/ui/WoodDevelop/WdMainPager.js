@@ -7,7 +7,6 @@ import React, {Component} from 'react';
 import {
     View,
     InteractionManager,
-    Button,
     ListView,
     RefreshControl,
     ScrollView,
@@ -167,7 +166,7 @@ let sqLite = new SQLite();
             }}>
 
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={[App.account, App.workType]}
                     color={Color.colorDeepOrange}
                     isHomeUp={false}

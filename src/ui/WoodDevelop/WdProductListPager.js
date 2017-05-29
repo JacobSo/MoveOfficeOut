@@ -19,6 +19,9 @@ import Color from '../../constant/Color';
 import {WdProductItem} from "../Component/WdProductItem";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import Toast from 'react-native-root-toast';
+import ApiService from '../../network/WdApiService';
+
 const {width, height} = Dimensions.get('window');
 
 import {WdActions} from "../../actions/WdAction";
@@ -87,28 +90,60 @@ class WdProductListPager extends Component {
                     this.popupDialog = popupDialog;
                 }}
                 width={width - 32}
-                height={50*4}>
+                height={50 * 4}>
                 <View style={styles.layoutContainer}>
                     <TouchableOpacity onPress={() => {
                         this.popupDialog.dismiss();
-
+                        this.props.nav.navigate(
+                            'wdFile',
+                            {
+                                task: this.props.task,
+                                step: 1,
+                                stepName: '打印白胚评审',
+                                selectMode: true,
+                            },
+                        );
                     }}>
                         <Text style={{margin: 16}}>查看生成报表</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-
+                        this.props.nav.navigate(
+                            'wdFilter',
+                            {
+                                task: this.props.task,
+                                step: 1,
+                                stepName: '打印白胚评审',
+                                selectMode: true,
+                            },
+                        );
                         this.popupDialog.dismiss();
                     }}>
                         <Text style={{margin: 16}}>白胚评审报表</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-
+                        this.props.nav.navigate(
+                            'wdFilter',
+                            {
+                                task: this.props.task,
+                                step: 2,
+                                stepName: '打印成品评审',
+                                selectMode: true,
+                            },
+                        );
                         this.popupDialog.dismiss();
                     }}>
                         <Text style={{margin: 16}}>成品评审报表</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-
+                        this.props.nav.navigate(
+                            'wdFilter',
+                            {
+                                task: this.props.task,
+                                step: 3,
+                                stepName: '打印包装评审',
+                                selectMode: true,
+                            },
+                        );
                         this.popupDialog.dismiss();
                     }}>
                         <Text style={{margin: 16}}>包装评审报表</Text>
@@ -121,7 +156,7 @@ class WdProductListPager extends Component {
 
     getHeaderView() {
         if (this.state.isHeader) {
-            return (<View style={{backgroundColor:'white'}}>
+            return (<View style={{backgroundColor: 'white'}}>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity
                         onPress={() => {
@@ -129,7 +164,9 @@ class WdProductListPager extends Component {
                                 'wdFilter',
                                 {
                                     task: this.props.task,
-                                    step: 1, stepName: '白胚评审进度'
+                                    step: 1,
+                                    stepName: '白胚评审进度',
+                                    selectMode: false,
                                 },
                             );
                         }}
@@ -141,7 +178,12 @@ class WdProductListPager extends Component {
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
                             'wdFilter',
-                            {task: this.props.task, step: 2, stepName: '成品评审进度'},
+                            {
+                                task: this.props.task,
+                                step: 2,
+                                stepName: '成品评审进度',
+                                selectMode: false,
+                            },
                         );
                     }} style={{alignItems: 'center'}}>
                         <View style={styles.iconCircle}>
@@ -151,7 +193,12 @@ class WdProductListPager extends Component {
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
                             'wdFilter',
-                            {task: this.props.task, step: 3, stepName: '包装评审进度'},
+                            {
+                                task: this.props.task,
+                                step: 3,
+                                stepName: '包装评审进度',
+                                selectMode: false,
+                            },
                         );
                     }} style={{alignItems: 'center'}}>
                         <View style={styles.iconCircle}>
@@ -195,7 +242,7 @@ class WdProductListPager extends Component {
                         onPress={() => {
                             this.popupDialog.show()
                         }}>
-                        <Text style={{marginRight: 10, marginLeft: 10,color:Color.colorDeepOrange}}>生成报告
+                        <Text style={{marginRight: 10, marginLeft: 10, color: Color.colorDeepOrange}}>生成报告
                         </Text></TouchableOpacity>
 
                 </View>
@@ -207,6 +254,48 @@ class WdProductListPager extends Component {
         return this.state.items.filter((item) => item.ItemName.toLowerCase().indexOf(text.toLowerCase()) > -1);
     }
 
+    finishCheck() {
+        for (let i = 0; i < this.props.task.Itemlist.length; i++) {
+            let data = this.props.task.Itemlist[i];
+            let result = false;
+            if (data.pResultList) {
+                switch (data.stage) {
+                    case 7://all
+                        let temp = data.pResultList.split(",");
+                        result = (temp.length === 3) &&
+                            (data.pResultList.indexOf("0-1") > -1) &&
+                            (data.pResultList.indexOf("1-1") > -1) &&
+                            (data.pResultList.indexOf("2-1") > -1);
+                        break;
+                    case 6://ab
+                        result = ((data.pResultList.indexOf("0-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                        break;
+                    case 5://ac
+                        result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("0-1") > -1));
+                        break;
+                    case 4://a
+                        result = (data.pResultList.indexOf("0-1") > -1);
+                        break;
+                    case 3://bc
+                        result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                        break;
+                    case 2://b
+                        result = (data.pResultList.indexOf("1-1") > -1);
+                        break;
+                    case 1://c
+                        result = (data.pResultList.indexOf("2-1") > -1);
+                        break;
+                }
+            }
+            if (!result) {
+                Toast.show("还有没有评审完成的任务");
+                return;
+            }
+        }
+        return true;
+    }
+
+
     render() {
         console.log("product list render")
         return (
@@ -215,7 +304,7 @@ class WdProductListPager extends Component {
                 backgroundColor: Color.background
             }}>
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={[this.props.task.SeriesName, "产品列表"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
@@ -239,7 +328,23 @@ class WdProductListPager extends Component {
                             })
                         },
                         () => {
-
+                            Alert.alert(
+                                '评审完成',
+                                '是否提交评审？',
+                                [
+                                    {
+                                        text: '取消', onPress: () => {
+                                    }
+                                    },
+                                    {
+                                        text: '确定', onPress: () => {
+                                        if (this.finishCheck()) {
+                                            ApiService.submitStatus(this.props.task.SeriesGuid)
+                                        }
+                                    }
+                                    },
+                                ]
+                            );
                         },
                     ]}
                     isSearch={this.state.isSearch}
@@ -341,7 +446,7 @@ const styles = StyleSheet.create(
         },
         layoutContainer: {
             width: width - 32,
-            height: 50*4,
+            height: 50 * 4,
             backgroundColor: 'white'
         },
     });

@@ -10,6 +10,7 @@ import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.facebook.react.ReactApplication;
 import com.wix.interactable.Interactable;
 import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.microsoft.codepush.react.CodePush;
 
 import com.facebook.react.ReactNativeHost;
@@ -54,6 +55,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+                    new RNFetchBlobPackage(),
                     new Interactable(),
                     new ImagePickerPackage(),
                     new SQLitePluginPackage(),

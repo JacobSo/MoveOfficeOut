@@ -374,7 +374,7 @@ const {width, height} = Dimensions.get('window');
 
                 <Toolbar title={['对接内容', this.props.task.DailyRecordStateName]}
                          color={Color.colorPrimary}
-                         elevation={0}
+                         elevation={2}
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}

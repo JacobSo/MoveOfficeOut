@@ -258,7 +258,7 @@ class WdPostPager extends Component {
 
             }}>
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={[this.props.title]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}

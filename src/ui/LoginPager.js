@@ -18,7 +18,6 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
-
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import ApiService from '../network/ApiService';
@@ -152,6 +151,7 @@ export default class LoginPager extends Component {
                     <View style={styles.container}>
                         <View style={{width: width,}}>
                             <Image style={styles.logo}
+                                   resizeMode="contain"
                                    source={require('../drawable/logo_white.png')}/>
                         </View>
                         <Text style={styles.welcome}>外协工作记录</Text>
@@ -212,8 +212,8 @@ const styles = StyleSheet.create({
         height: height,
     },
     logo: {
-        width: 100,
-        height: 45,
+        width: 85,
+        height: 35,
         margin: 16,
     },
 

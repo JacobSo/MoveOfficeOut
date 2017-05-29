@@ -8,6 +8,7 @@ import Color from '../../constant/Color';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {WdActions} from "../../actions/WdAction";
+import {CachedImage} from "react-native-img-cache";
 
 const {width, height} = Dimensions.get('window');
 
@@ -21,34 +22,35 @@ export class WdFilterItem extends Component {
         super(props);
         this.state = {
             statusText: "未开始",
-            statusColor: Color.content
+            statusColor: Color.content,
         }
     }
 
     componentDidMount() {
         this.setStatus();
     }
+
     componentWillReceiveProps(newProps) {
         //console.log(JSON.stringify(newProps) + '-------------------------')
         this.setStatus();
     }
+
     setStatus() {
         let color;
         let text;
         if (this.props.product.pResultList) {
             if (this.props.step === 1) {
-                color = (this.props.product.pResultList.indexOf("0-1") > -1) ? Color.colorGreen:Color.colorRed;
+                color = (this.props.product.pResultList.indexOf("0-1") > -1) ? Color.colorGreen : Color.colorRed;
                 text = (this.props.product.pResultList.indexOf("0-1") > -1) ? "白胚-通过" : "白胚-不通过";
             }
             else if (this.props.step === 2) {
-                color = (this.props.product.pResultList.indexOf("1-1") > -1) ? Color.colorGreen:Color.colorRed;
+                color = (this.props.product.pResultList.indexOf("1-1") > -1) ? Color.colorGreen : Color.colorRed;
                 text = (this.props.product.pResultList.indexOf("1-1") > -1) ? "成品-通过" : "成品-不通过";
             }
             else if (this.props.step === 3) {
-                color = (this.props.product.pResultList.indexOf("2-1") > -1) ? Color.colorGreen:Color.colorRed;
+                color = (this.props.product.pResultList.indexOf("2-1") > -1) ? Color.colorGreen : Color.colorRed;
                 text = (this.props.product.pResultList.indexOf("2-1") > -1) ? "包装-通过" : "包装-不通过";
             }
-
 
             this.setState({
                 statusText: text,
@@ -63,26 +65,31 @@ export class WdFilterItem extends Component {
         //   console.log(JSON.stringify(this.props.task));
         return (
             <TouchableOpacity
-                onPress={ this.props.func}
-                style={styles.mainContainer}>
-                    <Text style={{
-                        width:width/3-10,
-                        backgroundColor: this.state.statusColor,
-                        color: 'white',
-                        textAlign: 'center'
-                    }}>{this.state.statusText}</Text>
-                    <Image
+                onPress={
+                    this.props.func
+                }
+                style={[styles.mainContainer]}>
+                <Text style={{
+                    width: width / 3 - 10,
+                    backgroundColor: this.state.statusColor,
+                    color: 'white',
+                    textAlign: 'center'
+                }}>{this.state.statusText}</Text>
+
+                <View style={{width: 100, height: 100}}>
+                    <CachedImage
                         resizeMode="contain"
+                        indicator={require('../../drawable/empty_image.png')}
                         style={{width: 100, height: 100, margin: 5}}
-                        source={{uri: this.props.product.pImage}}
-                    />
-                    <Text style={{
-                        margin: 10,
-                        fontSize: 15,
-                        color: 'black'
-                    }}>{this.props.product.ItemName}</Text>
-                    <Text
-                        style={{marginLeft: 10, marginRight: 10}}>{ this.props.product.ItemRemark}</Text>
+                        source={{uri: this.props.product.pImage}}/>
+                </View>
+                <Text style={{
+                    margin: 10,
+                    fontSize: 15,
+
+                }}>{this.props.product.ItemName}</Text>
+                <Text
+                    style={{marginLeft: 10, marginRight: 10}}>{ this.props.product.ItemRemark}</Text>
             </TouchableOpacity>
         );
     }
@@ -93,9 +100,8 @@ const styles = StyleSheet.create(
         mainContainer: {
             flexDirection: 'column',
             alignItems: 'center',
-
             backgroundColor: 'white',
-            height:200,
+            height: 200,
             elevation: 2,
             margin: 5,
         },

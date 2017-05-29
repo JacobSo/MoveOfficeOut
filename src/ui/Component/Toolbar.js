@@ -87,13 +87,13 @@ export default class Toolbar extends Component {
             } else {//icon menu
                 return (
                     <View style={styles.actionBackground}>
-                        <TouchableOpacity onPress={this.props.functionArray[0]}>
+                        <TouchableOpacity onPress={this.props.functionArray[1]}>
                             <Image style={styles.actionIcon}
                                    source={ this.props.actionArray[0]}/></TouchableOpacity>
                         {(() => {
                             if (this.props.actionArray.length === 2) {
                                 return (
-                                    <TouchableOpacity onPress={this.props.functionArray[1]}>
+                                    <TouchableOpacity onPress={this.props.functionArray[2]}>
                                         <Image style={styles.actionIcon}
                                                source={ this.props.actionArray[1]}/></TouchableOpacity>
                                 )

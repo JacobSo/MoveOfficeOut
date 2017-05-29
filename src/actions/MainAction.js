@@ -2,7 +2,6 @@
  * Created by Administrator on 2017/4/1.
  */
 import * as ActionType from "../constant/ActionType";
-import ApiService from "../network/ApiService";
 'user strict';
 
 

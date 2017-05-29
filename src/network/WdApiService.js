@@ -3,7 +3,8 @@
  */
 'use strict';
 //let BASE_URL = "http://119.145.166.182:8806/MoveOffice/";
-let BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
+//npmlet BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
+let BASE_URL = "http://192.168.1.190:8806/moveofficeTest/";
 import App from '../constant/Application';
 
 export  default  class ApiService {
@@ -50,11 +51,11 @@ export  default  class ApiService {
         return this.getRequest(method);
     }
 
-    static submitStatus(id, state) {
+    static submitStatus(id) {
         let method = 'PlateTrackSeriesState'
         let param = JSON.stringify({
             SeriesGuid: id,
-            State: state,
+            State: 2,
         });
         return this.postRequest(method, param);
     }

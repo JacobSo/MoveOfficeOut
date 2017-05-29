@@ -62,7 +62,7 @@ export default class WdReviewPager extends Component {
                 backgroundColor: Color.background
             }}>
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={[this.props.title, "评审结果"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}

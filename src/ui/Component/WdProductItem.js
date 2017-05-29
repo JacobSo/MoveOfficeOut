@@ -3,12 +3,13 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {WdActions} from "../../actions/WdAction";
-
+import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
+import RNFetchBlob from "react-native-fetch-blob";
 const {width, height} = Dimensions.get('window');
 export class WdProductItem extends Component {
     static propTypes = {
@@ -21,15 +22,19 @@ export class WdProductItem extends Component {
         this.state = {
             statusText: "未开始",
             statusColor: Color.content,
-            isAllFinish: false
+            isAllFinish: false,
+            imageView: <View/>
         }
     }
 
     componentDidMount() {
         this.setStatus();
+        //    this.setImageView();
+        this.getImageLocalPath();
     }
+
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(newProps) + '---------product----------------')
+        console.log(JSON.stringify(newProps) + '---------product----------------');
         this.setStatus();
 
     }
@@ -40,8 +45,8 @@ export class WdProductItem extends Component {
         let finish = false;
         if (this.props.product.pResultList) {
             finish = ((this.props.product.pResultList.indexOf("0-1") > -1)
-                && (this.props.product.pResultList.indexOf("1-1") > -1)
-                && (this.props.product.pResultList.indexOf("2-1") > -1));
+            && (this.props.product.pResultList.indexOf("1-1") > -1)
+            && (this.props.product.pResultList.indexOf("2-1") > -1));
             if (this.props.product.pStatus === 0) {
                 color = Color.colorOrange;
                 text = (this.props.product.pResultList.indexOf("0-1") > -1) ? "白胚-通过" : "白胚-不通过";
@@ -61,15 +66,22 @@ export class WdProductItem extends Component {
                 isAllFinish: finish
             })
         }
+    }
 
-
+    getImageLocalPath(){
+            const immutable = true;
+            const observer = (path) => {
+                console.log(path);
+            };
+            const uri = {uri: this.props.product.pImage};
+            ImageCache.get().on(uri, observer, immutable);
     }
 
     render() {
         //   console.log(JSON.stringify(this.props.task));
         return (
             <TouchableOpacity
-                onPress={ this.props.func}>
+                onPress={this.props.func}>
                 <View style={styles.mainContainer}>
                     <Text style={{
                         width: width - 32,
@@ -78,11 +90,15 @@ export class WdProductItem extends Component {
                         textAlign: 'center'
                     }}>{this.state.statusText}</Text>
                     <View style={{flexDirection: 'row',}}>
-                        <Image
-                            resizeMode="contain"
-                            style={{width: 100, height: 100, margin: 5}}
-                            source={{uri: this.props.product.pImage}}
-                        />
+
+                        <View style={{width: 100, height: 100}}>
+                            <CachedImage
+                                resizeMode="contain"
+                                indicator={require('../../drawable/empty_image.png')}
+                                style={{width: 100, height: 100, margin: 5}}
+                                source={{uri: this.props.product.pImage}}/>
+                        </View>
+
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{
                                 margin: 10,
@@ -164,15 +180,15 @@ const styles = StyleSheet.create(
 
     });
 /*
-const mapStateToProps = (state) => {
-    return {
-        product: state.wdStore.product,
-        position: state.wdStore.position
-    }
-};
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(WdActions, dispatch)
-    }
-};
-export default connect(mapStateToProps, mapDispatchToProps)(WdProductItem);*/
+ const mapStateToProps = (state) => {
+ return {
+ product: state.wdStore.product,
+ position: state.wdStore.position
+ }
+ };
+ const mapDispatchToProps = (dispatch) => {
+ return {
+ actions: bindActionCreators(WdActions, dispatch)
+ }
+ };
+ export default connect(mapStateToProps, mapDispatchToProps)(WdProductItem);*/
