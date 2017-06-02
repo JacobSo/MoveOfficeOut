@@ -64,7 +64,7 @@ export default class WorkSignPager extends Component {
             <View>
                 <Toolbar
                     title={['对接工作']}
-                    color={Color.colorPrimary}
+                    color={Color.colorCyanDark}
                     elevation={2}
                     isHomeUp={true}
                     isAction={true}

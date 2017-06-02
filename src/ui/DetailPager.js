@@ -47,7 +47,8 @@ const {width, height} = Dimensions.get('window');
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
             rejectContent: '',
-            carNumber: this.props.task.CarNumber
+            carNumber: this.props.task.CarNumber,
+            tripText:""
         };
 
     }
@@ -58,6 +59,20 @@ const {width, height} = Dimensions.get('window');
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
             });
+            let temp;
+            if(this.props.task.DailyType===0){
+                temp = "当天来回"
+            }else if(this.props.task.DailyType===1){
+                temp = "驻厂"
+
+            }else if(this.props.task.DailyType===2){
+                temp = "出差，结束时间："+this.props.task.DailyEndDate
+
+            }else{
+                temp = "不需要外出"
+
+            }
+
 
      //   });
 
@@ -373,7 +388,7 @@ const {width, height} = Dimensions.get('window');
             }}>
 
                 <Toolbar title={['对接内容', this.props.task.DailyRecordStateName]}
-                         color={Color.colorPrimary}
+                         color={Color.colorCyan}
                          elevation={2}
                          isHomeUp={true}
                          isAction={true}
@@ -387,7 +402,7 @@ const {width, height} = Dimensions.get('window');
                 <ScrollView>
                     <View style={{
                         flexDirection: 'column',
-                        backgroundColor: Color.colorPrimary,
+                        backgroundColor: Color.colorCyan,
                         padding: 16,
                     }}>
                         <Text style={{color: 'white', marginBottom: 5}}>{'对接时间：' + this.props.task.DockingDate}</Text>
@@ -396,6 +411,7 @@ const {width, height} = Dimensions.get('window');
                         <Text style={{color: 'white', marginBottom: 5}}>{'陪同人：' + this.props.task.FollowPeson}</Text>
                         <Text style={{color: 'white', marginBottom: 5}}>{'备注：' + this.props.task.Remark}</Text>
                         <Text style={{color: 'white'}}>{'申请人：' + this.props.task.Creator}</Text>
+
                     </View>
                     {this._setReject()}
                     {this._setList()}

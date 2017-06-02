@@ -148,11 +148,12 @@ export default class PreferencesPager extends Component {
                                 1.助理新增查看审核模块{'\n'}
                                 2.增加launcher处理合并多部门app{'\n'}
                                 3.关闭供应商填写{'\n'}
-                                4.修复工作页面完成时签到提示？
-                                5.增加没有定位提示？
-                                6.修复删除工作问题？
-                                7.签到距离提示？
-                                8.签到规则更新？
+                                4.修复工作页面【完成】时签到提示错误问题{'\n'}
+                                5.修复删除工作问题{'\n'}
+                                6.签到距离提示{'\n'}
+                                7.新增外出类型{'\n'}
+                                8.调整签到按钮{'\n'}
+
                             </Text>
                             <Text style={styles.contentStyle}>
                                 v3:{'\n'}

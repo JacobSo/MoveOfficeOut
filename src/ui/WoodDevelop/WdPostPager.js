@@ -7,11 +7,8 @@ import React, {Component} from 'react';
 import {
     View,
     Alert,
-    Button,
     ListView,
-    RefreshControl,
     ScrollView,
-    Text,
     StyleSheet,
     Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput,
 } from 'react-native';
@@ -144,8 +141,6 @@ class WdPostPager extends Component {
         ApiService.submitProduct(JSON.stringify(content))
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-
-
                     if (this.state.submitPic.length !== 0)
                         this.postImage();
                     else {
@@ -246,7 +241,7 @@ class WdPostPager extends Component {
 
         // console.log(result)
         ///  console.log(this.state.product.pResultList)
-            sqLite.updateProductStatus(this.state.submitContent,tempPicsPath,this.state.product.pResultList );
+        sqLite.updateProductStatus(this.state.submitContent, tempPicsPath, this.state.product.pResultList);
         this.props.actions.updateProduct(JSON.parse(JSON.stringify(this.state.product)), this.props.position);
     }
 
@@ -255,7 +250,6 @@ class WdPostPager extends Component {
             <View style={{
                 flex: 1,
                 backgroundColor: "white",
-
             }}>
                 <Toolbar
                     elevation={2}
@@ -271,7 +265,6 @@ class WdPostPager extends Component {
                             this.pack();
                             sqLite.insertWdDraft(this.state.submitContent, this.state.submitPic)
                                 .then((result) => Toast.show(result)).done();
-
                         },
                         () => {
                             this.pack();
@@ -282,15 +275,16 @@ class WdPostPager extends Component {
                 <KeyboardAvoidingView behavior={'padding'}>
                     <ScrollView>
                         <View>
-                            <TextInput style={styles.textInput}
-                                       placeholder="请输入评审内容"
-                                       defaultValue={this.state.editContent}
-                                       multiline={true}
-                                       returnKeyType={'done'}
-                                       autoFocus={true}
-                                       blurOnSubmit={true}
-                                       underlineColorAndroid="transparent"
-                                       onChangeText={(text) => this.setState({editContent: text})}/>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="请输入评审内容"
+                                defaultValue={this.state.editContent}
+                                multiline={true}
+                                returnKeyType={'done'}
+                                autoFocus={true}
+                                blurOnSubmit={true}
+                                underlineColorAndroid="transparent"
+                                onChangeText={(text) => this.setState({editContent: text})}/>
                             <View style={{flexDirection: 'row', padding: 5}}>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchCamera(options, (response) => {
@@ -301,7 +295,6 @@ class WdPostPager extends Component {
                                             console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
-
                                 }}>
                                     <Image
                                         resizeMode="contain"
@@ -330,8 +323,6 @@ class WdPostPager extends Component {
                                     this.setState({
                                         editContent: (this.state.editContent += ("\n∝\n" + (temp.length + 1) + "."))
                                     })
-
-
                                 }}>
                                     <Image
                                         resizeMode="contain"

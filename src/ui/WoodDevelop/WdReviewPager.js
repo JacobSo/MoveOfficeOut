@@ -14,6 +14,7 @@ import {
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import {WdFilterItem} from "../Component/WdFilterItem";
+import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
 
 export default class WdReviewPager extends Component {
@@ -84,11 +85,18 @@ export default class WdReviewPager extends Component {
                     enableEmptySections={true}
                     contentContainerStyle={styles.listStyle}
                     renderRow={(rowData, rowID, sectionID) => {
-                        return (<Image
-                            resizeMode="contain"
-                            style={{width: 100, height: 100, margin: 10}}
-                            source={{uri: rowData}}
-                        />)
+                        return (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.props.nav.navigate('gallery',{
+                                        pics:this.state.items
+                                    })
+                                }}>
+                                <CachedImage
+                                    resizeMode="contain"
+                                    style={{width: 100, height: 100, margin: 10}}
+                                    source={{uri: rowData}}/>
+                            </TouchableOpacity>)
                     }
                     }/>
             </View>

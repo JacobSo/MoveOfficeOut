@@ -22,12 +22,11 @@ import Toast from 'react-native-root-toast';
 import {WdMainItem} from "../Component/WdMainItem";
 const {width, height} = Dimensions.get('window');
 import {WdActions} from "../../actions/WdAction";
-
 import SQLite from '../../db/Sqlite';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 let sqLite = new SQLite();
- class WdMainPager extends Component {
+class WdMainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -36,7 +35,6 @@ let sqLite = new SQLite();
                 rowHasChanged: (row1, row2) => true,
             }),
             isRefreshing: true,
-            isTopTips: false,
             isSearch: false,
         }
     }
@@ -48,30 +46,27 @@ let sqLite = new SQLite();
         });
     }
 
-    componentWillUnmount(){
-        App.mainColor = Color.colorDeepOrange
-        sqLite.close();
-    }
+
 
     componentWillReceiveProps(newProps) {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-       /*    this.state.items[newProps.position] = newProps.product;
-           this.setState({
-               dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-           })*/
+        /*    this.state.items[newProps.position] = newProps.product;
+         this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+         })*/
     }
+
     _onRefresh() {
         this.setState({isRefreshing: true});
         ApiService.getSeries()
             .then((responseJson) => {
                 console.log(responseJson);
                 if (!responseJson.IsErr) {
-                   sqLite.insertWdData(responseJson.Serieslist);//save in db
+                    sqLite.insertWdData(responseJson.Serieslist);//save in db
                     this.setState({
                         items: responseJson.Serieslist,
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.Serieslist),
                         isRefreshing: false,
-                        isTopTips: false,
                     });
                 } else Toast.show(responseJson.ErrDesc);
             })
@@ -81,21 +76,20 @@ let sqLite = new SQLite();
             }).done();
     }
 
-    getDataLocal(){
+    getDataLocal() {
         this.setState({isRefreshing: true});
-        sqLite.getWdData().then((results)=>{
+        sqLite.getWdData().then((results) => {
             this.setState({isRefreshing: false});
-            if(results.length!==0){
+            if (results.length !== 0) {
                 this.setState({
                     items: results,
                     dataSource: this.state.dataSource.cloneWithRows(results),
                     isRefreshing: false,
-                    isTopTips: false,
                 });
-            }else{
+            } else {
                 this._onRefresh();
             }
-        }).catch((err)=>{
+        }).catch((err) => {
             this.setState({isRefreshing: false});
             Toast.show("出错了，请稍后再试");
         }).done();
@@ -167,18 +161,19 @@ let sqLite = new SQLite();
 
                 <Toolbar
                     elevation={2}
-                    title={[App.account, App.workType]}
+                    title={["板木研发"]}
                     color={Color.colorDeepOrange}
-                    isHomeUp={false}
+                    isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../../drawable/search.png"), require("../../drawable/app_launcher.png")]}
+                    actionArray={[require("../../drawable/search.png")]}
                     functionArray={[
+                        () => {
+                            this.props.nav.goBack(null)
+                        },
                         () => {
                             this.setState({isSearch: !this.state.isSearch})
                         },
-                        () => this.props.nav.navigate('launcher'),
-                        //() => this.openControlPanel()
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {

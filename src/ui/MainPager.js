@@ -52,12 +52,12 @@ export default class MainPager extends Component {
                     initialPage={0}
                     tabBarBackgroundColor={Color.colorPrimary}
                     tabBarActiveTextColor='white'
-                    locked ={false}
+                    locked={false}
                     tabBarInactiveTextColor={Color.background}
                     tabBarUnderlineStyle={{backgroundColor: 'white',}}>
 
-                <CustomList tabLabel='进行中' type="2" nav={this.props.nav}/>
-                <CustomList tabLabel='待审核' type="1" nav={this.props.nav}/>
+                    <CustomList tabLabel='进行中' type="2" nav={this.props.nav}/>
+                    <CustomList tabLabel='待审核' type="1" nav={this.props.nav}/>
                 </ScrollableTabView>)
         } else if (App.workType.indexOf('项目专员管理人') > -1) {
             return (<CustomList tabLabel='进行中' type="1,3" nav={this.props.nav}/>)
@@ -66,13 +66,14 @@ export default class MainPager extends Component {
                 return (
                     <ScrollableTabView
                         initialPage={0}
-                        tabBarBackgroundColor={Color.colorPrimary}
+                        tabBarBackgroundColor={Color.colorCyan}
                         tabBarActiveTextColor='white'
-                        locked ={false}
+                        locked={false}
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white',}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
-                        <CustomList tabLabel='外出任务' type="5" nav={this.props.nav} finishFunc={()=>this.popupDialog.show()}/>
+                        <CustomList tabLabel='外出任务' type="5" nav={this.props.nav}
+                                    finishFunc={() => this.popupDialog.show()}/>
                         <CustomList tabLabel='审核' type="1" nav={this.props.nav}/>
                         <CustomList tabLabel='评分' type="3" nav={this.props.nav}/>
                     </ScrollableTabView>
@@ -81,18 +82,20 @@ export default class MainPager extends Component {
                 return (
                     <ScrollableTabView
                         initialPage={0}
-                        tabBarBackgroundColor={Color.colorPrimary}
+                        tabBarBackgroundColor={Color.colorCyan}
                         tabBarActiveTextColor='white'
                         tabBarInactiveTextColor={Color.background}
                         tabBarUnderlineStyle={{backgroundColor: 'white'}}
                         onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)})}>
-                        <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav}  finishFunc={()=>this.popupDialog.show()}/>
+                        <CustomList tabLabel='进行中' type="0,1,2" nav={this.props.nav}
+                                    finishFunc={() => this.popupDialog.show()}/>
                         <CustomList tabLabel='已完结' type="3,4" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
             }
         }
     }
+
     _finishDialog() {
         return (
             <InputDialog
@@ -108,7 +111,7 @@ export default class MainPager extends Component {
                         this.popupDialog.dismiss();
                     },
                     () => {
-                        PubSub.publish( 'finish', this.state.editContent );
+                        PubSub.publish('finish', this.state.editContent);
                         this.popupDialog.dismiss();
 
                     }
@@ -125,15 +128,17 @@ export default class MainPager extends Component {
 
                 <Toolbar
                     elevation={0}
-                    title={[App.account, App.workType]}
-                    color={Color.colorPrimary}
-                    isHomeUp={false}
+                    title={["外出工作"]}
+                    color={Color.colorCyan}
+                    isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../drawable/search.png"), require("../drawable/app_launcher.png")]}
+                    actionArray={[require("../drawable/search.png")]}
                     functionArray={[
+                        () => {
+                            this.props.nav.goBack(null)
+                        },
                         () => this.props.nav.navigate('search'),
-                        () => this.props.nav.navigate('launcher'),
                     ]}/>
 
                 {this._get()}

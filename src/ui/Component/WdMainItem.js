@@ -30,9 +30,7 @@ export class WdMainItem extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-       console.log( 'main-------------------------')
         this.countNumber();
-
     }
 
     countNumber() {

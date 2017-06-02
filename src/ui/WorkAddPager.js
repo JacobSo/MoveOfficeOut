@@ -45,7 +45,7 @@ export default class PasswordPager extends Component {
 
                 <Toolbar
                     title={['新增工作']}
-                    color={Color.colorPrimary}
+                    color={Color.colorCyan}
                     elevation={2}
                     isHomeUp={true}
                     isAction={true}
@@ -110,7 +110,7 @@ export default class PasswordPager extends Component {
                         }]}/>
                 <ScrollView>
                     <View style={{backgroundColor: 'white', flexDirection: 'column', margin: 16}}>
-                        <Text style={{color: Color.colorPrimary,}}>对接内容</Text>
+                        <Text style={{color: Color.colorCyan,}}>对接内容</Text>
                         <TextInput style={styles.textInput}
                                    multiline={true}
                                    defaultValue={this.state.WorkContent}
@@ -119,7 +119,7 @@ export default class PasswordPager extends Component {
                                    underlineColorAndroid="transparent"
                                    blurOnSubmit={true}
                                    onChangeText={(text) => this.setState({WorkContent: text})}/>
-                        <Text style={{color: Color.colorPrimary, marginTop: 16}}>对接方式</Text>
+                        <Text style={{color: Color.colorCyan, marginTop: 16}}>对接方式</Text>
                         <View style={{flexDirection: 'column'}}>
                             <CheckBox
                                 style={{padding: 10}}
@@ -166,7 +166,7 @@ export default class PasswordPager extends Component {
 
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={{color: Color.colorPrimary,}}>供应商与系列</Text>
+                            <Text style={{color: Color.colorCyan,}}>供应商与系列</Text>
                             <TouchableOpacity
                                 onPress={() => {
                                     this.setState({

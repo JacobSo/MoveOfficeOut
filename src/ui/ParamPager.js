@@ -117,7 +117,11 @@ export default class PasswordPager extends Component {
     }
 
     async  _search(text) {
-        return this.state.items.filter((item) => item.toLowerCase().indexOf(text.toLowerCase()) > -1);
+        //console.log(JSON.stringify(this.state.items))
+        return this.state.items.filter((item) => {
+            console.log(item)
+            return item?(item.toLowerCase().indexOf(text.toLowerCase()) > -1):("无");
+        });
     }
 
     _editDialog() {
@@ -160,7 +164,7 @@ export default class PasswordPager extends Component {
             }}>
 
                 <Toolbar title={[this.props.title]}
-                         color={Color.colorPrimary}
+                         color={Color.colorCyan}
                          elevation={2}
                          isHomeUp={true}
                          isAction={true}

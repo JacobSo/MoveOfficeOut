@@ -105,7 +105,7 @@ export default class CommentPager extends Component {
                 <Toolbar
                     title={[('对' + this.props.task.Creator + '的工作评价'),
                         (this.props.task.list[this.props.position].Series + '/' + this.props.task.list[this.props.position].SupplierName)]}
-                    color={Color.colorPrimary}
+                    color={Color.colorCyan}
                     elevation={2}
                     isHomeUp={true}
                     isAction={true}

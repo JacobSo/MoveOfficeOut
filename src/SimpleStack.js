@@ -29,6 +29,12 @@ import WdPostPager from "./ui/WoodDevelop/WdPostPager";
 import WdReviewPager from "./ui/WoodDevelop/WdReviewPager";
 import App from "./constant/Application"
 import WdFileListPager from "./ui/WoodDevelop/WdFileListPager";
+import WpMainPager from "./ui/WoodProcess/WpMainPager";
+import WpWorkPager from "./ui/WoodProcess/WpWorkPager";
+import WpSearchPager from "./ui/WoodProcess/WpSearchPager";
+import WpProductDetailPager from "./ui/WoodProcess/WpProductDetailPager";
+import WpProductListPager from "./ui/WoodProcess/WpProductListPager";
+import GalleryPager from "./ui/GalleryPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -67,8 +73,8 @@ const LauncherScreen = ({navigation}) => _renderScreen(<View
                                                                                 nav={navigation}/></View>);
 
 const MainScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<MainPager {...navigation.state.params}
-                                                                            nav={navigation}/></View>);
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<MainPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
 const PreferencesScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<PreferencesPager {...navigation.state.params}
                                                                                    nav={navigation}/></View>);
@@ -76,24 +82,26 @@ const PasswordScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<PasswordPager {...navigation.state.params}
                                                                                 nav={navigation}/></View>);
 const WorkScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<WorkPager {...navigation.state.params}
-                                                                            nav={navigation}/></View>);
-const SearchScreen = ({navigation}) => _renderScreen(<View style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<SearchPager {...navigation.state.params}
-                                                                                                                                     nav={navigation}/></View>);
-const DetailScreen = ({navigation}) => _renderScreen(<View style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<DetailPager {...navigation.state.params}
-                                                                                                                                     nav={navigation}/></View>);
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<WorkPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
+const SearchScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<SearchPager {...navigation.state.params}
+                                                                           nav={navigation}/></View>);
+const DetailScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<DetailPager {...navigation.state.params}
+                                                                           nav={navigation}/></View>);
 const WorkAddScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<WorkAddPager {...navigation.state.params}
-                                                                               nav={navigation}/></View>);
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<WorkAddPager {...navigation.state.params}
+                                                                            nav={navigation}/></View>);
 const ParamScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<ParamPager {...navigation.state.params}
-                                                                             nav={navigation}/></View>);
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<ParamPager {...navigation.state.params}
+                                                                          nav={navigation}/></View>);
 const CommentScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<CommentPager {...navigation.state.params}
-                                                                               nav={navigation}/></View>);
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<CommentPager {...navigation.state.params}
+                                                                            nav={navigation}/></View>);
 const WorkSignScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<WorkSignPager {...navigation.state.params}
-                                                                                nav={navigation}/></View>);
+    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<WorkSignPager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
 const LoginScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<LoginPager {...navigation.state.params}
                                                                              nav={navigation}/></View>);
@@ -119,69 +127,105 @@ const WdReviewScreen = ({navigation}) => _renderScreen(<View
 const WdFileListScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorDeepOrangeDark)}<WdFileListPager {...navigation.state.params}
                                                                                      nav={navigation}/></View>);
+const WpMainScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpMainPager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
+const WpWorkScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpWorkPager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
+const WpSearchScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpSearchPager {...navigation.state.params}
+                                                                               nav={navigation}/></View>);
+const WpProductDetailScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpProductDetailPager {...navigation.state.params}
+                                                                                      nav={navigation}/></View>);
+const WpProductListScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpProductListPager {...navigation.state.params}
+                                                                                      nav={navigation}/></View>);
+const GalleryScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<GalleryPager {...navigation.state.params}
+                                                                                      nav={navigation}/></View>);
 
 const SimpleStack = StackNavigator({
-    launcher: {
-        screen: LauncherScreen,
+        launcher: {
+            screen: LauncherScreen,
+        },
+        gallery: {
+            screen: GalleryScreen,
+        },
+        main: {
+            screen: MainScreen,
+        },
+        preferences: {
+            screen: PreferencesScreen,
+        },
+        password: {
+            screen: PasswordScreen,
+        },
+        work: {
+            screen: WorkScreen,
+        },
+        search: {
+            screen: SearchScreen,
+        },
+        detail: {
+            screen: DetailScreen,
+        },
+        add: {
+            screen: WorkAddScreen,
+        },
+        param: {
+            screen: ParamScreen,
+        },
+        comment: {
+            screen: CommentScreen,
+        },
+        sign: {
+            screen: WorkSignScreen,
+        },
+        login: {
+            screen: LoginScreen,
+        },
+        wdMain: {
+            screen: WdMainScreen,
+        },
+        wdProduct: {
+            screen: WdProductListScreen,
+        },
+        wdDetail: {
+            screen: WdProductDetailScreen,
+        },
+        wdFilter: {
+            screen: WdProductFilterScreen,
+        },
+        wdPost: {
+            screen: WdPostScreen,
+        },
+        wdReview: {
+            screen: WdReviewScreen,
+        },
+        wdFile: {
+            screen: WdFileListScreen,
+        },
+        wpMain: {
+            screen: WpMainScreen,
+        },
+        wpWork: {
+            screen: WpWorkScreen,
+        },
+        wpSearch: {
+            screen: WpSearchScreen,
+        },
+        wpDetail: {
+            screen: WpProductDetailScreen,
+        },
+        wpList: {
+            screen: WpProductListScreen,
+        },
     },
-    main: {
-        screen: MainScreen,
-    },
-    preferences: {
-        screen: PreferencesScreen,
-    },
-    password: {
-        screen: PasswordScreen,
-    },
-    work: {
-        screen: WorkScreen,
-    },
-    search: {
-        screen: SearchScreen,
-    },
-    detail: {
-        screen: DetailScreen,
-    },
-    add: {
-        screen: WorkAddScreen,
-    },
-    param: {
-        screen: ParamScreen,
-    },
-    comment: {
-        screen: CommentScreen,
-    },
-    sign: {
-        screen: WorkSignScreen,
-    },
-    login: {
-        screen: LoginScreen,
-    },
-
-    wdMain: {
-        screen: WdMainScreen,
-    },
-    wdProduct: {
-        screen: WdProductListScreen,
-    },
-    wdDetail: {
-        screen: WdProductDetailScreen,
-    },
-    wdFilter: {
-        screen: WdProductFilterScreen,
-    },
-    wdPost: {
-        screen: WdPostScreen,
-    },
-    wdReview: {
-        screen: WdReviewScreen,
-    },
-    wdFile: {
-        screen: WdFileListScreen,
-    },
-}, {
-    initialRouteName: 'login',
-    headerMode: 'none',
-});
+    {
+        initialRouteName: 'login',
+        headerMode: 'none',
+    });
 
 export default SimpleStack;

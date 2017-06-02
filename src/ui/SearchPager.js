@@ -166,7 +166,7 @@ export default class SearchPager extends Component {
             }}>
 
                 <Toolbar title={['']}
-                         color={Color.colorPrimaryDark}
+                         color={Color.colorCyanDark}
                          elevation={2}
                          isHomeUp={true}
                          isAction={true}
@@ -179,7 +179,7 @@ export default class SearchPager extends Component {
                 <ScrollView>
                     <View style={{
                         flexDirection: 'column',
-                        backgroundColor: Color.colorPrimaryDark,
+                        backgroundColor: Color.colorCyanDark,
                         alignItems: 'center',
                     }}>
                         <TouchableOpacity onPress={() => {
@@ -314,7 +314,7 @@ const styles = StyleSheet.create(
         control: {
             width: width - 32,
             height: 55,
-            backgroundColor: Color.colorPrimary,
+            backgroundColor: Color.colorCyan,
             flexDirection: 'row',
             alignItems: 'center',
             marginBottom: 8,

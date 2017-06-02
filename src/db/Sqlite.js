@@ -4,6 +4,8 @@
 import React, {Component} from 'react';
 import SQLiteStorage from 'react-native-sqlite-storage';
 import DBConst from '../db/DBConst';
+import Toast from 'react-native-root-toast';
+
 import {TABLE_PIC, TABLE_W_D, TABLE_W_D_P, TABLE_W_D_Q} from "./DBConst";
 let database_name = "moveoffice.db";
 let database_version = "1.0";
@@ -134,6 +136,7 @@ export  default  class Sqlite extends Component {
             this.open();
         }
         if (wdData && wdData.length !== 0) {
+            let i=0;
             db.transaction((tx) => {
                 this.clearTable(TABLE_W_D);
                 this.clearTable(TABLE_W_D_P);
@@ -181,7 +184,7 @@ export  default  class Sqlite extends Component {
                                 product.pResultList,
                                 product.stage
                             ],
-                            () => console.log('product save success'),
+                            () => Toast.show('保存数据中，不要在后台关闭app：'+i++),
                             (err) => console.log('product save fail:')
                         );
                     })

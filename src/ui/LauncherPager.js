@@ -31,14 +31,16 @@ export default class LauncherPager extends Component {
         super(props);
         this.state = {}
     }
-    componentDidMount(){
-        sqLite.drop(TABLE_W_D);
-        sqLite.drop(TABLE_W_D_P);
-        sqLite.drop(TABLE_PIC);
-        sqLite.drop(TABLE_W_D_Q);
-   //     sqLite.createWdTable();
+
+    componentDidMount() {
+        //    sqLite.drop(TABLE_W_D);
+        //    sqLite.drop(TABLE_W_D_P);
+        //  sqLite.drop(TABLE_PIC);
+        //    sqLite.drop(TABLE_W_D_Q);
+        //     sqLite.createWdTable();
     }
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         sqLite.close();
     }
 
@@ -51,32 +53,49 @@ export default class LauncherPager extends Component {
 
                 <Toolbar
                     elevation={2}
-                    title={["供应链管理"]}
+                    title={["供应链管理", App.account + "-" + App.workType]}
                     color={Color.colorPrimary}
                     isHomeUp={false}
-                    isAction={false}
-                    isActionByText={true}
-                    actionArray={[]}
-                    functionArray={[]}
+                    isAction={true}
+                    isActionByText={false}
+                    actionArray={[require("../drawable/setting.png")]}
+                    functionArray={[
+                        () => {
+                        }
+                        , () => {
+                            this.props.nav.navigate('preferences')
+                        }]}
 
                 />
                 <Text style={styles.group}>外协工作</Text>
+                <View style={styles.iconContainer}>
                 <TouchableOpacity onPress={() => {
                     this.props.nav.navigate('main')
-                }} style={{width: width, backgroundColor: 'white', height: 55,}}>
-                    <Text style={{fontSize:18,height: 55,margin:16}}>外出工作</Text>
+                }}>
+                    <Image style={{width: 55, height: 55}} resizeMode="contain"
+                           source={ require('../drawable/ic_launcher_cyan.png')}/>
+                    <Text>外协工作</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity onPress={() => {
-                }} style={{width: width, backgroundColor: 'white', height: 55,}}>
-                    <Text  style={{fontSize:18,height: 55,margin:16}}>板木评审</Text>
+                    this.props.nav.navigate('wpMain')
+                }}>
+                    <Image style={{width: 55, height: 55}} resizeMode="contain"
+                           source={ require('../drawable/ic_launcher_purple.png')}/>
+                    <Text>板木评审</Text>
                 </TouchableOpacity>
 
+                </View>
+                {/* <View style={{
+                 backgroundColor: Color.line,
+                 width: width,
+                 height: 1,
+
+                 }}/>*/}
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity onPress={() => {
                         Toast.show("开发中")
-                    }} >
+                    }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_indigo.png')}/>
                         <Text>常规质检</Text>
@@ -90,16 +109,16 @@ export default class LauncherPager extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         Toast.show("开发中")
-                    }} >
+                    }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_blue_grey.png')}/>
                         <Text>软体研发</Text>
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={() => this.props.nav.navigate('preferences')}  style={styles.button}>
-                        <Text style={{color: 'white'}}>设置</Text>
-                </TouchableOpacity>
+                {/*      <TouchableOpacity onPress={() => this.props.nav.navigate('preferences')}  style={styles.button}>
+                 <Text style={{color: 'white'}}>设置</Text>
+                 </TouchableOpacity>*/}
             </View>
 
         )
@@ -138,7 +157,7 @@ const styles = StyleSheet.create({
     },
 
     iconContainer: {
-        padding:16,
+        padding: 16,
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-around',

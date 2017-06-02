@@ -19,7 +19,7 @@ export default class FloatButton extends Component {
         return (
             <TouchableWithoutFeedback
                 onPress={this.props.action}>
-                <View style={[styles.iconCircle]}>
+                <View style={[styles.iconCircle, {backgroundColor: this.props.color?this.props.color:Color.colorAccent}]}>
                     <Image style={{width: 25, height: 25, resizeMode: 'contain'}}
                            source={this.props.drawable}/>
                 </View>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         bottom: 31,
         position: 'absolute',
         elevation: 5,
-        backgroundColor: Color.colorAccent,
+
         alignItems: 'center',
         justifyContent: 'center'
     },

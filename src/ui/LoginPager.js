@@ -35,7 +35,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '陈枢明',
+            account: '夏支华',
             pwd: '123',
             isLoading: false,
             check: false,
@@ -122,7 +122,7 @@ export default class LoginPager extends Component {
                             App.dptList = responseJson.Dptlist,
                             this.state.pwd);
                         if (responseJson.WorkType)
-                            this._launchPager("wdMain");
+                            this._launchPager("launcher");
                         else Toast.show('没有工作类型，无法登陆')
                     } else {
                         Toast.show(responseJson.ErrDesc);
@@ -154,7 +154,7 @@ export default class LoginPager extends Component {
                                    resizeMode="contain"
                                    source={require('../drawable/logo_white.png')}/>
                         </View>
-                        <Text style={styles.welcome}>外协工作记录</Text>
+                        <Text style={styles.welcome}>供应链管理</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
                         <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
 

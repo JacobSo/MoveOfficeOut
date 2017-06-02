@@ -14,7 +14,6 @@ export  default  class Application extends Component {
     static check;
     static dptList="";
     static pwd='';
-    static mainColor=Color.colorPrimaryDark;
 
 
     static initAccount(callback) {

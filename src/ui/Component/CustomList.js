@@ -87,6 +87,7 @@ class CustomList extends Component {
                     if (data.Signtype !== 2 && data.VisitingMode.indexOf('走访') > -1) {
                         isAllFinish = false;
                         Toast.show('没有完成全部签到，必须填写备注说明')
+                        return
                     }
                 });
             }
@@ -265,13 +266,20 @@ class CustomList extends Component {
 
 
     _sign() {
+/*        if(!this.state.address||!this.state.lat||!this.state.lng||this.state.address==="未有位置信息"||this.state.lat==="0.0"||this.state.lng==="0.0"){
+            Toast.show("没有定位信息，不能签到，请稍后再试");
+            return
+        }*/
         this.setState({isLoading: true});
         ApiService.taskSign(this.state.selectGuid, this.state.lat, this.state.lng, this.state.address, this.state.selectType, this.state.editContent)
             .then((responseJson) => {
-                //     console.log("--------" + responseJson);
+                console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     Toast.show("签到完成");
                     this._todayTask();
+                    if (this.state.selectType === 3) {
+                        this._onRefresh()
+                    }
                 } else {
                     Toast.show(responseJson.ErrDesc);
                     setTimeout(() => {
@@ -290,8 +298,25 @@ class CustomList extends Component {
             .done();
     }
 
+    distance(lat1, lng1) {
+        let EARTH_RADIUS = 6378137;
+        let radLat1 = this.Rad(lng1);
+        let radLng1 = this.Rad(lat1);
+        let radLat2 = this.Rad(this.state.lat);
+        let radLng2 = this.Rad(this.state.lng);
+        let a = radLat1 - radLat2;
+        let b = radLng1 - radLng2;
+        let result = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS;
+        return result.toFixed(0);
+
+    }
+
+    Rad(d) {
+        return d * Math.PI / 180;
+    }
+
     render() {
-      //  console.log('render');
+        //  console.log('render');
         if (this.state.items.length === 0) {
             return (
                 <ScrollView
@@ -302,7 +327,7 @@ class CustomList extends Component {
                             tintColor={Color.colorBlueGrey}//ios
                             title="Loading..."//ios
                             titleColor='white'
-                            colors={[Color.colorPrimary]}
+                            colors={[Color.colorCyan]}
                             progressBackgroundColor="white"
                         />
                     }>
@@ -326,7 +351,7 @@ class CustomList extends Component {
                                 tintColor={Color.colorBlueGrey}//ios
                                 title="刷新中..."//ios
                                 titleColor='white'
-                                colors={[Color.colorPrimary]}
+                                colors={[Color.colorCyan]}
                                 progressBackgroundColor="white"
                             />}
                         enableEmptySections={true}
@@ -389,6 +414,7 @@ class CustomList extends Component {
                                                             style={styles.panelButtonTitle}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}
                                                         </Text>
                                                     </TouchableOpacity>
+
                                                 </View>
 
                                                 <View style={styles.locationContainer}>
@@ -404,12 +430,6 @@ class CustomList extends Component {
                                                     removeClippedSubviews={false}
                                                     renderRow={(rowData, rowID, sectionID) =>
                                                         <View style={styles.signListItem}>
-                                                            <Text style={{width: 200}}
-                                                                  numberOfLines={1}>系列：{rowData.Series}</Text>
-                                                            <Text style={{width: 200}}
-                                                                  numberOfLines={1}>供应商：{rowData.SupplierName}</Text>
-                                                            <Text style={{width: 200}}
-                                                                  numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
                                                             {
                                                                 (() => {
                                                                     if (rowData.VisitingMode.indexOf('走访') > -1)
@@ -429,13 +449,26 @@ class CustomList extends Component {
                                                                                                 Toast.show('没有完成上一个签到，不可操作')
                                                                                             }
                                                                                         });
-                                                                                        if (this.state.todayTask[0].Signtype === 0 && isFinish) {
+                                                                                        if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
+                                                                                            //    console.log(rowData.LatitudeLongitudes);
+                                                                                            let temp = rowData.LatitudeLongitudes.split("|");
+                                                                                            //   console.log(temp);
+
+                                                                                            let max = 0;
+                                                                                            temp.map((data) => {
+                                                                                                let latlng = data.split(",");
+                                                                                                let process = this.distance(latlng[0], latlng[1]);
+                                                                                                if (max < process) {
+                                                                                                    max = process;
+                                                                                                }
+                                                                                            });
                                                                                             this._confirmDialog(rowData.Signtype === -1 ?
-                                                                                                "到达供应商" : "离开供应商",
-                                                                                                "当前位置：" + this.state.address,);
+                                                                                                    "到达供应商" : "离开供应商",
+                                                                                                "当前位置：" + this.state.address + "\n" +
+                                                                                                "目标距离：" + max + "米");
                                                                                             this.state.selectGuid = rowData.Guid;
                                                                                             this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
-                                                                                        }
+                                                                                        } else Toast.show("没完成出发签到")
                                                                                     }}>
                                                                                     <Text
                                                                                         style={styles.panelButtonTitle}>
@@ -445,6 +478,13 @@ class CustomList extends Component {
                                                                             )
                                                                         }
                                                                 })()}
+                                                            <Text style={{width: 200}}
+                                                                  numberOfLines={1}>系列：{rowData.Series}</Text>
+                                                            <Text style={{width: 200}}
+                                                                  numberOfLines={1}>供应商：{rowData.SupplierName}</Text>
+                                                            <Text style={{width: 200}}
+                                                                  numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
+
                                                         </View>}/>
                                             </View>
                                         </Interactable.View>
@@ -533,7 +573,7 @@ const styles = StyleSheet.create(
         panelButton: {
             flex: 1,
             padding: 16,
-            backgroundColor: Color.colorPrimary,
+            backgroundColor: Color.colorCyan,
             alignItems: 'center',
             marginVertical: 10
         },
@@ -578,7 +618,7 @@ const styles = StyleSheet.create(
         },
         normalBtn: {
             padding: 16,
-            backgroundColor: Color.colorPrimary,
+            backgroundColor: Color.colorCyan,
             alignItems: 'center',
             marginVertical: 10
         },

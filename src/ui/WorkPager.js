@@ -32,7 +32,8 @@ import App from '../constant/Application';
 import {connect} from "react-redux";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-const carList = ["公司车辆","私车公用","其他"];
+const carList = ["公司车辆", "私车公用", "其他"];
+const tripList = ["当天来回", "驻厂", "出差"];
 
 class WorkPager extends Component {
     constructor(props) {
@@ -43,12 +44,17 @@ class WorkPager extends Component {
         this.state = {
             isLoading: false,
             date: '',
+            tripDate: '',
             isCarVisible: false,
+            isTripVisible: false,
             isRemarkVisible: false,
             isDepartmentVisible: false,
             isNeedCar: false,
-            carType: carList[0],//defaulcdt value
+            isNeedTrip: false,
+            carType: carList[0],//default open value
             carMember: '',
+            tripType: 0,//
+            tripText: tripList[0],//
             remarkStr: '',
             departmentName: (App.dptList ? App.dptList[0].dptname : ''),
             departmentId: (App.dptList ? App.dptList[0].dptid : ''),
@@ -64,64 +70,91 @@ class WorkPager extends Component {
     _createWork() {
         if (this.state.items.length === 0) {
             Toast.show('请添加工作');
-        } else if (this.state.date === '') {
+            return;
+        }
+        if (this.state.date === '') {
             Toast.show('请选择对接时间');
-        } else if (this.state.departmentId === '') {
+            return;
+        }
+        if (this.state.departmentId === '') {
             Toast.show('请选择部门');
-        } else {
-            Alert.alert(
-                '创建工作',
-                '是否创建工作？',
-                [
-                    {
-                        text: '取消', onPress: () => {
-                    }
-                    },
-                    {
-                        text: '确定', onPress: () => {
-                        this.setState({isLoading: true});
-                        ApiService.createWork(
-                            this.state.date,
-                            this.state.isNeedCar,
-                            this.state.isNeedCar ? this.state.carType : '',
-                            this.state.carMember,
-                            this.state.remarkStr,
-                            JSON.stringify(this.state.items),
-                            this.state.departmentId
-                        )
-                            .then((responseJson) => {
-                                if (!responseJson.IsErr) {
-                                    this.props.actions.refreshList(true);
-                                    Toast.show('操作成功');
-                                    this.props.nav.goBack(null);
-                                } else {
-                                    Toast.show(responseJson.ErrDesc);
-                                    setTimeout(() => {
-                                        this.setState({isLoading: false})
-                                    }, 100);
-                                }
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                Toast.show("出错了，请稍后再试");
+            return;
+        }
+
+        if(this.state.tripType===2&&!this.state.tripDate){
+            Toast.show("请选择出差结束时间")
+            return
+        }
+
+        let isHasTrip = false;
+        this.state.items.map((data) => {
+            if (data.VisitingMode.indexOf("走访") > -1) {
+                isHasTrip = true;
+            }
+        });
+        if (!isHasTrip && this.state.isNeedTrip) {
+            Toast.show('至少添加一个走访工作');
+            return;
+        }
+
+        if (isHasTrip && !this.state.isNeedTrip) {
+            Toast.show('需要选择外出类型');
+            return;
+        }
+
+        Alert.alert(
+            '创建工作',
+            '是否创建工作？',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.setState({isLoading: true});
+                    ApiService.createWork(
+                        this.state.date,
+                        this.state.isNeedCar,
+                        this.state.isNeedCar ? this.state.carType : '',
+                        this.state.carMember,
+                        this.state.remarkStr,
+                        JSON.stringify(this.state.items),
+                        this.state.departmentId,
+                        this.state.isNeedTrip ? this.state.tripType : 3,
+                        this.state.tripDate
+                    )
+                        .then((responseJson) => {
+                            if (!responseJson.IsErr) {
+                                this.props.actions.refreshList(true);
+                                Toast.show('操作成功');
+                                this.props.nav.goBack(null);
+                            } else {
+                                Toast.show(responseJson.ErrDesc);
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
-                            }).done();
-                    }
-                    },
-                ]
-            )
-        }
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Toast.show("出错了，请稍后再试");
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                        }).done();
+                }
+                },
+            ]
+        )
     }
-
 
     _carView() {
         if (this.state.isCarVisible) {
             return (
                 <View>
                     <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
-                        <Text style={{margin:16,paddingLeft:16, color: 'white',textAlign:"center"}}>申请车辆</Text>
+                        <Text style={{margin: 16, paddingLeft: 16, color: 'white', textAlign: "center"}}>申请车辆</Text>
                         <Switch
                             style={{marginRight: 32}}
                             onValueChange={(value) => {
@@ -140,14 +173,12 @@ class WorkPager extends Component {
                             {label: carList[0], value: 0},
                             {label: carList[1], value: 1},
                             {label: carList[2], value: 2},
-
                         ]}
                         initial={0}
                         formHorizontal={false}
                         onPress={(value) => this.setState({carType: carList[value]})}
-                        style={{marginLeft: 32,marginBottom:16,height:100,width:width-64}}
-                        disabled={!this.state.isNeedCar}
-                    />
+                        style={{marginLeft: 32, marginBottom: 16, height: 100, width: width - 64}}
+                        disabled={!this.state.isNeedCar}/>
 
                     <TextInput style={styles.textRemark}
                                placeholder="陪同人"
@@ -163,7 +194,75 @@ class WorkPager extends Component {
             )
         } else {
             return ( null)
+        }
+    }
 
+    _tripView() {
+        if (this.state.isTripVisible) {
+            return (
+                <View style={{paddingBottom: 16}}>
+                    <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
+                        <Text style={{margin: 16, paddingLeft: 16, color: 'white', textAlign: "center"}}>是否外出</Text>
+                        <Switch
+                            style={{marginRight: 32}}
+                            onValueChange={(value) => {
+                                this.setState({isNeedTrip: value,});
+                            }}
+                            onTintColor={Color.colorAccent}
+                            value={this.state.isNeedTrip}/>
+                    </View>
+                    <RadioForm
+                        buttonColor={this.state.isNeedTrip ? Color.colorAccent : Color.content}
+                        labelStyle={{color: 'white', margin: 10}}
+                        radio_props={ [
+                            {label: tripList[0], value: 0},
+                            {label: tripList[1], value: 1},
+                            {label: tripList[2], value: 2},
+                        ]}
+                        initial={0}
+                        formHorizontal={false}
+                        onPress={(value) => {
+                            this.setState({
+                                tripType: value,
+                                tripText: tripList[value]
+                            })
+                        }}
+                        style={{marginLeft: 32, marginBottom: 16, height: 100, width: width - 64}}
+                        disabled={!this.state.isNeedTrip}
+                    />
+                    {
+                        (() => {
+                            if (this.state.tripType === 2 && this.state.isNeedTrip) {
+                                return (
+                                    <DatePicker
+                                        style={{
+                                            backgroundColor: Color.trans,
+                                            position: 'absolute',
+                                            right: 32,
+                                            bottom: 0,
+                                        }}
+                                        date={this.state.tripDate}
+                                        mode="date"
+                                        placeholder="出差结束时间"
+                                        format="YYYY-MM-DD"
+                                        minDate={this.dateStr}
+                                        confirmBtnText="确认"
+                                        cancelBtnText="取消"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({tripDate: date})
+                                        }}
+                                    />
+                                )
+                            } else {
+                                return null
+                            }
+                        })()
+                    }
+                </View>
+            )
+        } else {
+            return ( null)
         }
     }
 
@@ -195,7 +294,7 @@ class WorkPager extends Component {
             });
             //  console.log(JSON.stringify(dataArray));
             return (
-                <View style={{height: 55 * dataArray.length,width:width-64, justifyContent: 'space-between',}}>
+                <View style={{height: 55 * dataArray.length, width: width - 64, justifyContent: 'space-between',}}>
                     <RadioForm
                         buttonColor={Color.colorAccent}
                         labelStyle={{color: 'white', margin: 10}}
@@ -220,7 +319,7 @@ class WorkPager extends Component {
             <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-20}>
                 <View style={{backgroundColor: Color.background, height: height}}>
                     <Toolbar title={['外出申请']}
-                             color={Color.colorPrimaryDark}
+                             color={Color.colorCyanDark}
                              elevation={2}
                              isHomeUp={true}
                              isAction={true}
@@ -230,7 +329,7 @@ class WorkPager extends Component {
                                  () => {
                                      if (this.state.items.length === 0) {
                                          this.props.nav.goBack(null)
-                                     }else{
+                                     } else {
                                          Alert.alert(
                                              '退出创建？',
                                              '放弃当编辑的工作？退出后不可恢复',
@@ -249,7 +348,6 @@ class WorkPager extends Component {
                                      }
 
 
-
                                  },
                                  () => this._createWork()
                              ]}/>
@@ -263,7 +361,7 @@ class WorkPager extends Component {
                             <ScrollView>
                                 <View style={{
                                     flexDirection: 'column',
-                                    backgroundColor: Color.colorPrimaryDark,
+                                    backgroundColor: Color.colorCyanDark,
                                     alignItems: 'center',
                                 }}>
 
@@ -321,6 +419,21 @@ class WorkPager extends Component {
                                         this._carView()
                                     }
                                     <TouchableOpacity onPress={() => {
+                                        this.setState({isTripVisible: !this.state.isTripVisible});
+                                    }}>
+                                        <View style={styles.control}>
+                                            <Image style={styles.ctrlIcon}
+                                                   source={require('../drawable/calendar.png')}/>
+                                            <Text numberOfLines={1}
+                                                  style={{color: 'white', width: 200}}>
+                                                {this.state.isNeedTrip ?(this.state.tripType===2?( this.state.tripText+"，"+this.state.tripDate):this.state.tripText) : '不需外出'}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {
+                                        this._tripView()
+                                    }
+                                    <TouchableOpacity onPress={() => {
                                         this.setState({isRemarkVisible: !this.state.isRemarkVisible});
                                     }}>
                                         <View style={styles.control}>
@@ -350,14 +463,14 @@ class WorkPager extends Component {
                                                         addWork: (array) => {
                                                             //    console.log(array);
                                                             this.state.items[rowID] = array[0];
-                                                              console.log(JSON.stringify(array[0]));
-                                                              console.log(JSON.stringify( this.state.items));
+                                                         //   console.log(JSON.stringify(array[0]));
+                                                           // console.log(JSON.stringify(this.state.items));
 
                                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),});
                                                         },
                                                         existData: rowData,
-                                                        deleteData:()=>{
-                                                            this.state.items.splice(rowID,1);
+                                                        deleteData: () => {
+                                                            this.state.items.splice(rowID, 1);
                                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),});
 
                                                         }
@@ -385,7 +498,7 @@ class WorkPager extends Component {
                                                 wayQQ: false,
                                                 wayMeet: false,
                                             },
-                                            deleteData:()=>{
+                                            deleteData: () => {
 
                                             }
                                         },
@@ -427,7 +540,7 @@ const styles = StyleSheet.create(
         control: {
             width: width - 32,
             height: 55,
-            backgroundColor: Color.colorPrimary,
+            backgroundColor: Color.colorCyan,
             flexDirection: 'row',
             alignItems: 'center',
             marginBottom: 8,
@@ -442,7 +555,7 @@ const styles = StyleSheet.create(
         },
         textRemark: {
             width: width - 64,
-            height:45,
+            height: 45,
             marginLeft: 32,
             marginRight: 32,
             marginTop: 16,

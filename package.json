@@ -13,6 +13,7 @@
     "react-native": "0.44.0",
     "react-native-code-push": "^2.0.1-beta",
     "react-native-fetch-blob": "^0.10.5",
+    "react-native-gallery": "0.0.17",
     "react-native-gifted-listview": "0.0.15",
     "react-native-image-picker": "^0.26.3",
     "react-native-img-cache": "^1.4.0",
