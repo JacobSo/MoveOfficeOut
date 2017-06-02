@@ -243,7 +243,6 @@ const styles = StyleSheet.create(
             height: 1
         },
 
-
         iconCircle: {
             flex: 1,
             width: 55,
