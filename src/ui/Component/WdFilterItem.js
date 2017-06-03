@@ -79,9 +79,8 @@ export class WdFilterItem extends Component {
                 <View style={{width: 100, height: 100}}>
                     <CachedImage
                         resizeMode="contain"
-                        indicator={require('../../drawable/empty_image.png')}
-                        style={{width: 100, height: 100, margin: 5}}
-                        source={{uri: this.props.product.pImage}}/>
+                        style={{width: 100, height: 100, }}
+                        source={{uri: this.props.product.pImage?this.props.product.pImage:'-'}}/>
                 </View>
                 <Text style={{
                     margin: 10,
@@ -104,7 +103,8 @@ const styles = StyleSheet.create(
             flexDirection: 'column',
             alignItems: 'center',
             backgroundColor: 'white',
-            height: 200,
+            height: 180,
+            width:width/3-10,
             elevation: 2,
             margin: 5,
         },

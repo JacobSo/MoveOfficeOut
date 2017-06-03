@@ -141,7 +141,7 @@ class WdProductDetailPager extends Component {
                             resizeMode="contain"
                             indicator={require('../../drawable/empty_image.png')}
                             style={{width: width, height: 150,}}
-                            source={{uri: this.props.product.pImage}}/>
+                            source={{uri: this.props.product.pImage?this.props.product.pImage:'-'}}/>
                     </View>
 
                     <View style={styles.textStyle}>

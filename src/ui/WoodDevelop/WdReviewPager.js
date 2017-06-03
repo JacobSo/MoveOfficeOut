@@ -52,6 +52,7 @@ export default class WdReviewPager extends Component {
             });
         }
 
+        console.log(JSON.stringify(this.state.items))
         //   this.countNumber();
     }
 
@@ -84,7 +85,7 @@ export default class WdReviewPager extends Component {
                     removeClippedSubviews={false}
                     enableEmptySections={true}
                     contentContainerStyle={styles.listStyle}
-                    renderRow={(rowData, rowID, sectionID) => {
+                    renderRow={(rowData) => {
                         return (
                             <TouchableOpacity
                                 onPress={() => {
@@ -95,7 +96,7 @@ export default class WdReviewPager extends Component {
                                 <CachedImage
                                     resizeMode="contain"
                                     style={{width: 100, height: 100, margin: 10}}
-                                    source={{uri: rowData}}/>
+                                    source={{uri: rowData?rowData:'-'}}/>
                             </TouchableOpacity>)
                     }
                     }/>

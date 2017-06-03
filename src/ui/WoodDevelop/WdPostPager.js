@@ -10,7 +10,7 @@ import {
     ListView,
     ScrollView,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput,
+    Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput,Platform
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
@@ -109,7 +109,7 @@ class WdPostPager extends Component {
                 fileName: data.fileName,
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
-                path: data.path
+                path: data.uri.replace('file://','')
             });
         });
         this.state.submitContent = tempContent;
@@ -166,41 +166,80 @@ class WdPostPager extends Component {
     }
 
     postImage() {
-        this.state.submitPic.map((data, index) => {
-            AndroidModule.getImageBase64(data.path, (callBackData) => {
-                data.imgCode = callBackData;
-                let imageData = [];
-                imageData.push(data);
-                ApiService.postImg(JSON.stringify(imageData))
-                    .then((responseJson) => {
-                        console.log(JSON.stringify(responseJson));
-                        if (!responseJson.IsErr) {
-                            if (index === this.state.submitPic.length - 1) {
-                                Toast.show("提交成功");
-                                this.updateStatus();
-                                this.props.nav.goBack(null)
+        if(Platform.OS==='android'){
+            this.state.submitPic.map((data, index) => {
+                AndroidModule.getImageBase64(data.path, (callBackData) => {
+                    data.imgCode = callBackData;
+                    let imageData = [];
+                    imageData.push(data);
+                    ApiService.postImg(JSON.stringify(imageData))
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (!responseJson.IsErr) {
+                                if (index === this.state.submitPic.length - 1) {
+                                    Toast.show("提交成功");
+                                    this.updateStatus();
+                                    this.props.nav.goBack(null)
+                                }
+                            } else {
+                                Toast.show(responseJson.ErrDesc);
+                                if (index === this.state.submitPic.length - 1) {
+                                    setTimeout(() => {
+                                        this.setState({isLoading: false})
+                                    }, 100);
+                                }
                             }
-                        } else {
-                            Toast.show(responseJson.ErrDesc);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Toast.show("出错了，请稍后再试");
                             if (index === this.state.submitPic.length - 1) {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
                             }
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        Toast.show("出错了，请稍后再试");
-                        if (index === this.state.submitPic.length - 1) {
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                        }
-                    }).done();
-            });
+                        }).done();
+                });
 
-        })
+            })
+        }else{
+            this.state.submitPic.map((data, index) => {
+                IosModule.getImageBase64(data.path, (callBackData) => {
+                    data.imgCode = callBackData;
+                    let imageData = [];
+                    imageData.push(data);
+                    ApiService.postImg(JSON.stringify(imageData))
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (!responseJson.IsErr) {
+                                if (index === this.state.submitPic.length - 1) {
+                                    Toast.show("提交成功");
+                                    this.updateStatus();
+                                    this.props.nav.goBack(null)
+                                }
+                            } else {
+                                Toast.show(responseJson.ErrDesc);
+                                if (index === this.state.submitPic.length - 1) {
+                                    setTimeout(() => {
+                                        this.setState({isLoading: false})
+                                    }, 100);
+                                }
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Toast.show("出错了，请稍后再试");
+                            if (index === this.state.submitPic.length - 1) {
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }
+                        }).done();
+                });
+
+            })
+        }
+
 
     }
 
@@ -305,7 +344,7 @@ class WdPostPager extends Component {
                                     ImagePicker.launchImageLibrary(options, (response) => {
                                         console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
-                                            this.state.pics.push({fileName: response.fileName, path: response.path});
+                                            this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
                                             console.log(JSON.stringify(this.state.pics));
                                         }
@@ -345,6 +384,10 @@ class WdPostPager extends Component {
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <View >
+                                        <Image
+                                            resizeMode="contain"
+                                            style={{height: 200, margin: 16}}
+                                            source={{uri: rowData.uri}}/>
                                         <TouchableOpacity
                                             style={{position: 'absolute', right: 16,}}
                                             onPress={() => {
@@ -362,10 +405,8 @@ class WdPostPager extends Component {
                                                 style={{height: 25, width: 25,}}
                                                 source={require('../../drawable/close_post_label.png')}/>
                                         </TouchableOpacity>
-                                        <Image
-                                            resizeMode="contain"
-                                            style={{height: 200, margin: 16}}
-                                            source={{uri: 'file:/' + rowData.path}}/></View>
+
+                                    </View>
                                 }/>
                         </View>
                     </ScrollView>

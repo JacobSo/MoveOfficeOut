@@ -91,7 +91,7 @@ export class WdProductItem extends Component {
                                 resizeMode="contain"
                                 indicator={require('../../drawable/empty_image.png')}
                                 style={{width: 100, height: 100, margin: 5}}
-                                source={{uri: this.props.product.pImage}}/>
+                                source={{uri: this.props.product.pImage?this.props.product.pImage:'-'}}/>
                         </View>
 
                         <View style={{flexDirection: 'column'}}>
