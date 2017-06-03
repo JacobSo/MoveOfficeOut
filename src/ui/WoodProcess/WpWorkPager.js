@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions, ScrollView, Alert, ListView, Text, Image, TouchableOpacity, Switch, TextInput,
+    StyleSheet, Dimensions, ScrollView, Alert, ListView, Text, Image, TouchableOpacity, Switch, TextInput,Platform
 
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
@@ -62,8 +62,9 @@ export default class WpWorkPager extends Component {
 
             if(data.pics){
                 data.pics.map((pic)=>{
+                    console.log(JSON.stringify(pic));
                     picTemp.push({
-                        path:pic.path,
+                        path:pic.uri.replace('file://',''),
                         id: data.Id,
                         imgCode:'',
                         fileName:pic.fileName,
@@ -156,38 +157,74 @@ export default class WpWorkPager extends Component {
     }
 
     postImage(mainId) {
-        this.state.submitPic.map((data, index) => {
-            AndroidModule.getImageBase64(data.path, (callBackData) => {
-                ApiService.uploadImamge(data.id,callBackData,data.fileName,mainId)
-                    .then((responseJson) => {
-                        console.log(JSON.stringify(responseJson));
-                        if (!responseJson.IsErr) {
-                            if (index === this.state.submitPic.length - 1) {
-                                Toast.show("提交成功");
-                              //  this.updateStatus();
-                                this.props.nav.goBack(null)
+        if(Platform.OS==='android'){
+            this.state.submitPic.map((data, index) => {
+                AndroidModule.getImageBase64(data.path, (callBackData) => {
+                    ApiService.uploadImamge(data.id,callBackData,data.fileName,mainId)
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (!responseJson.IsErr) {
+                                if (index === this.state.submitPic.length - 1) {
+                                    Toast.show("提交成功");
+                                    //  this.updateStatus();
+                                    this.props.nav.goBack(null)
+                                }
+                            } else {
+                                Toast.show(responseJson.ErrDesc);
+                                if (index === this.state.submitPic.length - 1) {
+                                    setTimeout(() => {
+                                        this.setState({isLoading: false})
+                                    }, 100);
+                                }
                             }
-                        } else {
-                            Toast.show(responseJson.ErrDesc);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Toast.show("出错了，请稍后再试");
                             if (index === this.state.submitPic.length - 1) {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
                             }
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        Toast.show("出错了，请稍后再试");
-                        if (index === this.state.submitPic.length - 1) {
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                        }
-                    }).done();
-            });
+                        }).done();
+                });
+            })
+        }else{
+            this.state.submitPic.map((data, index) => {
 
-        })
+                IosModule.getImageBase64(data.path, (callBackData) => {
+                    ApiService.uploadImamge(data.id,callBackData,data.fileName,mainId)
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (!responseJson.IsErr) {
+                                if (index === this.state.submitPic.length - 1) {
+                                    Toast.show("提交成功");
+                                    //  this.updateStatus();
+                                    this.props.nav.goBack(null)
+                                }
+                            } else {
+                                Toast.show(responseJson.ErrDesc);
+                                if (index === this.state.submitPic.length - 1) {
+                                    setTimeout(() => {
+                                        this.setState({isLoading: false})
+                                    }, 100);
+                                }
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Toast.show("出错了，请稍后再试");
+                            if (index === this.state.submitPic.length - 1) {
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }
+                        }).done();
+                });
+
+            })
+        }
+
     }
 
 

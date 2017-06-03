@@ -103,6 +103,7 @@ export default class WpMainPager extends Component {
                             <Text style={{
                                 textAlign: 'center',
                                 width: width - 32,
+                                padding:5,
                                 color: 'white',
                                 backgroundColor: rowData.ReviewType === 1 ? Color.colorTeal : Color.colorAmber
                             }}>

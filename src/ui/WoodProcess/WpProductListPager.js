@@ -155,7 +155,7 @@ export default class WpProductListPager extends Component {
                                     let pics = [];
                                     temp.map((data)=>{
                                         pics.push(ApiService.getBaseUrl()+data)
-                                    })
+                                    });
                                     this.props.nav.navigate('gallery',{
                                         pics:pics
                                     })
@@ -166,17 +166,19 @@ export default class WpProductListPager extends Component {
                                 <CachedImage
                                     resizeMode="contain"
                                     style={{width: 100, height: 100,}}
-                                    source={{uri:rowData.PicPath}}/>
+                                    source={{uri:(rowData.PicPath?rowData.PicPath:'-')}}/>
                             </View>
                             <View>
                                 <Text style={{
                                     color: Color.black_semi_transparent,
                                     margin: 5,
-                                    width: 200
+                                    width: 170
                                 }}>{ rowData.ItemName}</Text>
-                                <Text style={{margin: 5, width: 200}}>{ rowData.ItemRemark}</Text>
-                                <Text style={{margin: 5, width: 200}}>{'评审阶段:'+ rowData.ReviewStage}</Text>
-                                <Text style={{margin: 5, width: 200}}>{'图片:'+ (rowData.FacPicPath?rowData.FacPicPath.split(',').length:'0')+'张'}</Text>
+                                <Text style={{margin: 5, width: 170}}>{ rowData.ItemRemark}</Text>
+                                <Text style={{margin: 5, width: 170}}>{'评审阶段:'+ rowData.ReviewStage}</Text>
+{/*
+                                <Text style={{margin: 5, width: 170}}>{'图片:'+ (rowData.FacPicPath?rowData.FacPicPath.split(',').length:'0')+'张'}</Text>
+*/}
                             </View>
                         </TouchableOpacity>
                     }/>

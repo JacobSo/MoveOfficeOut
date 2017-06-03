@@ -40,15 +40,15 @@ export class WpProductItem extends Component {
                     <CachedImage
                         resizeMode="contain"
                         style={{width: 100, height: 100,}}
-                        source={{uri: this.props.product.PicPath}}/>
+                        source={{uri: this.props.product.PicPath?this.props.product.PicPath:'-'}}/>
                 </View>
                 <View>
                     <Text style={{
                         color: Color.black_semi_transparent,
                         margin: 5,
-                        width: 200
+                        width: 150
                     }}>{ this.props.product.ItemName}</Text>
-                    <Text style={{margin: 5, width: 200}}>{ this.props.product.ItemRemark}</Text>
+                    <Text style={{margin: 5, width: 150}}>{ this.props.product.ItemRemark}</Text>
                     <View style={{flexDirection: "row"}}>
                         {
                             (() => {
@@ -86,7 +86,7 @@ export class WpProductItem extends Component {
                                 }
                             })()
                         }
-                        {
+{/*                        {
                             (() => {
                                 if (this.props.product.pics) {
                                     return (
@@ -99,7 +99,8 @@ export class WpProductItem extends Component {
 
 
                             })()
-                        }</View>
+                        }*/}
+                        </View>
                 </View>
             </TouchableOpacity>
         );

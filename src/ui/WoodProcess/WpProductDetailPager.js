@@ -9,7 +9,7 @@ import {
     ScrollView,
     Text,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image, ListView,
+    Dimensions, TouchableOpacity, Image, ListView,Platform
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
@@ -90,7 +90,7 @@ export default class WpProductDetailPager extends Component {
                         <CachedImage
                             resizeMode="contain"
                             style={{width: width, height: 150,}}
-                            source={{uri: this.props.product.PicPath}}/>
+                            source={{uri: this.props.product.PicPath?this.props.product.PicPath:'-'}}/>
                     </View>
 
                     <View style={styles.textStyle}>
@@ -157,6 +157,10 @@ export default class WpProductDetailPager extends Component {
                         enableEmptySections={true}
                         renderRow={(rowData, rowID, sectionID) =>
                             <View style={{margin: 16}}>
+                                <Image
+                                    resizeMode="contain"
+                                    style={{height: 200, margin: 16}}
+                                    source={{uri: rowData.uri}}/>
                                 <TouchableOpacity
                                     style={{position: 'absolute', right: 16,}}
                                     onPress={() => {
@@ -172,10 +176,7 @@ export default class WpProductDetailPager extends Component {
                                         style={{height: 25, width: 25,}}
                                         source={require('../../drawable/close_post_label.png')}/>
                                 </TouchableOpacity>
-                                <Image
-                                    resizeMode="contain"
-                                    style={{height: 200, margin: 16}}
-                                    source={{uri: 'file:/' + rowData.path}}/></View>
+                            </View>
                         }/>
                 </View>
                 </ScrollView>

@@ -69,6 +69,24 @@ RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)
   callback(arrays);
 
 }
+
+RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callback)
+{
+  //NSString *path2 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]stringByAppendingPathComponent:@"headimg.png"];
+  //NSLog(@"图片:%@",path2);
+  NSLog(@"图片:%@",path);
+   //UIImage图片转成Base64字符串：
+  NSData *data = [NSData dataWithContentsOfFile:path];
+  UIImage *img = [UIImage imageWithData:data];
+  NSData *pic = UIImageJPEGRepresentation(img, 0.3f);
+  NSString *encodedImageStr = [pic base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+ // NSLog(@"encodedImageStr==%@",encodedImageStr);
+  NSArray *arrays = [NSArray arrayWithObjects:encodedImageStr,nil];
+  callback(arrays);
+  
+}
+
+
 RCT_EXPORT_METHOD(logoutShareAccount){
   ((AppDelegate *)[UIApplication sharedApplication].delegate).userName = nil;
  ((AppDelegate *)[UIApplication sharedApplication].delegate).password = nil;
