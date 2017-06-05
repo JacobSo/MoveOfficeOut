@@ -231,80 +231,52 @@ export default class WpWorkPager extends Component {
         if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
-                    ApiService.uploadImamge(
-                        data.id,
-                        callBackData,
-                        data.fileName,
-                        this.state.isModify ?   this.props.task.Guid:mainId)
-                        .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
-                            if (!responseJson.IsErr) {
-                                if (index === this.state.submitPic.length - 1) {
-                                    Toast.show("提交成功");
-                                    this.props.refreshFunc();
-                                    this.props.nav.goBack(null)
-                                }
-                            } else {
-                                Toast.show(responseJson.ErrDesc);
-                                if (index === this.state.submitPic.length - 1) {
-                                    setTimeout(() => {
-                                        this.setState({isLoading: false})
-                                    }, 100);
-                                }
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            Toast.show("出错了，请稍后再试");
-                            if (index === this.state.submitPic.length - 1) {
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                            }
-                        }).done();
+                    this.postImgReq(data, index, callBackData,mainId);
                 });
             })
         } else {
             this.state.submitPic.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
-                    ApiService.uploadImamge(
-                        this.state.isModify ? data.poldid : data.id,
-                        callBackData,
-                        data.fileName,
-                        this.state.isModify ? mainId : this.props.task.Guid)
-                        .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
-                            if (!responseJson.IsErr) {
-                                if (index === this.state.submitPic.length - 1) {
-                                    Toast.show("提交成功");
-                                    //  this.updateStatus();
-                                    this.props.nav.goBack(null)
-                                }
-                            } else {
-                                Toast.show(responseJson.ErrDesc);
-                                if (index === this.state.submitPic.length - 1) {
-                                    setTimeout(() => {
-                                        this.setState({isLoading: false})
-                                    }, 100);
-                                }
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            Toast.show("出错了，请稍后再试");
-                            if (index === this.state.submitPic.length - 1) {
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                            }
-                        }).done();
-                });
+                    this.postImgReq(data, index, callBackData,mainId);
 
-            })
+                })
+            });
         }
-
     }
 
+    postImgReq(data,index,callBackData,mainId){
+        ApiService.uploadImamge(
+            data.id,
+            callBackData,
+            data.fileName,
+            this.state.isModify ? this.props.task.Guid:mainId)
+            .then((responseJson) => {
+                console.log(JSON.stringify(responseJson));
+                if (!responseJson.IsErr) {
+                    if (index === this.state.submitPic.length - 1) {
+                        Toast.show("提交成功");
+                        this.props.refreshFunc();
+                        this.props.nav.goBack(null)
+                    }
+                } else {
+                    Toast.show(responseJson.ErrDesc);
+                    if (index === this.state.submitPic.length - 1) {
+                        setTimeout(() => {
+                            this.setState({isLoading: false})
+                        }, 100);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                if (index === this.state.submitPic.length - 1) {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            }).done();
+    }
 
     _carView() {
         if (this.state.isCarVisible) {

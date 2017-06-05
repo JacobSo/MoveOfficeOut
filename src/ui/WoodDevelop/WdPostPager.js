@@ -166,78 +166,53 @@ class WdPostPager extends Component {
         if(Platform.OS==='android'){
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
-                    data.imgCode = callBackData;
-                    let imageData = [];
-                    imageData.push(data);
-                    ApiService.postImg(JSON.stringify(imageData))
-                        .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
-                            if (!responseJson.IsErr) {
-                                if (index === this.state.submitPic.length - 1) {
-                                    Toast.show("提交成功");
-                                    this.updateStatus();
-                                    this.props.nav.goBack(null)
-                                }
-                            } else {
-                                Toast.show(responseJson.ErrDesc);
-                                if (index === this.state.submitPic.length - 1) {
-                                    setTimeout(() => {
-                                        this.setState({isLoading: false})
-                                    }, 100);
-                                }
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            Toast.show("出错了，请稍后再试");
-                            if (index === this.state.submitPic.length - 1) {
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                            }
-                        }).done();
+                    this.postImageReq(data, index,callBackData);
                 });
 
             })
         }else{
             this.state.submitPic.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
-                    data.imgCode = callBackData;
-                    let imageData = [];
-                    imageData.push(data);
-                    ApiService.postImg(JSON.stringify(imageData))
-                        .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
-                            if (!responseJson.IsErr) {
-                                if (index === this.state.submitPic.length - 1) {
-                                    Toast.show("提交成功");
-                                    this.updateStatus();
-                                    this.props.nav.goBack(null)
-                                }
-                            } else {
-                                Toast.show(responseJson.ErrDesc);
-                                if (index === this.state.submitPic.length - 1) {
-                                    setTimeout(() => {
-                                        this.setState({isLoading: false})
-                                    }, 100);
-                                }
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            Toast.show("出错了，请稍后再试");
-                            if (index === this.state.submitPic.length - 1) {
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                            }
-                        }).done();
+                    this.postImageReq(data, index,callBackData);
                 });
 
             })
         }
 
 
+    }
+
+    postImageReq(data, index,callBackData){
+        data.imgCode = callBackData;
+        let imageData = [];
+        imageData.push(data);
+        ApiService.postImg(JSON.stringify(imageData))
+            .then((responseJson) => {
+                console.log(JSON.stringify(responseJson));
+                if (!responseJson.IsErr) {
+                    if (index === this.state.submitPic.length - 1) {
+                        Toast.show("提交成功");
+                        this.updateStatus();
+                        this.props.nav.goBack(null)
+                    }
+                } else {
+                    Toast.show(responseJson.ErrDesc);
+                    if (index === this.state.submitPic.length - 1) {
+                        setTimeout(() => {
+                            this.setState({isLoading: false})
+                        }, 100);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                Toast.show("出错了，请稍后再试");
+                if (index === this.state.submitPic.length - 1) {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            }).done();
     }
 
     updateStatus() {
