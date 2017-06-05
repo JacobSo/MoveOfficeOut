@@ -23,6 +23,7 @@ export  default  class  extends Component {
     static colorDeepPurple = "#673AB7";
 
     static colorIndigo = "#3F51B5";//
+    static colorIndigoDark = "#303F9F";//qc
     static colorBlue = "#2196F3";
     static colorLightBlue = "#03A9F4";
     static colorCyan = "#00BCD4";//外协

@@ -34,6 +34,7 @@ import WpWorkPager from "./ui/WoodProcess/WpWorkPager";
 import WpSearchPager from "./ui/WoodProcess/WpSearchPager";
 import WpProductDetailPager from "./ui/WoodProcess/WpProductDetailPager";
 import GalleryPager from "./ui/GalleryPager";
+import QcMainPager from "./ui/QuailtyCheck/QcMainPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -140,7 +141,10 @@ const WpProductDetailScreen = ({navigation}) => _renderScreen(<View
                                                                                       nav={navigation}/></View>);
 const GalleryScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<GalleryPager {...navigation.state.params}
-                                                                                      nav={navigation}/></View>);
+                                                                              nav={navigation}/></View>);
+const QcMainScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<QcMainPager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
 
 const SimpleStack = StackNavigator({
         launcher: {
@@ -214,6 +218,9 @@ const SimpleStack = StackNavigator({
         },
         wpDetail: {
             screen: WpProductDetailScreen,
+        },
+        qcMain: {
+            screen: QcMainScreen,
         },
 
     },

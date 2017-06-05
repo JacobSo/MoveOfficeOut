@@ -82,7 +82,8 @@ export default class LauncherPager extends Component {
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        Toast.show("很想要吧")
+                        this.props.nav.navigate('qcMain')
+                     //   Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_indigo.png')}/>
