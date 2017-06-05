@@ -20,6 +20,7 @@ import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {CachedImage} from "react-native-img-cache";
+import ApiService from "../../network/WpApiService";
 
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
@@ -48,6 +49,7 @@ export default class WpProductDetailPager extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.product)
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
         });
@@ -133,6 +135,26 @@ export default class WpProductDetailPager extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{width: width, height: 1, backgroundColor: Color.line}}/>
+
+                    {
+                        (()=>{
+                            if(this.props.product.FacPicPath){
+                                return (
+                                    <View>
+                                    <View style={styles.textStyle}>
+                                        <Text >已提交图片</Text>
+                                    </View>
+                                        <Image
+                                            resizeMode="contain"
+                                            style={{height: 200, margin: 16}}
+                                            source={{uri: ApiService.getBaseUrl()+this.props.product.FacPicPath}}/>
+                                    </View>
+                                )
+                            }
+                        })()
+                    }
+
+
                     <View style={styles.textStyle}>
                         <Text>工厂图片</Text>
                         <TouchableOpacity onPress={() => {
@@ -151,7 +173,7 @@ export default class WpProductDetailPager extends Component {
                             /></TouchableOpacity>
                     </View>
                     <ListView
-                        style={{width: width}}
+                        style={{width: width,marginBottom:25}}
                         dataSource={this.state.dataSource}
                         removeClippedSubviews={false}
                         enableEmptySections={true}

@@ -22,6 +22,7 @@ export class WpProductItem extends Component {
     }
 
     componentDidMount() {
+        console.log(JSON.stringify(this.state.product))
     }
 
     componentWillReceiveProps(newProps) {
@@ -34,7 +35,8 @@ export class WpProductItem extends Component {
             <TouchableOpacity
                 style={{flexDirection: 'row', backgroundColor: 'white', elevation: 2, margin: 16}}
                 onPress={() => {
-                    this.props.func(this.props.product)
+                    //this.props.func(this.props.product)
+                    this.props.func();
                 }}>
                 <View style={{width: 100, height: 100, backgroundColor: Color.line, margin: 5}}>
                     <CachedImage

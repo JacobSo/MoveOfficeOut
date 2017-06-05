@@ -33,7 +33,6 @@ import WpMainPager from "./ui/WoodProcess/WpMainPager";
 import WpWorkPager from "./ui/WoodProcess/WpWorkPager";
 import WpSearchPager from "./ui/WoodProcess/WpSearchPager";
 import WpProductDetailPager from "./ui/WoodProcess/WpProductDetailPager";
-import WpProductListPager from "./ui/WoodProcess/WpProductListPager";
 import GalleryPager from "./ui/GalleryPager";
 const {width, height} = Dimensions.get('window');
 
@@ -139,9 +138,6 @@ const WpSearchScreen = ({navigation}) => _renderScreen(<View
 const WpProductDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpProductDetailPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
-const WpProductListScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpProductListPager {...navigation.state.params}
-                                                                                      nav={navigation}/></View>);
 const GalleryScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<GalleryPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
@@ -219,9 +215,7 @@ const SimpleStack = StackNavigator({
         wpDetail: {
             screen: WpProductDetailScreen,
         },
-        wpList: {
-            screen: WpProductListScreen,
-        },
+
     },
     {
         initialRouteName: 'login',

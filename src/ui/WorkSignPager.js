@@ -25,7 +25,7 @@ export default class WorkSignPager extends Component {
         super(props);
         this.state = {
             isLoading: false,
-            comment: '',
+            comment:this.props.content,
             items: this.props.task.list,
         }
     }
@@ -81,6 +81,7 @@ export default class WorkSignPager extends Component {
                         <TextInput style={styles.textInput}
                                    multiline={true}
                                    placeholder="在此输入"
+                                   defaultValue={this.props.content}
                                    returnKeyType={'done'}
                                    underlineColorAndroid="transparent"
                                    blurOnSubmit={true}

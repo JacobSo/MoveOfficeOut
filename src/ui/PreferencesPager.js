@@ -153,6 +153,7 @@ export default class PreferencesPager extends Component {
                                 6.签到距离提示{'\n'}
                                 7.新增外出类型{'\n'}
                                 8.调整签到按钮{'\n'}
+                                9.填写对接工作填入已有内容{'\n'}
 
                             </Text>
                             <Text style={styles.contentStyle}>

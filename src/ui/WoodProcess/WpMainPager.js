@@ -94,16 +94,18 @@ export default class WpMainPager extends Component {
                     renderRow={(rowData, rowID, sectionID) =>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.nav.navigate('wpList',
-                                    {
-                                        task: rowData
-                                    });
+                                this.props.nav.navigate('wpWork', {
+                                    task: rowData,
+                                    refreshFunc:()=>{
+                                        this._onRefresh()
+                                    }
+                                });
                             }}
                             style={styles.itemCard}>
                             <Text style={{
                                 textAlign: 'center',
                                 width: width - 32,
-                                padding:5,
+                                padding: 5,
                                 color: 'white',
                                 backgroundColor: rowData.ReviewType === 1 ? Color.colorTeal : Color.colorAmber
                             }}>
@@ -147,7 +149,7 @@ export default class WpMainPager extends Component {
 
                 <Toolbar
                     elevation={0}
-                    title={["板木评审"]}
+                    title={["评审单"]}
                     color={Color.colorPurple}
                     isHomeUp={true}
                     isAction={true}
@@ -164,7 +166,11 @@ export default class WpMainPager extends Component {
                     color={Color.colorOrange}
                     drawable={require('../../drawable/add.png')}
                     action={() => {
-                        this.props.nav.navigate('wpWork');
+                        this.props.nav.navigate('wpWork',{
+                            refreshFunc:()=>{
+                                this._onRefresh()
+                            }
+                        });
                     }}/>
             </View>
         )

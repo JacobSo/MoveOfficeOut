@@ -59,23 +59,27 @@ const {width, height} = Dimensions.get('window');
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
             });
-            let temp;
-            if(this.props.task.DailyType===0){
-                temp = "当天来回"
-            }else if(this.props.task.DailyType===1){
-                temp = "驻厂"
 
-            }else if(this.props.task.DailyType===2){
-                temp = "出差，结束时间："+this.props.task.DailyEndDate
-
-            }else{
-                temp = "不需要外出"
-
-            }
 
 
      //   });
 
+    }
+
+    _getTypeString(){
+        let temp;
+        if(this.props.task.DailyType===0){
+            temp = "当天来回"
+        }else if(this.props.task.DailyType===1){
+            temp = "驻厂"
+
+        }else if(this.props.task.DailyType===2){
+            temp = "出差，结束时间："+this.props.task.DailyEndDate
+
+        }else{
+            temp = "不需要外出"
+        }
+        return temp;
     }
 
     _setList() {
@@ -94,6 +98,7 @@ const {width, height} = Dimensions.get('window');
                             this.props.nav.navigate('sign',{
                                 position: sectionID,
                                 task: this.props.task,
+                                content:rowData.WorkResult,
                                 commentWork: (resultArray) => {
                                     this.state.items = JSON.parse(JSON.stringify(resultArray));
                                     // console.log('-----------------update'+JSON.stringify( this.state.items));
@@ -411,6 +416,7 @@ const {width, height} = Dimensions.get('window');
                         <Text style={{color: 'white', marginBottom: 5}}>{'陪同人：' + this.props.task.FollowPeson}</Text>
                         <Text style={{color: 'white', marginBottom: 5}}>{'备注：' + this.props.task.Remark}</Text>
                         <Text style={{color: 'white'}}>{'申请人：' + this.props.task.Creator}</Text>
+                        <Text style={{color: 'white'}}>{'外出类型：' + this._getTypeString()}</Text>
 
                     </View>
                     {this._setReject()}

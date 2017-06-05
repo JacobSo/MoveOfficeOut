@@ -74,7 +74,22 @@ export  default  class ApiService {
         });
         return this.postRequest(method, param);
     }
-
+    static modifyWork(guid,series, car, factory, date, member, type, products) {
+        let method = 'ReviewBill/UpReviewBill';
+        let param = JSON.stringify({
+            guid: guid,
+            username: App.account,
+            series: series,
+            isapplycar: car,
+            facname: factory,
+            reviewdate: date,
+            followpeson: member,
+            reviewtype: type,
+            products: products,
+            uniqueIdentifier: App.session
+        });
+        return this.postRequest(method, param);
+    }
     static deleteWork(id) {
         let method = 'ReviewBill/Del';
         let param = JSON.stringify({

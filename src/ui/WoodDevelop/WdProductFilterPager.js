@@ -57,7 +57,6 @@ export default class WdProductFilterPager extends Component {
                     this.state.problemList.push(result);
                 }).done();
         });
-
     }
 
     render() {
@@ -84,7 +83,6 @@ export default class WdProductFilterPager extends Component {
                                     this.state.allSelect = !this.state.allSelect;
                                     this.state.items.map((data) => {
                                         data.check = this.state.allSelect;
-
                                     });
                                     this.setState({
                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),

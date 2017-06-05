@@ -79,18 +79,20 @@ export class WdFilterItem extends Component {
                 <View style={{width: 100, height: 100}}>
                     <CachedImage
                         resizeMode="contain"
-                        style={{width: 100, height: 100, }}
-                        source={{uri: this.props.product.pImage?this.props.product.pImage:'-'}}/>
+                        style={{width: 100, height: 100,}}
+                        source={{uri: this.props.product.pImage ? this.props.product.pImage : '-'}}/>
                 </View>
                 <Text style={{
                     margin: 10,
                     fontSize: 15,
                     width: 90,
-                    textAlign:'center'
-                }}>{this.props.product.ItemName}</Text>
+                    textAlign: 'center'
+                }}>{this.props.product.ItemName}
+                </Text>
                 <Text
-                    style={{marginLeft: 10, marginRight: 10, width: 90,
-                        textAlign:'center'
+                    style={{
+                        marginLeft: 10, marginRight: 10, width: 90,
+                        textAlign: 'center'
                     }}>{ this.props.product.ItemRemark}</Text>
             </TouchableOpacity>
         );
@@ -104,7 +106,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             backgroundColor: 'white',
             height: 180,
-            width:width/3-10,
+            width: width / 3 - 10,
             elevation: 2,
             margin: 5,
         },

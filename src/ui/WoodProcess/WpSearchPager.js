@@ -26,13 +26,16 @@ export default class PasswordPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            select: [false, false, false],
             isLoading: false,
+            selectItems: 0,
+            selectItemsId:[],
+
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            keyword: ""
-
+            keyword: "",
         }
     }
 
@@ -46,13 +49,16 @@ export default class PasswordPager extends Component {
         this.setState({
             isLoading: true
         });
-        ApiService.getProduct(keyword,this.props.isWood?0:1)
+        ApiService.getProduct(keyword, this.props.isWood ? 0 : 1)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
                 if (!responseJson.IsErr) {
+                    responseJson.list.map((data) => {
+                        data.check = false
+                    });
                     this.setState({
                         items: responseJson.list,
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.list)
@@ -69,6 +75,10 @@ export default class PasswordPager extends Component {
             .done()
     }
 
+    stepSelectView() {
+
+    }
+
 
     render() {
         return (
@@ -83,11 +93,29 @@ export default class PasswordPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={[]}
+                         actionArray={["完成(" + this.state.selectItems + ")"]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
                              },
+                             () => {
+                                 let temp = [];
+                                 this.state.items.map((data) => {
+                                     if (data.check) {
+                                         data.selectStep = this.state.select;
+                                         temp.push(data);
+                                     }
+                                     data.check=false;
+                                 });
+                                 this.props.selectFunc(temp);
+                                 Toast.show('成功添加产品+' + this.state.selectItems);
+                                 this.setState({//set default
+                                     select:[false,false,false],
+                                     dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                     selectItems:0
+                                 })
+                                 // this.props.nav.goBack(null)
+                             }
                          ]}/>
                 <View style={{flexDirection: "row"}}>
 
@@ -124,19 +152,73 @@ export default class PasswordPager extends Component {
                         removeClippedSubviews={false}
                         enableEmptySections={true}
                         renderRow={ (rowData, sectionID, rowID) =>
-                            <WpProductItem
-                                product={rowData}
-                                func={(data) => {
-                                    this.props.selectFunc(data)
-                                    this.props.nav.goBack(null)
-                                }}/>
+                            <View
+                                style={{backgroundColor: rowData.check ? Color.colorPrimary : Color.trans}}>
+                                <WpProductItem
+                                    product={rowData}
+                                    func={() => {
+                                        let temp = this.state.selectItems;
+                                        this.state.items[rowID].check = !this.state.items[rowID].check;
+                                        if (this.state.items[rowID].check)
+                                            ++temp;
+                                        else --temp;
+                                        this.setState({
+                                            selectItems: temp,
+                                            dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                        });
+
+                                    }}/></View>
                         }/>
                 </View>
+                {
+                    (() => {
+
+                        if (this.state.selectItems > 0) {
+                            this.stepSelectView();
+                            return (
+                                <View style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    position: 'absolute',
+                                    bottom: 25,
+                                    backgroundColor: 'white',
+                                    elevation: 2
+                                }}>
+                                    <TouchableOpacity
+                                        style={[styles.stepButton, {backgroundColor: (this.state.select[0] ? Color.colorPurple : Color.line)},]}
+                                        onPress={() => {
+                                            this.state.select[0] = !this.state.select[0];
+                                            this.setState({select: this.state.select})
+                                        }}>
+                                        <Text style={{color: "white", textAlign: "center"}}>白胚</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorPurple : Color.line)},]}
+                                        onPress={() => {
+                                            this.state.select[1] = !this.state.select[1];
+                                            this.setState({select: this.state.select})
+                                        } }>
+                                        <Text style={{color: "white", textAlign: "center"}}>成品</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorPurple : Color.line)},]}
+                                        onPress={() => {
+                                            this.state.select[2] = !this.state.select[2];
+                                            this.setState({select: this.state.select})
+                                        }}>
+                                        <Text style={{color: "white", textAlign: "center"}}>包装</Text>
+                                    </TouchableOpacity>
+                                </View>)
+                        }
+                    })()
+                }
+
                 <Loading visible={this.state.isLoading}/>
             </View>
         )
     }
 }
+
 const styles = StyleSheet.create({
     textInput: {
         width: width - 100,
@@ -151,5 +233,12 @@ const styles = StyleSheet.create({
         borderBottomColor: Color.line,
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
+    },
+    stepButton: {
+        flex: 1,
+        margin: 8,
+        justifyContent: "center",
+        padding: 10,
+        borderRadius: 10
     }
 });

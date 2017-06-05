@@ -6,25 +6,26 @@
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions, ScrollView, Alert, ListView, Text, Image, TouchableOpacity, Switch, TextInput,Platform
+    StyleSheet, Dimensions, ScrollView, Alert, ListView, Text, Image, TouchableOpacity, Switch, TextInput, Platform
 
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/WpApiService';
 import Color from '../../constant/Color';
-import FloatButton from "../Component/FloatButton";
 import Toast from 'react-native-root-toast';
 import Loading from 'react-native-loading-spinner-overlay';
 import DatePicker from "../Component/DatePicker";
 import {WpProductItem} from "../Component/WpProductItem";
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
+import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
 
 export default class WpWorkPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isModify: false,
             isLoading: false,
             isCarVisible: false,
             isWood: false,
@@ -33,7 +34,7 @@ export default class WpWorkPager extends Component {
             date: "",
             memberText: "",
             isNeedCar: false,
-            items: [],
+            items: {},
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
@@ -43,37 +44,85 @@ export default class WpWorkPager extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount() {//001-1,010-2,011-3,100-4,101-5,110-6,111-7
+        if (this.props.task) {
+            this.props.task.productlist.map((data) => {
+                let temp = [];
+                switch (data.Stage) {
+                    case 1:
+                        temp = [false, false, true];
+                        break;
+                    case 2:
+                        temp = [false, true, false];
+                        break;
+                    case 3:
+                        temp = [false, true, true];
+                        break;
+                    case 4:
+                        temp = [true, false, false];
+                        break;
+                    case 5:
+                        temp = [true, false, true];
+                        break;
+                    case 6:
+                        temp = [true, true, false];
+                        break;
+                    case 7:
+                        temp = [true, true, true];
+                        break;
+                }
+                data.selectStep = temp;
+                this.state.items[data.Id] = data;
+            });
+
+
+            this.setState({
+                isModify: true,
+                isWood: this.props.task.ReviewType === 0,
+                date: Utility.getTime(this.props.task.ReviewDate),
+                isNeedCar: this.props.task.IsApplyCar,
+                memberText: this.props.task.FollowPeson,
+                Series: this.props.task.Series,
+                SupplierName: this.props.task.FacName,
+                dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+            })
+        }
     }
 
     pack() {
         let isAllFinish = true;
         let temp = [];
-        let picTemp=[];
-        this.state.items.map((data) => {
-            if (data.selectStep) {
+        let picTemp = [];
+        for (let Id in this.state.items) {
+            let data = this.state.items[Id];
+          //  console.log(JSON.stringify(data));
+            if (data.selectStep && (data.selectStep.indexOf(true) > -1)) {
                 temp.push({
-                    id: data.Id,
+                    id: this.state.isModify ? data.poldid : data.Id,
                     stage: JSON.stringify(data.selectStep)
                 })
             } else {
                 isAllFinish = false
             }
 
-            if(data.pics){
-                data.pics.map((pic)=>{
-                    console.log(JSON.stringify(pic));
+            if (data.pics) {
+                data.pics.map((pic) => {
+                    //console.log(JSON.stringify(pic));
                     picTemp.push({
-                        path:pic.uri.replace('file://',''),
-                        id: data.Id,
-                        imgCode:'',
-                        fileName:pic.fileName,
-                        reviewbillguid:'',
+                        path: pic.uri.replace('file://', ''),
+                        id:this.state.isModify ? data.poldid :  data.Id,
+                        imgCode: '',
+                        fileName: pic.fileName,
+                        reviewbillguid: '',
+                        poldid: data.poldid,
                     })
                 })
             }
-        });
-        if (isAllFinish){
+        }
+        /* this.state.items.map((data) => {
+
+         });*/
+        if (isAllFinish) {
             this.state.submitProduct = temp;
             this.state.submitPic = picTemp;
 
@@ -82,7 +131,8 @@ export default class WpWorkPager extends Component {
     }
 
     postDialog() {
-        if (!this.state.items.length) {
+        // console.log(JSON.stringify(this.state.items));
+        if (!Object.getOwnPropertyNames(this.state.items).length) {
             Toast.show("请选择评审产品");
             return
         }
@@ -116,7 +166,7 @@ export default class WpWorkPager extends Component {
                 },
                 {
                     text: '确定', onPress: () => {
-                    console.log(JSON.stringify(this.state.items))
+                    // console.log(JSON.stringify(this.state.items))
                     this.pack();
                     this.postText();
                 }
@@ -125,27 +175,26 @@ export default class WpWorkPager extends Component {
         )
     }
 
-
     postText() {
         this.setState({isLoading: true});
-        ApiService.createWork(this.state.Series,
-            this.state.isNeedCar ? 1 : 0,
-            this.state.SupplierName,
-            this.state.date,
-            this.state.memberText,
-            this.state.isWood ? 0 : 1,
-            JSON.stringify(this.state.submitProduct))
-            .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
-                if (!responseJson.IsErr) {
+
+        this.createOrModifyReq().then((responseJson) => {
+            console.log(JSON.stringify(responseJson));
+            if (!responseJson.IsErr) {
+                if (this.state.submitPic.length !== 0)
                     this.postImage(responseJson.ReviewBillGuid);
-                } else {
-                    Toast.show(responseJson.ErrDesc)
-                    setTimeout(() => {
-                        this.setState({isLoading: false})
-                    }, 100);
+                else {
+                    Toast.show("提交成功");
+                    this.props.refreshFunc();
+                    this.props.nav.goBack(null)
                 }
-            })
+            } else {
+                Toast.show(responseJson.ErrDesc)
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }
+        })
             .catch((error) => {
                 console.log(error);
                 Toast.show("出错了，请稍后再试");
@@ -156,17 +205,43 @@ export default class WpWorkPager extends Component {
             .done()
     }
 
+    createOrModifyReq() {
+        if (this.state.isModify) {
+            return ApiService.modifyWork(
+                this.props.task.Guid,
+                this.state.Series,
+                this.state.isNeedCar ? 1 : 0,
+                this.state.SupplierName,
+                this.state.date,
+                this.state.memberText,
+                this.state.isWood ? 0 : 1,
+                JSON.stringify(this.state.submitProduct))
+        } else {
+            return ApiService.createWork(this.state.Series,
+                this.state.isNeedCar ? 1 : 0,
+                this.state.SupplierName,
+                this.state.date,
+                this.state.memberText,
+                this.state.isWood ? 0 : 1,
+                JSON.stringify(this.state.submitProduct))
+        }
+    }
+
     postImage(mainId) {
-        if(Platform.OS==='android'){
+        if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
-                    ApiService.uploadImamge(data.id,callBackData,data.fileName,mainId)
+                    ApiService.uploadImamge(
+                        data.id,
+                        callBackData,
+                        data.fileName,
+                        this.state.isModify ?   this.props.task.Guid:mainId)
                         .then((responseJson) => {
                             console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
                                 if (index === this.state.submitPic.length - 1) {
                                     Toast.show("提交成功");
-                                    //  this.updateStatus();
+                                    this.props.refreshFunc();
                                     this.props.nav.goBack(null)
                                 }
                             } else {
@@ -189,11 +264,14 @@ export default class WpWorkPager extends Component {
                         }).done();
                 });
             })
-        }else{
+        } else {
             this.state.submitPic.map((data, index) => {
-
                 IosModule.getImageBase64(data.path, (callBackData) => {
-                    ApiService.uploadImamge(data.id,callBackData,data.fileName,mainId)
+                    ApiService.uploadImamge(
+                        this.state.isModify ? data.poldid : data.id,
+                        callBackData,
+                        data.fileName,
+                        this.state.isModify ? mainId : this.props.task.Guid)
                         .then((responseJson) => {
                             console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
@@ -355,19 +433,28 @@ export default class WpWorkPager extends Component {
                                     />
                                 </View>
 
-                                <TouchableOpacity style={styles.control} onPress={() => {
-                                    this.setState({isCarVisible: !this.state.isCarVisible});
-                                }}>
-                                    <Image style={styles.ctrlIcon} source={require('../../drawable/car.png')}/>
-                                    <Text numberOfLines={1}
-                                          style={{color: 'white', width: 200}}>
-                                        {(this.state.isNeedCar ? "需要车辆" : '不申请车辆') + " - " + (this.state.memberText ? this.state.memberText : '无陪同人')}
-                                    </Text>
-                                </TouchableOpacity>
+
+                                {
+                                    (() => {
+                                        if (this.state.isWood) {
+                                            return (<TouchableOpacity style={styles.control} onPress={() => {
+                                                this.setState({isCarVisible: !this.state.isCarVisible});
+                                            }}>
+                                                <Image style={styles.ctrlIcon}
+                                                       source={require('../../drawable/car.png')}/>
+                                                <Text numberOfLines={1}
+                                                      style={{color: 'white', width: 200}}>
+                                                    {(this.state.isNeedCar ? "需要车辆" : '不申请车辆') + " - " + (this.state.memberText ? this.state.memberText : '无陪同人')}
+                                                </Text>
+                                            </TouchableOpacity>);
+                                        }
+                                    })()
+
+                                }
                                 {
                                     this._carView()
-                                }
 
+                                }
 
                                 <TouchableOpacity style={styles.control} onPress={() => {
                                     this.props.nav.navigate(
@@ -432,13 +519,13 @@ export default class WpWorkPager extends Component {
                                 renderRow={ (rowData, sectionID, rowID) =>
                                     <WpProductItem
                                         product={rowData}
-                                        func={(data) => {
+                                        func={() => {
                                             this.props.nav.navigate(
                                                 'wpDetail',
                                                 {
-                                                    product: data,
+                                                    product: rowData,
                                                     delFunc: () => {
-                                                        this.state.items.splice(rowID, 1);
+                                                        delete this.state.items[rowData.Id];
                                                         this.setState({
                                                             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
                                                         });
@@ -460,7 +547,12 @@ export default class WpWorkPager extends Component {
                                     {
                                         isWood: this.state.isWood,
                                         selectFunc: (data) => {
-                                            this.state.items.push(data);
+                                            data.map((d) => {
+                                                //console.log(JSON.stringify(d));
+                                                this.state.items[d.Id] = d;
+                                               // console.log(JSON.stringify(this.state.items));
+                                            });
+                                            //                           this.state.items =  this.state.items.concat(data);
                                             this.setState({
                                                 dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
                                             });
@@ -485,24 +577,6 @@ export default class WpWorkPager extends Component {
 }
 const styles = StyleSheet.create(
     {
-        tabView: {
-            backgroundColor: Color.trans,
-            width: width,
-        },
-        card: {
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderColor: Color.trans,
-            margin: 16,
-            height: 55,
-            padding: 15,
-            shadowColor: Color.background,
-            shadowOffset: {width: 2, height: 2,},
-            shadowOpacity: 0.5,
-            shadowRadius: 3,
-            alignItems: 'center',
-            elevation: 2
-        },
         addCard: {
             borderWidth: 1,
             backgroundColor: 'white',

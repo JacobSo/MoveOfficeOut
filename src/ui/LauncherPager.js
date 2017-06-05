@@ -67,47 +67,42 @@ export default class LauncherPager extends Component {
                         }]}
 
                 />
+
                 <Text style={styles.group}>外协工作</Text>
                 <View style={styles.iconContainer}>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
                     this.props.nav.navigate('main')
                 }}>
                     <Image style={{width: 55, height: 55}} resizeMode="contain"
                            source={ require('../drawable/ic_launcher_cyan.png')}/>
-                    <Text>外协工作</Text>
+                    <Text>外出工作</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity style={{alignItems:'center'}} onPress={() => {
                     this.props.nav.navigate('wpMain')
                 }}>
                     <Image style={{width: 55, height: 55}} resizeMode="contain"
                            source={ require('../drawable/ic_launcher_purple.png')}/>
-                    <Text>板木评审</Text>
+                    <Text>评审单</Text>
                 </TouchableOpacity>
-
                 </View>
-                {/* <View style={{
-                 backgroundColor: Color.line,
-                 width: width,
-                 height: 1,
 
-                 }}/>*/}
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
                         Toast.show("开发中")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_indigo.png')}/>
                         <Text>常规质检</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
                         this.props.nav.navigate('wdMain')
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>
                         <Text>板木研发</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity style={{alignItems:'center'}} onPress={() => {
                         Toast.show("开发中")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
