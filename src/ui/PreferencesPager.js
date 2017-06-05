@@ -56,7 +56,6 @@ export default class PreferencesPager extends Component {
                 flex: 1,
                 backgroundColor: Color.background
             }}>
-
                 <Toolbar title={['设置']}
                          color={Color.colorPrimary}
                          elevation={2}
@@ -118,7 +117,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v3"]
+                                ['此版本更新记录', "v1"]
                             ]}
                             functions={[
                                 () => {
@@ -144,7 +143,7 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={styles.contentStyle}>
-                                v4:{'\n'}
+                                v1:{'\n'}
                                 1.助理新增查看审核模块{'\n'}
                                 2.增加launcher处理合并多部门app{'\n'}
                                 3.关闭供应商填写{'\n'}
@@ -154,29 +153,9 @@ export default class PreferencesPager extends Component {
                                 7.新增外出类型{'\n'}
                                 8.调整签到按钮{'\n'}
                                 9.填写对接工作填入已有内容{'\n'}
+                                10.新增评审单模块{'\n'}
+                            </Text>
 
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v3:{'\n'}
-                                1.新增车牌选项{'\n'}
-                                2.fix bugs{'\n'}
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v2:{'\n'}
-                                1.修复搜索选择功能{'\n'}
-                                2.拆分审核与评分两个功能模块。{'\n'}
-                                3.签到状态加颜色区分{'\n'}
-                            </Text>
-                            <Text style={styles.contentStyle}>
-                                v1:{'\n'}
-                                1.新增支持板木研发调用{'\n'}
-                                2.新增签到功能{'\n'}
-                                3.修复供应商/系列列表底部显示问题{'\n'}
-                                4.去掉ios通知红标(待验证){'\n'}
-                                5.修复填写工作内容显示问题{'\n'}
-                                6.新增工作增加编辑和删除功能{'\n'}
-                                7.新增工作是走访类型时限制供应商数量唯一{'\n'}
-                            </Text>
                         </ScrollView>
                     </View>
                 </PopupDialog>
