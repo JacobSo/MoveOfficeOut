@@ -181,6 +181,7 @@ const styles = StyleSheet.create(
         tabView: {
             backgroundColor: Color.trans,
             width: width,
+            height:height-25-55*2
         },
         card: {
             borderWidth: 1,

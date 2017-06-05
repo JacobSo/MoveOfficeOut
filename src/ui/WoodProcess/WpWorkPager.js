@@ -343,7 +343,7 @@ export default class WpWorkPager extends Component {
                             this.postDialog();
                         }
                     ]}/>
-                <ScrollView>
+                <ScrollView >
                     <View style={{
                         backgroundColor: Color.background
                     }}>
@@ -363,7 +363,7 @@ export default class WpWorkPager extends Component {
                                     <Switch
                                         style={{marginRight: 16,}}
                                         onValueChange={(value) => {
-                                            if (this.state.items.length) {
+                                            if (Object.getOwnPropertyNames(this.state.items).length) {
                                                 Alert.alert(
                                                     '切换评审',
                                                     '你已经选择了产品，切换会清空已选产品，是否继续？',
@@ -374,7 +374,7 @@ export default class WpWorkPager extends Component {
                                                         },
                                                         {
                                                             text: '确定', onPress: () => {
-                                                            this.state.items = [];
+                                                            this.state.items ={};
                                                             this.setState({
                                                                 isWood: value,
                                                                 dataSource: this.state.dataSource.cloneWithRows([])
@@ -485,7 +485,7 @@ export default class WpWorkPager extends Component {
                             </View>
 
                             <ListView
-                                style={{marginBottom: 25,}}
+                                style={{marginBottom: 25}}
                                 dataSource={this.state.dataSource}
                                 enableEmptySections={true}
                                 renderRow={ (rowData, sectionID, rowID) =>

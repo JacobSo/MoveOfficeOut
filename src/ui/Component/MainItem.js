@@ -5,6 +5,7 @@
 import React, {Component, PropTypes} from 'react';
 import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
 import Color from '../../constant/Color';
+import Utility from "../../utils/Utility";
 
 const {width, height} = Dimensions.get('window');
 const circleColor = {
@@ -28,7 +29,7 @@ export class MainItem extends Component {
     };
 
     render() {
-     //   console.log(JSON.stringify(this.props.task));
+        //   console.log(JSON.stringify(this.props.task));
         return (
             <TouchableWithoutFeedback
                 onPress={ this.props.func}>
@@ -52,7 +53,7 @@ export class MainItem extends Component {
                     </View>
                     <View style={styles.textStyle}>
                         <Text >对接日期</Text>
-                        <Text >{this.props.task.DockingDate}</Text>
+                        <Text >{this.props.task.DockingDate + '到' + Utility.getTime(this.props.task.DailyEndDate)}</Text>
                     </View>
                     <View style={styles.textStyle}>
                         <Text >对接工作</Text>

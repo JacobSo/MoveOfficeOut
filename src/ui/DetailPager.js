@@ -26,6 +26,7 @@ import InputDialog from "./Component/InputDialog";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {mainActions} from "../actions/MainAction";
+import Utility from "../utils/Utility";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -74,7 +75,7 @@ const {width, height} = Dimensions.get('window');
             temp = "驻厂"
 
         }else if(this.props.task.DailyType===2){
-            temp = "出差，结束时间："+this.props.task.DailyEndDate
+            temp = "出差，结束时间："+Utility.getTime(this.props.task.DailyEndDate)
 
         }else{
             temp = "不需要外出"

@@ -8,7 +8,7 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    InteractionManager,
+    Platform,
     TextInput,
     StyleSheet, Button,
 } from 'react-native';
@@ -147,13 +147,13 @@ export default class PasswordPager extends Component {
 
                 <View style={{flexDirection: 'row'}}>
                     <ListView
-                        style={{marginBottom: 10, flex: 1}}
+                        style={{marginBottom: 10, flex: 1,height:height-25-55*2}}
                         dataSource={this.state.dataSource}
                         removeClippedSubviews={false}
                         enableEmptySections={true}
                         renderRow={ (rowData, sectionID, rowID) =>
                             <View
-                                style={{backgroundColor: rowData.check ? Color.colorPrimary : Color.trans}}>
+                                style={{backgroundColor: rowData.check ? Color.colorPrimary : Color.trans,}}>
                                 <WpProductItem
                                     product={rowData}
                                     func={() => {
@@ -180,7 +180,7 @@ export default class PasswordPager extends Component {
                                     flexDirection: "row",
                                     justifyContent: "space-between",
                                     position: 'absolute',
-                                    bottom: 25,
+                                    bottom: Platform.OS==='android'?25:0,
                                     backgroundColor: 'white',
                                     elevation: 2
                                 }}>
