@@ -9,14 +9,12 @@ import {
     ListView,
     StyleSheet,
     Dimensions,
-    TouchableOpacity,
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
-import IosModule from '../../module/IosCommontModule'
 import {WdFilterItem} from "../Component/WdFilterItem";
 import SQLite from '../../db/Sqlite';
 let sqLite = new SQLite();

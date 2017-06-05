@@ -17,11 +17,8 @@ import Color from '../../constant/Color';
 import CheckBox from "../../ui/Component/CheckBox";
 import ApiService from '../../network/WdApiService';
 import Loading from 'react-native-loading-spinner-overlay';
-import App from '../../constant/Application';
 import Toast from 'react-native-root-toast';
 import {WdActions} from "../../actions/WdAction";
-import {WdMainItem} from "../Component/WdMainItem";
-import {WdProductItem} from "../Component/WdProductItem";
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 import {connect} from "react-redux";

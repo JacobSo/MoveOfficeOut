@@ -14,10 +14,6 @@ import {
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
-import IosModule from '../../module/IosCommontModule'
-import {WdFilterItem} from "../Component/WdFilterItem";
-import SQLite from '../../db/Sqlite';
-let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
 export default class WdFileListPager extends Component {

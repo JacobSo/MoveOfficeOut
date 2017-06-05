@@ -8,20 +8,13 @@ import {
     View,
     StyleSheet,
     Text,
-    Platform,
-    TextInput,
-    KeyboardAvoidingView,
-    ScrollView, TouchableOpacity, Image, Button,
+    TouchableOpacity, Image,
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import App from '../constant/Application';
-import ApiService from '../network/ApiService';
-import StarSeek from "./Component/StarSeek";
 import SQLite from '../db/Sqlite';
-import {TABLE_PIC, TABLE_W_D, TABLE_W_D_P, TABLE_W_D_Q} from "../db/DBConst";
 let sqLite = new SQLite();
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -89,21 +82,22 @@ export default class LauncherPager extends Component {
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        Toast.show("开发中")
+                        Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_indigo.png')}/>
                         <Text>常规质检</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        this.props.nav.navigate('wdMain')
+                        //this.props.nav.navigate('wdMain')
+                        Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>
                         <Text>板木研发</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{alignItems:'center'}} onPress={() => {
-                        Toast.show("开发中")
+                        Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_blue_grey.png')}/>
