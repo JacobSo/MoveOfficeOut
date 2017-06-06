@@ -53,11 +53,12 @@ export  default  class ApiService {
             uniqueIdentifier: App.session,
             datatype: type,
             curpage: page,
-            worktype: App.workType,
+        //    worktype: App.workType,
             SupplierName: '',
             Series: '',
             applydate: '',
             endapplydate: '',
+            jobtype:App.jobType
 
         });
         return this._request(method, param);

@@ -26,7 +26,7 @@ export default class MainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            floatButtonVisible: App.workType !== '数据专员' && App.workType !== '助理' && App.workType !== '项目专员管理人',
+            floatButtonVisible: App.jobType !== 3 && App.jobType !== 4 && App.jobType !== 5,
         };
 
     }
@@ -44,9 +44,9 @@ export default class MainPager extends Component {
     }
 
     _get() {
-        if (App.workType === '数据专员') {
+        if (App.jobType === 3) {
             return (<CustomList tabLabel='进行中' type="3" nav={this.props.nav}/>)
-        } else if (App.workType === '助理') {
+        } else if (App.jobType === 4) {
             return (
                 <ScrollableTabView
                     initialPage={0}
@@ -59,10 +59,10 @@ export default class MainPager extends Component {
                     <CustomList tabLabel='进行中' type="2" nav={this.props.nav}/>
                     <CustomList tabLabel='待审核' type="1" nav={this.props.nav}/>
                 </ScrollableTabView>)
-        } else if (App.workType.indexOf('项目专员管理人') > -1) {
+        } else if (App.jobType===5) {
             return (<CustomList tabLabel='进行中' type="1,3" nav={this.props.nav}/>)
         } else {
-            if (App.workType.indexOf('项目专员') > -1) {
+            if (App.jobType===2) {
                 return (
                     <ScrollableTabView
                         initialPage={0}
@@ -78,7 +78,7 @@ export default class MainPager extends Component {
                         <CustomList tabLabel='评分' type="3" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
-            } else {// +板木驻场工程师
+            } else {// 1
                 return (
                     <ScrollableTabView
                         initialPage={0}

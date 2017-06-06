@@ -8,13 +8,13 @@ import Color from '../constant/Color';
 
 export  default  class Application extends Component {
     static session;
-    static account='';
-    static workType='';
+    static account = '';
+    static workType = '';
     static department;
     static check;
-    static dptList="";
-    static pwd='';
-
+    static dptList = "";
+    static pwd = '';
+    static jobType = 0;
 
     static initAccount(callback) {
         AsyncStorage.getAllKeys((err, keys) => {
@@ -22,7 +22,7 @@ export  default  class Application extends Component {
                 stores.map((result, i, store) => {
                     let key = store[i][0];
                     let value = store[i][1];
-                            //console.log("---" + key + "---" + value);
+                    //console.log("---" + key + "---" + value);
 
                     if (key === "session") this.session = value;
                     if (key === "account") this.account = value;
@@ -30,14 +30,15 @@ export  default  class Application extends Component {
                     if (key === "department") this.department = value;
                     if (key === "check") this.check = value === '1';
                     if (key === "pwd") this.pwd = value;
-                    if (key === "dptList" && value &&!value.includes('[object'))
+                    if (key === "jobType") this.jobType = value;
+                    if (key === "dptList" && value && !value.includes('[object'))
                         this.dptList = JSON.parse(value);
                 });
             }).then(callback).done();
         });
     }
 
-    static saveAccount(session, account, department, workType, check, dptList,pwd) {
+    static saveAccount(session, account, department, workType, check, dptList, pwd, jobType) {
         this.session = session;
         this.account = account;
         this.department = department;
@@ -45,9 +46,19 @@ export  default  class Application extends Component {
         this.check = check;
         this.dptList = dptList;
         this.pwd = pwd;
-       // console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+JSON.stringify(dptList)+'-----'+pwd);
-        AsyncStorage.multiSet([['session', check ? session : ''], ['account', check ? account : ''], ['department', check ? department : ''],
-            ['workType', check ? workType : ''], ['check', check ? '1' : '0'], ['dptList', check ?  JSON.stringify(dptList) + '' : ''],   ['pwd', check ? pwd : ''],])
+        this.jobType = jobType;
+        // console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+JSON.stringify(dptList)+'-----'+pwd);
+        AsyncStorage.multiSet(
+            [
+                ['session', check ? session : ''],
+                ['account', check ? account : ''],
+                ['department', check ? department : ''],
+                ['workType', check ? workType : ''],
+                ['check', check ? '1' : '0'],
+                ['dptList', check ? JSON.stringify(dptList) + '' : ''],
+                ['pwd', check ? pwd : ''],
+                ['jobType', check ? jobType : 0],
+            ])
             .then(() => {
                     console.log("save success!");
                 },
