@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions, ScrollView, RefreshControl, ListView, Text, TouchableOpacity,
+    StyleSheet, Dimensions,  RefreshControl, ListView, Text, TouchableOpacity,
 
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
@@ -15,6 +15,7 @@ import Color from '../../constant/Color';
 import FloatButton from "../Component/FloatButton";
 import Toast from 'react-native-root-toast';
 import Utility from "../../utils/Utility";
+import RefreshEmptyView from "../Component/RefreshEmptyView";
 
 const {width, height} = Dimensions.get('window');
 
@@ -56,24 +57,7 @@ export default class QcMainPager extends Component {
 
     _getView() {
         if (this.state.items && this.state.items.length === 0) {
-            return (
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="Loading..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />
-                    }>
-                    <View
-                        style={styles.card}>
-                        <Text>没有数据</Text>
-                    </View>
-                </ScrollView>)
+            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={()=>{this._onRefresh()} } />)
         } else {
             return (
                 <ListView
@@ -103,7 +87,6 @@ export default class QcMainPager extends Component {
                                 });*/
                             }}
                             style={styles.itemCard}>
-
                             <View style={styles.itemText}>
                                 <Text>{'采购单'}</Text>
                                 <Text
@@ -168,20 +151,7 @@ const styles = StyleSheet.create(
             width: width,
             height: height - 25 - 55 * 2
         },
-        card: {
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderColor: Color.trans,
-            margin: 16,
-            height: 55,
-            padding: 15,
-            shadowColor: Color.background,
-            shadowOffset: {width: 2, height: 2,},
-            shadowOpacity: 0.5,
-            shadowRadius: 3,
-            alignItems: 'center',
-            elevation: 2
-        },
+
 
         itemCard: {
             flexDirection: 'column',

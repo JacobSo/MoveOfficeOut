@@ -95,7 +95,7 @@ export default class WpWorkPager extends Component {
         let picTemp = [];
         for (let Id in this.state.items) {
             let data = this.state.items[Id];
-          //  console.log(JSON.stringify(data));
+            //  console.log(JSON.stringify(data));
             if (data.selectStep && (data.selectStep.indexOf(true) > -1)) {
                 temp.push({
                     id: this.state.isModify ? data.poldid : data.Id,
@@ -110,7 +110,7 @@ export default class WpWorkPager extends Component {
                     //console.log(JSON.stringify(pic));
                     picTemp.push({
                         path: pic.uri.replace('file://', ''),
-                        id:this.state.isModify ? data.poldid :  data.Id,
+                        id: this.state.isModify ? data.poldid : data.Id,
                         imgCode: '',
                         fileName: pic.fileName,
                         reviewbillguid: '',
@@ -231,25 +231,25 @@ export default class WpWorkPager extends Component {
         if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
-                    this.postImgReq(data, index, callBackData,mainId);
+                    this.postImgReq(data, index, callBackData, mainId);
                 });
             })
         } else {
             this.state.submitPic.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
-                    this.postImgReq(data, index, callBackData,mainId);
+                    this.postImgReq(data, index, callBackData, mainId);
 
                 })
             });
         }
     }
 
-    postImgReq(data,index,callBackData,mainId){
+    postImgReq(data, index, callBackData, mainId) {
         ApiService.uploadImamge(
             data.id,
             callBackData,
             data.fileName,
-            this.state.isModify ? this.props.task.Guid:mainId)
+            this.state.isModify ? this.props.task.Guid : mainId)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
@@ -276,6 +276,86 @@ export default class WpWorkPager extends Component {
                     }, 100);
                 }
             }).done();
+    }
+
+    submitWork() {
+        Alert.alert(
+            '确认提交',
+            '提交后不可修改',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.setState({isLoading: true});
+                    ApiService.submitWork(this.props.task.Guid)
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (!responseJson.IsErr) {
+                                Toast.show("提交成功");
+                                this.props.refreshFunc();
+                                this.props.nav.goBack(null)
+                            } else{
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                                Toast.show(responseJson.ErrDesc);
+
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                            Toast.show("出错了，请稍后再试");
+                        }).done();
+                }
+                },
+            ]
+        )
+    }
+
+    deleteWork() {
+        Alert.alert(
+            '删除',
+            '删除后不可恢复',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.setState({isLoading: true});
+                    ApiService.deleteWork(this.props.task.Guid)
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (!responseJson.IsErr) {
+                                Toast.show("删除成功");
+                                this.props.refreshFunc();
+                                this.props.nav.goBack(null)
+                            } else{
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                                Toast.show(responseJson.ErrDesc);
+
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                            Toast.show("出错了，请稍后再试");
+                        }).done();
+                }
+                },
+            ]
+        )
     }
 
     _carView() {
@@ -320,7 +400,7 @@ export default class WpWorkPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={true}
-                    actionArray={["提交"]}
+                    actionArray={this.state.isModify ? ["修改", "提交"] : ["创建"]}
                     functionArray={[
                         () => {
                             Alert.alert(
@@ -341,6 +421,9 @@ export default class WpWorkPager extends Component {
                         },
                         () => {
                             this.postDialog();
+                        },
+                        () => {
+                            this.submitWork();
                         }
                     ]}/>
                 <ScrollView >
@@ -374,7 +457,7 @@ export default class WpWorkPager extends Component {
                                                         },
                                                         {
                                                             text: '确定', onPress: () => {
-                                                            this.state.items ={};
+                                                            this.state.items = {};
                                                             this.setState({
                                                                 isWood: value,
                                                                 dataSource: this.state.dataSource.cloneWithRows([])
@@ -522,7 +605,7 @@ export default class WpWorkPager extends Component {
                                             data.map((d) => {
                                                 //console.log(JSON.stringify(d));
                                                 this.state.items[d.Id] = d;
-                                               // console.log(JSON.stringify(this.state.items));
+                                                // console.log(JSON.stringify(this.state.items));
                                             });
                                             //                           this.state.items =  this.state.items.concat(data);
                                             this.setState({

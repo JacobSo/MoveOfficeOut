@@ -26,7 +26,6 @@ export default class LauncherPager extends Component {
     }
 
     componentDidMount() {
-
         //    sqLite.drop(TABLE_W_D);
         //    sqLite.drop(TABLE_W_D_P);
         //  sqLite.drop(TABLE_PIC);
@@ -59,9 +58,7 @@ export default class LauncherPager extends Component {
                         , () => {
                             this.props.nav.navigate('preferences')
                         }]}
-
                 />
-
                 <Text style={styles.group}>外协工作</Text>
                 <View style={styles.iconContainer}>
                 <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
@@ -83,7 +80,7 @@ export default class LauncherPager extends Component {
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                    //    this.props.nav.navigate('qcMain')
+                        this.props.nav.navigate('qcMain')
                         Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
@@ -91,8 +88,8 @@ export default class LauncherPager extends Component {
                         <Text>常规质检</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        //this.props.nav.navigate('wdMain')
-                        Toast.show("很想要吧")
+                     //   this.props.nav.navigate('wdMain')
+                       // Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>
@@ -107,46 +104,17 @@ export default class LauncherPager extends Component {
                     </TouchableOpacity>
                 </View>
 
-                {/*      <TouchableOpacity onPress={() => this.props.nav.navigate('preferences')}  style={styles.button}>
-                 <Text style={{color: 'white'}}>设置</Text>
-                 </TouchableOpacity>*/}
+
             </View>
 
         )
     }
 }
 const styles = StyleSheet.create({
-    titleStyle: {
-        color: Color.colorPrimary,
-        margin: 16,
-    },
-
-
-    textInput: {
-        width: width - 32,
-        height: 55,
-        marginLeft: 16,
-        marginRight: 16,
-        borderColor: Color.line,
-        borderBottomWidth: 1,
-    },
     group: {
         margin: 16,
         color: Color.colorPrimary
     },
-
-    mainContainer: {
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        backgroundColor: 'white',
-        elevation: 2,
-        marginBottom: 32,
-        marginLeft: 16,
-        marginRight: 16,
-        marginTop: 10,
-        paddingTop: 10
-    },
-
     iconContainer: {
         padding: 16,
         backgroundColor: 'white',
@@ -155,12 +123,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: width,
     },
-    button: {
-        width: width - 44,
-        height: 45,
-        backgroundColor: Color.colorAccent,
-        margin: 16,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
+
 });

@@ -16,6 +16,7 @@ import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import CheckBox from '../ui/Component/CheckBox';
 import Toast from 'react-native-root-toast';
+import App from '../constant/Application';
 
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -94,8 +95,9 @@ export default class PasswordPager extends Component {
 
                         },
                         () => {
-                            if (this.state.WorkContent === '' || this.state.Series === '' || this.state.SupplierName === '' ||
-                                (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)) {
+                            if (this.state.WorkContent === '' || this.state.SupplierName === '' ||
+                                (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)
+                                || ( this.state.Series === '' && App.department.indexOf('仓库')<0)) {
                                 Toast.show('填写不完整');
                             } else {
                                 //       console.log(this.state);
@@ -202,30 +204,36 @@ export default class PasswordPager extends Component {
                             <Text
                                 style={styles.titleText}>{this.state.SupplierName === '' ? '选择供应商' : this.state.SupplierName}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                if (this.state.wayCall || this.state.wayMeet || this.state.wayQQ) {
-                                    this.props.nav.navigate(
-                                        'param',
-                                        {
-                                            title: '选择系列',
-                                            type: 1,//Series
-                                            searchKey: this.state.SupplierName,//if key
-                                            setSelect: (select) => {
-                                                this.setState({Series: select})
-                                            },
-                                            isMulti: true,
-                                            existData: this.state.Series ? this.state.Series.split(',') : []
-                                        },
-                                    );
-                                } else {
-                                    Toast.show("请先选择对接方式")
-                                }
+                        {
+                            (() => {
+                                if (App.department.indexOf('仓库') < 0) {
+                                    return <TouchableOpacity
+                                        onPress={() => {
+                                            if (this.state.wayCall || this.state.wayMeet || this.state.wayQQ) {
+                                                this.props.nav.navigate(
+                                                    'param',
+                                                    {
+                                                        title: '选择系列',
+                                                        type: 1,//Series
+                                                        searchKey: this.state.SupplierName,//if key
+                                                        setSelect: (select) => {
+                                                            this.setState({Series: select})
+                                                        },
+                                                        isMulti: true,
+                                                        existData: this.state.Series ? this.state.Series.split(',') : []
+                                                    },
+                                                );
+                                            } else {
+                                                Toast.show("请先选择对接方式")
+                                            }
 
-                            }}>
-                            <Text
-                                style={styles.titleText}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
-                        </TouchableOpacity>
+                                        }}>
+                                        <Text
+                                            style={styles.titleText}>{this.state.Series === '' ? '选择系列' : this.state.Series}</Text>
+                                    </TouchableOpacity>
+                                }
+                            })()
+                        }
                     </View>
                 </ScrollView>
             </View>

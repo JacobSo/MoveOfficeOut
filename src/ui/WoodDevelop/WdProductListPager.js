@@ -54,8 +54,7 @@ class WdProductListPager extends Component {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
-        /*        this.state.items[newProps.position] = newProps.product;
-         console.log(JSON.stringify( this.state.items) + '-------------------------')*/
+
 
     }
 

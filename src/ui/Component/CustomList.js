@@ -13,7 +13,6 @@ import {
     Text,
     RefreshControl,
     InteractionManager,
-    ScrollView,
     Dimensions,
     TouchableOpacity,
     Animated,
@@ -30,6 +29,9 @@ import Interactable from 'react-native-interactable';
 import Loading from 'react-native-loading-spinner-overlay';
 
 import AndroidModule from '../../module/AndoridCommontModule'
+import RefreshEmptyView from "./RefreshEmptyView";
+import LocationView from "./LocationView";
+import Utility from "../../utils/Utility";
 const PubSub = require('pubsub-js');
 const {width, height} = Dimensions.get('window');
 const Screen = {
@@ -71,6 +73,8 @@ class CustomList extends Component {
             editContent: "",
             selectGuid: "",
             selectType: "",
+            tripType:"",
+            endTime:"",
 
         };
 
@@ -263,14 +267,17 @@ class CustomList extends Component {
         )
     }
 
-
     _sign() {
-/*        if(!this.state.address||!this.state.lat||!this.state.lng||this.state.address==="未有位置信息"||this.state.lat==="0.0"||this.state.lng==="0.0"){
-            Toast.show("没有定位信息，不能签到，请稍后再试");
-            return
-        }*/
         this.setState({isLoading: true});
-        ApiService.taskSign(this.state.selectGuid, this.state.lat, this.state.lng, this.state.address, this.state.selectType, this.state.editContent)
+        ApiService.taskSignNew(
+            this.state.selectGuid,
+            this.state.lat,
+            this.state.lng,
+            this.state.address,
+            this.state.selectType,
+            this.state.editContent,
+            this.state.todayTask[0].DailyType,
+            Utility.getTime(this.state.todayTask[0].DailyEndDate))
             .then((responseJson) => {
                 console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
@@ -297,42 +304,41 @@ class CustomList extends Component {
             .done();
     }
 
-    distance(lat1, lng1) {
-        let EARTH_RADIUS = 6378137;
-        let radLat1 = this.Rad(lng1);
-        let radLng1 = this.Rad(lat1);
-        let radLat2 = this.Rad(this.state.lat);
-        let radLng2 = this.Rad(this.state.lng);
-        let a = radLat1 - radLat2;
-        let b = radLng1 - radLng2;
-        let result = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS;
-        return result.toFixed(0);
-    }
 
-    Rad(d) {
-        return d * Math.PI / 180;
+    sighLocation(rowData) {
+        let isFinish = true;
+        this.state.todayTask[0].list.map((data) => {
+            if (data.Signtype === 1 && data !== rowData) {
+                isFinish = false;
+                Toast.show('没有完成上一个签到，不可操作')
+            }
+        });
+        if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
+            let temp = rowData.LatitudeLongitudes.split("|");
+
+            let max = 0;
+            temp.map((data) => {
+                let latlng = data.split(",");
+                let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
+                if (max < process) {
+                    max = process;
+                }
+            });
+            this._confirmDialog(rowData.Signtype === -1 ?
+                    "到达供应商" : "离开供应商",
+                "当前位置：" + this.state.address + "\n" +
+                "目标距离：" + max + "米");
+            this.state.selectGuid = rowData.Guid;
+            this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
+        } else Toast.show("没完成出发签到")
     }
 
     render() {
         //  console.log('render');
         if (this.state.items.length === 0) {
-            return (
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="Loading..."//ios
-                            titleColor='white'
-                            colors={[Color.colorCyan]}
-                            progressBackgroundColor="white"
-                        />
-                    }>
-                    <View
-                        style={styles.card}>
-                        <Text>没有数据</Text>
-                    </View></ScrollView>);
+            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
+                this._onRefresh()
+            } }/>)
         } else {
             return (
                 <View style={{flex: 1, alignItems: 'center',}}>
@@ -409,7 +415,7 @@ class CustomList extends Component {
                                                             }
                                                         }}>
                                                         <Text
-                                                            style={styles.panelButtonTitle}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}
+                                                            style={{color: 'white'}}>{this.state.todayTask[0].Signtype === -1 ? '出发' : '完成'}
                                                         </Text>
                                                     </TouchableOpacity>
 
@@ -427,63 +433,9 @@ class CustomList extends Component {
                                                     enableEmptySections={true}
                                                     removeClippedSubviews={false}
                                                     renderRow={(rowData, rowID, sectionID) =>
-                                                        <View style={styles.signListItem}>
-                                                            {
-                                                                (() => {
-                                                                    if (rowData.VisitingMode.indexOf('走访') > -1)
-                                                                        if (rowData.Signtype === 2) {
-                                                                            return (<Text
-                                                                                style={styles.finishBtn}>已完成</Text>)
-                                                                        } else {
-                                                                            return (
-                                                                                <TouchableOpacity
-                                                                                    style={rowData.Signtype === -1 ?
-                                                                                        styles.normalBtn : styles.endBtn}
-                                                                                    onPress={() => {
-                                                                                        let isFinish = true;
-                                                                                        this.state.todayTask[0].list.map((data) => {
-                                                                                            if (data.Signtype === 1 && data !== rowData) {
-                                                                                                isFinish = false;
-                                                                                                Toast.show('没有完成上一个签到，不可操作')
-                                                                                            }
-                                                                                        });
-                                                                                        if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
-                                                                                            //    console.log(rowData.LatitudeLongitudes);
-                                                                                            let temp = rowData.LatitudeLongitudes.split("|");
-                                                                                            //   console.log(temp);
-
-                                                                                            let max = 0;
-                                                                                            temp.map((data) => {
-                                                                                                let latlng = data.split(",");
-                                                                                                let process = this.distance(latlng[0], latlng[1]);
-                                                                                                if (max < process) {
-                                                                                                    max = process;
-                                                                                                }
-                                                                                            });
-                                                                                            this._confirmDialog(rowData.Signtype === -1 ?
-                                                                                                    "到达供应商" : "离开供应商",
-                                                                                                "当前位置：" + this.state.address + "\n" +
-                                                                                                "目标距离：" + max + "米");
-                                                                                            this.state.selectGuid = rowData.Guid;
-                                                                                            this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
-                                                                                        } else Toast.show("没完成出发签到")
-                                                                                    }}>
-                                                                                    <Text
-                                                                                        style={styles.panelButtonTitle}>
-                                                                                        {rowData.Signtype === -1 ? '到达' : '完成'}
-                                                                                    </Text>
-                                                                                </TouchableOpacity>
-                                                                            )
-                                                                        }
-                                                                })()}
-                                                            <Text style={{width: 200}}
-                                                                  numberOfLines={1}>系列：{rowData.Series}</Text>
-                                                            <Text style={{width: 200}}
-                                                                  numberOfLines={1}>供应商：{rowData.SupplierName}</Text>
-                                                            <Text style={{width: 200}}
-                                                                  numberOfLines={6}>对接内容：{'\n'}{rowData.WorkContent}</Text>
-
-                                                        </View>}/>
+                                                        <LocationView task={rowData}
+                                                                      action={() => this.sighLocation(rowData)}/>
+                                                    }/>
                                             </View>
                                         </Interactable.View>
                                     </View>)
@@ -589,42 +541,12 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             marginVertical: 10
         },
-        panelButtonTitle: {
-            fontWeight: 'bold',
-            color: 'white'
-        },
+
 
         panelButtonContainer: {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-around',
-        },
-        signListItem: {
-            margin: 16,
-            padding: 16,
-            backgroundColor: 'white',
-            borderRadius: 10,
-            elevation: 5,
-        },
-        finishBtn: {
-            padding: 16,
-            backgroundColor: Color.line,
-            alignItems: 'center',
-            textAlign: 'center',
-            marginVertical: 10,
-            color: 'white'
-        },
-        normalBtn: {
-            padding: 16,
-            backgroundColor: Color.colorCyan,
-            alignItems: 'center',
-            marginVertical: 10
-        },
-        endBtn: {
-            padding: 16,
-            backgroundColor: Color.colorAccent,
-            alignItems: 'center',
-            marginVertical: 10
         },
         locationContainer: {
             flexDirection: 'row',

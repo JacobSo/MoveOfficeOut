@@ -25,6 +25,7 @@ import {WdActions} from "../../actions/WdAction";
 import SQLite from '../../db/Sqlite';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import RefreshEmptyView from "../Component/RefreshEmptyView";
 let sqLite = new SQLite();
 class WdMainPager extends Component {
     constructor(props) {
@@ -97,23 +98,7 @@ class WdMainPager extends Component {
 
     _getView() {
         if (this.state.items.length === 0) {
-            return (
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="Loading..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />
-                    }>
-                    <View
-                        style={styles.card}>
-                        <Text>没有数据</Text>
-                    </View></ScrollView>)
+            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={()=>{this._onRefresh()} } />)
         } else {
             return (
                 <ListView

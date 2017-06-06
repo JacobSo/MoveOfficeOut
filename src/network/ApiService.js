@@ -3,8 +3,8 @@
  */
 'use strict';
 //let BASE_URL = 'http://192.168.1.190:8806/outapply/';
-let BASE_URL = 'http://119.145.166.182:8806/outapply/';
-//let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
+//let BASE_URL = 'http://119.145.166.182:8806/outapply/';
+let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
 
 export  default  class ApiService {
@@ -217,6 +217,24 @@ export  default  class ApiService {
             Address: address,
             remark: remark,
             signtype: type,
+        });
+
+        return this._request(method, param);
+    }
+
+    static taskSignNew(guid, lat, lng, address, type,remark,tripType,finishTime) {
+        let method = 'Sign/punchclockn';
+        let param = JSON.stringify({
+            uniqueIdentifier: App.session,
+            username:App.account,
+            recordordetailguid:guid,
+            latitude: lat,
+            longitude: lng,
+            Address: address,
+            remark: remark,
+            signtype: type,
+            dailytype:tripType,
+            dailyenddate:finishTime
         });
 
         return this._request(method, param);
