@@ -40,7 +40,6 @@ export default class MainPager extends Component {
             IosModule.bindPushAccount(App.account);
         else
             AndroidModule.bindPushAccount(App.account);
-
     }
 
     _get() {
