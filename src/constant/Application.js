@@ -14,7 +14,7 @@ export  default  class Application extends Component {
     static check;
     static dptList = "";
     static pwd = '';
-    static jobType = 0;
+    static jobType = '0';
 
     static initAccount(callback) {
         AsyncStorage.getAllKeys((err, keys) => {
@@ -57,7 +57,7 @@ export  default  class Application extends Component {
                 ['check', check ? '1' : '0'],
                 ['dptList', check ? JSON.stringify(dptList) + '' : ''],
                 ['pwd', check ? pwd : ''],
-                ['jobType', check ? jobType : 0],
+                ['jobType', check ? jobType : ''],
             ])
             .then(() => {
                     console.log("save success!");

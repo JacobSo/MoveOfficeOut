@@ -201,14 +201,12 @@ class CustomList extends Component {
                 .then((responseJson) => {
                     console.log(responseJson);
                     if (!responseJson.IsErr) {
-                        if (responseJson.list.length !== 0) {
                             this.setState({
                                 isTodayTask: responseJson.list.length !== 0,
-                                todayTask: responseJson.list,
-                                todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list[0].list),
-                                isLoading: false
-                            })
-                        }
+                                todayTask: responseJson.list.length !== 0?responseJson.list:[],
+                                todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list.length !== 0?responseJson.list[0].list:[]),
+                                isLoading: false})
+
 
 
                     } else Toast.show(responseJson.ErrDesc);
@@ -277,7 +275,7 @@ class CustomList extends Component {
             this.state.selectType,
             this.state.editContent,
             this.state.todayTask[0].DailyType,
-            Utility.getTime(this.state.todayTask[0].DailyEndDate))
+            this.state.todayTask[0].DailyEndDate?Utility.getTime(this.state.todayTask[0].DailyEndDate):'')
             .then((responseJson) => {
                 console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
@@ -337,6 +335,7 @@ class CustomList extends Component {
         //  console.log('render');
         if (this.state.items.length === 0) {
             return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
+                console.log('刷新');
                 this._onRefresh()
             } }/>)
         } else {

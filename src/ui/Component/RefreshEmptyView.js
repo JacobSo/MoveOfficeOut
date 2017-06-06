@@ -21,7 +21,7 @@ export default class RefreshEmptyView extends Component {
                 refreshControl={
                     <RefreshControl
                         refreshing={this.props.isRefreshing}
-                        onRefresh={() => this.props.onRefreshFunc}
+                        onRefresh={this.props.onRefreshFunc}
                         tintColor={Color.colorBlueGrey}//ios
                         title="Loading..."//ios
                         titleColor='white'

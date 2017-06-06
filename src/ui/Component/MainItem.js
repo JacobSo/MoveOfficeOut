@@ -53,7 +53,7 @@ export class MainItem extends Component {
                     </View>
                     <View style={styles.textStyle}>
                         <Text >对接日期</Text>
-                        <Text >{this.props.task.DockingDate + '到' + Utility.getTime(this.props.task.DailyEndDate)}</Text>
+                        <Text >{this.props.task.DockingDate + '到' +(this.props.task.DailyEndDate? Utility.getTime(this.props.task.DailyEndDate):'无')}</Text>
                     </View>
                     <View style={styles.textStyle}>
                         <Text >对接工作</Text>

@@ -14,6 +14,15 @@
 #import "AppDelegate.h"
 
 
+
+
+
+@interface ReactCommonModule ()
+
+
+
+@end
+
 @implementation ReactCommonModule
 
 RCT_EXPORT_MODULE();
@@ -80,7 +89,6 @@ RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callba
   UIImage *img = [UIImage imageWithData:data];
   NSData *pic = UIImageJPEGRepresentation(img, 0.3f);
   NSString *encodedImageStr = [pic base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
- // NSLog(@"encodedImageStr==%@",encodedImageStr);
   NSArray *arrays = [NSArray arrayWithObjects:encodedImageStr,nil];
   callback(arrays);
   
@@ -94,7 +102,76 @@ RCT_EXPORT_METHOD(logoutShareAccount){
   
 }
 
+
+//RCT_EXPORT_METHOD(lsCreatePDF:(WDSeries *)serice code:(int)code)
+//{
+//  /*选择需要生成文档的产品。*/
+//  
+//  
+//  self.showPage = [[BMYF_SHOW_ViewController alloc]init];
+//  [self.showPage setSelectSeries:serice];
+//  
+//  if (code == 0) {
+//    [self.showPage setPhaseType:PhaseType_BP];
+//  }else if (code == 1){
+//    [self.showPage setPhaseType:PhaseType_CP];
+//  }else{
+//    [self.showPage setPhaseType:PhaseType_BZ];
+//  }
+//  self.itemNav = [[UINavigationController alloc]initWithRootViewController:self.showPage];
+//  [self presentViewController:self.itemNav animated:YES completion:nil];
+//}
+
+
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

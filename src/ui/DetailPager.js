@@ -75,7 +75,7 @@ const {width, height} = Dimensions.get('window');
             temp = "驻厂"
 
         }else if(this.props.task.DailyType===2){
-            temp = "出差，结束时间："+Utility.getTime(this.props.task.DailyEndDate)
+            temp = "出差，结束时间："+(this.props.task.DailyEndDate?Utility.getTime(this.props.task.DailyEndDate):'无')
 
         }else{
             temp = "不需要外出"

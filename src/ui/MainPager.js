@@ -26,7 +26,7 @@ export default class MainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            floatButtonVisible: App.jobType !== 3 && App.jobType !== 4 && App.jobType !== 5,
+            floatButtonVisible: App.jobType !== '3' && App.jobType !== '4' && App.jobType !== '5',
         };
 
     }
@@ -43,9 +43,9 @@ export default class MainPager extends Component {
     }
 
     _get() {
-        if (App.jobType === 3) {
+        if (App.jobType === '3') {
             return (<CustomList tabLabel='进行中' type="3" nav={this.props.nav}/>)
-        } else if (App.jobType === 4) {
+        } else if (App.jobType === '4') {
             return (
                 <ScrollableTabView
                     initialPage={0}
@@ -58,10 +58,10 @@ export default class MainPager extends Component {
                     <CustomList tabLabel='进行中' type="2" nav={this.props.nav}/>
                     <CustomList tabLabel='待审核' type="1" nav={this.props.nav}/>
                 </ScrollableTabView>)
-        } else if (App.jobType===5) {
+        } else if (App.jobType==='5') {
             return (<CustomList tabLabel='进行中' type="1,3" nav={this.props.nav}/>)
         } else {
-            if (App.jobType===2) {
+            if (App.jobType==='2') {
                 return (
                     <ScrollableTabView
                         initialPage={0}
