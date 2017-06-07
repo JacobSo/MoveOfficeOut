@@ -24,9 +24,9 @@ public class WDProduct implements Serializable {
     private String pResultList;//step-code,step-code,step-code
     private int stage;//001-1,010-2,011-3,100-4,101-5,110-6,111-7
     //react param
-    private  boolean check;
-    private  int wdp_id;
-    private  String wdp_index;
+    private int check;
+    private int wdp_id;
+    private String wdp_index;
 
     public String getWdp_index() {
         return wdp_index;
@@ -62,11 +62,12 @@ public class WDProduct implements Serializable {
         this.problem = problem;
     }
 
-    public boolean isCheck() {
+
+    public int getCheck() {
         return check;
     }
 
-    public void setCheck(boolean check) {
+    public void setCheck(int check) {
         this.check = check;
     }
 
@@ -109,26 +110,26 @@ public class WDProduct implements Serializable {
         // return ispStatusPass()&&getpStatus()==2;
     }
 
-    public boolean isAllFinish(){
-        if(pResultList!=null){
-            if(stage==7){//all
+    public boolean isAllFinish() {
+        if (pResultList != null) {
+            if (stage == 7) {//all
                 String[] temp = pResultList.split(",");
-                return temp.length==3;
-            }else if(stage==6){//a,b
-                return isStepAPass()==0&&isStepBPass()==0;
-            }else if(stage==5){//a,c
-                return isStepAPass()==0&&isStepCPass()==0;
-            }else if(stage==4){//a
-                return isStepAPass()==0;
-            }else if(stage==3){//b,c
-                return isStepCPass()==0&&isStepBPass()==0;
-            }else if(stage==2){//b
-                return isStepBPass()==0;
-            }else if(stage==1){//c
-                return isStepCPass()==0;
-            }else return false;
+                return temp.length == 3;
+            } else if (stage == 6) {//a,b
+                return isStepAPass() == 0 && isStepBPass() == 0;
+            } else if (stage == 5) {//a,c
+                return isStepAPass() == 0 && isStepCPass() == 0;
+            } else if (stage == 4) {//a
+                return isStepAPass() == 0;
+            } else if (stage == 3) {//b,c
+                return isStepCPass() == 0 && isStepBPass() == 0;
+            } else if (stage == 2) {//b
+                return isStepBPass() == 0;
+            } else if (stage == 1) {//c
+                return isStepCPass() == 0;
+            } else return false;
 
-        }else return false;
+        } else return false;
     }
 
     public int isStepAPass() {
@@ -158,8 +159,8 @@ public class WDProduct implements Serializable {
         // return (ispStatusPass() && getpStatus() == 1) || getpStatus() > 1;
     }
 
-    public boolean isAllPass(){
-        return isStepAPass()==0&&isStepBPass()==0&&isStepCPass()==0;
+    public boolean isAllPass() {
+        return isStepAPass() == 0 && isStepBPass() == 0 && isStepCPass() == 0;
     }
 
 /*    public String getNextName() {
@@ -242,7 +243,7 @@ public class WDProduct implements Serializable {
     }
 
     public String getpStatusResultA() {
-        return pStatusResultA==null?"":pStatusResultA;
+        return pStatusResultA == null ? "" : pStatusResultA;
     }
 
     public void setpStatusResultA(String pStatusResultA) {
@@ -250,7 +251,7 @@ public class WDProduct implements Serializable {
     }
 
     public String getpStatusResultB() {
-        return pStatusResultB==null?"":pStatusResultB;
+        return pStatusResultB == null ? "" : pStatusResultB;
     }
 
     public void setpStatusResultB(String pStatusResultB) {
@@ -258,7 +259,7 @@ public class WDProduct implements Serializable {
     }
 
     public String getpStatusResultC() {
-        return pStatusResultC==null?"":pStatusResultC;
+        return pStatusResultC == null ? "" : pStatusResultC;
     }
 
     public void setpStatusResultC(String pStatusResultC) {

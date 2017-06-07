@@ -207,7 +207,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             ArrayList<WDProduct> selectList = new ArrayList<>();
 
             for (int i = 0; i < series.getItemlist().size(); i++) {
-                if (series.getItemlist().get(i).isCheck()) {
+                if (series.getItemlist().get(i).getCheck()==1) {
                     selectList.add(series.getItemlist().get(i));
                 }
             }

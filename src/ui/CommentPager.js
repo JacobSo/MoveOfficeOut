@@ -155,7 +155,8 @@ export default class CommentPager extends Component {
                                            this.setState({comment: text})
                                        }}/>
                         </View>
-                    </ScrollView></KeyboardAvoidingView>
+                    </ScrollView>
+                </KeyboardAvoidingView>
                 <Loading visible={this.state.isLoading}/>
             </View>
 

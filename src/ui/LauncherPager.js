@@ -69,7 +69,8 @@ export default class LauncherPager extends Component {
                     <Text>外出工作</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{alignItems:'center'}} onPress={() => {
-                    this.props.nav.navigate('wpMain')
+                    //this.props.nav.navigate('wpMain')
+                    Toast.show("很想要吧")
                 }}>
                     <Image style={{width: 55, height: 55}} resizeMode="contain"
                            source={ require('../drawable/ic_launcher_purple.png')}/>
@@ -80,7 +81,7 @@ export default class LauncherPager extends Component {
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        this.props.nav.navigate('qcMain')
+                     //   this.props.nav.navigate('qcMain')
                         Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
@@ -88,8 +89,8 @@ export default class LauncherPager extends Component {
                         <Text>常规质检</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        this.props.nav.navigate('wdMain')
-                       // Toast.show("很想要吧")
+                       // this.props.nav.navigate('wdMain')
+                        Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>

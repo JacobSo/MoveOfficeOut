@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions,  RefreshControl, ListView, Text, TouchableOpacity,
+    StyleSheet, Dimensions, RefreshControl, ListView, Text, TouchableOpacity,
 
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
@@ -34,8 +34,8 @@ export default class QcProductListPager extends Component {
 
     componentDidMount() {
         this.setState({
-            items:this.props.task.data,
-            dataSource:this.state.dataSource.cloneWithRows(this.props.task.data)
+            items: this.props.task.data,
+            dataSource: this.state.dataSource.cloneWithRows(this.props.task.data)
         })
 
     }
@@ -49,16 +49,19 @@ export default class QcProductListPager extends Component {
             }}>
                 <Toolbar
                     elevation={0}
-                    title={["常规质检"]}
+                    title={['产品列表', this.props.task.purchaseNo]}
                     color={Color.colorIndigo}
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[]}
+                    actionArray={['完成']}
                     functionArray={[
                         () => {
                             this.props.nav.goBack(null)
                         },
+                        () => {
+
+                        }
 
                     ]}/>
                 <ListView
@@ -66,19 +69,14 @@ export default class QcProductListPager extends Component {
                     style={styles.tabView}
                     dataSource={this.state.dataSource}
                     removeClippedSubviews={false}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="刷新中..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
-                       <QcProductItem product={rowData} func={()=>{}}/>
+                        <QcProductItem product={rowData} func={() => {
+                            this.props.nav.navigate('qcDetail',
+                                {
+                                    product: rowData
+                                })
+                        }}/>
                     }/>
             </View>
         )

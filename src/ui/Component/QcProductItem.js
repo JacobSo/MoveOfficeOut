@@ -3,9 +3,8 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions,  TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
-import {CachedImage, ImageCache} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
 export default class QcProductItem extends Component {
     static propTypes = {
@@ -24,10 +23,15 @@ export default class QcProductItem extends Component {
     }
 
     componentDidMount() {
-        this.setStatus();
     }
 
-    setStatus() {
+    getStatus(flag) {
+        if (this.props.product.state && this.props.product.state.length === 3) {
+            if (this.props.product.state.substring(flag-1, flag) === "1")
+                return 1;
+            else
+                return 0;
+        } else return 0;
 
     }
 
@@ -39,10 +43,17 @@ export default class QcProductItem extends Component {
             <TouchableOpacity
                 onPress={this.props.func}>
                 <View style={styles.mainContainer}>
-                    <Text style={{width:width-32-16,height:45}}>未完成</Text>
+                    <Text style={{
+                        width: width - 32,
+                        height: 25,
+                        backgroundColor: this.getStatus(1)&&this.getStatus(2)&&this.getStatus(3)?   Color.colorPrimaryDark:Color.content,
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: 16
+                    }}>{this.getStatus(1)&&this.getStatus(2)&&this.getStatus(3)?'已完成':'未完成'}</Text>
                     <View style={styles.itemText}>
                         <Text>{'型号'}</Text>
-                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.itemName}</Text>
+                        <Text style={{backgroundColor: Color.colorAccent,color:'white',paddingLeft:10,paddingRight:10}}>{this.props.product.itemName}</Text>
                     </View>
                     <View style={styles.itemText}>
                         <Text>{'数量'}</Text>
@@ -52,15 +63,25 @@ export default class QcProductItem extends Component {
                         <Text>{'交接时间'}</Text>
                         <Text style={{color: Color.black_semi_transparent}}>{this.props.product.deliverDate}</Text>
                     </View>
-                    <View style={{width:width-32-16,justifyContent:'space-around',flexDirection:'row',marginTop:16}}>
+                    <View style={{
+                        width: width - 32 - 16,
+                        justifyContent: 'space-around',
+                        flexDirection: 'row',
+                        marginTop: 16
+                    }}>
                         <Text>材料</Text>
                         <Text>工艺</Text>
                         <Text>成品</Text>
                     </View>
-                    <View style={{width:width-32-16,justifyContent:'space-around',flexDirection:'row',marginBottom:16}}>
-                        <View style={{width:(width-32-16)/3,height:3,backgroundColor:Color.colorAccent}}/>
-                        <View style={{width:(width-32-16)/3,height:3,backgroundColor:Color.colorAccent}}/>
-                        <View style={{width:(width-32-16)/3,height:3,backgroundColor:Color.line}}/>
+                    <View style={{
+                        width: width - 32 - 16,
+                        justifyContent: 'space-around',
+                        flexDirection: 'row',
+                        marginBottom: 16
+                    }}>
+                        <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(1)===1?Color.colorAccent:Color.line}}/>
+                        <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(2)===1?Color.colorAccent:Color.line}}/>
+                        <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(3)===1?Color.colorAccent:Color.line}}/>
                     </View>
                 </View>
             </TouchableOpacity>
