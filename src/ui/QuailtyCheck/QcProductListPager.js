@@ -16,6 +16,7 @@ import FloatButton from "../Component/FloatButton";
 import Toast from 'react-native-root-toast';
 import Utility from "../../utils/Utility";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
+import QcProductItem from "../Component/QcProductItem";
 
 const {width, height} = Dimensions.get('window');
 
@@ -32,7 +33,13 @@ export default class QcProductListPager extends Component {
     }
 
     componentDidMount() {
+        this.setState({
+            items:this.props.task.data,
+            dataSource:this.state.dataSource.cloneWithRows(this.props.task.data)
+        })
+
     }
+
 
     render() {
         return (
@@ -71,7 +78,7 @@ export default class QcProductListPager extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
-                       <View/>
+                       <QcProductItem product={rowData} func={()=>{}}/>
                     }/>
             </View>
         )

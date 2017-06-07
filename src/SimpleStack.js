@@ -35,6 +35,7 @@ import WpSearchPager from "./ui/WoodProcess/WpSearchPager";
 import WpProductDetailPager from "./ui/WoodProcess/WpProductDetailPager";
 import GalleryPager from "./ui/GalleryPager";
 import QcMainPager from "./ui/QuailtyCheck/QcMainPager";
+import QcProductListPager from "./ui/QuailtyCheck/QcProductListPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -145,6 +146,9 @@ const GalleryScreen = ({navigation}) => _renderScreen(<View
 const QcMainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcMainPager {...navigation.state.params}
                                                                              nav={navigation}/></View>);
+const QcListScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcProductListPager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
 
 const SimpleStack = StackNavigator({
         launcher: {
@@ -222,7 +226,9 @@ const SimpleStack = StackNavigator({
         qcMain: {
             screen: QcMainScreen,
         },
-
+        qcList: {
+            screen: QcListScreen,
+        },
     },
     {
         initialRouteName: 'login',

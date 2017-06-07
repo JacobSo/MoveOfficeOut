@@ -36,12 +36,11 @@ export default class QcMainPager extends Component {
     }
 
     _onRefresh() {
-        this.setState({isRefreshing: true,})
+        this.setState({isRefreshing: true,});
         ApiService.getProductList()
             .then((responseJson) => {
                 console.log(responseJson);
                 if (!responseJson.IsErr) {
-                    console.log(responseJson);
                      this.setState({
                      items: responseJson.data,
                      dataSource: this.state.dataSource.cloneWithRows(responseJson.data),
@@ -79,12 +78,12 @@ export default class QcMainPager extends Component {
                     renderRow={(rowData, rowID, sectionID) =>
                         <TouchableOpacity
                             onPress={() => {
-      /*                          this.props.nav.navigate('wpWork', {
+                                this.props.nav.navigate('qcList', {
                                     task: rowData,
                                     refreshFunc: () => {
                                         this._onRefresh()
                                     }
-                                });*/
+                                });
                             }}
                             style={styles.itemCard}>
                             <View style={styles.itemText}>
@@ -132,13 +131,9 @@ export default class QcMainPager extends Component {
                 {this._getView()}
                 <FloatButton
                     color={Color.colorPink}
-                    drawable={require('../../drawable/add.png')}
+                    drawable={require('../../drawable/finger_print.png')}
                     action={() => {
-                        this.props.nav.navigate('wpWork', {
-                            refreshFunc: () => {
-                                this._onRefresh()
-                            }
-                        });
+
                     }}/>
             </View>
         )

@@ -39,7 +39,29 @@ export default class QcProductItem extends Component {
             <TouchableOpacity
                 onPress={this.props.func}>
                 <View style={styles.mainContainer}>
-
+                    <Text style={{width:width-32-16,height:45}}>未完成</Text>
+                    <View style={styles.itemText}>
+                        <Text>{'型号'}</Text>
+                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.itemName}</Text>
+                    </View>
+                    <View style={styles.itemText}>
+                        <Text>{'数量'}</Text>
+                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.qty}</Text>
+                    </View>
+                    <View style={styles.itemText}>
+                        <Text>{'交接时间'}</Text>
+                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.deliverDate}</Text>
+                    </View>
+                    <View style={{width:width-32-16,justifyContent:'space-around',flexDirection:'row',marginTop:16}}>
+                        <Text>材料</Text>
+                        <Text>工艺</Text>
+                        <Text>成品</Text>
+                    </View>
+                    <View style={{width:width-32-16,justifyContent:'space-around',flexDirection:'row',marginBottom:16}}>
+                        <View style={{width:(width-32-16)/3,height:3,backgroundColor:Color.colorAccent}}/>
+                        <View style={{width:(width-32-16)/3,height:3,backgroundColor:Color.colorAccent}}/>
+                        <View style={{width:(width-32-16)/3,height:3,backgroundColor:Color.line}}/>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -50,7 +72,7 @@ const styles = StyleSheet.create(
     {
         mainContainer: {
             flexDirection: 'column',
-            alignItems: 'flex-start',
+            alignItems: 'center',
             backgroundColor: 'white',
             elevation: 2,
             marginBottom: 32,
@@ -95,7 +117,14 @@ const styles = StyleSheet.create(
             marginTop: 16,
             marginBottom: 16,
             marginLeft: -32
+        },
+        itemText: {
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            width: width - 32,
+            paddingTop: 10,
+            paddingLeft: 10,
+            paddingRight: 10
         }
-
     });
 

@@ -41,8 +41,8 @@ export default class CommentPager extends Component {
         this.setState({isLoading: true});
         let type = 2;
         let score = this.state.starA + ':' + this.state.starB + ':' + this.state.starC;
-        if (App.workType === '项目专员') type = 0;
-        else if (App.workType === '数据专员') type = 1;
+        if (App.jobType === '2') type = 0;
+        else if (App.jobType === '3') type = 1;
 
         ApiService.addScore(this.state.task.Guid, score,
             this.state.task.list[this.props.position].Guid,
@@ -50,7 +50,7 @@ export default class CommentPager extends Component {
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     Toast.show('操作成功');
-                    if (App.workType.indexOf('项目专员') > -1) {
+                    if ((App.jobType==='2'||App.jobType==='5')) {
                         this.state.task.list[this.props.position].ZhuanYuanScore = score;
                         this.state.task.list[this.props.position].ZhuanYuanSuggest = this.state.comment;
                     } else {

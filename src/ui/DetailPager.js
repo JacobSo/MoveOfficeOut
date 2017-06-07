@@ -113,9 +113,9 @@ const {width, height} = Dimensions.get('window');
 
                         } else {
                             let type = -1;
-                            if (this.props.task.DailyRecordState === 3 && App.workType.indexOf('项目专员') > -1 && App.account !== this.props.task.Creator) {
+                            if (this.props.task.DailyRecordState === 3 && (App.jobType==='2'||App.jobType==='5' )&& App.account !== this.props.task.Creator) {
                                 type = 1;
-                            } else if (this.props.task.DailyRecordState === 3 && App.workType.indexOf('数据专员') > -1) {
+                            } else if (this.props.task.DailyRecordState === 3 && App.jobType==='3') {
                                 type = 0;
                             } else Toast.show('当前你不需要操作本工作');
 
@@ -166,11 +166,11 @@ const {width, height} = Dimensions.get('window');
             } else if (this.props.task.DailyRecordState === 2) {
                 return ['完成']
             } else return [];
-        } else if (App.workType.indexOf('项目专员') > -1 && this.props.task.Creator !== App.account) {
+        } else if ((App.jobType==='2'||App.jobType==='5') && this.props.task.Creator !== App.account) {
             if (this.props.task.DailyRecordState === 1) {
                 return ['审核', '驳回']
             } else return [];
-        } else if (App.workType.indexOf('助理') > -1) {
+        } else if (App.jobType==='4') {
             if (this.props.task.DailyRecordState === 2) {
                 return ['填写车牌', '删除']
             } else if (this.props.task.DailyRecordState === 1 || this.props.task.DailyRecordState === 3) {
@@ -190,7 +190,7 @@ const {width, height} = Dimensions.get('window');
                     this._finishDialog();
                 }]
             } else return [];
-        } else if (App.workType.indexOf('项目专员') > -1 && this.props.task.Creator !== App.account) {
+        } else if ((App.jobType==='2'||App.jobType==='5')&& this.props.task.Creator !== App.account) {
             if (this.props.task.DailyRecordState === 1) {
                 return [
                     () => {
@@ -200,7 +200,7 @@ const {width, height} = Dimensions.get('window');
                         this.popupDialog.show();
                     }]
             } else return [];
-        } else if (App.workType.indexOf('助理') > -1) {
+        } else if (App.jobType==='4') {
             if (this.props.task.DailyRecordState === 2) {
                 return [
                     () => {

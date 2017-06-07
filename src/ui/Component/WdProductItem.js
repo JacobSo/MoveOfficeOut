@@ -19,7 +19,6 @@ export class WdProductItem extends Component {
             statusText: "未开始",
             statusColor: Color.content,
             isAllFinish: false,
-
         }
     }
 
