@@ -88,7 +88,7 @@ export default class LauncherPager extends Component {
                         <Text>常规质检</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                     //   this.props.nav.navigate('wdMain')
+                        this.props.nav.navigate('wdMain')
                        // Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"

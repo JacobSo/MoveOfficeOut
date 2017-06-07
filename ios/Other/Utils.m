@@ -131,7 +131,7 @@
         NSTimeInterval sec = [[NSDate date] timeIntervalSinceNow];
         NSDate *nowDay = [[NSDate alloc] initWithTimeIntervalSinceNow:sec];
         result = [yyyyMM stringFromDate:nowDay];
-        LSDebug(result);
+//        LSDebug(result);
     }
     @catch (NSException *exception) {
         
@@ -148,7 +148,7 @@
         yyyyMM.dateFormat = @"yyyy-MM-dd";
         NSDate *dateData = date;
         result = [yyyyMM stringFromDate:dateData];
-        LSDebug(result);
+//        LSDebug(result);
     }
     @catch (NSException *exception) {
         
@@ -167,7 +167,7 @@
         NSTimeInterval sec = [[NSDate date] timeIntervalSinceNow];
         NSDate *nowDay = [[NSDate alloc] initWithTimeIntervalSinceNow:sec];
         result = [[yyyyMM stringFromDate:nowDay] stringByAppendingString:@".jpg"];
-        LSDebug(result);
+//        LSDebug(result);
     }
     @catch (NSException *exception) {
         
@@ -204,48 +204,48 @@
     }
 }
 
-+(BOOL)saveLoginUser:(LSUser *)user{
-    BOOL result = NO;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:user.UserName forKey:@"LoginUserName"];
-    [userDefaults setObject:user.passWord forKey:@"Password"];
-    [userDefaults setObject:user.RealName forKey:@"RealName"];
-    [userDefaults setObject:user.DptName forKey:@"DptName"];
-    [userDefaults setObject:user.WorkType forKey:@"WorkType"];
-    
-    //密码需要
-    [userDefaults synchronize];
-    
-    NSString *_LoginUserName = [userDefaults objectForKey:@"LoginUserName"];
-    NSString *_Password = [userDefaults objectForKey:@"Password"];
-    NSString *_RealName = [userDefaults objectForKey:@"RealName"];
-    NSString *_DptName = [userDefaults objectForKey:@"DptName"];
-    NSString *_WorkType = [userDefaults objectForKey:@"WorkType"];
-    
-    
-    if ([_LoginUserName isEqual:user.UserName ]&&
-        [_Password isEqual: user.passWord] &&
-        [_RealName isEqual: user.RealName] &&
-        [_DptName isEqual: user.DptName] &&
-        [_WorkType isEqual: user.WorkType]) {
-        result = YES;
-    }
-    
-    return result;
-}
+//+(BOOL)saveLoginUser:(LSUser *)user{
+//    BOOL result = NO;
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setObject:user.UserName forKey:@"LoginUserName"];
+//    [userDefaults setObject:user.passWord forKey:@"Password"];
+//    [userDefaults setObject:user.RealName forKey:@"RealName"];
+//    [userDefaults setObject:user.DptName forKey:@"DptName"];
+//    [userDefaults setObject:user.WorkType forKey:@"WorkType"];
+//    
+//    //密码需要
+//    [userDefaults synchronize];
+//    
+//    NSString *_LoginUserName = [userDefaults objectForKey:@"LoginUserName"];
+//    NSString *_Password = [userDefaults objectForKey:@"Password"];
+//    NSString *_RealName = [userDefaults objectForKey:@"RealName"];
+//    NSString *_DptName = [userDefaults objectForKey:@"DptName"];
+//    NSString *_WorkType = [userDefaults objectForKey:@"WorkType"];
+//    
+//    
+//    if ([_LoginUserName isEqual:user.UserName ]&&
+//        [_Password isEqual: user.passWord] &&
+//        [_RealName isEqual: user.RealName] &&
+//        [_DptName isEqual: user.DptName] &&
+//        [_WorkType isEqual: user.WorkType]) {
+//        result = YES;
+//    }
+//    
+//    return result;
+//}
 
-+ (void)removeUserInfo{
-    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary * dict = [userDefaults dictionaryRepresentation];
-    for (id key in dict) {
-        if (![key isEqual: kAPP_DATABASE_SAVE_KEY]){
-            [userDefaults removeObjectForKey:key];
-            LSDebug(key);
-        }
-    }
-    [userDefaults synchronize];
-
-}
+//+ (void)removeUserInfo{
+//    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSDictionary * dict = [userDefaults dictionaryRepresentation];
+//    for (id key in dict) {
+//        if (![key isEqual: kAPP_DATABASE_SAVE_KEY]){
+//            [userDefaults removeObjectForKey:key];
+//            LSDebug(key);
+//        }
+//    }
+//    [userDefaults synchronize];
+//
+//}
 +(NSString *)kLoginUserName{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *_LoginUserName = [userDefaults objectForKey:@"LoginUserName"];
@@ -290,108 +290,108 @@
     return _WorkType;
 }
 
-+ (void)cleanALLUserInfoWhenOut{
-    [self removeUserInfo];
-    [[SDImageCache sharedImageCache] clearDisk];
-    [[SDImageCache sharedImageCache] clearMemory];
-    
-    LSDataBase *database = [[LSDataBase alloc]init];
-    NSManagedObjectContext *context1 = [[NSManagedObjectContext alloc]init];
-    context1 = [database connectData];
-    
-    NSManagedObjectContext *context2 = [[NSManagedObjectContext alloc]init];
-    context2 = [database connectDataBMYF];
-    
-    if([database coverLoadConData:context1])
-        LSDebug(@"常规质检—质检单数据源清空成功！");
-    if ([database coverProductLoadConData:context1])
-        LSDebug(@"木架成品质检－质检单清空成功！");
-    if ([database coverPlateTrackSeriesDataBMYF:context2])
-        LSDebug(@"板木研发—系列单数据源清空成功！");
-    if ([database coverPlateReviewItemDataBMYF:context2]) {
-        LSDebug(@"板木研发-评审项数据源清空成功！");
-    }
-}
-
-#pragma mark DataBaseLocation 板木研发
-+ (BOOL)saveReviewDataByKey:(NSString *)saveKey saveData:(NSString *)data{
-    BOOL result = NO;
-    @try {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:data forKey:saveKey];
-         result = YES;
-    }
-    @catch (NSException *exception) {
-        result = NO;
-    }
-    @finally {
-        return result;
-    }
-}
-
-+ (NSString *)getReviewDataByKey:(NSString *)saveKey{
-    NSString * result = @"";
-    @try {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        result = [userDefaults objectForKey:saveKey];
-    }
-    @catch (NSException *exception) {
-        result = @"";
-    }
-    @finally {
-        return result;
-    }
-}
-
-+ (BOOL)removeReviewDataByKey:(NSString *)key{
-    BOOL result = NO;
-    @try {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults removeObjectForKey:key];
-        if ([self getReviewDataByKey:key] == nil)
-            result = YES;
-    }
-    @catch (NSException *exception) {
-        result = NO;
-    }
-    @finally {
-        return result;
-    }
-}
-
-
-+ (BOOL)dataBaseVersionIsChang{
-    BOOL result = NO;
-    @try {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSString *oldVersion = [userDefaults objectForKey:kAPP_DATABASE_SAVE_KEY];
-        
-        if([oldVersion integerValue]!= [kAPP_DATABASE_VERSION integerValue])
-            result = YES;
-    }
-    @catch (NSException *exception) {
-        result = YES;
-    }
-    @finally {
-        if ([self saveDataBaseVersion])
-            LSDebug(@"Save DataBase Version Success!");
-        return result;
-    }
-}
-+ (BOOL)saveDataBaseVersion{
-    BOOL result = NO;
-    @try {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:kAPP_DATABASE_VERSION forKey:kAPP_DATABASE_SAVE_KEY];
-        result = YES;
-    }
-    @catch (NSException *exception) {
-        return NO;
-    }
-    @finally {
-        return result;
-    }
-}
+////+ (void)cleanALLUserInfoWhenOut{
+////    [self removeUserInfo];
+////    [[SDImageCache sharedImageCache] clearDisk];
+////    [[SDImageCache sharedImageCache] clearMemory];
+////    
+////    LSDataBase *database = [[LSDataBase alloc]init];
+////    NSManagedObjectContext *context1 = [[NSManagedObjectContext alloc]init];
+////    context1 = [database connectData];
+////    
+////    NSManagedObjectContext *context2 = [[NSManagedObjectContext alloc]init];
+////    context2 = [database connectDataBMYF];
+////    
+////    if([database coverLoadConData:context1])
+////        LSDebug(@"常规质检—质检单数据源清空成功！");
+////    if ([database coverProductLoadConData:context1])
+////        LSDebug(@"木架成品质检－质检单清空成功！");
+////    if ([database coverPlateTrackSeriesDataBMYF:context2])
+////        LSDebug(@"板木研发—系列单数据源清空成功！");
+////    if ([database coverPlateReviewItemDataBMYF:context2]) {
+////        LSDebug(@"板木研发-评审项数据源清空成功！");
+////    }
+////}
+//
+//#pragma mark DataBaseLocation 板木研发
+//+ (BOOL)saveReviewDataByKey:(NSString *)saveKey saveData:(NSString *)data{
+//    BOOL result = NO;
+//    @try {
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setObject:data forKey:saveKey];
+//         result = YES;
+//    }
+//    @catch (NSException *exception) {
+//        result = NO;
+//    }
+//    @finally {
+//        return result;
+//    }
+//}
+//
+//+ (NSString *)getReviewDataByKey:(NSString *)saveKey{
+//    NSString * result = @"";
+//    @try {
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        result = [userDefaults objectForKey:saveKey];
+//    }
+//    @catch (NSException *exception) {
+//        result = @"";
+//    }
+//    @finally {
+//        return result;
+//    }
+//}
+//
+//+ (BOOL)removeReviewDataByKey:(NSString *)key{
+//    BOOL result = NO;
+//    @try {
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults removeObjectForKey:key];
+//        if ([self getReviewDataByKey:key] == nil)
+//            result = YES;
+//    }
+//    @catch (NSException *exception) {
+//        result = NO;
+//    }
+//    @finally {
+//        return result;
+//    }
+//}
+//
+//
+//+ (BOOL)dataBaseVersionIsChang{
+//    BOOL result = NO;
+//    @try {
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        NSString *oldVersion = [userDefaults objectForKey:kAPP_DATABASE_SAVE_KEY];
+//        
+//        if([oldVersion integerValue]!= [kAPP_DATABASE_VERSION integerValue])
+//            result = YES;
+//    }
+//    @catch (NSException *exception) {
+//        result = YES;
+//    }
+//    @finally {
+//        if ([self saveDataBaseVersion])
+//            LSDebug(@"Save DataBase Version Success!");
+//        return result;
+//    }
+//}
+//+ (BOOL)saveDataBaseVersion{
+//    BOOL result = NO;
+//    @try {
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setObject:kAPP_DATABASE_VERSION forKey:kAPP_DATABASE_SAVE_KEY];
+//        result = YES;
+//    }
+//    @catch (NSException *exception) {
+//        return NO;
+//    }
+//    @finally {
+//        return result;
+//    }
+//}
 
 
 

@@ -8,11 +8,13 @@ import {
     View,
     ListView,
     StyleSheet,
-    Dimensions,
+    Dimensions,Platform
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
+import IosModule from '../../module/IosCommontModule'
+
 import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import {WdFilterItem} from "../Component/WdFilterItem";
@@ -103,21 +105,42 @@ export default class WdProductFilterPager extends Component {
                                         let tempSeries = this.props.task;
                                         tempSeries.Itemlist = this.state.items;
                                         console.log(JSON.stringify(tempSeries));
-                                        AndroidModule.outputReportAction(
-                                            JSON.stringify(tempSeries),
-                                            this.props.step-1,
-                                            (result) => {
-                                                setTimeout(() => {
-                                                    this.setState({isLoading: false})
-                                                }, 100);
-                                                Toast.show(result)
-                                            },
-                                            (error)=>{
-                                                setTimeout(() => {
-                                                    this.setState({isLoading: false})
-                                                }, 100);
-                                                Toast.show(error)
-                                            })
+                                        if(Platform.OS==='ios'){
+                                            IosModule.outputReportAction(
+                                                JSON.stringify(tempSeries),
+                                                this.props.step-1,
+                                                (result) => {
+                                                    setTimeout(() => {
+                                                        this.setState({isLoading: false})
+                                                    }, 100);
+                                                    Toast.show(result)
+                                                },
+                                               /* (error)=>{
+                                                    setTimeout(() => {
+                                                        this.setState({isLoading: false})
+                                                    }, 100);
+                                                    Toast.show(error)
+                                                }*/)
+                                        }else{
+                                            AndroidModule.outputReportAction(
+                                                JSON.stringify(tempSeries),
+                                                this.props.step-1,
+                                                (result) => {
+                                                    setTimeout(() => {
+                                                        this.setState({isLoading: false})
+                                                    }, 100);
+                                                    Toast.show(result)
+                                                },
+                                                (error)=>{
+                                                    setTimeout(() => {
+                                                        this.setState({isLoading: false})
+                                                    }, 100);
+                                                    Toast.show(error)
+                                                })
+                                        }
+
+
+
                                     } else Toast.show('正在获取填写内容，请稍后')
                                 }
                             ] :

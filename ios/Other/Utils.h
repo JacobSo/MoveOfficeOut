@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LSUser.h"
-#import "Common.h"
+//#import "LSUser.h"
+//#import "Common.h"
 
 @interface Utils : NSObject
 
@@ -31,7 +31,7 @@
 + (NSString*)DataTOjsonString:(id)object;
 
 + (BOOL)isAuthorizedLogin;
-+ (BOOL)saveLoginUser:(LSUser *)user;
+//+ (BOOL)saveLoginUser:(LSUser *)user;
 + (void)removeUserInfo;
 + (NSString *)kLoginUserName;
 + (NSString *)kPassword;
