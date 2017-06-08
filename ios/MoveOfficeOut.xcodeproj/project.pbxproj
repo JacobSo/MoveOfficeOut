@@ -82,7 +82,6 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		BEB1F9615E4B4FF997D4E681 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD24752497EB45A9ADF1A0D0 /* libRNImagePicker.a */; };
 		CB7760D560B5462C9B478DE3 /* libInteractable.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B79279E2219143FEBD2F2485 /* libInteractable.a */; };
-		CF479B894DD04F079AE94626 /* libRNPDFView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D19788C9B7148DCAD46CE3D /* libRNPDFView.a */; };
 		FC6F0D5B48DC4CC5830E5CFB /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9662B9B97DD479D99144E1C /* libSQLite.a */; };
 /* End PBXBuildFile section */
 
@@ -241,13 +240,6 @@
 			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
 			remoteInfo = "jschelpers-tvOS";
 		};
-		491B97F51EE8F8BA00E497B4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3D72B95807F049EDA048A298 /* RNPDFView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 20D8E03F1C8E946C00039823;
-			remoteInfo = RNPDFView;
-		};
 		493DA8D01EDBCFDA00C7779F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 493DA8CC1EDBCFD900C7779F /* RNFetchBlob.xcodeproj */;
@@ -336,7 +328,6 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1850B0A6ECB44181949BF632 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		1C8AF3C51DAB4487BE05F379 /* SQLite.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../node_modules/react-native-sqlite-storage/src/ios/SQLite.xcodeproj"; sourceTree = "<group>"; };
-		3D72B95807F049EDA048A298 /* RNPDFView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPDFView.xcodeproj; path = "../node_modules/react-native-pdf-view/RNPDFView.xcodeproj"; sourceTree = "<group>"; };
 		3EFCB920E8CA41F780B76941 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		491B96B11EE7991A00E497B4 /* WDMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDMaterial.h; sourceTree = "<group>"; };
 		491B96B21EE7991A00E497B4 /* WDMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDMaterial.m; sourceTree = "<group>"; };
@@ -440,7 +431,6 @@
 		49F3035B1E8CEE26003967E8 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PgySDK.framework; sourceTree = "<group>"; };
 		49F3035C1E8CEE26003967E8 /* PgyUpdate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PgyUpdate.framework; sourceTree = "<group>"; };
 		4CA597888E234893B7BDA4CF /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
-		4D19788C9B7148DCAD46CE3D /* libRNPDFView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPDFView.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -489,7 +479,6 @@
 				CB7760D560B5462C9B478DE3 /* libInteractable.a in Frameworks */,
 				BEB1F9615E4B4FF997D4E681 /* libRNImagePicker.a in Frameworks */,
 				FC6F0D5B48DC4CC5830E5CFB /* libSQLite.a in Frameworks */,
-				CF479B894DD04F079AE94626 /* libRNPDFView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,14 +728,6 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		491B97D51EE8F8BA00E497B4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				491B97F61EE8F8BA00E497B4 /* libRNPDFView.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		493DA8CD1EDBCFD900C7779F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -826,7 +807,6 @@
 				0304A108E7904E508DCE8EBD /* Interactable.xcodeproj */,
 				4CA597888E234893B7BDA4CF /* RNImagePicker.xcodeproj */,
 				1C8AF3C51DAB4487BE05F379 /* SQLite.xcodeproj */,
-				3D72B95807F049EDA048A298 /* RNPDFView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1000,10 +980,6 @@
 					ProjectRef = 4CA597888E234893B7BDA4CF /* RNImagePicker.xcodeproj */;
 				},
 				{
-					ProductGroup = 491B97D51EE8F8BA00E497B4 /* Products */;
-					ProjectRef = 3D72B95807F049EDA048A298 /* RNPDFView.xcodeproj */;
-				},
-				{
 					ProductGroup = 49B878961ED558570075E99A /* Products */;
 					ProjectRef = 1C8AF3C51DAB4487BE05F379 /* SQLite.xcodeproj */;
 				},
@@ -1162,13 +1138,6 @@
 			fileType = archive.ar;
 			path = libjschelpers.a;
 			remoteRef = 3DAD3EAE1DF850E9000B6D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		491B97F61EE8F8BA00E497B4 /* libRNPDFView.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNPDFView.a;
-			remoteRef = 491B97F51EE8F8BA00E497B4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		493DA8D11EDBCFDA00C7779F /* libRNFetchBlob.a */ = {
