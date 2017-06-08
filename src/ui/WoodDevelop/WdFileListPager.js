@@ -48,14 +48,14 @@ export default class WdFileListPager extends Component {
                 })
         } else {
             IosModule.getAllPrint((result) => {
-                //console.log(result)
-                Toast.show(result)
-                if(result){
-                    this.state.items = JSON.parse(result);
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(JSON.parse(result)),
-                    });
-                }else this.props.nav.goBack(null)
+                    //console.log(result)
+                    Toast.show(result)
+                    if (result) {
+                        this.state.items = JSON.parse(result);
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(JSON.parse(result)),
+                        });
+                    } else this.props.nav.goBack(null)
 
                 },
                 (err) => {
@@ -121,24 +121,32 @@ export default class WdFileListPager extends Component {
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
-                                margin: 32
+                                height:65,
+                                marginRight:16,
+                                marginLeft:16
                             }}
                             onPress={() => {
                                 if (Platform.OS === 'android')
                                     AndroidModule.openPrintFile(rowData)
-                                else{
-                                    this.props.nav.navigate('web',{
-                                        filePath:rowData
+                                else {
+                                    this.props.nav.navigate('web', {
+                                        filePath: rowData
                                     })
                                 }
                             }}>
                             <Text>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
                             <TouchableOpacity
-                                style={{position: 'absolute', right: 0,backgroundColor:Color.colorLightBlue,padding:10}}
-                                              onPress={() => {
-                                    if(Platform.OS==='android')
-                                AndroidModule.shereFile(rowData)
-                                                  else{
+                                style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                    backgroundColor: Color.colorLightBlue,
+                                    padding: 10,
+                                    borderRadius:10
+                                }}
+                                onPress={() => {
+                                    if (Platform.OS === 'android')
+                                        AndroidModule.shereFile(rowData)
+                                    else {
                                         Share.share({
                                             url: rowData,
                                             title: 'React Native'
@@ -152,8 +160,8 @@ export default class WdFileListPager extends Component {
                                             .then(this._showResult)
                                             .catch((error) => this.setState({result: 'error: ' + error.message}));
                                     }
-                            }}>
-                                <Text style={{color:'white'}}>发送</Text>
+                                }}>
+                                <Text style={{color: 'white'}}>发送</Text>
                             </TouchableOpacity>
                         </TouchableOpacity>
                     }/>
