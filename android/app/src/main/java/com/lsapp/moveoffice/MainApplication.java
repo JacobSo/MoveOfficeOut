@@ -8,6 +8,7 @@ import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.facebook.react.ReactApplication;
+import com.keyee.pdfview.PDFView;
 import com.wix.interactable.Interactable;
 import com.imagepicker.ImagePickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -59,6 +60,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new Interactable(),
                     new ImagePickerPackage(),
                     new SQLitePluginPackage(),
+                    new PDFView(),
                     new CodePush("4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M", getApplicationContext(), BuildConfig.DEBUG),
                     reactModulePackage
             );

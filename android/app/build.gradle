@@ -108,6 +108,7 @@ dependencies {
     compile project(path: ':react-native-interactable')
     compile project(':react-native-sqlite-storage')
     compile project(':react-native-fetch-blob')
+    compile project(':PDFView')
     //print tool
     compile 'org.jsoup:jsoup:1.9.1'
     compile files('libs/itext-pdfa-5.5.9.jar')
