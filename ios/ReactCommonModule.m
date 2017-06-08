@@ -20,6 +20,7 @@
 #import "Utils.h"
 #import "UIImage+Resizes.h"
 #import "SDImageCache.h"
+#import "NSString+sha1.h"
 
 
 @interface ReactCommonModule ()<UIWebViewDelegate>
@@ -43,6 +44,7 @@
 @property (nonatomic,strong)NSString *titleStr;
 @property (nonatomic,strong)NSString *typeStr;
 @property (nonatomic,assign) int code;
+@property (nonatomic,strong)NSString *SeriesName;
 
 
 @end
@@ -158,6 +160,7 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
 
   self.serice = serice;
   self.code = code;
+  self.SeriesName = serice.SeriesName;
   dispatch_async(dispatch_get_global_queue(0, 0), ^{
     
     [self lsCreateHtmlInWeb];
@@ -171,18 +174,45 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
   });
   
   
-//  if (self.strDocPath != nil){
-//    NSArray *arrays = [NSArray arrayWithObjects:self.strDocPath,nil];
-//    callback(arrays);
-//  }
-  
-  
-  
+  dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    
+    while (1) {
+      if (self.strDocPath != nil) {
+        NSArray *arrays = [NSArray arrayWithObjects:self.strDocPath,nil];
+        callback(arrays);
+        break;
+      }
+    }
+    
+  });
   
   
 }
 
+RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSenderBlock)error)
+{
+  NSString *path =  NSTemporaryDirectory();
+  NSArray *pdfArray = [[NSFileManager defaultManager]subpathsOfDirectoryAtPath:path error:nil];
+  
+  NSString *pdfString = [pdfArray mj_JSONString];
+  
+  NSLog(@"******************8%ld",(unsigned long)pdfArray.count);
+  
+  NSArray *arrays = [NSArray arrayWithObjects:pdfString,nil];
+  
+  callback(arrays);
+  
+  
+}
+
+
+
+
+
+
 ///Users/ls/Library/Developer/CoreSimulator/Devices/B4F31F4D-123C-435B-B96C-E30E20A860EE/data/Containers/Data/Application/DD3C41EA-7B2E-4BFA-9F9E-B96F1FC0B1B1/Library/Caches/react-native-img-cache/70a03366edfd053ce4e1226a7817a86ce8a42dda.jpg
+
+///Users/ls/Library/Developer/CoreSimulator/Devices/B4F31F4D-123C-435B-B96C-E30E20A860EE/data/Containers/Data/Application/C552DC0A-E5E5-4738-B9BE-7B6CF75363DE/Library/Caches
 
 ///Users/ls/Library/Developer/CoreSimulator/Devices/B4F31F4D-123C-435B-B96C-E30E20A860EE/data/Containers/Data/Application/069B7B35-30DB-41F6-A016-5B83DA938507/Documents
 
@@ -307,11 +337,24 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
     }
     UIGraphicsEndPDFContext();
     
+    NSString *PDFName = @"";
+    switch (self.code) {
+      case 0:
+        PDFName = @"白胚";
+        break;
+      case 1:
+        PDFName = @"成品";
+        break;
+      case 2:
+        PDFName = @"包装";
+        break;
+      default:
+        break;
+    }
+    
     
     NSString *path =  NSTemporaryDirectory();
-    self.strDocPath = [path stringByAppendingPathComponent:kStrPDFName];
-    
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"PDF地址" message:self.strDocPath delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"其他", nil];
+    self.strDocPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@评审报告.pdf",self.SeriesName,PDFName]];
     
     NSLog(@"PDF地址*****%@",self.strDocPath);
     
@@ -369,10 +412,10 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
     body = self.htmlModel.Enpty;
     [self.serice.Itemlist enumerateObjectsUsingBlock:^(WDProduct * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
       
-      obj.check = YES;
+//      obj.check = YES;
       /*这里可以加个全部打印或者部分打印*/
       //                if (obj.isPrint ==  WD_YES_PRINT_CP)
-      if (obj.check ==  YES)
+      if (obj.check ==  1)
         @autoreleasepool {
           
           [itemCountArr addObject:@""];
@@ -394,15 +437,53 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
           NSArray *array = [problemS componentsSeparatedByString:@"|"];
           NSInteger countProduct = array.count;
           
+          
+          NSString *imageName = [obj.pImage sha1];
+          
+          NSLog(@"#########%@.jpg",imageName);
+          
+          NSString *addresss = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)lastObject]stringByAppendingPathComponent:@"react-native-img-cache"];
+          
+          NSString *imageNames=[NSString stringWithFormat:@"%@/%@.jpg",addresss,imageName];
+          
+          UIImage *cachedImage=[[UIImage alloc]initWithContentsOfFile:imageNames];
+          
+          
+//          NSArray *filesNameArray = [[NSFileManager defaultManager]subpathsOfDirectoryAtPath:addresss error:nil];
+//          
+//          NSLog(@"%ld",(unsigned long)filesNameArray.count);
+//          
+//          for(int i=0;i<filesNameArray.count;i++)
+//          {
+//            NSLog(@"%@",filesNameArray[i]);
+//          }
+//          if (<#condition#>) {
+//            <#statements#>
+//          }
+          
+          
+          
+          
           /*填写了评审记录时*/
           //                        else{
-          UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:obj.pImage];
+//          UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:obj.pImage];
           
-          NSString *address = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject];
+//          NSString *address = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject];
+//          
+//          NSLog(@"******************%@",address);
+//          
+//          
+//          
+//          NSLog(@"******************%@",addresss);
           
-          NSLog(@"******************%@",address);
           
-          NSString *addresss = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)lastObject];
+          
+          
+          
+          
+          
+          
+          
           
           if (!cachedImage) {
             cachedImage = [UIImage imageNamed:@"loading_Image"];
@@ -463,10 +544,18 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
     }];
     
     
+    
+    
+    
+    
     _bodyStr_Html = body;
   }
   return _bodyStr_Html;
 }
+
+
+
+
 
 - (NSString *)footStr_Html{
   if(!_footStr_Html){

@@ -9,11 +9,13 @@ import {
     ListView,
     StyleSheet,
     Dimensions,
-    TouchableOpacity, Image, Text, Button,
+    TouchableOpacity, Platform, Text, Button,
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
+import IosModule from '../../module/IosCommontModule'
+
 const {width, height} = Dimensions.get('window');
 
 export default class WdFileListPager extends Component {
@@ -34,14 +36,26 @@ export default class WdFileListPager extends Component {
     }
 
     componentDidMount() {
-        AndroidModule.getAllPrint((result) => {
-                this.state.items = JSON.parse(result);
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(JSON.parse(result)),
-                });
-            },
-            (err) => {
-            })
+        if(Platform.OS==='android'){
+            AndroidModule.getAllPrint((result) => {
+                    this.state.items = JSON.parse(result);
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(JSON.parse(result)),
+                    });
+                },
+                (err) => {
+                })
+        }else{
+            IosModule.getAllPrint((result) => {
+                    this.state.items = JSON.parse(result);
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(JSON.parse(result)),
+                    });
+                },
+                (err) => {
+                })
+        }
+
 
 
     }
@@ -108,6 +122,7 @@ export default class WdFileListPager extends Component {
                             }}>
                             <Text>{rowData.substring(rowData.lastIndexOf('/')+1,rowData.length)}</Text>
                             <Button style={{position: 'absolute', right: 0}} title={"发送"} onPress={() => {
+
                                 AndroidModule.shereFile(rowData)
                             }}/>
                         </TouchableOpacity>
