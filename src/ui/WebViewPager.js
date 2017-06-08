@@ -11,11 +11,8 @@ import {
     TouchableOpacity, Image, WebView,
 } from 'react-native';
 import Color from '../constant/Color';
-import Toolbar from './Component/Toolbar'
-import Toast from 'react-native-root-toast';
-import App from '../constant/Application';
-import SQLite from '../db/Sqlite';
-let sqLite = new SQLite();
+import Toolbar from './Component/Toolbar';
+
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class WebViewPager extends Component {
@@ -26,6 +23,28 @@ export default class WebViewPager extends Component {
     }
 
     render() {
-        return <WebView source={{uri: this.props.filePath}}/>
+        console.log(this.props.filePath);
+        return<View style={{
+            flex: 1,
+            backgroundColor: Color.background
+        }}>
+            <Toolbar
+                elevation={2}
+                title={['查看报表']}
+                color={Color.colorDeepOrange}
+                isHomeUp={true}
+                isAction={false}
+                isActionByText={true}
+                actionArray={[]}
+                functionArray={[
+                    () => {
+                        this.props.nav.goBack(null)
+                    },
+                ]}
+            />
+            <WebView source={{uri: this.props.filePath}}/>
+        </View>;
     }
 }
+
+

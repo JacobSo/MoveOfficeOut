@@ -9,12 +9,13 @@ import {
     ListView,
     StyleSheet,
     Dimensions,
-    TouchableOpacity, Platform, Text, Button,
+    TouchableOpacity, Platform, Text, Share,
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
+import Toast from 'react-native-root-toast';
 
 const {width, height} = Dimensions.get('window');
 
@@ -47,10 +48,15 @@ export default class WdFileListPager extends Component {
                 })
         } else {
             IosModule.getAllPrint((result) => {
+                //console.log(result)
+                Toast.show(result)
+                if(result){
                     this.state.items = JSON.parse(result);
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(result)),
                     });
+                }else this.props.nav.goBack(null)
+
                 },
                 (err) => {
                 })
@@ -67,7 +73,7 @@ export default class WdFileListPager extends Component {
         return (
             <View style={{
                 flex: 1,
-                backgroundColor: Color.background
+                backgroundColor: 'white'
             }}>
                 <Toolbar
                     elevation={2}
@@ -118,19 +124,37 @@ export default class WdFileListPager extends Component {
                                 margin: 32
                             }}
                             onPress={() => {
-                               /* if (Platform.OS === 'android')
+                                if (Platform.OS === 'android')
                                     AndroidModule.openPrintFile(rowData)
-                                else{*/
+                                else{
                                     this.props.nav.navigate('web',{
                                         filePath:rowData
                                     })
-                           //     }
+                                }
                             }}>
                             <Text>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
-                            <Button style={{position: 'absolute', right: 0}} title={"发送"} onPress={() => {
-
+                            <TouchableOpacity
+                                style={{position: 'absolute', right: 0,backgroundColor:Color.colorLightBlue,padding:10}}
+                                              onPress={() => {
+                                    if(Platform.OS==='android')
                                 AndroidModule.shereFile(rowData)
-                            }}/>
+                                                  else{
+                                        Share.share({
+                                            url: rowData,
+                                            title: 'React Native'
+                                        }, {
+                                            dialogTitle: 'Share React Native website',
+                                            excludedActivityTypes: [
+                                                'com.apple.UIKit.activity.PostToTwitter'
+                                            ],
+                                            tintColor: 'green'
+                                        })
+                                            .then(this._showResult)
+                                            .catch((error) => this.setState({result: 'error: ' + error.message}));
+                                    }
+                            }}>
+                                <Text style={{color:'white'}}>发送</Text>
+                            </TouchableOpacity>
                         </TouchableOpacity>
                     }/>
 

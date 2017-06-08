@@ -155,7 +155,7 @@ const QcDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcProductDetailPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
 const WebScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<WebViewPager {...navigation.state.params}
+    style={{height: height}}>{_statusBar(Color.colorDeepOrangeDark)}<WebViewPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {

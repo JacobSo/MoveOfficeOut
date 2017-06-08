@@ -196,9 +196,19 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
   
   NSString *pdfString = [pdfArray mj_JSONString];
   
+  NSMutableArray *array = [[NSMutableArray alloc]init];
+  
   NSLog(@"******************8%ld",(unsigned long)pdfArray.count);
   
-  NSArray *arrays = [NSArray arrayWithObjects:pdfString,nil];
+  for(int i = 0;i<pdfArray.count;i++)
+  {
+    NSString *pdfAddress = [path stringByAppendingPathComponent:pdfArray[i]];
+    [array addObject:pdfAddress];
+  }
+  NSString *pathString = [array mj_JSONString];
+  
+  
+  NSArray *arrays = [NSArray arrayWithObjects:pathString,nil];
   
   callback(arrays);
   
