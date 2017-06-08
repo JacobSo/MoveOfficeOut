@@ -16,7 +16,6 @@ export default class GalleryPager extends Component {
     render() {
         return (
             <View style={{width: width, height: height}}>
-
                 <Gallery
                     style={{flex: 1, backgroundColor: 'black'}}
                     images={this.props.pics}

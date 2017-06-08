@@ -118,7 +118,10 @@ export default class WdFileListPager extends Component {
                                 margin: 32
                             }}
                             onPress={() => {
-                                AndroidModule.openPrintFile(rowData)
+                                //AndroidModule.openPrintFile(rowData)
+                                this.props.nav.navigate('pdf',{
+                                    filePath:rowData
+                                })
                             }}>
                             <Text>{rowData.substring(rowData.lastIndexOf('/')+1,rowData.length)}</Text>
                             <Button style={{position: 'absolute', right: 0}} title={"发送"} onPress={() => {
