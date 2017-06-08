@@ -46,9 +46,13 @@ export default class QcMainPager extends Component {
                      dataSource: this.state.dataSource.cloneWithRows(responseJson.data),
                      isRefreshing: false,
                      });
-                } else Toast.show(responseJson.ErrDesc);
+                } else{
+                    this.setState({  isRefreshing: false,});
+                    Toast.show(responseJson.ErrDesc);
+                }
             })
             .catch((error) => {
+                this.setState({  isRefreshing: false,});
                 console.log(error);
                 Toast.show("出错了，请稍后再试");
             }).done();

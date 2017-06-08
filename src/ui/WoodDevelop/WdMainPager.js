@@ -47,8 +47,6 @@ class WdMainPager extends Component {
         });
     }
 
-
-
     componentWillReceiveProps(newProps) {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
         /*    this.state.items[newProps.position] = newProps.product;
@@ -69,9 +67,13 @@ class WdMainPager extends Component {
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.Serieslist),
                         isRefreshing: false,
                     });
-                } else Toast.show(responseJson.ErrDesc);
+                } else{
+                    this.setState({  isRefreshing: false,});
+                    Toast.show(responseJson.ErrDesc);
+                }
             })
             .catch((error) => {
+                this.setState({  isRefreshing: false,});
                 console.log(error);
                 Toast.show("出错了，请稍后再试");
             }).done();

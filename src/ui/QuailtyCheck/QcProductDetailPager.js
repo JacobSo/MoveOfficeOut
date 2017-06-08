@@ -31,7 +31,13 @@ export default  class QcProductDetailPager extends Component {
     componentDidMount() {
     }
 
-    setStatus() {
+    getStatus(flag) {
+        if (this.props.product.state && this.props.product.state.length === 3) {
+            if (this.props.product.state.substring(flag-1, flag) === "1")
+                return 1;
+            else
+                return 0;
+        } else return 0;
 
     }
 
@@ -99,38 +105,56 @@ export default  class QcProductDetailPager extends Component {
                                 color: Color.black_semi_transparent
                             }}>{this.props.product.deliverDate}</Text>
                         </View>
+                        <View style={styles.textStyle}>
+                            <Text >改善方案</Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                }}>
+                                <Text style={{color: Color.colorAccent}}>查看</Text>
+                            </TouchableOpacity>
 
+                        </View>
                         <Text style={{width: width - 32, margin: 16}}>质检流程</Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <TouchableOpacity
-                                style={[styles.mainButton, {borderColor: Color.content}]}
+                                style={[styles.mainButton, {borderColor:this.getStatus(1)?Color.colorAccent:Color.content}]}
                                 onPress={() => {
 
                                 }}>
-                                <Text>材料质检</Text>
+                                <Text style={{color:this.getStatus(1)?Color.colorAccent:Color.content}}>材料质检</Text>
                             </TouchableOpacity>
-                            <Image source={require('../../drawable/attach_file.png')} style={{width: 25, height: 25}}/>
+                            <TouchableOpacity
+                                onPress={() => {
+                                }}>
+                                <Image source={require('../../drawable/attach_file.png')}
+                                       style={{width: 25, height: 25}}/></TouchableOpacity>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <TouchableOpacity
-                                style={[styles.mainButton, {borderColor: Color.content}]}
+                                style={[styles.mainButton, {borderColor:this.getStatus(2)?Color.colorAccent:Color.content}]}
                                 onPress={() => {
 
                                 }}>
-                                <Text>工艺质检</Text>
+                                <Text style={{color:this.getStatus(2)?Color.colorAccent:Color.content}}>工艺质检</Text>
 
                             </TouchableOpacity>
-                            <Image source={require('../../drawable/attach_file.png')} style={{width: 25, height: 25}}/>
+                            <TouchableOpacity onPress={() => {
+                            }}>
+                                <Image source={require('../../drawable/attach_file.png')}
+                                       style={{width: 25, height: 25}}/></TouchableOpacity>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <TouchableOpacity
-                                style={[styles.mainButton, {borderColor: Color.content}]}
+                                style={[styles.mainButton,{borderColor:this.getStatus(3)?Color.colorAccent:Color.content}]}
                                 onPress={() => {
 
                                 }}>
-                                <Text>成品质检</Text>
+                                <Text style={{color:this.getStatus(3)?Color.colorAccent:Color.content}}>成品质检</Text>
                             </TouchableOpacity>
-                            <Image source={require('../../drawable/attach_file.png')} style={{width: 25, height: 25}}/>
+                            <TouchableOpacity onPress={() => {
+                            }}>
+                                <Image source={require('../../drawable/attach_file.png')}
+                                       style={{width: 25, height: 25}}/></TouchableOpacity>
                         </View>
 
                     </View>
@@ -144,11 +168,13 @@ const styles = StyleSheet.create({
     textStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+
         width: width - 32,
         marginRight: 16,
         marginLeft: 16,
         marginTop: 16,
+        marginBottom: 8,
 
     },
     mainButton: {

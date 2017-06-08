@@ -42,7 +42,7 @@ const {width, height} = Dimensions.get('window');
 
 _renderScreen = (pager) => {
     //  console.log("screen1");
-    codePush.sync();
+  //  codePush.sync();
     return (
         <Provider store={store}>
             <View

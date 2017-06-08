@@ -57,6 +57,10 @@ let W_D_Q_INDEX = "wdq_index";//product id
 let W_D_Q_REVIEW_TYPE = "wdq_ReviewType";//step
 let W_D_Q_PASS = "wdq_isPass";
 let W_D_Q_CONTENT = "wdq_content";
+
+
+
+
 export  default  class Sqlite extends Component {
     render() {
         return null;

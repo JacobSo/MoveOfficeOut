@@ -49,7 +49,7 @@ export default class MainPager extends Component {
             return (
                 <ScrollableTabView
                     initialPage={0}
-                    tabBarBackgroundColor={Color.colorPrimary}
+                    tabBarBackgroundColor={Color.colorCyan}
                     tabBarActiveTextColor='white'
                     locked={false}
                     tabBarInactiveTextColor={Color.background}

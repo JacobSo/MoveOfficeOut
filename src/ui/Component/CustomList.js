@@ -184,11 +184,15 @@ class CustomList extends Component {
                         isEndUp: responseJson.list.length === 0,
                         isTopTips: false,
                     });
-                } else Toast.show(responseJson.ErrDesc);
+                } else{
+                    this.setState({  isRefreshing: false,});
+                    Toast.show(responseJson.ErrDesc);
+                }
                 this.props.actions.refreshList(false);
             })
             .catch((error) => {
                 console.log(error);
+                this.setState({  isRefreshing: false,});
                 Toast.show("出错了，请稍后再试");
             }).done();
         this._todayTask();
