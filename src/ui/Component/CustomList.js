@@ -73,8 +73,8 @@ class CustomList extends Component {
             editContent: "",
             selectGuid: "",
             selectType: "",
-            tripType:"",
-            endTime:"",
+            tripType: "",
+            endTime: "",
 
         };
 
@@ -184,15 +184,15 @@ class CustomList extends Component {
                         isEndUp: responseJson.list.length === 0,
                         isTopTips: false,
                     });
-                } else{
-                    this.setState({  isRefreshing: false,});
+                } else {
+                    this.setState({isRefreshing: false,});
                     Toast.show(responseJson.ErrDesc);
                 }
                 this.props.actions.refreshList(false);
             })
             .catch((error) => {
                 console.log(error);
-                this.setState({  isRefreshing: false,});
+                this.setState({isRefreshing: false,});
                 Toast.show("出错了，请稍后再试");
             }).done();
         this._todayTask();
@@ -205,12 +205,12 @@ class CustomList extends Component {
                 .then((responseJson) => {
                     console.log(responseJson);
                     if (!responseJson.IsErr) {
-                            this.setState({
-                                isTodayTask: responseJson.list.length !== 0,
-                                todayTask: responseJson.list.length !== 0?responseJson.list:[],
-                                todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list.length !== 0?responseJson.list[0].list:[]),
-                                isLoading: false})
-
+                        this.setState({
+                            isTodayTask: responseJson.list.length !== 0,
+                            todayTask: responseJson.list.length !== 0 ? responseJson.list : [],
+                            todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list.length !== 0 ? responseJson.list[0].list : []),
+                            isLoading: false
+                        })
 
 
                     } else Toast.show(responseJson.ErrDesc);
@@ -279,7 +279,7 @@ class CustomList extends Component {
             this.state.selectType,
             this.state.editContent,
             this.state.todayTask[0].DailyType,
-            this.state.todayTask[0].DailyEndDate?Utility.getTime(this.state.todayTask[0].DailyEndDate):'')
+            this.state.todayTask[0].DailyEndDate ? Utility.getTime(this.state.todayTask[0].DailyEndDate) : '')
             .then((responseJson) => {
                 console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
@@ -316,16 +316,18 @@ class CustomList extends Component {
             }
         });
         if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
-            let temp = rowData.LatitudeLongitudes.split("|");
-
             let max = 0;
-            temp.map((data) => {
-                let latlng = data.split(",");
-                let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
-                if (max < process) {
-                    max = process;
-                }
-            });
+            if (rowData.LatitudeLongitudes) {
+                let temp = rowData.LatitudeLongitudes.split("|");
+                temp.map((data) => {
+                    let latlng = data.split(",");
+                    let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
+                    if (max < process) {
+                        max = process;
+                    }
+                });
+            }
+
             this._confirmDialog(rowData.Signtype === -1 ?
                     "到达供应商" : "离开供应商",
                 "当前位置：" + this.state.address + "\n" +

@@ -37,7 +37,7 @@ import GalleryPager from "./ui/GalleryPager";
 import QcMainPager from "./ui/QuailtyCheck/QcMainPager";
 import QcProductListPager from "./ui/QuailtyCheck/QcProductListPager";
 import QcProductDetailPager from "./ui/QuailtyCheck/QcProductDetailPager";
-import PdfPager from "./ui/PdfPager";
+import WebViewPager from "./ui/WebViewPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -154,8 +154,8 @@ const QcListScreen = ({navigation}) => _renderScreen(<View
 const QcDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcProductDetailPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
-const PdfScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<PdfPager {...navigation.state.params}
+const WebScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<WebViewPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
@@ -239,8 +239,8 @@ const SimpleStack = StackNavigator({
         qcDetail: {
             screen: QcDetailScreen,
         },
-        pdf: {
-            screen: PdfScreen,
+        web: {
+            screen: WebScreen,
         },
     },
     {

@@ -34,7 +34,7 @@ export default class LauncherPager extends Component {
     }
 
     componentWillUnmount() {
-       // sqLite.close();
+        sqLite.close();
     }
 
     render() {

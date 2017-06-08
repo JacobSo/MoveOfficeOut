@@ -26,7 +26,7 @@ export default class WdFileListPager extends Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            isSearch :false
+            isSearch: false
 
         };
     }
@@ -36,7 +36,7 @@ export default class WdFileListPager extends Component {
     }
 
     componentDidMount() {
-        if(Platform.OS==='android'){
+        if (Platform.OS === 'android') {
             AndroidModule.getAllPrint((result) => {
                     this.state.items = JSON.parse(result);
                     this.setState({
@@ -45,7 +45,7 @@ export default class WdFileListPager extends Component {
                 },
                 (err) => {
                 })
-        }else{
+        } else {
             IosModule.getAllPrint((result) => {
                     this.state.items = JSON.parse(result);
                     this.setState({
@@ -57,12 +57,12 @@ export default class WdFileListPager extends Component {
         }
 
 
-
     }
 
     async  _search(text) {
         return this.state.items.filter((item) => item.toLowerCase().indexOf(text.toLowerCase()) > -1);
     }
+
     render() {
         return (
             <View style={{
@@ -118,12 +118,15 @@ export default class WdFileListPager extends Component {
                                 margin: 32
                             }}
                             onPress={() => {
-                                //AndroidModule.openPrintFile(rowData)
-                                this.props.nav.navigate('pdf',{
-                                    filePath:rowData
-                                })
+                               /* if (Platform.OS === 'android')
+                                    AndroidModule.openPrintFile(rowData)
+                                else{*/
+                                    this.props.nav.navigate('web',{
+                                        filePath:rowData
+                                    })
+                           //     }
                             }}>
-                            <Text>{rowData.substring(rowData.lastIndexOf('/')+1,rowData.length)}</Text>
+                            <Text>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
                             <Button style={{position: 'absolute', right: 0}} title={"发送"} onPress={() => {
 
                                 AndroidModule.shereFile(rowData)
