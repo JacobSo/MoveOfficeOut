@@ -114,14 +114,8 @@ export default class WdProductFilterPager extends Component {
                                                     setTimeout(() => {
                                                         this.setState({isLoading: false})
                                                     }, 100);
-                                                    Toast.show(result);
+                                                    Toast.show('生成成功');
                                                     this.props.nav.navigate('wdFile');
-                                                },
-                                                (error) => {
-                                                    setTimeout(() => {
-                                                        this.setState({isLoading: false})
-                                                    }, 100);
-                                                    Toast.show(error)
                                                 })
                                         } else {
                                             AndroidModule.outputReportAction(
