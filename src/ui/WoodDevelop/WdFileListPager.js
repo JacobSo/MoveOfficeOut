@@ -49,7 +49,7 @@ export default class WdFileListPager extends Component {
         } else {
             IosModule.getAllPrint((result) => {
                     //console.log(result)
-                    Toast.show(result)
+                   // Toast.show(result)
                     if (result) {
                         this.state.items = JSON.parse(result);
                         this.setState({
