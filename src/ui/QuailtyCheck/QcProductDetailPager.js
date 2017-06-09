@@ -9,7 +9,7 @@ import {
     ScrollView,
     Text,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image,
+    Dimensions, TouchableOpacity, Image, ListView,
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
@@ -24,15 +24,39 @@ import Drawer from 'react-native-drawer'
 import {CachedImage} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
 const drawerStyles = {
-    main: {backgroundColor:'black', shadowColor: "black", shadowOpacity: 0.8, shadowRadius: 3},
+    main: {backgroundColor: 'black', shadowColor: "black", shadowOpacity: 0.8, shadowRadius: 3},
 }
 export default  class QcProductDetailPager extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            improveFile: this.props.product.improveFiles,
+            dataSourceI: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            aFiles: this.props.product.materialFiles,
+            dataSourceA: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            bFiles: this.props.product.techFiles,
+            dataSourceB: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            cFiles: this.props.product.proFiles,
+            dataSourceC: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+        }
     }
 
     componentDidMount() {
+        this.setState({
+            dataSourceI:this.state.dataSourceI.cloneWithRows(this.state.improveFile),
+            dataSourceA:this.state.dataSourceI.cloneWithRows(this.state.aFiles),
+            dataSourceB:this.state.dataSourceI.cloneWithRows(this.state.bFiles),
+            dataSourceC:this.state.dataSourceI.cloneWithRows(this.state.cFiles),
+        })
+
     }
 
     getStatus(flag) {
@@ -53,10 +77,63 @@ export default  class QcProductDetailPager extends Component {
         this._drawer.open()
     };
 
+    getFileList(dataSource) {
+        return <ListView
+            horizontal={false}
+            dataSource={dataSource}
+            enableEmptySections={true}
+            removeClippedSubviews={false}
+            renderRow={(rowData, rowID, sectionID) =>
+                <TouchableOpacity style={{flexDirection: 'row',margin:5}}>
+                    <Image style={{width:25,height:25,}} source={this.getImage(rowData)}/>
+                    <Text style={{width:width/2,marginLeft:10}}>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
+                </TouchableOpacity>
+            }/>
+    }
+
+
+    getImage(rowData){
+            if (rowData.indexOf('.pdf') > -1)
+         return require('../../drawable/pdf_img.png');
+         else if (rowData.indexOf('.doc') > -1 || rowData.indexOf('.docx') > -1)
+         return require('../../drawable/word_img.png');
+         else if (rowData.indexOf('.xls') > -1 || rowData.indexOf('.xlsx') > -1)
+         return require('../../drawable/excel_img.png');
+         else
+         return require('../../drawable/file_img.png')
+    }
+
+
     drawerLayout() {
         return (
             <View style={{flex: 1, backgroundColor: "white",}}>
-
+                <ScrollView style={{margin: 16}}>
+                    <Text style={{color:Color.black_semi_transparent}}>改善方案</Text>
+                    {
+                        this.getFileList(this.state.dataSourceI)
+                    }
+                </ScrollView>
+                <View style={{width: width * 0.8, height: 1, backgroundColor: Color.line}}/>
+                <ScrollView style={{margin: 16}}>
+                    <Text style={{color:Color.black_semi_transparent}}>材料附件</Text>
+                    {
+                        this.getFileList(this.state.dataSourceA)
+                    }
+                </ScrollView>
+                <View style={{width: width * 0.8, height: 1, backgroundColor: Color.line}}/>
+                <ScrollView style={{margin: 16}}>
+                    <Text style={{color:Color.black_semi_transparent}}>工艺附件</Text>
+                    {
+                        this.getFileList(this.state.dataSourceB)
+                    }
+                </ScrollView>
+                <View style={{width: width * 0.8, height: 1, backgroundColor: Color.line}}/>
+                <ScrollView style={{margin: 16}}>
+                    <Text style={{color:Color.black_semi_transparent}}>成品附件</Text>
+                    {
+                        this.getFileList(this.state.dataSourceC)
+                    }
+                </ScrollView>
 
             </View>)
     }
@@ -65,7 +142,7 @@ export default  class QcProductDetailPager extends Component {
         return (
             <Drawer
                 ref={(ref) => this._drawer = ref}
-                content={<View style={{backgroundColor: 'white', width: width, height: height}}/>}
+                content={this.drawerLayout()}
                 type="overlay"
                 tapToClose={true}
                 side="right"
@@ -74,7 +151,7 @@ export default  class QcProductDetailPager extends Component {
                 closedDrawerOffset={-3}
                 styles={drawerStyles}
                 tweenHandler={(ratio) => ({
-                    main: { opacity:(2-ratio)/2 }
+                    main: {opacity: (2 - ratio) / 2}
                 })}>
                 <View style={{flex: 1, backgroundColor: "white",}}>
                     <Toolbar
@@ -136,9 +213,12 @@ export default  class QcProductDetailPager extends Component {
                                 <Text >改善方案</Text>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        if (this.props.product.improveFiles.length !== 0) {
+                                        if (this.props.product.improveFiles.length !== 0||
+                                            this.props.product.materialFiles.length !== 0||
+                                            this.props.product.proFiles.length !== 0||
+                                            this.props.product.techFiles.length !== 0) {
                                             this.openControlPanel();
-                                        } else SnackBar.show('没有改善方案', {duration: 3000})
+                                        } else SnackBar.show('没有改善方案或附件', {duration: 3000})
                                     }}>
                                     <Text style={{color: Color.colorAccent}}>查看</Text>
                                 </TouchableOpacity>
@@ -156,14 +236,7 @@ export default  class QcProductDetailPager extends Component {
                                     <Text
                                         style={{color: this.getStatus(1) ? Color.colorAccent : Color.content}}>材料质检</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        if (this.props.product.techFiles.length !== 0) {
-                                            this.openControlPanel();
-                                        } else SnackBar.show('工艺没有附件', {duration: 3000})
-                                    }}>
-                                    <Image source={require('../../drawable/attach_file.png')}
-                                           style={{width: 25, height: 25}}/></TouchableOpacity>
+
                             </View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <TouchableOpacity
@@ -177,10 +250,7 @@ export default  class QcProductDetailPager extends Component {
                                         style={{color: this.getStatus(2) ? Color.colorAccent : Color.content}}>工艺质检</Text>
 
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                }}>
-                                    <Image source={require('../../drawable/attach_file.png')}
-                                           style={{width: 25, height: 25}}/></TouchableOpacity>
+
                             </View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <TouchableOpacity
@@ -191,10 +261,7 @@ export default  class QcProductDetailPager extends Component {
                                     <Text
                                         style={{color: this.getStatus(3) ? Color.colorAccent : Color.content}}>成品质检</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                }}>
-                                    <Image source={require('../../drawable/attach_file.png')}
-                                           style={{width: 25, height: 25}}/></TouchableOpacity>
+
                             </View>
 
                         </View>

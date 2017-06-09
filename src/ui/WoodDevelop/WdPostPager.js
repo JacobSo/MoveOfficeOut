@@ -59,6 +59,26 @@ class WdPostPager extends Component {
         }
     }
 
+    loadDialog(temp) {
+        Alert.alert(
+            '加载',
+            "是否载入已经提交的数据",
+            [
+                {
+                    text: '不载入', onPress: () => {
+                }
+                },
+                {
+                    text: '载入', onPress: () => {
+                    this.setState({
+                        editContent: temp.split("|").join("\n∝\n")
+                    });
+                }
+                },
+            ]
+        );
+    }
+
     componentDidMount() {
         sqLite.getWdDraftContent(this.props.product.ItemGuid, this.props.step)
             .then((result) => {
@@ -77,7 +97,16 @@ class WdPostPager extends Component {
                     console.log(JSON.stringify(this.state.dataSource));
 
                 }
-            }).done()
+            }).done();
+        if (this.props.step === 0 && this.props.product.pStatusResultA && this.props.product.pStatusResultA !== 0) {
+            this.loadDialog(this.props.product.pStatusResultA)
+        }
+        else if (this.props.step === 1 && this.props.product.pStatusResultB && this.props.product.pStatusResultB !== 0) {
+            this.loadDialog(this.props.product.pStatusResultB)
+        }
+        else if (this.props.step === 2 && this.props.product.pStatusResultC && this.props.product.pStatusResultC !== 0) {
+            this.loadDialog(this.props.product.pStatusResultC)
+        }
     }
 
     componentWillUnmount() {
@@ -168,7 +197,6 @@ class WdPostPager extends Component {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
                     this.postImageReq(data, index, callBackData);
                 });
-
             })
         } else {
             this.state.submitPic.map((data, index) => {
@@ -178,8 +206,6 @@ class WdPostPager extends Component {
 
             })
         }
-
-
     }
 
     postImageReq(data, index, callBackData) {

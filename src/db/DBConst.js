@@ -10,6 +10,17 @@ let PIC_INDEX = "pic_index";//task id
 let PIC_PATH = "pic_path";
 let PIC_NAME = "pic_name";
 
+
+
+
+
+
+
+
+
+
+
+
 /**
  * 板木 系列列表
  */
