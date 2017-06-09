@@ -48,14 +48,14 @@ export default class QcMainPager extends Component {
                      });
                 } else{
                     this.setState({  isRefreshing: false,});
-                    SnackBar.show(responseJson.ErrDesc, { duration: 8000 })
+                    SnackBar.show(responseJson.ErrDesc, { duration: 3000 })
                 }
             })
             .catch((error) => {
                 this.setState({  isRefreshing: false,});
                 console.log(error);
                 Toast.show();
-                SnackBar.show("出错了，请稍后再试", { duration: 8000 })
+                SnackBar.show("出错了，请稍后再试", { duration: 3000 })
             }).done();
     }
 

@@ -23,10 +23,7 @@ import {connect} from "react-redux";
 import Drawer from 'react-native-drawer'
 import {CachedImage} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
-const drawerStyles = {
-    drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-    main: {paddingLeft: 3},
-}
+
 export default  class QcProductDetailPager extends Component {
     constructor(props) {
         super(props);
@@ -45,12 +42,18 @@ export default  class QcProductDetailPager extends Component {
         } else return 0;
 
     }
+
     closeControlPanel = () => {
         this._drawer.close()
     };
+
     openControlPanel = () => {
         this._drawer.open()
     };
+
+    drawerLayout(){
+
+    }
 
     render() {
         return (
@@ -61,12 +64,7 @@ export default  class QcProductDetailPager extends Component {
                 tapToClose={true}
                 side="right"
                 openDrawerOffset={0.2}
-                /*  panCloseMask={0.2}
-                closedDrawerOffset={-3}
-                styles={drawerStyles}
-                tweenHandler={(ratio) => ({
-                    main: { opacity:(2-ratio)/2 }
-                })}*/
+
             >
             <View style={{
                 flex: 1,
@@ -132,7 +130,9 @@ export default  class QcProductDetailPager extends Component {
                             <Text >改善方案</Text>
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.openControlPanel();
+                                    if(this.props.product.improveFiles.length!==0){
+                                        this.openControlPanel();
+                                    }else SnackBar.show('没有改善方案',{ duration: 3000 })
                                 }}>
                                 <Text style={{color: Color.colorAccent}}>查看</Text>
                             </TouchableOpacity>
@@ -143,12 +143,17 @@ export default  class QcProductDetailPager extends Component {
                             <TouchableOpacity
                                 style={[styles.mainButton, {borderColor:this.getStatus(1)?Color.colorAccent:Color.content}]}
                                 onPress={() => {
-
+                                    if(this.props.product.materialFiles.length!==0){
+                                        this.openControlPanel();
+                                    }else SnackBar.show('材料没有附件',{ duration: 3000 })
                                 }}>
                                 <Text style={{color:this.getStatus(1)?Color.colorAccent:Color.content}}>材料质检</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => {
+                                    if(this.props.product.techFiles.length!==0){
+                                        this.openControlPanel();
+                                    }else SnackBar.show('工艺没有附件',{ duration: 3000 })
                                 }}>
                                 <Image source={require('../../drawable/attach_file.png')}
                                        style={{width: 25, height: 25}}/></TouchableOpacity>
@@ -157,6 +162,9 @@ export default  class QcProductDetailPager extends Component {
                             <TouchableOpacity
                                 style={[styles.mainButton, {borderColor:this.getStatus(2)?Color.colorAccent:Color.content}]}
                                 onPress={() => {
+                                    if(this.props.product.proFiles.length!==0){
+                                        this.openControlPanel();
+                                    }else SnackBar.show('成品没有附件',{ duration: 3000 })
                                 }}>
                                 <Text style={{color:this.getStatus(2)?Color.colorAccent:Color.content}}>工艺质检</Text>
 

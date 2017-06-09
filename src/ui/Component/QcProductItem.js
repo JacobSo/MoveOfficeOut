@@ -45,7 +45,7 @@ export default class QcProductItem extends Component {
                 <View style={styles.mainContainer}>
                     <Text style={{
                         width: width - 32,
-                        height: 25,
+                        padding:5,
                         backgroundColor: this.getStatus(1)&&this.getStatus(2)&&this.getStatus(3)?   Color.colorPrimaryDark:Color.content,
                         color: 'white',
                         textAlign: 'center',
@@ -67,7 +67,8 @@ export default class QcProductItem extends Component {
                         width: width - 32 - 16,
                         justifyContent: 'space-around',
                         flexDirection: 'row',
-                        marginTop: 16
+                        marginTop: 16,
+                        marginBottom:5
                     }}>
                         <Text>材料</Text>
                         <Text>工艺</Text>
