@@ -266,7 +266,8 @@ export  default  class Sqlite extends Component {
                             "' WHERE wdq_index = '" + draftData.pGuid +
                             "' AND wdq_ReviewType ='" + draftData.phaseCode + "';", [],
                             (results) => {
-                                console.log("draft content update!")
+                            if(picData.length===0) resolve("保存成功")
+                             //   console.log("draft content update!")
                             }, (err) => console.log("insertWdDraft content update err:" + JSON.stringify(err)))
                     } else {//create
                         db.executeSql('INSERT INTO ' + TABLE_W_D_Q + ' (' + DBConst.W_D_Q_KEYS + ') VALUES(?,?,?,?)',
@@ -277,10 +278,12 @@ export  default  class Sqlite extends Component {
                                 draftData.productProblems,
                             ],
                             (results) => {
-                                console.log("draft content save!")
+                               // console.log("draft content save!")
+                                if(picData.length===0) resolve("保存成功")
                             }, (err) => console.log("insertWdDraft content create err:" + JSON.stringify(err)))
                     }
                 }, (err) => console.log("insertWdDraft count err:" + JSON.stringify(err)));
+
             db.executeSql("DELETE FROM " + TABLE_PIC + " WHERE pic_index = '" + draftData.pGuid + "' AND pic_type='" + draftData.phaseCode + "';", [],
                 (results) => {
                     console.log("draft pic clear!")

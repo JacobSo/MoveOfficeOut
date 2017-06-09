@@ -145,7 +145,7 @@ class WdProductDetailPager extends Component {
                     </View>
 
                     <View style={styles.textStyle}>
-                        <Text >名称</Text>
+                        <Text >型号</Text>
                         <Text >{this.props.product.ItemName}</Text>
                     </View>
                     <View style={styles.textStyle}>

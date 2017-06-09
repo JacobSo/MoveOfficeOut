@@ -10,19 +10,19 @@ import {
     ListView,
     ScrollView,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput,Platform
+    Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Platform
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import CheckBox from "../../ui/Component/CheckBox";
 import ApiService from '../../network/WdApiService';
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
 import {WdActions} from "../../actions/WdAction";
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import SnackBar from 'react-native-snackbar-dialog'
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
 const options = {
@@ -106,7 +106,7 @@ class WdPostPager extends Component {
                 fileName: data.fileName,
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
-                path: data.uri.replace('file://','')
+                path: data.uri.replace('file://', '')
             });
         });
         this.state.submitContent = tempContent;
@@ -142,12 +142,12 @@ class WdPostPager extends Component {
                         this.postImage();
                     else {
                         this.updateStatus();
-                        Toast.show("提交成功");
+                        SnackBar.show("提交成功", {duration: 3000});
                         this.props.nav.goBack(null)
 
                     }
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
@@ -155,7 +155,7 @@ class WdPostPager extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试", {duration: 3000});
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -163,17 +163,17 @@ class WdPostPager extends Component {
     }
 
     postImage() {
-        if(Platform.OS==='android'){
+        if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
-                    this.postImageReq(data, index,callBackData);
+                    this.postImageReq(data, index, callBackData);
                 });
 
             })
-        }else{
+        } else {
             this.state.submitPic.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
-                    this.postImageReq(data, index,callBackData);
+                    this.postImageReq(data, index, callBackData);
                 });
 
             })
@@ -182,7 +182,7 @@ class WdPostPager extends Component {
 
     }
 
-    postImageReq(data, index,callBackData){
+    postImageReq(data, index, callBackData) {
         data.imgCode = callBackData;
         let imageData = [];
         imageData.push(data);
@@ -191,12 +191,12 @@ class WdPostPager extends Component {
                 console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
-                        Toast.show("提交成功");
+                        SnackBar.show("提交成功", {duration: 3000});
                         this.updateStatus();
                         this.props.nav.goBack(null)
                     }
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
                     if (index === this.state.submitPic.length - 1) {
                         setTimeout(() => {
                             this.setState({isLoading: false})
@@ -206,7 +206,7 @@ class WdPostPager extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试", {duration: 3000});
                 if (index === this.state.submitPic.length - 1) {
                     setTimeout(() => {
                         this.setState({isLoading: false})
@@ -275,7 +275,10 @@ class WdPostPager extends Component {
                         () => {
                             this.pack();
                             sqLite.insertWdDraft(this.state.submitContent, this.state.submitPic)
-                                .then((result) => Toast.show(result)).done();
+                                .then((result) => {
+                                    SnackBar.show(result, {duration: 3000});
+                                    this.props.nav.goBack(null);
+                                }).done();
                         },
                         () => {
                             this.pack();
@@ -287,6 +290,9 @@ class WdPostPager extends Component {
                     <ScrollView>
                         <View>
                             <TextInput
+                                ref={(inputView) => {
+                                    this.inputView = inputView;
+                                }}
                                 style={styles.textInput}
                                 placeholder="请输入评审内容"
                                 defaultValue={this.state.editContent}
@@ -329,12 +335,15 @@ class WdPostPager extends Component {
                                     />
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
-                                    let temp = this.state.editContent.split("∝");
-                                    this.setState({
-                                        editContent: (this.state.editContent += ("\n∝\n" + (temp.length + 1) + "."))
-                                    })
-                                }}>
+                                <TouchableOpacity
+                                    style={{flex: 1, height: 25, alignItems: 'center'}}
+                                    onPress={() => {
+                                        this.inputView.focus();
+                                        let temp = this.state.editContent.split("∝");
+                                        this.setState({
+                                            editContent: (this.state.editContent += ("\n∝\n" + (temp.length + 1) + "."))
+                                        })
+                                    }}>
                                     <Image
                                         resizeMode="contain"
                                         style={{height: 25,}}

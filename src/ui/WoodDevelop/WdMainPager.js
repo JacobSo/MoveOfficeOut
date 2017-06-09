@@ -139,7 +139,7 @@ class WdMainPager extends Component {
     }
 
     async  _search(text) {
-        return this.state.items.filter((item) => item.SeriesName.toLowerCase().indexOf(text.toLowerCase()) > -1);
+        return this.state.items.filter((item) => (item.SeriesName.toLowerCase().indexOf(text.toLowerCase()) > -1)|| (item.FacName.indexOf(text) > -1));
     }
 
     render() {
@@ -159,7 +159,12 @@ class WdMainPager extends Component {
                     actionArray={[require("../../drawable/search.png")]}
                     functionArray={[
                         () => {
-                            this.props.nav.goBack(null)
+                            if (this.state.isSearch) {
+                                this.setState({
+                                    isSearch: !this.state.isSearch,
+                                    isHeader: true
+                                })
+                            }else this.props.nav.goBack(null)
                         },
                         () => {
                             this.setState({isSearch: !this.state.isSearch})

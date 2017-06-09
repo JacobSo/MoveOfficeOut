@@ -96,10 +96,11 @@ export class WdProductItem extends Component {
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{
                                 margin: 10,
+
                                 fontSize: 15,
                                 color: 'black'
-                            }}>{'名称：' + this.props.product.ItemName}</Text>
-                            <Text style={{marginLeft: 10, marginRight: 10}}>{'描述：' + this.props.product.ItemRemark}</Text>
+                            }}>{'型号：' + this.props.product.ItemName}</Text>
+                            <Text style={{marginLeft: 10, marginRight: 10, width: 200,}}>{'描述：' + this.props.product.ItemRemark}</Text>
                         </View>
                     </View>
                     {
