@@ -16,7 +16,7 @@ import FloatButton from "../Component/FloatButton";
 import Toast from 'react-native-root-toast';
 import Utility from "../../utils/Utility";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-
+import SnackBar from 'react-native-snackbar-dialog'
 const {width, height} = Dimensions.get('window');
 
 export default class QcMainPager extends Component {
@@ -48,13 +48,14 @@ export default class QcMainPager extends Component {
                      });
                 } else{
                     this.setState({  isRefreshing: false,});
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc, { duration: 8000 })
                 }
             })
             .catch((error) => {
                 this.setState({  isRefreshing: false,});
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                Toast.show();
+                SnackBar.show("出错了，请稍后再试", { duration: 8000 })
             }).done();
     }
 
@@ -119,7 +120,7 @@ export default class QcMainPager extends Component {
             }}>
 
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={["常规质检"]}
                     color={Color.colorIndigo}
                     isHomeUp={true}

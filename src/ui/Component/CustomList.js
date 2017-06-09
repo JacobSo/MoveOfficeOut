@@ -478,20 +478,6 @@ const styles = StyleSheet.create(
             backgroundColor: Color.trans,
             width: width,
         },
-        card: {
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderColor: Color.trans,
-            margin: 16,
-            height: 55,
-            padding: 15,
-            shadowColor: Color.background,
-            shadowOffset: {width: 2, height: 2,},
-            shadowOpacity: 0.5,
-            shadowRadius: 3,
-            alignItems: 'center',
-            elevation: 2
-        },
         topButton: {
             flex: 1,
             width: 100,

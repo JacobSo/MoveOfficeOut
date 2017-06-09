@@ -389,26 +389,6 @@ class WdPostPager extends Component {
     }
 }
 const styles = StyleSheet.create({
-    textStyle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        width: width - 32,
-        marginRight: 16,
-        marginLeft: 16,
-        marginTop: 16,
-
-    },
-    iconCircle: {
-        width: 150,
-        height: 55,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        borderWidth: 2,
-        margin: 16
-    },
     textInput: {
         width: width,
         height: 200,

@@ -122,14 +122,6 @@ export default class WorkSignPager extends Component {
 
 const styles = StyleSheet.create(
     {
-        mainContainer: {
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            backgroundColor: 'white',
-            elevation: 2,
-            margin: 16,
-        },
-
         textStyle: {
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -140,12 +132,7 @@ const styles = StyleSheet.create(
             marginTop: 5
         },
 
-        line: {
-            backgroundColor: Color.line,
-            width: width - 32,
-            height: 1,
 
-        },
         textInput: {
             width: width - 32,
             height: 55,

@@ -15,13 +15,18 @@ import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import Toast from 'react-native-root-toast';
 import {WdActions} from "../../actions/WdAction";
-
+import SnackBar from 'react-native-snackbar-dialog'
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+
+import Drawer from 'react-native-drawer'
 import {CachedImage} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
-
+const drawerStyles = {
+    drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
+    main: {paddingLeft: 3},
+}
 export default  class QcProductDetailPager extends Component {
     constructor(props) {
         super(props);
@@ -40,11 +45,29 @@ export default  class QcProductDetailPager extends Component {
         } else return 0;
 
     }
-
+    closeControlPanel = () => {
+        this._drawer.close()
+    };
+    openControlPanel = () => {
+        this._drawer.open()
+    };
 
     render() {
         return (
-
+            <Drawer
+                ref={(ref) => this._drawer = ref}
+                content={<View style={{backgroundColor:'black',width:width,height:height}}/>}
+                type="static"
+                tapToClose={true}
+                side="right"
+                openDrawerOffset={0.2}
+                /*  panCloseMask={0.2}
+                closedDrawerOffset={-3}
+                styles={drawerStyles}
+                tweenHandler={(ratio) => ({
+                    main: { opacity:(2-ratio)/2 }
+                })}*/
+            >
             <View style={{
                 flex: 1,
                 backgroundColor: "white",
@@ -109,6 +132,7 @@ export default  class QcProductDetailPager extends Component {
                             <Text >改善方案</Text>
                             <TouchableOpacity
                                 onPress={() => {
+                                    this.openControlPanel();
                                 }}>
                                 <Text style={{color: Color.colorAccent}}>查看</Text>
                             </TouchableOpacity>
@@ -133,7 +157,6 @@ export default  class QcProductDetailPager extends Component {
                             <TouchableOpacity
                                 style={[styles.mainButton, {borderColor:this.getStatus(2)?Color.colorAccent:Color.content}]}
                                 onPress={() => {
-
                                 }}>
                                 <Text style={{color:this.getStatus(2)?Color.colorAccent:Color.content}}>工艺质检</Text>
 
@@ -160,7 +183,7 @@ export default  class QcProductDetailPager extends Component {
                     </View>
                 </ScrollView>
 
-            </View>
+            </View></Drawer>
         )
     }
 }
@@ -192,4 +215,5 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: 'white'
     },
+
 });

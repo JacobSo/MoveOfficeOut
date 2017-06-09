@@ -218,21 +218,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
 
     },
-    mainButton: {
-        width: 150,
-        height: 55,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        borderWidth: 2,
-        margin: 16
-    },
-    layoutContainer: {
-        width: width - 32,
-        height: 100,
-        backgroundColor: 'white'
-    },
+
     stepButton: {
         flex: 1,
         margin: 8,

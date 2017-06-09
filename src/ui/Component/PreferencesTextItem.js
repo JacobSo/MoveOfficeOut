@@ -15,49 +15,41 @@ export default class PreferencesTextItem extends Component {
     };
 
 
-
     render() {
         const pages = this.props.items.map((array, index) =>
             <TouchableOpacity key={index} onPress={ this.props.functions[index]}>
                 <View>
-                    <Text style={styles.title}>{array[0]}</Text>
-                    <Text style={styles.summary}>{array[1]}</Text>
-                    <View style={{
-                        backgroundColor: Color.line,
-                        width: width,
-                        height: 1,
-                        marginTop: 16,
-                        marginBottom: 16
-                    }}/>
+                    <Text
+                        style={{
+                            marginLeft: 16,
+                            color: 'black'
+                        }}>{array[0]}</Text>
+                    <Text
+                        style={ {
+                            marginLeft: 16,
+                            color: Color.content
+                        }}>{array[1]}</Text>
+                    <View
+                        style={{
+                            backgroundColor: Color.line,
+                            width: width,
+                            height: 1,
+                            marginTop: 16,
+                            marginBottom: 16
+                        }}/>
                 </View>
             </TouchableOpacity>
         );
         return (
-            <View style={styles.container}>
-                <Text style={styles.group}>{this.props.group}</Text>
+            <View style={{flexDirection: 'column',}}>
+                <Text style={{
+                    margin: 16,
+                    color: Color.colorPrimary
+                }}>{this.props.group}</Text>
                 {pages}
             </View>
         )
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
 
-    },
-    group: {
-        margin: 16,
-        color: Color.colorPrimary
-    },
-
-    title: {
-        marginLeft: 16,
-        color: 'black'
-    },
-    summary: {
-        marginLeft: 16,
-        color: Color.content
-    }
-
-});

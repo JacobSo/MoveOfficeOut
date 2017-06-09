@@ -142,7 +142,7 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
-                            <Text style={styles.contentStyle}>
+                            <Text style={{margin: 16,}}>
                                 v1:{'\n'}
                                 1.助理新增查看审核模块{'\n'}
                                 2.增加launcher处理合并多部门app{'\n'}
@@ -179,7 +179,4 @@ const styles = StyleSheet.create({
         color: Color.black_semi_transparent
     },
 
-    contentStyle: {
-        margin: 16,
-    },
 });

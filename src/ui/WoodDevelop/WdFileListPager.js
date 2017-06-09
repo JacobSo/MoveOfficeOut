@@ -121,9 +121,9 @@ export default class WdFileListPager extends Component {
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
-                                height:65,
-                                marginRight:16,
-                                marginLeft:16
+                                height: 65,
+                                marginRight: 16,
+                                marginLeft: 16
                             }}
                             onPress={() => {
                                 if (Platform.OS === 'android')
@@ -141,7 +141,7 @@ export default class WdFileListPager extends Component {
                                     right: 0,
                                     backgroundColor: Color.colorLightBlue,
                                     padding: 10,
-                                    borderRadius:10
+                                    borderRadius: 10
                                 }}
                                 onPress={() => {
                                     if (Platform.OS === 'android')
@@ -172,11 +172,8 @@ export default class WdFileListPager extends Component {
 }
 const styles = StyleSheet.create(
     {
-
         tabView: {
             backgroundColor: Color.trans,
             width: width,
         },
-
-
     });

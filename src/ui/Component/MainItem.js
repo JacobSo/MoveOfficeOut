@@ -81,7 +81,6 @@ const styles = StyleSheet.create(
             marginRight: 16,
             marginTop: 10,
         },
-
         iconContainer: {
             flex: 1,
             flexDirection: 'column',
