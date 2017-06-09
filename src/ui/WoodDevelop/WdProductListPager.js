@@ -93,15 +93,7 @@ class WdProductListPager extends Component {
                 <View style={styles.layoutContainer}>
                     <TouchableOpacity onPress={() => {
                         this.popupDialog.dismiss();
-                        this.props.nav.navigate(
-                            'wdFile',
-                            {
-                                task: this.props.task,
-                                step: 1,
-                                stepName: '打印白胚评审',
-                                selectMode: true,
-                            },
-                        );
+                        this.props.nav.navigate('wdFile');
                     }}>
                         <Text style={{margin: 16}}>查看生成报表</Text>
                     </TouchableOpacity>

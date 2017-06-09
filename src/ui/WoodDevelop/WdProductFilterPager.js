@@ -96,7 +96,7 @@ export default class WdProductFilterPager extends Component {
                                             if (data.check)
                                                 selectCount++;
                                             data.problem = this.state.problemList[index];
-                                            data.check=Number(data.check)
+                                            data.check = Number(data.check)
                                         });
                                         if (selectCount === 0) {
                                             Toast.show("请选择一个产品打印");
@@ -114,14 +114,15 @@ export default class WdProductFilterPager extends Component {
                                                     setTimeout(() => {
                                                         this.setState({isLoading: false})
                                                     }, 100);
-                                                    Toast.show(result)
+                                                    Toast.show(result);
+                                                    this.props.nav.navigate('wdFile');
                                                 },
-                                                /* (error)=>{
-                                                 setTimeout(() => {
-                                                 this.setState({isLoading: false})
-                                                 }, 100);
-                                                 Toast.show(error)
-                                                 }*/)
+                                                (error) => {
+                                                    setTimeout(() => {
+                                                        this.setState({isLoading: false})
+                                                    }, 100);
+                                                    Toast.show(error)
+                                                })
                                         } else {
                                             AndroidModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
@@ -130,7 +131,8 @@ export default class WdProductFilterPager extends Component {
                                                     setTimeout(() => {
                                                         this.setState({isLoading: false})
                                                     }, 100);
-                                                    Toast.show(result)
+                                                    Toast.show('生成成功');
+                                                    this.props.nav.navigate('wdFile');
                                                 },
                                                 (error) => {
                                                     setTimeout(() => {
