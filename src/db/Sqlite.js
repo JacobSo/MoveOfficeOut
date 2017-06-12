@@ -6,7 +6,7 @@ import SQLiteStorage from 'react-native-sqlite-storage';
 import DBConst from '../db/DBConst';
 import Toast from 'react-native-root-toast';
 
-import {TABLE_PIC, TABLE_W_D, TABLE_W_D_P, TABLE_W_D_Q} from "./DBConst";
+import {TABLE_PIC, TABLE_Q_S, TABLE_Q_S_PRODUCT, TABLE_W_D, TABLE_W_D_P, TABLE_W_D_Q} from "./DBConst";
 let database_name = "moveoffice.db";
 let database_version = "1.0";
 let database_displayname = "MySQLite";
@@ -127,8 +127,33 @@ export  default  class Sqlite extends Component {
             }, (err) => {
                 console.log("---SQLiteStorage--- create Wood_Develop_Quality_Create fail:");
             });
-
     }
+
+    createQcTable() {
+        if (!db) {
+            this.open();
+        }
+
+        db.executeSql(DBConst.Quality_Store_Create
+            , [], () => {
+                console.log("---SQLiteStorage--- create Quality_Store_Create success");
+            }, (err) => {
+                console.log("---SQLiteStorage--- create Quality_Store_Create fail:");
+            });
+        db.executeSql(DBConst.Quality_Store_Product_Create
+            , [], () => {
+                console.log("---SQLiteStorage--- create Wood_Develop_Create success");
+            }, (err) => {
+                console.log("---SQLiteStorage--- create Wood_Develop_Create fail:");
+            });
+        db.executeSql(DBConst.Quality_Store_Draft_Create
+            , [], () => {
+                console.log("---SQLiteStorage--- create Quality_Store_Draft_Create success");
+            }, (err) => {
+                console.log("---SQLiteStorage--- create Quality_Store_Draft_Create fail:");
+            });
+    }
+
 
     insertWdData(wdData) {
         // console.log('----------'+JSON.stringify(wdData))
@@ -353,7 +378,7 @@ export  default  class Sqlite extends Component {
         })
     }
 
-    updateProductStatus(data, pics, result) {
+    updateWdStatus(data, pics, result) {
         return new Promise((resolve, reject) => {
             let paramContent, paramPics;
             if (data.phaseCode === 0) {
@@ -381,13 +406,79 @@ export  default  class Sqlite extends Component {
                 "' WHERE ItemGuid = '" + data.pGuid + "';", [],
                 (results) => {
                     resolve();
-
                 }, (err) => {
                     console.log("updateProductStatus content update err:" + JSON.stringify(err))
                 })
         })
     }
 
+    /**
+     *  QC part
+     **/
+
+    insertQcData(qcData){
+        // console.log('----------'+JSON.stringify(wdData))
+        if (!db) {
+            this.open();
+        }
+        if (qcData && qcData.length !== 0) {
+            let i=0;
+            db.transaction((tx) => {
+                this.clearTable(TABLE_W_D);
+                this.clearTable(TABLE_W_D_P);
+                qcData.map((series) => {
+                    // console.log('----------'+JSON.stringify(series))
+                    db.executeSql(
+                        'INSERT INTO ' + TABLE_Q_S + ' (' + DBConst.Q_S_KEYS + ') VALUES(?,?,?,?)',
+                        [
+                            series.purchaseNo,
+                            series.supplier,
+                            series.status,
+                            series.lockTime,
+                        ],
+                        () => console.log('series save success'),
+                        (err) => console.log('series save fail:')
+                    );
+
+                    series.data.map((product) => {
+                        // console.log('----------'+JSON.stringify(product))
+                        db.executeSql(
+                            'INSERT INTO ' + TABLE_Q_S_PRODUCT + ' (' + DBConst.Q_S_PRODUCT_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                            [
+                                series.purchaseNo,
+                                product.itemName,
+                                product.fentityID,
+                                product.type,
+                                product.qty,
+                                product.skuCode,
+                                product.skuName,
+                                product.state,
+                                product.remark,
+                                product.batch,
+                                product.feedback,
+                                product.IsHot,
+                                product.deliverDate,
+                                JSON.stringify(product.pStatusPicA),
+                                JSON.stringify(product.pStatusPicB),
+                                JSON.stringify(product.pStatusPicC),
+                                product.pResultList,
+                                product.stage
+                            ],
+                            () => Toast.show('保存数据中，不要在后台关闭app：'+i++),
+                            (err) => console.log('product save fail:')
+                        );
+                    })
+                });
+            }, (err) => {
+                console.log('insert transaction:');
+            }, () => {
+                console.log('insert transaction: success');
+            })
+        } else {
+            this.clearTable(TABLE_W_D);
+            this.clearTable(TABLE_W_D_P);
+        }
+    }
 
 }
 

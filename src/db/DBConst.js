@@ -10,15 +10,46 @@ let PIC_INDEX = "pic_index";//task id
 let PIC_PATH = "pic_path";
 let PIC_NAME = "pic_name";
 
+/**质检系列**/
+export let TABLE_Q_S = "product_list";
+let Q_S_ID = "wd_id";
+let Q_S_QUALITY_NO = "purchaseNo";
+let Q_S_SUPPLIER = "supplier";
+let Q_S_STATUS = "status";
+let Q_S_LOCK_TIME = "lockTime";
+/**质检系列产品**/
+export let TABLE_Q_S_PRODUCT = "product_list";
+let Q_S_P_ID = "q_s_product_id";
+let Q_S_P_INDEX = "q_s_product_index";
+let Q_S_P_ITEM_NMAE = "itemName";
+let Q_S_P_QUANTITY_TYPE = "type";
+let Q_S_P_QUANTITY = "qty";
+let Q_S_P_SKU_CODE = "skuCode";
+let Q_S_P_SKU_NAME = "skuName";
+let Q_S_P_STATUS = "state";
+let Q_S_P_REMARK = "remark";
+let Q_S_P_HOT = "IsHot";
+let Q_S_P_BATCH = "batch";
+let Q_S_P_FENTITY = "fentityID";
+let Q_S_P_FEEDBACK = "feedback";
+let Q_S_P_DELIVER_DATE = "deliverDate";
+let Q_S_P_IMAGE = "productImages";
+let Q_S_P_FILE = "improveFiles";
+let Q_S_P_TECH_FILE = "techFiles";
+let Q_S_P_MATERIAL_FILE = "materialFiles";
+let Q_S_P_PRODUCT_FILE = "proFiles";
 
-
-
-
-
-
-
-
-
+/**质检草稿**/
+export let TABLE_Q_S_DRAFT = "save_draft";
+let DRAFT_ID = "draft_id";
+let DRAFT_INDEX = "draft_index";
+let DRAFT_CONTENT = "draft_content";
+let DRAFT_TOTAL_CONTENT = "draft_total_content";
+let DRAFT_IS_PASS = "draft_is_pass";
+let DRAFT_LAST_DATE = "draft_last_date";
+let DRAFT_ADDRESS = "draft_address";
+let DRAFT_LAT = "draft_lat";
+let DRAFT_LNG = "draft_lng";
 
 
 /**
@@ -68,8 +99,6 @@ let W_D_Q_INDEX = "wdq_index";//product id
 let W_D_Q_REVIEW_TYPE = "wdq_ReviewType";//step
 let W_D_Q_PASS = "wdq_isPass";
 let W_D_Q_CONTENT = "wdq_content";
-
-
 
 
 export  default  class Sqlite extends Component {
@@ -143,7 +172,7 @@ export  default  class Sqlite extends Component {
         W_D_P_STAGE + " INTEGER" +
         ")";
 
-    static W_D_Q_KEYS = W_D_Q_INDEX + ',' +W_D_Q_REVIEW_TYPE + ',' + W_D_Q_PASS + ',' + W_D_Q_CONTENT;
+    static W_D_Q_KEYS = W_D_Q_INDEX + ',' + W_D_Q_REVIEW_TYPE + ',' + W_D_Q_PASS + ',' + W_D_Q_CONTENT;
     static Wood_Develop_Quality_Create = "CREATE  TABLE  if not exists " + TABLE_W_D_Q + " (" +
         W_D_Q_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
         W_D_Q_INDEX + " VARCHAR," +
@@ -152,5 +181,52 @@ export  default  class Sqlite extends Component {
         W_D_Q_CONTENT + " VARCHAR" +
         ")";
 
+    static Q_S_KEYS = Q_S_QUALITY_NO + ',' + Q_S_SUPPLIER + ',' + Q_S_STATUS + ',' + Q_S_LOCK_TIME;
+    static Quality_Store_Create  = "CREATE  TABLE  if not exists " + TABLE_Q_S + " (" +
+        Q_S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+        Q_S_QUALITY_NO + " VARCHAR," +
+        Q_S_STATUS + " INTEGER," +
+        Q_S_SUPPLIER + " VARCHAR," +
+        Q_S_LOCK_TIME + " VARCHAR" +
+        ")";
+
+    static Q_S_PRODUCT_KEYS = Q_S_P_INDEX + ',' + Q_S_P_ITEM_NMAE + ',' + Q_S_P_FENTITY + ',' + Q_S_P_QUANTITY_TYPE + ',' + Q_S_P_QUANTITY + ',' +
+        Q_S_P_SKU_CODE + ',' + Q_S_P_SKU_NAME + ',' + Q_S_P_STATUS + ',' + Q_S_P_REMARK + ',' + Q_S_P_BATCH + ',' + Q_S_P_FEEDBACK + ',' + Q_S_P_HOT + ',' +
+        Q_S_P_DELIVER_DATE + ',' + Q_S_P_IMAGE + ',' + Q_S_P_FILE + ',' + Q_S_P_TECH_FILE + ',' + Q_S_P_MATERIAL_FILE + ',' + Q_S_P_PRODUCT_FILE;
+    static Quality_Store_Product_Create  = "CREATE  TABLE  if not exists " + TABLE_Q_S_PRODUCT + " (" +
+        Q_S_P_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+        Q_S_P_INDEX + " VARCHAR," +
+        Q_S_P_ITEM_NMAE + " VARCHAR," +
+        Q_S_P_FENTITY + " VARCHAR," +
+        Q_S_P_QUANTITY_TYPE + " VARCHAR" +
+        Q_S_P_QUANTITY + " INTEGER" +
+        Q_S_P_SKU_CODE + " VARCHAR" +
+        Q_S_P_SKU_NAME + " VARCHAR" +
+        Q_S_P_STATUS + " VARCHAR" +
+        Q_S_P_REMARK + " VARCHAR" +
+        Q_S_P_BATCH + " VARCHAR" +
+        Q_S_P_FEEDBACK + " VARCHAR" +
+        Q_S_P_HOT + " INTEGER" +
+        Q_S_P_DELIVER_DATE + " VARCHAR" +
+        Q_S_P_IMAGE + " VARCHAR" +
+        Q_S_P_FILE + " VARCHAR" +
+        Q_S_P_TECH_FILE + " VARCHAR" +
+        Q_S_P_MATERIAL_FILE + " VARCHAR" +
+        Q_S_P_PRODUCT_FILE + " VARCHAR" +
+        ")";
+
+    static QS_DRAFT_KEYS = DRAFT_INDEX + ',' + DRAFT_CONTENT + ',' + DRAFT_TOTAL_CONTENT + ',' + DRAFT_IS_PASS + ',' + DRAFT_LAST_DATE
+        + ',' + DRAFT_ADDRESS + ',' + DRAFT_LAT + ',' + DRAFT_LNG;
+    static Quality_Store_Draft_Create  = "CREATE  TABLE  if not exists " + TABLE_Q_S_DRAFT + " (" +
+        DRAFT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+        DRAFT_INDEX + " VARCHAR," +
+        DRAFT_CONTENT + " INTEGER," +
+        DRAFT_TOTAL_CONTENT + " VARCHAR," +
+        DRAFT_IS_PASS + " INTEGER" +
+        DRAFT_LAST_DATE + " VARCHAR" +
+        DRAFT_ADDRESS + " VARCHAR" +
+        DRAFT_LAT + " VARCHAR" +
+        DRAFT_LNG + " VARCHAR" +
+        ")";
 
 }

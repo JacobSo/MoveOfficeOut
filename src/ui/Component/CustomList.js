@@ -316,14 +316,17 @@ class CustomList extends Component {
             }
         });
         if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
-            let max = 0;
+            let min = 0;
             if (rowData.LatitudeLongitudes) {
                 let temp = rowData.LatitudeLongitudes.split("|");
                 temp.map((data) => {
                     let latlng = data.split(",");
                     let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
-                    if (max < process) {
-                        max = process;
+                    console.log(min+"--"+process);
+                    if(min===0)
+                        min = process;
+                    if (min > process) {
+                        min = process;
                     }
                 });
             }
@@ -331,7 +334,7 @@ class CustomList extends Component {
             this._confirmDialog(rowData.Signtype === -1 ?
                     "到达供应商" : "离开供应商",
                 "当前位置：" + this.state.address + "\n" +
-                "目标距离：" + max + "米");
+                "目标距离：" + min + "米");
             this.state.selectGuid = rowData.Guid;
             this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
         } else Toast.show("没完成出发签到")
