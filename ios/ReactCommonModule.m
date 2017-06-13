@@ -151,10 +151,10 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
   self.bodyStr_Html = nil;
   self.htmlString = nil;
   self.htmlModel = nil;
-  self.lsWebView = nil;
+//  self.lsWebView = nil;
   self.titleStr = nil;
   self.typeStr = nil;
-  self.render = nil;
+//  self.render = nil;
   
   
 
@@ -194,21 +194,33 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
   NSString *path =  NSTemporaryDirectory();
   NSArray *pdfArray = [[NSFileManager defaultManager]subpathsOfDirectoryAtPath:path error:nil];
   
-  NSString *pdfString = [pdfArray mj_JSONString];
   
-  NSMutableArray *array = [[NSMutableArray alloc]init];
+  NSLog(@"完整地址：%@",pdfArray);
   
-  NSLog(@"******************8%ld",(unsigned long)pdfArray.count);
   
-  for(int i = 0;i<pdfArray.count;i++)
-  {
-    NSString *pdfAddress = [path stringByAppendingPathComponent:pdfArray[i]];
-    [array addObject:pdfAddress];
+//  NSString *pdfString = [pdfArray mj_JSONString];
+  
+  
+  
+  NSMutableArray *PDFArr = [[NSMutableArray alloc]init];
+  
+  for (int i=0; i<pdfArray.count; i++) {
+    
+    NSLog(@"完整==========地址：%@",[path stringByAppendingPathComponent:pdfArray[i]]);
+    
+    
+    [PDFArr addObject:[path stringByAppendingPathComponent:pdfArray[i]]];
+    
   }
-  NSString *pathString = [array mj_JSONString];
   
   
-  NSArray *arrays = [NSArray arrayWithObjects:pathString,nil];
+  
+  
+  NSLog(@"******************8%@",PDFArr);
+  
+  NSString *pdf = [PDFArr mj_JSONString];
+  
+  NSArray *arrays = [NSArray arrayWithObjects:pdf,nil];
   
   callback(arrays);
   

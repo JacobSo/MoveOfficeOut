@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, WD_isPrint_Emun) {
 /**
  check为true时为打印，为false，不打印
  */
-@property (nonatomic,readwrite,assign) BOOL check;
+@property (nonatomic,assign) int  check;
 
 @end
 

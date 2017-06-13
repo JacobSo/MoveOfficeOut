@@ -16,6 +16,7 @@ import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 import Toast from 'react-native-root-toast';
+import RefreshEmptyView from "../Component/RefreshEmptyView";
 
 const {width, height} = Dimensions.get('window');
 
@@ -109,6 +110,15 @@ export default class WdFileListPager extends Component {
                         })
                     }}
                 />
+
+                {
+                    (()=>{
+                       if(this.state.items.length===0){
+                           return (<RefreshEmptyView isRefreshing={false} onRefreshFunc={()=>{}}  />)
+                       }
+                    })()
+                }
+
                 <ListView
                     ref="scrollView"
                     style={styles.tabView}

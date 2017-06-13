@@ -145,11 +145,10 @@ const styles = StyleSheet.create(
         },
         line: {
             backgroundColor: Color.line,
-            width: width,
+            width: width-32,
             height: 1,
             marginTop: 16,
             marginBottom: 16,
-            marginLeft: -32
         }
 
     });

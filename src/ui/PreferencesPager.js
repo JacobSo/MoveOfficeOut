@@ -117,7 +117,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v1"]
+                                ['此版本更新记录', "v2"]
                             ]}
                             functions={[
                                 () => {
