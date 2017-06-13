@@ -136,6 +136,7 @@ export default class WdFileListPager extends Component {
                                 marginLeft: 16
                             }}
                             onPress={() => {
+                                Toast.show(rowData)
                                 if (Platform.OS === 'android')
                                     AndroidModule.openOfficeFile(rowData);
                                 else {

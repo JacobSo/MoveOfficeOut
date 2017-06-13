@@ -48,11 +48,11 @@ class WdMainPager extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        //    console.log(JSON.stringify(newProps) + '-------------------------')
-        /*    this.state.items[newProps.position] = newProps.product;
+            console.log(JSON.stringify(newProps) + '-------------------------')
+            this.state.items[newProps.position] = newProps.product;
          this.setState({
          dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-         })*/
+         })
     }
 
     _onRefresh() {

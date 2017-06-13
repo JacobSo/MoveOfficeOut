@@ -37,23 +37,26 @@ export class WdMainItem extends Component {
         let aNum = 0;
         let bNum = 0;
         let cNum = 0;
+        if(this.props.task.Itemlist){
+            this.props.task.Itemlist.map((data) => {
+                if (data.pResultList.indexOf("0-1") > -1) {
+                    aNum++;
+                }
+                if (data.pResultList.indexOf("1-1") > -1) {
+                    bNum++;
+                }
+                if (data.pResultList.indexOf("2-1") > -1) {
+                    cNum++;
+                }
+            });
+            this.setState({
+                aNum: aNum,
+                bNum: bNum,
+                cNum: cNum,
+            })
+        }
 
-        this.props.task.Itemlist.map((data) => {
-            if (data.pResultList.indexOf("0-1") > -1) {
-                aNum++;
-            }
-            if (data.pResultList.indexOf("1-1") > -1) {
-                bNum++;
-            }
-            if (data.pResultList.indexOf("2-1") > -1) {
-                cNum++;
-            }
-        });
-        this.setState({
-            aNum: aNum,
-            bNum: bNum,
-            cNum: cNum,
-        })
+
     }
 
     render() {

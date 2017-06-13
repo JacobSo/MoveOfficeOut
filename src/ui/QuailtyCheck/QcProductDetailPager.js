@@ -9,7 +9,7 @@ import {
     ScrollView,
     Text,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image, ListView,Platform,Share
+    Dimensions, TouchableOpacity, Image, ListView, Platform, Share
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
@@ -34,7 +34,7 @@ export default  class QcProductDetailPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading:false,
+            isLoading: false,
             improveFile: this.props.product.improveFiles,
             dataSourceI: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
@@ -96,7 +96,7 @@ export default  class QcProductDetailPager extends Component {
                     <Text style={{
                         width: width / 2,
                         marginLeft: 10,
-                        color:'white'
+                        color: 'white'
                     }}>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
                 </TouchableOpacity>
             }/>
@@ -115,12 +115,21 @@ export default  class QcProductDetailPager extends Component {
     }
 
     downloadFile(url) {
-        let filePath = dirs.DocumentDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
+        console.log(dirs.DocumentDir)
+        console.log(dirs.CacheDir)
+        console.log(dirs.DCIMDir)
+        console.log(dirs.DownloadDir)
+        let filePath;
+        if(Platform.OS==='android'){
+          filePath  = dirs.DownloadDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
+        }else
+         filePath = dirs.DocumentDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
+
         RNFetchBlob.fs.exists(filePath)
             .then((exist) => {
                 console.log(`file ${exist ? '' : 'not'} exists`)
                 if (!exist) {
-                       this.setState({isLoading:true});
+                    this.setState({isLoading: true});
 
                     RNFetchBlob
                         .config({
@@ -130,13 +139,12 @@ export default  class QcProductDetailPager extends Component {
                         .fetch('GET', url, {})
                         .progress({count: 10}, (received, total) => {
                             console.log('progress', received / total)
-                          //  SnackBar.show('正在下载文件',{duration: 3000});
+                            //  SnackBar.show('正在下载文件',{duration: 3000});
                         })
                         .then((res) => {
                             console.log('The file saved to ', res.path());
                             this.setState({isLoading: false})
                             setTimeout(() => {
-
                                 this.openFile(res.path())
                             }, 500);
 
@@ -145,15 +153,17 @@ export default  class QcProductDetailPager extends Component {
                     this.openFile(filePath)
                 }
             })
-            .catch(() => {})
+            .catch(() => {
+            })
 
     }
 
-    openFile(path){
-     //   console.log(path);
-        if(Platform.OS==='android')
-            AndroidModule.openOfficeFile(path);
-        else{
+    openFile(path) {
+        //   console.log(path);
+        if (Platform.OS === 'android') {
+           // Toast.show(path);
+            AndroidModule.openOfficeFile( path);
+        }else {
             console.log(path);
             Share.share({
                 url: path,
@@ -215,12 +225,7 @@ export default  class QcProductDetailPager extends Component {
                 tapToClose={true}
                 side="right"
                 openDrawerOffset={0.2}
-                panCloseMask={0.2}
-                closedDrawerOffset={-3}
-            //    styles={drawerStyles}
-              /*  tweenHandler={(ratio) => ({
-                    main: {opacity: (2 - ratio) / 2}
-                })}*/>
+                panCloseMask={0.2}>
                 <View style={{flex: 1, backgroundColor: "white",}}>
                     <Toolbar
                         elevation={2}

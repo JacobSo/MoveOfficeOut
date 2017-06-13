@@ -86,14 +86,18 @@ export class WdFilterItem extends Component {
                     margin: 10,
                     fontSize: 15,
                     width: 90,
-                    textAlign: 'center'
+                    textAlign: 'center',
                 }}>{this.props.product.ItemName}
                 </Text>
                 <Text
                     style={{
-                        marginLeft: 10, marginRight: 10, width: 90,
+                        marginLeft: 10,
+                        marginRight: 10,
+                        width: 90,
+                        height:35,
+                        numberOfLines :1,
                         textAlign: 'center'
-                    }}>{ this.props.product.ItemRemark}</Text>
+                    }}>{this.props.product.ItemRemark}</Text>
             </TouchableOpacity>
         );
     }
@@ -105,7 +109,7 @@ const styles = StyleSheet.create(
             flexDirection: 'column',
             alignItems: 'center',
             backgroundColor: 'white',
-            height: 180,
+            height: 200,
             width: width / 3 - 10,
             elevation: 2,
             margin: 5,
