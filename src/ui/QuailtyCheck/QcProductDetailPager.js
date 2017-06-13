@@ -115,26 +115,32 @@ export default  class QcProductDetailPager extends Component {
 
     downloadFile(url) {
         let filePath = dirs.DocumentDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
-       if (!RNFetchBlob.fs.exists(filePath)||Platform.OS==='ios') {
-         //   this.setState({isLoading:true});
-            RNFetchBlob
-                .config({
-                    fileCache: false,
-                    path: filePath
-                })
-                .fetch('GET', url, {})
-                .progress({count: 10}, (received, total) => {
-                    console.log('progress', received / total)
-                })
-                .then((res) => {
-                    console.log('The file saved to ', res.path());
-                  //®  this.setState({isLoading:false});
-                   this.openFile(res.path())
-                })
-       } else {
-          this.openFile(filePath)
-        }
+        RNFetchBlob.fs.exists(filePath)
+            .then((exist) => {
+                console.log(`file ${exist ? '' : 'not'} exists`)
+                if (!exist) {
+                       this.setState({isLoading:true});
 
+                    RNFetchBlob
+                        .config({
+                            fileCache: false,
+                            path: filePath
+                        })
+                        .fetch('GET', url, {})
+                        .progress({count: 10}, (received, total) => {
+                            console.log('progress', received / total)
+                          //  SnackBar.show('正在下载文件',{duration: 3000});
+                        })
+                        .then((res) => {
+                            console.log('The file saved to ', res.path());
+                              this.setState({isLoading:false});
+                            this.openFile(res.path())
+                        }).done()
+                } else {
+                    this.openFile(filePath)
+                }
+            })
+            .catch(() => {})
 
     }
 
@@ -200,16 +206,16 @@ export default  class QcProductDetailPager extends Component {
             <Drawer
                 ref={(ref) => this._drawer = ref}
                 content={this.drawerLayout()}
-                type="overlay"
+                type="static"
                 tapToClose={true}
                 side="right"
                 openDrawerOffset={0.2}
                 panCloseMask={0.2}
                 closedDrawerOffset={-3}
-                styles={drawerStyles}
-                tweenHandler={(ratio) => ({
+            //    styles={drawerStyles}
+              /*  tweenHandler={(ratio) => ({
                     main: {opacity: (2 - ratio) / 2}
-                })}>
+                })}*/>
                 <View style={{flex: 1, backgroundColor: "white",}}>
                     <Toolbar
                         elevation={2}
