@@ -99,12 +99,10 @@ RCT_EXPORT_METHOD(getVersionName:(RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)
 {
-
   NSString *user = ((AppDelegate *)[UIApplication sharedApplication].delegate).userName;
   NSString *pwd = ((AppDelegate *)[UIApplication sharedApplication].delegate).password;
   NSArray *arrays = [NSArray arrayWithObjects:user,pwd,nil];
   callback(arrays);
-
 }
 
 RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callback)
@@ -126,16 +124,7 @@ RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callba
 RCT_EXPORT_METHOD(logoutShareAccount){
   ((AppDelegate *)[UIApplication sharedApplication].delegate).userName = nil;
  ((AppDelegate *)[UIApplication sharedApplication].delegate).password = nil;
-
-  
 }
-
-//RCT_EXPORT_METHOD(pdfAndress:(NSString *)pdfAddress:(RCTResponseSenderBlock)callback)
-//{
-//  
-//}
-
-
 
 RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResponseSenderBlock)callback)
 {

@@ -157,6 +157,7 @@ export default class WdFileListPager extends Component {
                                     if (Platform.OS === 'android')
                                         AndroidModule.shereFile(rowData)
                                     else {
+                                        console.log(rowData);
                                         Share.share({
                                             url: rowData,
                                             title: 'React Native'

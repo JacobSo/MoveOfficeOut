@@ -9,7 +9,7 @@ import {
     ScrollView,
     Text,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image, ListView,
+    Dimensions, TouchableOpacity, Image, ListView,Platform,Share
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
@@ -115,8 +115,8 @@ export default  class QcProductDetailPager extends Component {
 
     downloadFile(url) {
         let filePath = dirs.DocumentDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
-        if (!RNFetchBlob.fs.exists(filePath)) {
-            this.setState({isLoading:true});
+       if (!RNFetchBlob.fs.exists(filePath)||Platform.OS==='ios') {
+         //   this.setState({isLoading:true});
             RNFetchBlob
                 .config({
                     fileCache: false,
@@ -128,14 +128,35 @@ export default  class QcProductDetailPager extends Component {
                 })
                 .then((res) => {
                     console.log('The file saved to ', res.path());
-                    this.setState({isLoading:false});
-                    AndroidModule.openOfficeFile(res.path());
+                  //®  this.setState({isLoading:false});
+                   this.openFile(res.path())
                 })
-
-        } else {
-            AndroidModule.openOfficeFile(filePath);
+       } else {
+          this.openFile(filePath)
         }
 
+
+    }
+
+    openFile(path){
+     //   console.log(path);
+        if(Platform.OS==='android')
+            AndroidModule.openOfficeFile(path);
+        else{
+            console.log(path);
+            Share.share({
+                url: path,
+                title: 'React Native'
+            }, {
+                dialogTitle: 'Share React Native website',
+                excludedActivityTypes: [
+                    'com.apple.UIKit.activity.PostToTwitter'
+                ],
+                tintColor: 'green'
+            })
+                .then(this._showResult)
+                .catch((error) => this.setState({result: 'error: ' + error.message}));
+        }
 
     }
 
