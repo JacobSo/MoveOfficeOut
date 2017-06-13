@@ -95,7 +95,8 @@ export default  class QcProductDetailPager extends Component {
                     <Image style={{width: 25, height: 25,}} source={this.getImage(rowData)}/>
                     <Text style={{
                         width: width / 2,
-                        marginLeft: 10
+                        marginLeft: 10,
+                        color:'white'
                     }}>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
                 </TouchableOpacity>
             }/>
@@ -133,8 +134,12 @@ export default  class QcProductDetailPager extends Component {
                         })
                         .then((res) => {
                             console.log('The file saved to ', res.path());
-                              this.setState({isLoading:false});
-                            this.openFile(res.path())
+                            this.setState({isLoading: false})
+                            setTimeout(() => {
+
+                                this.openFile(res.path())
+                            }, 500);
+
                         }).done()
                 } else {
                     this.openFile(filePath)
@@ -169,30 +174,30 @@ export default  class QcProductDetailPager extends Component {
 
     drawerLayout() {
         return (
-            <View style={{flex: 1, backgroundColor: "white",}}>
+            <View style={{flex: 1, backgroundColor: Color.black_semi_transparent,}}>
                 <ScrollView style={{margin: 16}}>
-                    <Text style={{color: Color.black_semi_transparent}}>改善方案</Text>
+                    <Text style={{color: 'white'}}>改善方案</Text>
                     {
                         this.getFileList(this.state.dataSourceI)
                     }
                 </ScrollView>
                 <View style={{width: width * 0.8, height: 1, backgroundColor: Color.line}}/>
                 <ScrollView style={{margin: 16}}>
-                    <Text style={{color: Color.black_semi_transparent}}>材料附件</Text>
+                    <Text style={{color: 'white'}}>材料附件</Text>
                     {
                         this.getFileList(this.state.dataSourceA)
                     }
                 </ScrollView>
                 <View style={{width: width * 0.8, height: 1, backgroundColor: Color.line}}/>
                 <ScrollView style={{margin: 16}}>
-                    <Text style={{color: Color.black_semi_transparent}}>工艺附件</Text>
+                    <Text style={{color: 'white'}}>工艺附件</Text>
                     {
                         this.getFileList(this.state.dataSourceB)
                     }
                 </ScrollView>
                 <View style={{width: width * 0.8, height: 1, backgroundColor: Color.line}}/>
                 <ScrollView style={{margin: 16}}>
-                    <Text style={{color: Color.black_semi_transparent}}>成品附件</Text>
+                    <Text style={{color: 'white'}}>成品附件</Text>
                     {
                         this.getFileList(this.state.dataSourceC)
                     }
