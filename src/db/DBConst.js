@@ -11,16 +11,16 @@ let PIC_PATH = "pic_path";
 let PIC_NAME = "pic_name";
 
 /**质检系列**/
-export let TABLE_Q_S = "product_list";
+export let TABLE_Q_S = "qc_series";
 let Q_S_ID = "wd_id";
 let Q_S_QUALITY_NO = "purchaseNo";
 let Q_S_SUPPLIER = "supplier";
 let Q_S_STATUS = "status";
 let Q_S_LOCK_TIME = "lockTime";
 /**质检系列产品**/
-export let TABLE_Q_S_PRODUCT = "product_list";
+export let TABLE_Q_S_PRODUCT = "qc_products";
 let Q_S_P_ID = "q_s_product_id";
-let Q_S_P_INDEX = "q_s_product_index";
+let Q_S_P_INDEX = "productindex";
 let Q_S_P_ITEM_NMAE = "itemName";
 let Q_S_P_QUANTITY_TYPE = "type";
 let Q_S_P_QUANTITY = "qty";
@@ -194,24 +194,24 @@ export  default  class Sqlite extends Component {
         Q_S_P_SKU_CODE + ',' + Q_S_P_SKU_NAME + ',' + Q_S_P_STATUS + ',' + Q_S_P_REMARK + ',' + Q_S_P_BATCH + ',' + Q_S_P_FEEDBACK + ',' + Q_S_P_HOT + ',' +
         Q_S_P_DELIVER_DATE + ',' + Q_S_P_IMAGE + ',' + Q_S_P_FILE + ',' + Q_S_P_TECH_FILE + ',' + Q_S_P_MATERIAL_FILE + ',' + Q_S_P_PRODUCT_FILE;
     static Quality_Store_Product_Create  = "CREATE  TABLE  if not exists " + TABLE_Q_S_PRODUCT + " (" +
-        Q_S_P_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+        Q_S_P_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         Q_S_P_INDEX + " VARCHAR," +
         Q_S_P_ITEM_NMAE + " VARCHAR," +
         Q_S_P_FENTITY + " VARCHAR," +
-        Q_S_P_QUANTITY_TYPE + " VARCHAR" +
-        Q_S_P_QUANTITY + " INTEGER" +
-        Q_S_P_SKU_CODE + " VARCHAR" +
-        Q_S_P_SKU_NAME + " VARCHAR" +
-        Q_S_P_STATUS + " VARCHAR" +
-        Q_S_P_REMARK + " VARCHAR" +
-        Q_S_P_BATCH + " VARCHAR" +
-        Q_S_P_FEEDBACK + " VARCHAR" +
-        Q_S_P_HOT + " INTEGER" +
-        Q_S_P_DELIVER_DATE + " VARCHAR" +
-        Q_S_P_IMAGE + " VARCHAR" +
-        Q_S_P_FILE + " VARCHAR" +
-        Q_S_P_TECH_FILE + " VARCHAR" +
-        Q_S_P_MATERIAL_FILE + " VARCHAR" +
+        Q_S_P_QUANTITY_TYPE + " VARCHAR," +
+        Q_S_P_QUANTITY + " INTEGER," +
+        Q_S_P_SKU_CODE + " VARCHAR," +
+        Q_S_P_SKU_NAME + " VARCHAR," +
+        Q_S_P_STATUS + " VARCHAR," +
+        Q_S_P_REMARK + " VARCHAR," +
+        Q_S_P_BATCH + " VARCHAR," +
+        Q_S_P_FEEDBACK + " VARCHAR," +
+        Q_S_P_HOT + " INTEGER," +
+        Q_S_P_DELIVER_DATE + " VARCHAR," +
+        Q_S_P_IMAGE + " VARCHAR," +
+        Q_S_P_FILE + " VARCHAR," +
+        Q_S_P_TECH_FILE + " VARCHAR," +
+        Q_S_P_MATERIAL_FILE + " VARCHAR," +
         Q_S_P_PRODUCT_FILE + " VARCHAR" +
         ")";
 
@@ -222,10 +222,10 @@ export  default  class Sqlite extends Component {
         DRAFT_INDEX + " VARCHAR," +
         DRAFT_CONTENT + " INTEGER," +
         DRAFT_TOTAL_CONTENT + " VARCHAR," +
-        DRAFT_IS_PASS + " INTEGER" +
-        DRAFT_LAST_DATE + " VARCHAR" +
-        DRAFT_ADDRESS + " VARCHAR" +
-        DRAFT_LAT + " VARCHAR" +
+        DRAFT_IS_PASS + " INTEGER," +
+        DRAFT_LAST_DATE + " VARCHAR," +
+        DRAFT_ADDRESS + " VARCHAR," +
+        DRAFT_LAT + " VARCHAR," +
         DRAFT_LNG + " VARCHAR" +
         ")";
 

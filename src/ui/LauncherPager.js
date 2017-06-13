@@ -10,6 +10,8 @@ import {
     Text,
     TouchableOpacity, Image,
 } from 'react-native';
+import {TABLE_PIC, TABLE_Q_S, TABLE_Q_S_PRODUCT, TABLE_Q_S_DRAFT, TABLE_W_D_P, TABLE_W_D_Q} from "./../db/DBConst";
+
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Toast from 'react-native-root-toast';
@@ -26,6 +28,9 @@ export default class LauncherPager extends Component {
     }
 
     componentDidMount() {
+      //  sqLite.drop(TABLE_Q_S);
+      //  sqLite.drop(TABLE_Q_S_DRAFT);
+      //  sqLite.drop(TABLE_Q_S_PRODUCT);
         //    sqLite.drop(TABLE_W_D);
         //    sqLite.drop(TABLE_W_D_P);
         //  sqLite.drop(TABLE_PIC);
@@ -69,8 +74,8 @@ export default class LauncherPager extends Component {
                     <Text>外出工作</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{alignItems:'center'}} onPress={() => {
-                    this.props.nav.navigate('wpMain');
-                    Toast.show("很想要吧")
+                  this.props.nav.navigate('wpMain')
+                    //Toast.show("很想要吧")
                 }}>
                     <Image style={{width: 55, height: 55}} resizeMode="contain"
                            source={ require('../drawable/ic_launcher_purple.png')}/>
@@ -81,16 +86,16 @@ export default class LauncherPager extends Component {
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                       this.props.nav.navigate('qcMain');
-                        Toast.show("很想要吧")
+                        this.props.nav.navigate('qcMain')
+                        //Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_indigo.png')}/>
                         <Text>常规质检</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  style={{alignItems:'center'}} onPress={() => {
-                        this.props.nav.navigate('wdMain');
-                        Toast.show("很想要吧")
+                        this.props.nav.navigate('wdMain')
+                       // Toast.show("很想要吧")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>

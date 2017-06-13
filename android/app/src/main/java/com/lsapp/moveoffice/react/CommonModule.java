@@ -448,15 +448,17 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void openPrintFile(String path) {
+    public void openOfficeFile(String path) {
         Uri uri = Uri.fromFile(new File(path));
+        String extension = android.webkit.MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+        String mimetype = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         Intent intent = new Intent("android.intent.action.VIEW");
         intent.addCategory("android.intent.category.DEFAULT");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (path.contains("pdf")) {
-            intent.setDataAndType(uri, "application/pdf");
+        if (extension.equalsIgnoreCase("") || mimetype == null) {
+            intent.setDataAndType(uri, "text/*");
         } else {
-            intent.setDataAndType(uri, "text/html");
+            intent.setDataAndType(uri, mimetype);
         }
         getCurrentActivity().startActivity(Intent.createChooser(intent, "打开方式"));
     }

@@ -137,7 +137,7 @@ export default class WdFileListPager extends Component {
                             }}
                             onPress={() => {
                                 if (Platform.OS === 'android')
-                                    AndroidModule.openPrintFile(rowData);
+                                    AndroidModule.openOfficeFile(rowData);
                                 else {
                                     this.props.nav.navigate('web', {
                                         filePath: rowData

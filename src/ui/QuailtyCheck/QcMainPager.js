@@ -5,19 +5,19 @@
 
 import React, {Component} from 'react';
 import {
-    View,
-    StyleSheet, Dimensions,  RefreshControl, ListView, Text, TouchableOpacity,
-
+    View, StyleSheet, Dimensions,  RefreshControl, ListView, Text, TouchableOpacity,InteractionManager
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import FloatButton from "../Component/FloatButton";
 import Toast from 'react-native-root-toast';
-import Utility from "../../utils/Utility";
+import SQLite from '../../db/Sqlite';
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SnackBar from 'react-native-snackbar-dialog'
+
 const {width, height} = Dimensions.get('window');
+let sqLite = new SQLite();
 
 export default class QcMainPager extends Component {
     constructor(props) {
@@ -32,7 +32,29 @@ export default class QcMainPager extends Component {
     }
 
     componentDidMount() {
-        this._onRefresh();
+        InteractionManager.runAfterInteractions(() => {
+
+            sqLite.createQcTable();
+            this.getDataLocal();
+        });
+    }
+
+    getDataLocal() {
+        this.setState({isRefreshing: true});
+        sqLite.getQcData().then((results) => {
+            this.setState({isRefreshing: false});
+            if (results.length !== 0) {
+                this.setState({
+                    items: results,
+                    dataSource: this.state.dataSource.cloneWithRows(results),
+                    isRefreshing: false,
+                });
+            } else
+                this._onRefresh();
+        }).catch((err) => {
+            this.setState({isRefreshing: false});
+            Toast.show("出错了，请稍后再试");
+        }).done();
     }
 
     _onRefresh() {
@@ -40,6 +62,7 @@ export default class QcMainPager extends Component {
         ApiService.getProductList()
             .then((responseJson) => {
                 console.log(responseJson);
+                sqLite.insertQcData(responseJson.data);//save in db
                 if (!responseJson.IsErr) {
                      this.setState({
                      items: responseJson.data,

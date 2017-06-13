@@ -12,7 +12,7 @@ let database_version = "1.0";
 let database_displayname = "MySQLite";
 let database_size = -1;
 let db;
-SQLiteStorage.DEBUG(false);
+SQLiteStorage.DEBUG(true);
 
 export  default  class Sqlite extends Component {
     render() {
@@ -142,9 +142,9 @@ export  default  class Sqlite extends Component {
             });
         db.executeSql(DBConst.Quality_Store_Product_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Wood_Develop_Create success");
+                console.log("---SQLiteStorage--- create Quality_Store_Product_Create success");
             }, (err) => {
-                console.log("---SQLiteStorage--- create Wood_Develop_Create fail:");
+                console.log("---SQLiteStorage--- create Quality_Store_Product_Create fail:");
             });
         db.executeSql(DBConst.Quality_Store_Draft_Create
             , [], () => {
@@ -424,8 +424,8 @@ export  default  class Sqlite extends Component {
         if (qcData && qcData.length !== 0) {
             let i=0;
             db.transaction((tx) => {
-                this.clearTable(TABLE_W_D);
-                this.clearTable(TABLE_W_D_P);
+                this.clearTable(TABLE_Q_S_PRODUCT);
+                this.clearTable(TABLE_Q_S);
                 qcData.map((series) => {
                     // console.log('----------'+JSON.stringify(series))
                     db.executeSql(
@@ -443,9 +443,9 @@ export  default  class Sqlite extends Component {
                     series.data.map((product) => {
                         // console.log('----------'+JSON.stringify(product))
                         db.executeSql(
-                            'INSERT INTO ' + TABLE_Q_S_PRODUCT + ' (' + DBConst.Q_S_PRODUCT_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                            'INSERT INTO ' + TABLE_Q_S_PRODUCT + ' (' + DBConst.Q_S_PRODUCT_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                             [
-                                series.purchaseNo,
+                                series.purchaseNo,//
                                 product.itemName,
                                 product.fentityID,
                                 product.type,
@@ -458,27 +458,80 @@ export  default  class Sqlite extends Component {
                                 product.feedback,
                                 product.IsHot,
                                 product.deliverDate,
-                                JSON.stringify(product.pStatusPicA),
-                                JSON.stringify(product.pStatusPicB),
-                                JSON.stringify(product.pStatusPicC),
-                                product.pResultList,
-                                product.stage
+                                JSON.stringify(product.productImages),
+                                JSON.stringify(product.improveFiles),
+                                JSON.stringify(product.techFiles),
+                                JSON.stringify(product.materialFiles),
+                                JSON.stringify(product.proFiles)
                             ],
                             () => Toast.show('保存数据中，不要在后台关闭app：'+i++),
-                            (err) => console.log('product save fail:')
+                            (err) => console.log('product save fail:'+JSON.stringify(err))
                         );
                     })
                 });
             }, (err) => {
-                console.log('insert transaction:');
+                console.log('insert transaction:'+JSON.stringify(err));
             }, () => {
                 console.log('insert transaction: success');
             })
         } else {
-            this.clearTable(TABLE_W_D);
-            this.clearTable(TABLE_W_D_P);
+            this.clearTable(TABLE_Q_S);
+            this.clearTable(TABLE_Q_S_PRODUCT);
         }
     }
 
+    getQcData() {
+        return new Promise((resolve, reject) => {
+            if (!db) {
+                this.open();
+            }
+
+            db.executeSql('SELECT * FROM ' + TABLE_Q_S + ';', [],
+                (results) => {
+                console.log(JSON.stringify(results));
+                    let len = results.rows.length;
+                    let datas = [];
+                    if (len === 0) {
+                        resolve(datas)
+                    } else {
+                        for (let i = 0; i < len; i++) {
+                            console.log((JSON.stringify(results.rows.item(i))))
+                            datas.push(results.rows.item(i));
+                        }
+                        //product select
+                        for (let i = 0; i < datas.length; i++) {
+                            let product = [];
+                            db.executeSql('SELECT * FROM ' + TABLE_Q_S_PRODUCT + ' where productindex = \"' + datas[i].purchaseNo + '\";', [],
+                                (results1) => {
+                                    let len = results1.rows.length;
+                                    for (let i = 0; i < len; i++) {
+                                        results1.rows.item(i).productImages = JSON.parse(results1.rows.item(i).productImages);
+                                        results1.rows.item(i).improveFiles = JSON.parse(results1.rows.item(i).improveFiles);
+                                        results1.rows.item(i).techFiles = JSON.parse(results1.rows.item(i).techFiles);
+                                        results1.rows.item(i).materialFiles = JSON.parse(results1.rows.item(i).materialFiles);
+                                        results1.rows.item(i).proFiles = JSON.parse(results1.rows.item(i).proFiles);
+                                             console.log("get product success:" + JSON.stringify(results1.rows.item(i)));
+                                        product.push(results1.rows.item(i));
+                                    }
+                                    datas[i].data = product;
+                                    if (i === datas.length - 1) {
+                                             console.log("get product success:"+JSON.stringify(datas));
+                                        resolve(datas)
+                                    }
+
+                                }, (err) => {
+                                    reject(err);
+                                    console.log("get product error:"+JSON.stringify(err));
+                                });
+                              console.log("get series success:" + JSON.stringify(product));
+                        }
+                    }
+
+                }, (err) => {
+                    reject(err);
+                    console.log("get series error:");
+                });
+        })
+    }
 }
 
