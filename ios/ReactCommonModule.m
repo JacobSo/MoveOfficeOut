@@ -94,7 +94,7 @@ RCT_EXPORT_METHOD(getVersionName:(RCTResponseSenderBlock)callback)
   NSString *appCurVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 
   NSLog(@"当前应用软件版本:%@",appCurVersion);
- callback(@[appCurVersion]);
+  callback(@[appCurVersion]);
 }
 
 RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)

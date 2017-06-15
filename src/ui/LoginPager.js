@@ -126,9 +126,8 @@ export default class LoginPager extends Component {
                         else Toast.show('没有工作类型，无法登陆')
                     } else {
                         Toast.show(responseJson.ErrDesc);
-                        setTimeout(() => {
-                            this.setState({isLoading: false})
-                        }, 100);
+
+                        
                     }
             })
             .catch((error) => {

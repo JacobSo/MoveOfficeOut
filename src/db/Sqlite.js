@@ -547,7 +547,7 @@ export  default  class Sqlite extends Component {
                             db.executeSql("UPDATE " + TABLE_Q_S_DRAFT +
                                 " SET " +
                                 "draft_index = '" + productId + draftData.Guid +
-                                "',subContent = '" + draftData.content +
+                                "',subContent = '" + draftData.subContent +
                                 "',totalContent = '" + mainContent +
                                 "',isPass = '" + draftData.isPass +
                                 "',editDate = '" + draftData.editDate +
@@ -562,7 +562,7 @@ export  default  class Sqlite extends Component {
                             db.executeSql('INSERT INTO ' + TABLE_Q_S_DRAFT + ' (' + DBConst.QS_DRAFT_KEYS + ') VALUES(?,?,?,?,?,?,?,?)',
                                 [
                                     productId + draftData.Guid,
-                                    draftData.content,
+                                    draftData.subContent,
                                     mainContent,
                                     draftData.isPass,
                                     draftData.editDate,
@@ -607,7 +607,7 @@ export  default  class Sqlite extends Component {
                         db.executeSql('INSERT INTO ' + TABLE_Q_S_DRAFT + ' (' + DBConst.QS_DRAFT_KEYS + ') VALUES(?,?,?,?,?,?,?,?)',
                             [
                                 draftData.index,
-                                draftData.content,
+                                draftData.subContent,
                                 "",
                                 draftData.isPass,
                                 draftData.editDate,

@@ -29,7 +29,7 @@ export default class LauncherPager extends Component {
 
     componentDidMount() {
       //  sqLite.drop(TABLE_Q_S);
-      //  sqLite.drop(TABLE_Q_S_DRAFT);
+       // sqLite.drop(TABLE_Q_S_DRAFT);
       //  sqLite.drop(TABLE_Q_S_PRODUCT);
         //    sqLite.drop(TABLE_W_D);
         //    sqLite.drop(TABLE_W_D_P);
