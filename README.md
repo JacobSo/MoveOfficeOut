@@ -5,7 +5,7 @@
 ##Preference update,title,subtitle,content
 ##Url switch
 ##Version file
-##remove login info
+##remove login info/Application info
 ##Database check
 ##Push set
 
