@@ -33,6 +33,7 @@ export default class QcProductListPager extends Component {
     }
 
     componentDidMount() {
+
         this.setState({
             items: this.props.task.data,
             dataSource: this.state.dataSource.cloneWithRows(this.props.task.data)

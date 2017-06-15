@@ -6,7 +6,7 @@ import SQLiteStorage from 'react-native-sqlite-storage';
 import DBConst from '../db/DBConst';
 import Toast from 'react-native-root-toast';
 
-import {TABLE_PIC, TABLE_Q_S, TABLE_Q_S_PRODUCT, TABLE_W_D, TABLE_W_D_P, TABLE_W_D_Q} from "./DBConst";
+import {TABLE_PIC, TABLE_Q_S, TABLE_Q_S_DRAFT, TABLE_Q_S_PRODUCT, TABLE_W_D, TABLE_W_D_P, TABLE_W_D_Q} from "./DBConst";
 let database_name = "moveoffice.db";
 let database_version = "1.0";
 let database_displayname = "MySQLite";
@@ -161,7 +161,7 @@ export  default  class Sqlite extends Component {
             this.open();
         }
         if (wdData && wdData.length !== 0) {
-            let i=0;
+            let i = 0;
             db.transaction((tx) => {
                 this.clearTable(TABLE_W_D);
                 this.clearTable(TABLE_W_D_P);
@@ -209,7 +209,7 @@ export  default  class Sqlite extends Component {
                                 product.pResultList,
                                 product.stage
                             ],
-                            () => Toast.show('保存数据中，不要在后台关闭app：'+i++),
+                            () => Toast.show('保存数据中，不要在后台关闭app：' + i++),
                             (err) => console.log('product save fail:')
                         );
                     })
@@ -291,8 +291,8 @@ export  default  class Sqlite extends Component {
                             "' WHERE wdq_index = '" + draftData.pGuid +
                             "' AND wdq_ReviewType ='" + draftData.phaseCode + "';", [],
                             (results) => {
-                            if(picData.length===0) resolve("保存成功")
-                             //   console.log("draft content update!")
+                                if (picData.length === 0) resolve("保存成功")
+                                //   console.log("draft content update!")
                             }, (err) => console.log("insertWdDraft content update err:" + JSON.stringify(err)))
                     } else {//create
                         db.executeSql('INSERT INTO ' + TABLE_W_D_Q + ' (' + DBConst.W_D_Q_KEYS + ') VALUES(?,?,?,?)',
@@ -303,8 +303,8 @@ export  default  class Sqlite extends Component {
                                 draftData.productProblems,
                             ],
                             (results) => {
-                               // console.log("draft content save!")
-                                if(picData.length===0) resolve("保存成功")
+                                // console.log("draft content save!")
+                                if (picData.length === 0) resolve("保存成功")
                             }, (err) => console.log("insertWdDraft content create err:" + JSON.stringify(err)))
                     }
                 }, (err) => console.log("insertWdDraft count err:" + JSON.stringify(err)));
@@ -318,7 +318,7 @@ export  default  class Sqlite extends Component {
                     [
                         data.phaseCode,
                         data.paraGuid,
-                        data.path,
+                        data.uri,
                         data.fileName,
                     ],
                     (results) => {
@@ -367,7 +367,7 @@ export  default  class Sqlite extends Component {
                                 fileName: results.rows.item(i).pic_name,
                                 phaseCode: results.rows.item(i).pic_type,
                                 paraGuid: results.rows.item(i).pic_index,
-                                path: results.rows.item(i).pic_path
+                                uri: results.rows.item(i).pic_path
                             });
                         }
                         resolve(temp);
@@ -416,13 +416,13 @@ export  default  class Sqlite extends Component {
      *  QC part
      **/
 
-    insertQcData(qcData){
+    insertQcData(qcData) {
         // console.log('----------'+JSON.stringify(wdData))
         if (!db) {
             this.open();
         }
         if (qcData && qcData.length !== 0) {
-            let i=0;
+            let i = 0;
             db.transaction((tx) => {
                 this.clearTable(TABLE_Q_S_PRODUCT);
                 this.clearTable(TABLE_Q_S);
@@ -464,13 +464,13 @@ export  default  class Sqlite extends Component {
                                 JSON.stringify(product.materialFiles),
                                 JSON.stringify(product.proFiles)
                             ],
-                            () => Toast.show('保存数据中，不要在后台关闭app：'+i++),
-                            (err) => console.log('product save fail:'+JSON.stringify(err))
+                            () => Toast.show('保存数据中，不要在后台关闭app：' + i++),
+                            (err) => console.log('product save fail:' + JSON.stringify(err))
                         );
                     })
                 });
             }, (err) => {
-                console.log('insert transaction:'+JSON.stringify(err));
+                console.log('insert transaction:' + JSON.stringify(err));
             }, () => {
                 console.log('insert transaction: success');
             })
@@ -488,7 +488,7 @@ export  default  class Sqlite extends Component {
 
             db.executeSql('SELECT * FROM ' + TABLE_Q_S + ';', [],
                 (results) => {
-                console.log(JSON.stringify(results));
+                    console.log(JSON.stringify(results));
                     let len = results.rows.length;
                     let datas = [];
                     if (len === 0) {
@@ -510,20 +510,20 @@ export  default  class Sqlite extends Component {
                                         results1.rows.item(i).techFiles = JSON.parse(results1.rows.item(i).techFiles);
                                         results1.rows.item(i).materialFiles = JSON.parse(results1.rows.item(i).materialFiles);
                                         results1.rows.item(i).proFiles = JSON.parse(results1.rows.item(i).proFiles);
-                                             console.log("get product success:" + JSON.stringify(results1.rows.item(i)));
+                                        console.log("get product success:" + JSON.stringify(results1.rows.item(i)));
                                         product.push(results1.rows.item(i));
                                     }
                                     datas[i].data = product;
                                     if (i === datas.length - 1) {
-                                             console.log("get product success:"+JSON.stringify(datas));
+                                        console.log("get product success:" + JSON.stringify(datas));
                                         resolve(datas)
                                     }
 
                                 }, (err) => {
                                     reject(err);
-                                    console.log("get product error:"+JSON.stringify(err));
+                                    console.log("get product error:" + JSON.stringify(err));
                                 });
-                              console.log("get series success:" + JSON.stringify(product));
+                            console.log("get series success:" + JSON.stringify(product));
                         }
                     }
 
@@ -533,5 +533,157 @@ export  default  class Sqlite extends Component {
                 });
         })
     }
+
+    insertQcDraftAll(draftList, productId, mainContent) {
+        return new Promise((resolve, reject) => {
+            if (!db) {
+                this.open();
+            }
+
+            draftList.map((draftData) => {
+                db.executeSql('SELECT * FROM ' + TABLE_Q_S_DRAFT + " where draft_index = '" + productId + draftData.Guid + "';", [],
+                    (results) => {
+                        if (results.rows.length !== 0) {//have data
+                            db.executeSql("UPDATE " + TABLE_Q_S_DRAFT +
+                                " SET " +
+                                "draft_index = '" + productId + draftData.Guid +
+                                "',subContent = '" + draftData.content +
+                                "',totalContent = '" + mainContent +
+                                "',isPass = '" + draftData.isPass +
+                                "',editDate = '" + draftData.editDate +
+                                "',editAddress = '" + draftData.editAddress +
+                                "',lat = '" + draftData.lat +
+                                "',lng = '" + draftData.lng +
+                                "' WHERE index = '" + draftData.Guid + "';", [],
+                                (results) => {
+                                    resolve("保存成功")
+                                }, (err) => console.log("insertWdDraft content update err:" + JSON.stringify(err)))
+                        } else {//create
+                            db.executeSql('INSERT INTO ' + TABLE_Q_S_DRAFT + ' (' + DBConst.QS_DRAFT_KEYS + ') VALUES(?,?,?,?,?,?,?,?)',
+                                [
+                                    productId + draftData.Guid,
+                                    draftData.content,
+                                    mainContent,
+                                    draftData.isPass,
+                                    draftData.editDate,
+                                    draftData.editAddress,
+                                    draftData.lat,
+                                    draftData.lng,
+                                ],
+                                (results) => {
+                                    resolve("保存成功")
+                                }, (err) => console.log("insertWdDraft content create err:" + JSON.stringify(err)))
+                        }
+                    }, (err) => console.log("insertWdDraft count err:" + JSON.stringify(err)));
+
+            });
+        })
+    }
+
+    insertQcDraftSingle(draftData, picData) {
+        return new Promise((resolve, reject) => {
+            if (!db) {
+                this.open();
+            }
+            db.executeSql('SELECT * FROM ' + TABLE_Q_S_DRAFT + " where draft_index = '" + draftData.index + "';", [],
+                (results) => {
+                    if (results.rows.length !== 0) {//have data
+                        db.executeSql("UPDATE " + TABLE_Q_S_DRAFT +
+                            " SET " +
+                            "draft_index = '" + draftData.index +
+                            "',subContent = '" + draftData.subContent +
+                            "',totalContent = '" + results.rows.item(0).totalContent +
+                            "',isPass = '" + draftData.isPass +
+                            "',editDate = '" + draftData.editDate +
+                            "',editAddress = '" + draftData.editAddress +
+                            "',lat = '" + draftData.lat +
+                            "',lng = '" + draftData.lng +
+                            "' WHERE draft_index = '" + draftData.index + "';", [],
+                            (results) => {
+                                if (picData.length === 0) resolve("保存成功")
+                                //   console.log("draft content update!")
+                            }, (err) => console.log("insertQcDraftSingle content update err:" + JSON.stringify(err)))
+                    } else {//create
+                        db.executeSql('INSERT INTO ' + TABLE_Q_S_DRAFT + ' (' + DBConst.QS_DRAFT_KEYS + ') VALUES(?,?,?,?,?,?,?,?)',
+                            [
+                                draftData.index,
+                                draftData.content,
+                                "",
+                                draftData.isPass,
+                                draftData.editDate,
+                                draftData.editAddress,
+                                draftData.lat,
+                                draftData.lng,
+                            ],
+                            (results) => {
+                                 console.log("draft content save!")
+                                if (picData.length === 0) resolve("保存成功")
+                            }, (err) => console.log("insertQcDraftSingle content create err:" + JSON.stringify(err)))
+                    }
+                }, (err) => console.log("insertQcDraftSingle count err:" + JSON.stringify(err)));
+
+            db.executeSql("DELETE FROM " + TABLE_PIC + " WHERE pic_index = '" + draftData.index + "';", [],
+                (results) => {
+                    console.log("draft pic clear!")
+                }, (err) => console.log("insertQcDraftSingle pic delete err:" + JSON.stringify(err)));
+            picData.map((data, index) => {
+                db.executeSql('INSERT INTO ' + TABLE_PIC + ' (' + DBConst.PIC_KEYS + ') VALUES(?,?,?,?)',
+                    [
+                        '-',
+                        data.index,
+                        data.uri,
+                        data.fileName,
+                    ],
+                    (results) => {
+                        console.log("draft pic save!")
+                        if (index === picData.length - 1) {
+                            resolve("保存成功")
+                        }
+                    }, (err) => console.log("insertQcDraftSingle pic insert err:" + JSON.stringify(err)))
+            })
+        })
+    }
+
+    fetchQcDraft(formItems, pid) {
+        return new Promise((resolve, reject) => {
+            if (!db) {
+                this.open();
+            }//
+
+            formItems.map((form, i) => {
+                db.executeSql('SELECT * FROM ' + TABLE_Q_S_DRAFT + " where draft_index = '" + pid + form.Guid + "';",
+                    [],
+                    (results) => {
+                        if (results.rows.item(0)) {
+                            form.submitContent = results.rows.item(0);
+                            db.executeSql('SELECT * FROM ' + TABLE_PIC + " where pic_index = '" + pid + form.Guid + "';",
+                                [],
+                                (results) => {
+                                    if (results.rows.length !== 0) {
+                                        let temp = [];
+                                        for (let i = 0; i < results.rows.length; i++) {
+                                            temp.push({
+                                                fileName: results.rows.item(i).pic_name,
+                                                phaseCode: results.rows.item(i).pic_type,
+                                                paraGuid: results.rows.item(i).pic_index,
+                                                uri: results.rows.item(i).pic_path
+                                            });
+                                        }
+                                        form.submitPic = temp;
+                                        if (i === formItems.length - 1) {
+                                            resolve(formItems)
+                                        }
+                                    }
+                                    console.log("fetchQcDraft_pic:" + JSON.stringify(temp))
+                                }, (err) => console.log("fetchQcDraft_pic  err:" + JSON.stringify(err)));
+                        }
+                        console.log("fetchQcDraft:" + JSON.stringify(results.rows.item(0)))
+
+                    }, (err) => console.log("fetchQcDraft  err:" + JSON.stringify(err)));
+            });
+
+        })
+    }
+
 }
 

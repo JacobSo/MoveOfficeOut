@@ -77,7 +77,6 @@ export default class QcMainPager extends Component {
             .catch((error) => {
                 this.setState({  isRefreshing: false,});
                 console.log(error);
-                Toast.show();
                 SnackBar.show("出错了，请稍后再试", { duration: 3000 })
             }).done();
     }

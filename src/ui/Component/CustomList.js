@@ -16,7 +16,10 @@ import {
     Dimensions,
     TouchableOpacity,
     Animated,
-    Platform, Image, Alert, DeviceEventEmitter,
+    Platform,
+    Image,
+    Alert,
+    DeviceEventEmitter,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import {MainItem} from '../Component/MainItem';
@@ -28,7 +31,6 @@ import {mainActions} from "../../actions/MainAction";
 import Interactable from 'react-native-interactable';
 import Loading from 'react-native-loading-spinner-overlay';
 
-import AndroidModule from '../../module/AndoridCommontModule'
 import RefreshEmptyView from "./RefreshEmptyView";
 import LocationView from "./LocationView";
 import Utility from "../../utils/Utility";

@@ -103,8 +103,8 @@ export  default  class ApiService {
         let method = 'QualityTaskList?UserName=' + App.account;
         return this.getRequest(method);
     }
-    static getFormItems() {
-        let method = 'QualityTaskList?UserName=' + App.account+ '&fentityID=' + type+ '&stage=' + type;
+    static getFormItems(pid,stage) {
+        let method = 'QualityInfo?UserName=' + App.account+ '&fentityID=' + pid+ '&stage=' + stage;
         return this.getRequest(method);
     }
 }

@@ -43,13 +43,13 @@ let Q_S_P_PRODUCT_FILE = "proFiles";
 export let TABLE_Q_S_DRAFT = "save_draft";
 let DRAFT_ID = "draft_id";
 let DRAFT_INDEX = "draft_index";
-let DRAFT_CONTENT = "draft_content";
-let DRAFT_TOTAL_CONTENT = "draft_total_content";
-let DRAFT_IS_PASS = "draft_is_pass";
-let DRAFT_LAST_DATE = "draft_last_date";
-let DRAFT_ADDRESS = "draft_address";
-let DRAFT_LAT = "draft_lat";
-let DRAFT_LNG = "draft_lng";
+let DRAFT_CONTENT = "subContent";
+let DRAFT_TOTAL_CONTENT = "totalContent";
+let DRAFT_IS_PASS = "isPass";
+let DRAFT_LAST_DATE = "editDate";
+let DRAFT_ADDRESS = "editAddress";
+let DRAFT_LAT = "lat";
+let DRAFT_LNG = "lng";
 
 
 /**
@@ -220,7 +220,7 @@ export  default  class Sqlite extends Component {
     static Quality_Store_Draft_Create  = "CREATE  TABLE  if not exists " + TABLE_Q_S_DRAFT + " (" +
         DRAFT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
         DRAFT_INDEX + " VARCHAR," +
-        DRAFT_CONTENT + " INTEGER," +
+        DRAFT_CONTENT + " VARCHAR ," +
         DRAFT_TOTAL_CONTENT + " VARCHAR," +
         DRAFT_IS_PASS + " INTEGER," +
         DRAFT_LAST_DATE + " VARCHAR," +

@@ -11,6 +11,7 @@ const {width, height} = Dimensions.get('window');
 export default class GalleryPager extends Component {
     constructor(props) {
         super(props);
+        console.log(JSON.stringify(this.props.pics))
     }
 
     render() {

@@ -38,12 +38,14 @@ import QcMainPager from "./ui/QuailtyCheck/QcMainPager";
 import QcProductListPager from "./ui/QuailtyCheck/QcProductListPager";
 import QcProductDetailPager from "./ui/QuailtyCheck/QcProductDetailPager";
 import WebViewPager from "./ui/WebViewPager";
+import QcFormPager from "./ui/QuailtyCheck/QcFormPager";
+import QcPostPager from "./ui/QuailtyCheck/QcPostPager";
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
     //  console.log("screen1");
-    codePush.sync();
+   // codePush.sync();
     return (
         <Provider store={store}>
             <View
@@ -157,6 +159,12 @@ const QcDetailScreen = ({navigation}) => _renderScreen(<View
 const WebScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorDeepOrangeDark)}<WebViewPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
+const QcFormScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcFormPager {...navigation.state.params}
+                                                                                      nav={navigation}/></View>);
+const QcPostScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcPostPager {...navigation.state.params}
+                                                                                      nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -242,9 +250,15 @@ const SimpleStack = StackNavigator({
         web: {
             screen: WebScreen,
         },
+        qcForm: {
+            screen: QcFormScreen,
+        },
+        qcPost: {
+            screen: QcPostScreen,
+        },
     },
     {
-        initialRouteName: 'login',
+        initialRouteName: 'launcher',
         headerMode: 'none',
     });
 

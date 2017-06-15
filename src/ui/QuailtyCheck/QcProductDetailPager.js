@@ -19,12 +19,13 @@ import SnackBar from 'react-native-snackbar-dialog'
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import ApiService from '../../network/QcApiService';
 
 import Drawer from 'react-native-drawer'
 import {CachedImage} from "react-native-img-cache";
 import RNFetchBlob from "react-native-fetch-blob";
 import AndroidModule from '../../module/AndoridCommontModule'
-import Loading from 'react-native-loading-spinner-overlay';
+import Loading from 'react-native-loading-spinner-overlay'
 const {width, height} = Dimensions.get('window');
 const drawerStyles = {
     main: {backgroundColor: 'black', shadowColor: "black", shadowOpacity: 0.8, shadowRadius: 3},
@@ -115,15 +116,15 @@ export default  class QcProductDetailPager extends Component {
     }
 
     downloadFile(url) {
-        console.log(dirs.DocumentDir)
+/*        console.log(dirs.DocumentDir)
         console.log(dirs.CacheDir)
         console.log(dirs.DCIMDir)
-        console.log(dirs.DownloadDir)
+        console.log(dirs.DownloadDir)*/
         let filePath;
-        if(Platform.OS==='android'){
-          filePath  = dirs.DownloadDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
-        }else
-         filePath = dirs.DocumentDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
+        if (Platform.OS === 'android') {
+            filePath = dirs.DownloadDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
+        } else
+            filePath = dirs.DocumentDir + '/' + url.substring(url.lastIndexOf('/') + 1, url.length);
 
         RNFetchBlob.fs.exists(filePath)
             .then((exist) => {
@@ -161,9 +162,9 @@ export default  class QcProductDetailPager extends Component {
     openFile(path) {
         //   console.log(path);
         if (Platform.OS === 'android') {
-           // Toast.show(path);
-            AndroidModule.openOfficeFile( path);
-        }else {
+            // Toast.show(path);
+            AndroidModule.openOfficeFile(path);
+        } else {
             console.log(path);
             Share.share({
                 url: path,
@@ -214,6 +215,35 @@ export default  class QcProductDetailPager extends Component {
                 </ScrollView>
 
             </View>)
+    }
+
+    getFormItems(stage){
+        this.setState({isLoading: true,});
+        ApiService.getFormItems(this.props.product.fentityID,stage)
+            .then((responseJson) => {
+                console.log(responseJson);
+
+                if (!responseJson.IsErr) {
+                    this.props.nav.navigate('qcForm',
+                        {
+                            product:this.props.product,
+                            formItems:responseJson.data,
+                            stage:stage
+                        })
+                } else{
+                    SnackBar.show(responseJson.ErrDesc, { duration: 3000 })
+                }
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试", { duration: 3000 });
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
     }
 
     render() {
@@ -297,14 +327,13 @@ export default  class QcProductDetailPager extends Component {
                                 </TouchableOpacity>
 
                             </View>
+
                             <Text style={{width: width - 32, margin: 16}}>质检流程</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <TouchableOpacity
                                     style={[styles.mainButton, {borderColor: this.getStatus(1) ? Color.colorAccent : Color.content}]}
                                     onPress={() => {
-                                        if (this.props.product.materialFiles.length !== 0) {
-                                            this.openControlPanel();
-                                        } else SnackBar.show('材料没有附件', {duration: 3000})
+                                     this.getFormItems(0)
                                     }}>
                                     <Text
                                         style={{color: this.getStatus(1) ? Color.colorAccent : Color.content}}>材料质检</Text>
@@ -315,9 +344,7 @@ export default  class QcProductDetailPager extends Component {
                                 <TouchableOpacity
                                     style={[styles.mainButton, {borderColor: this.getStatus(2) ? Color.colorAccent : Color.content}]}
                                     onPress={() => {
-                                        if (this.props.product.proFiles.length !== 0) {
-                                            this.openControlPanel();
-                                        } else SnackBar.show('成品没有附件', {duration: 3000})
+                                        this.getFormItems(1)
                                     }}>
                                     <Text
                                         style={{color: this.getStatus(2) ? Color.colorAccent : Color.content}}>工艺质检</Text>
@@ -329,14 +356,12 @@ export default  class QcProductDetailPager extends Component {
                                 <TouchableOpacity
                                     style={[styles.mainButton, {borderColor: this.getStatus(3) ? Color.colorAccent : Color.content}]}
                                     onPress={() => {
-
+                                        this.getFormItems(2)
                                     }}>
                                     <Text
                                         style={{color: this.getStatus(3) ? Color.colorAccent : Color.content}}>成品质检</Text>
                                 </TouchableOpacity>
-
                             </View>
-
                         </View>
                     </ScrollView>
                     <Loading visible={this.state.isLoading}/>

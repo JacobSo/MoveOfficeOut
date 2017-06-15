@@ -135,7 +135,7 @@ class WdPostPager extends Component {
                 fileName: data.fileName,
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
-                path: data.uri.replace('file://', '')
+                uri: data.uri//.replace('file://', '')
             });
         });
         this.state.submitContent = tempContent;
@@ -274,8 +274,6 @@ class WdPostPager extends Component {
             this.state.product.pStatusResultC = this.formatString();
             this.state.product.pStatusPicC = tempPicsPath;
         }
-
-
         // console.log(result)
         ///  console.log(this.state.product.pResultList)
         sqLite.updateWdStatus(this.state.submitContent, tempPicsPath, this.state.product.pResultList);

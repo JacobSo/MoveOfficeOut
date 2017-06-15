@@ -8,7 +8,7 @@ import Color from '../constant/Color';
 
 export  default  class Application extends Component {
     static session;
-    static account = '';
+    static account = '赖兆明';
     static workType = '';
     static department;
     static check;
