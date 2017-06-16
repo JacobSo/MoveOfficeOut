@@ -547,14 +547,14 @@ export  default  class Sqlite extends Component {
                             db.executeSql("UPDATE " + TABLE_Q_S_DRAFT +
                                 " SET " +
                                 "draft_index = '" + productId + draftData.Guid +
-                                "',subContent = '" + draftData.subContent +
+                                "',subContent = '" +(draftData.submitContent? draftData.submitContent.subContent:'')+
                                 "',totalContent = '" + mainContent +
                                 "',isPass = '" + draftData.isPass +
-                                "',editDate = '" + draftData.editDate +
-                                "',editAddress = '" + draftData.editAddress +
-                                "',lat = '" + draftData.lat +
-                                "',lng = '" + draftData.lng +
-                                "' WHERE index = '" + draftData.Guid + "';", [],
+                                "',editDate = '" +(draftData.submitContent? draftData.submitContent.editDate:new Date().toLocaleString() )+
+                                "',editAddress = '" + (draftData.submitContent?draftData.submitContent.editAddress:'') +
+                                "',lat = '" + (draftData.submitContent?draftData.submitContent.lat:'') +
+                                "',lng = '" + (draftData.submitContent?draftData.submitContent.lng:'') +
+                                "' WHERE draft_index = '" +  productId +draftData.Guid + "';", [],
                                 (results) => {
                                     resolve("保存成功")
                                 }, (err) => console.log("insertWdDraft content update err:" + JSON.stringify(err)))
@@ -562,13 +562,13 @@ export  default  class Sqlite extends Component {
                             db.executeSql('INSERT INTO ' + TABLE_Q_S_DRAFT + ' (' + DBConst.QS_DRAFT_KEYS + ') VALUES(?,?,?,?,?,?,?,?)',
                                 [
                                     productId + draftData.Guid,
-                                    draftData.subContent,
+                                    (draftData.submitContent? draftData.submitContent.subContent:''),
                                     mainContent,
                                     draftData.isPass,
-                                    draftData.editDate,
-                                    draftData.editAddress,
-                                    draftData.lat,
-                                    draftData.lng,
+                                    (draftData.submitContent? draftData.submitContent.editDate:new Date().toLocaleString() ),
+                                    (draftData.submitContent?draftData.submitContent.editAddress:'') ,
+                                    (draftData.submitContent?draftData.submitContent.lat:''),
+                                    (draftData.submitContent?draftData.submitContent.lng:''),
                                 ],
                                 (results) => {
                                     resolve("保存成功")
@@ -656,6 +656,7 @@ export  default  class Sqlite extends Component {
                     (results) => {
                         if (results.rows.item(0)) {
                             form.submitContent = results.rows.item(0);
+                            form.isPass= form.submitContent.isPass;
                             db.executeSql('SELECT * FROM ' + TABLE_PIC + " where pic_index = '" + pid + form.Guid + "';",
                                 [],
                                 (results) => {
@@ -670,15 +671,17 @@ export  default  class Sqlite extends Component {
                                             });
                                         }
                                         form.submitPic = temp;
-                                        if (i === formItems.length - 1) {
-                                            resolve(formItems)
-                                        }
-                                    }
-                                    console.log("fetchQcDraft_pic:" + JSON.stringify(temp))
-                                }, (err) => console.log("fetchQcDraft_pic  err:" + JSON.stringify(err)));
-                        }
-                        console.log("fetchQcDraft:" + JSON.stringify(results.rows.item(0)))
 
+                                    }
+
+
+                                }, (err) => console.log("fetchQcDraft_pic  err:" + JSON.stringify(err)));
+
+                        }
+                        if (i === formItems.length - 1) {
+                            console.log(JSON.stringify(formItems) + '--------------------')
+                            resolve(formItems)
+                        }
                     }, (err) => console.log("fetchQcDraft  err:" + JSON.stringify(err)));
             });
 

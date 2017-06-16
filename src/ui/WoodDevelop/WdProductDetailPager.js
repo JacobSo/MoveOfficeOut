@@ -20,6 +20,7 @@ import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {CachedImage} from "react-native-img-cache";
+import App from '../../constant/Application';
 const {width, height} = Dimensions.get('window');
 
 class WdProductDetailPager extends Component {
@@ -161,10 +162,10 @@ class WdProductDetailPager extends Component {
                         style={[styles.mainButton, {borderColor: this.state.aFinish ? Color.colorRed : Color.content}]}
                         onPress={() => {
                             this.state.intentStep = 0;
-                            this.state.intentTitle = "白胚评审";
+                            this.state.intentTitle =App.workType === "板木驻场工程师"?'白胚评审':'木架评审';
                             this.popupDialog.show();
                         }}>
-                        <Text> 白胚评审</Text>
+                        <Text> {App.workType === "板木驻场工程师"?'白胚评审':'木架评审'}</Text>
                         <View style={{
                             backgroundColor: Color.line,
                             width: 1,

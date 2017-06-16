@@ -147,7 +147,7 @@ export default class WpProductDetailPager extends Component {
                                         <Image
                                             resizeMode="contain"
                                             style={{height: 200, margin: 16}}
-                                            source={{uri: ApiService.getBaseUrl()+this.props.product.FacPicPath}}/>
+                                            source={{uri: this.props.product.FacPicPath}}/>
                                     </View>
                                 )
                             }

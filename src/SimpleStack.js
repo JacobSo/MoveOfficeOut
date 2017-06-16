@@ -258,7 +258,7 @@ const SimpleStack = StackNavigator({
         },
     },
     {
-        initialRouteName: 'launcher',
+        initialRouteName: 'login',
         headerMode: 'none',
     });
 

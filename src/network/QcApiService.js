@@ -71,7 +71,7 @@ export  default  class ApiService {
         });
         return this.postRequest(method, param);
     }
-    static submitContent(productId,state, contentJ, totalContent, lat, lng) {
+    static submitQualityContent(productId,state, contentJ, totalContent, lat, lng) {
         let method = 'SubmitQualityFeedback';
         let param = JSON.stringify({
             userName: App.account,

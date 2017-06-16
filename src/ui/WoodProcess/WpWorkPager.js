@@ -597,10 +597,18 @@ export default class WpWorkPager extends Component {
                                         }/>}/>
 
                             <TouchableOpacity onPress={() => {
+                                if(this.state.isWood){
+                                    if(!this.state.Series){
+                                        Toast.show('请先选择系列')
+                                        return
+                                    }
+                                }
+
                                 this.props.nav.navigate(
                                     'wpSearch',
                                     {
                                         isWood: this.state.isWood,
+                                        series:this.state.Series,
                                         selectFunc: (data) => {
                                             data.map((d) => {
                                                 //console.log(JSON.stringify(d));

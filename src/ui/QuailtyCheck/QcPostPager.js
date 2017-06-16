@@ -40,7 +40,6 @@ const options = {
 };
 import SQLite from '../../db/Sqlite';
 let sqLite = new SQLite();
-let thisDate = new Date();
 export default class QcPostPager extends Component {
 
     constructor(props) {
@@ -63,19 +62,16 @@ export default class QcPostPager extends Component {
 
 
     componentDidMount() {
-        if(this.props.form.submitContent){
+        if (this.props.form.submitContent) {
             this.setState({
-                pics: this.props.form.submitPic?this.props.form.submitPic:[],
-                dataSource:this.state.dataSource.cloneWithRows( this.props.form.submitPic?this.props.form.submitPic:[]),
+                pics: this.props.form.submitPic ? this.props.form.submitPic : [],
+                dataSource: this.state.dataSource.cloneWithRows(this.props.form.submitPic ? this.props.form.submitPic : []),
                 editContent: this.props.form.submitContent.subContent,//
                 address: this.props.form.submitContent.address,
                 lat: this.props.form.submitContent.lat,
                 lng: this.props.form.submitContent.lng,
             });
-
         }
-
-
         if (Platform.OS === 'ios') {
             this.watchID = navigator.geolocation.watchPosition((position) => {
                 this.fetchData(position.coords.longitude, position.coords.latitude);
@@ -119,9 +115,9 @@ export default class QcPostPager extends Component {
     pack() {
         let tempContent = {
             index: this.props.product.fentityID + this.props.form.Guid,
-            isPass: this.state.isPass ? 1 : 0,
+            isPass: this.props.form.isPass,
             subContent: this.state.editContent,
-            editDate: thisDate.toLocaleString(),
+            editDate: new Date().toLocaleString(),
             editAddress: this.state.address,
             lat: this.state.lat,
             lng: this.state.lng
@@ -129,12 +125,15 @@ export default class QcPostPager extends Component {
 
         let tempPics = [];
         this.state.pics.map((data) => {
-            tempPics.push({
-                fileName: data.fileName,
-                index: this.props.product.fentityID + this.props.form.Guid,
-                uri: data.uri//.replace('file://', '')
-            });
+            if (data.uri)
+                tempPics.push({
+                    fileName: data.fileName,
+                    index: this.props.product.fentityID + this.props.form.Guid,
+                    uri: data.uri//.replace('file://', '')
+                });
         });
+        console.log(JSON.stringify(tempPics))
+
         this.state.submitContent = tempContent;
         this.state.submitPic = tempPics;
         this.save()

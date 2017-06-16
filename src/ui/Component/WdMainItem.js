@@ -5,6 +5,7 @@
 import React, {Component, PropTypes} from 'react';
 import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
 import Color from '../../constant/Color';
+import App from '../../constant/Application';
 
 const {width, height} = Dimensions.get('window');
 
@@ -37,7 +38,7 @@ export class WdMainItem extends Component {
         let aNum = 0;
         let bNum = 0;
         let cNum = 0;
-        if(this.props.task.Itemlist){
+        if (this.props.task.Itemlist) {
             this.props.task.Itemlist.map((data) => {
                 if (data.pResultList.indexOf("0-1") > -1) {
                     aNum++;
@@ -70,7 +71,7 @@ export class WdMainItem extends Component {
                             style={{alignItems: 'center'}}>
                             <View style={styles.iconCircle}>
                                 <Text>{this.state.aNum}</Text></View>
-                            <Text >白胚</Text>
+                            <Text>{App.workType === "板木驻场工程师"?'白胚':'木架'}</Text>
                         </View>
                         <View style={{alignItems: 'center'}}>
                             <View style={styles.iconCircle}>
@@ -85,10 +86,21 @@ export class WdMainItem extends Component {
 
                     </View>
                     <View style={styles.line}/>
-                    <View style={styles.textStyle}>
-                        <Text >系列</Text>
-                        <Text style={{backgroundColor:Color.colorAccent,color:'white'}}>{this.props.task.SeriesName}</Text>
-                    </View>
+                    {
+                        (() => {
+                            if (App.workType === "板木驻场工程师") {
+                                return <View style={styles.textStyle}>
+                                    <Text >系列</Text>
+                                    <Text style={{
+                                        backgroundColor: Color.colorAccent,
+                                        color: 'white'
+                                    }}>{this.props.task.SeriesName}</Text>
+                                </View>
+                            }
+                        })()
+
+                    }
+
                     <View style={styles.textStyle}>
                         <Text >工厂</Text>
                         <Text >{this.props.task.FacName}</Text>
@@ -148,7 +160,7 @@ const styles = StyleSheet.create(
         },
         line: {
             backgroundColor: Color.line,
-            width: width-32,
+            width: width - 32,
             height: 1,
             marginTop: 16,
             marginBottom: 16,

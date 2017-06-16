@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {WdActions} from "../../actions/WdAction";
 import {CachedImage} from "react-native-img-cache";
+import App from '../../constant/Application';
 
 const {width, height} = Dimensions.get('window');
 
@@ -41,7 +42,7 @@ export class WdFilterItem extends Component {
         if (this.props.product.pResultList) {
             if (this.props.step === 1) {
                 color = (this.props.product.pResultList.indexOf("0-1") > -1) ? Color.colorGreen : Color.colorRed;
-                text = (this.props.product.pResultList.indexOf("0-1") > -1) ? "白胚-通过" : "白胚-不通过";
+                text =  (App.workType === "板木驻场工程师"?"白胚":"木架")+((this.props.product.pResultList.indexOf("0-1") > -1) ?"通过" : "不通过");
             }
             else if (this.props.step === 2) {
                 color = (this.props.product.pResultList.indexOf("1-1") > -1) ? Color.colorGreen : Color.colorRed;

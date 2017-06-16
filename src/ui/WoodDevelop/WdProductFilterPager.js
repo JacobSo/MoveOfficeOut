@@ -3,6 +3,7 @@
  */
 'user strict';
 
+import App from '../../constant/Application';
 import React, {Component} from 'react';
 import {
     View,
@@ -120,6 +121,7 @@ export default class WdProductFilterPager extends Component {
                                         } else {
                                             AndroidModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
+                                                App.workType==="板木驻场工程师"?1:0,
                                                 this.props.step - 1,
                                                 (result) => {
                                                     setTimeout(() => {

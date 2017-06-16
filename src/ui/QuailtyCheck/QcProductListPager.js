@@ -54,7 +54,7 @@ export default class QcProductListPager extends Component {
                     color={Color.colorIndigo}
                     isHomeUp={true}
                     isAction={true}
-                    isActionByText={false}
+                    isActionByText={true}
                     actionArray={['完成']}
                     functionArray={[
                         () => {

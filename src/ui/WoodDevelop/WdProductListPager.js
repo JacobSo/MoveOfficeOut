@@ -21,6 +21,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import Toast from 'react-native-root-toast';
 import ApiService from '../../network/WdApiService';
+import App from '../../constant/Application';
 
 const {width, height} = Dimensions.get('window');
 
@@ -103,13 +104,13 @@ class WdProductListPager extends Component {
                             {
                                 task: this.props.task,
                                 step: 1,
-                                stepName: '打印白胚评审',
+                                stepName: App.workType === "板木驻场工程师"?'打印白胚评审':'打印木架评审',
                                 selectMode: true,
                             },
                         );
                         this.popupDialog.dismiss();
                     }}>
-                        <Text style={{margin: 16}}>白胚评审报表</Text>
+                        <Text style={{margin: 16}}>{App.workType === "板木驻场工程师"?'白胚评审报表':'木架评审报表'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
@@ -156,7 +157,7 @@ class WdProductListPager extends Component {
                                 {
                                     task: this.props.task,
                                     step: 1,
-                                    stepName: '白胚评审进度',
+                                    stepName: App.workType === "板木驻场工程师"?'白胚评审进度':'木架评审进度',
                                     selectMode: false,
                                 },
                             );
@@ -164,7 +165,7 @@ class WdProductListPager extends Component {
                         style={{alignItems: 'center'}}>
                         <View style={styles.iconCircle}>
                             <Text>{this.state.aNum}</Text></View>
-                        <Text >白胚</Text>
+                        <Text >{App.workType==="板木驻场工程师"?'白胚':'木架'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
@@ -209,7 +210,7 @@ class WdProductListPager extends Component {
                                 })
                             }
                             Alert.alert(
-                                this.props.task.SeriesName,
+                                App.workType==="板木驻场工程师"?this.props.task.SeriesName:'评审信息',
                                 "预约评审时间：" + this.props.task.SeriesName + '\n' +
                                 "工厂：" + this.props.task.FacName + '\n' +
                                 "电话：" + this.props.task.sFactoryCall + '\n' +
@@ -225,8 +226,9 @@ class WdProductListPager extends Component {
                                 ]
                             )
                         }}>
-                        <Text style={{margin: 16}}>系列信息
-                        </Text></TouchableOpacity>
+                        <Text style={{margin: 16}}>评审信息
+                        </Text>
+                    </TouchableOpacity>
 
 
                     <TouchableOpacity

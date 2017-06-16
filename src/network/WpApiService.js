@@ -108,8 +108,8 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-    static getProduct(keyword, type) {
-        let method = 'ReviewBill/GetProducts?pname=' + keyword + '&ptype=' + type;
+    static getProduct(keyword, type,series) {
+        let method = 'ReviewBill/GetProducts?pname=' + keyword + '&ptype=' + type+'&seriesname='+series;
         return this.getRequest(method);
     }
 

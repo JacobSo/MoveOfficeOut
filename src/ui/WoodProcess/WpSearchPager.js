@@ -49,7 +49,7 @@ export default class PasswordPager extends Component {
         this.setState({
             isLoading: true
         });
-        ApiService.getProduct(keyword, this.props.isWood ? 0 : 1)
+        ApiService.getProduct(keyword, this.props.isWood ? 0 : 1,this.props.series)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
