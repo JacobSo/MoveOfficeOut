@@ -31,9 +31,16 @@ export class WdMainItem extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.countNumber();
+        console.log("componentWillReceiveProps");
+       this.countNumber();
     }
-
+    componentDidUpdate(preProps, preState) {
+        console.log("componentDidUpdate");
+  //      this.countNumber();
+    }
+    componentWillUpdate(nextProps, nextState) {
+        console.log("componentWillUpdate");
+    }
     countNumber() {
         let aNum = 0;
         let bNum = 0;
@@ -56,8 +63,6 @@ export class WdMainItem extends Component {
                 cNum: cNum,
             })
         }
-
-
     }
 
     render() {
@@ -71,7 +76,7 @@ export class WdMainItem extends Component {
                             style={{alignItems: 'center'}}>
                             <View style={styles.iconCircle}>
                                 <Text>{this.state.aNum}</Text></View>
-                            <Text>{App.workType === "板木驻场工程师"?'白胚':'木架'}</Text>
+                            <Text>{App.workType === "板木驻厂工程师"?'白胚':'木架'}</Text>
                         </View>
                         <View style={{alignItems: 'center'}}>
                             <View style={styles.iconCircle}>
@@ -83,12 +88,11 @@ export class WdMainItem extends Component {
                                 <Text>{this.state.cNum}</Text></View>
                             <Text>包装</Text></View>
 
-
                     </View>
                     <View style={styles.line}/>
                     {
                         (() => {
-                            if (App.workType === "板木驻场工程师") {
+                            if (App.workType === "板木驻厂工程师") {
                                 return <View style={styles.textStyle}>
                                     <Text >系列</Text>
                                     <Text style={{

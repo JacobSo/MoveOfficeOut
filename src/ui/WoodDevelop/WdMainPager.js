@@ -44,6 +44,7 @@ class WdMainPager extends Component {
         InteractionManager.runAfterInteractions(() => {
             sqLite.createWdTable();
             this.getDataLocal();
+        //    this._onRefresh();
         });
     }
 
@@ -110,7 +111,7 @@ class WdMainPager extends Component {
                         width: width,
                     }}
                     dataSource={this.state.dataSource}
-                    removeClippedSubviews={false}
+                    //removeClippedSubviews={false}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}

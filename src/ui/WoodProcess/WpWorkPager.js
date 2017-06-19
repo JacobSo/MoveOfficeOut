@@ -521,7 +521,7 @@ export default class WpWorkPager extends Component {
                                             setSelect: (select) => {
                                                 this.setState({SupplierName: select})
                                             },
-                                            isMulti: !this.state.wayMeet,
+                                            isMulti: false,
                                             existData: this.state.SupplierName ? this.state.SupplierName.split(',') : []
                                         },
                                     );
