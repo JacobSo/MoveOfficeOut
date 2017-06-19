@@ -528,7 +528,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
           @autoreleasepool {
             for (NSInteger i = 1; i <= countProduct - 1; i++) {
               @autoreleasepool {
-                NSString *itemSS = [[NSString alloc]initWithFormat:self.htmlModel.Itss,[NSString stringWithFormat:@"%@、%@",[@(i+1) stringValue],array[i]]];
+                NSString *itemSS = [[NSString alloc]initWithFormat:self.htmlModel.Itss,[NSString stringWithFormat:@"%@",array[i]]];
                 pop = [pop stringByAppendingString:itemSS];
               }
             }
