@@ -43,7 +43,7 @@
 @property (nonatomic,strong)NSString *strDocPath;
 @property (nonatomic,strong)NSString *titleStr;
 @property (nonatomic,strong)NSString *typeStr;
-@property (nonatomic,assign) int code;
+@property (nonatomic,assign) int code,woodOrSoft;
 @property (nonatomic,strong)NSString *SeriesName;
 
 
@@ -126,7 +126,7 @@ RCT_EXPORT_METHOD(logoutShareAccount){
  ((AppDelegate *)[UIApplication sharedApplication].delegate).password = nil;
 }
 
-RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson:(int)woodOrSoft:(int)code:(RCTResponseSenderBlock)callback)
 {
   
   WDSeries *serice = [WDSeries mj_objectWithKeyValues:pdfJson];
@@ -149,6 +149,7 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson code:(int)code:(RCTResp
 
   self.serice = serice;
   self.code = code;
+  self.woodOrSoft = woodOrSoft;
   self.SeriesName = serice.SeriesName;
   dispatch_async(dispatch_get_global_queue(0, 0), ^{
     
@@ -351,7 +352,12 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
     NSString *PDFName = @"";
     switch (self.code) {
       case 0:
-        PDFName = @"白胚";
+        if(self.woodOrSoft==1){
+          PDFName = @"白胚";
+        }else{
+          PDFName = @"木架";
+        }
+        
         break;
       case 1:
         PDFName = @"成品";
@@ -365,7 +371,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
     
     
     NSString *path =  NSTemporaryDirectory();
-    self.strDocPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@评审报告.pdf",self.SeriesName,PDFName]];
+    self.strDocPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@评审报告.pdf",self.woodOrSoft?self.SeriesName:self.serice.FacName,PDFName]];
     
     NSLog(@"PDF地址*****%@",self.strDocPath);
     
@@ -406,7 +412,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
   if (!_titleStr_Html) {
     NSString *title;
     //        if (self.phaseType == PhaseType_BP) {
-    title = [NSString stringWithFormat:self.htmlModel.HeadS,self.titleStr,self.serice.FacName,[NSString stringWithFormat:@"评审时间：%@",[Utils kNowTime]]];
+    title = [NSString stringWithFormat:self.htmlModel.HeadS,self.titleStr,self.woodOrSoft==1?self.serice.FacName:@"",[NSString stringWithFormat:@"评审时间：%@",[Utils kNowTime]]];
     
     _titleStr_Html = title;
   }
@@ -593,7 +599,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
 #pragma mark Create UI
 - (NSString *)titleStr{
   if (!_titleStr) {
-    NSString *titleStr = [NSString stringWithFormat:@"（%@）%@评审报告",self.serice.SeriesName,self.typeStr];
+    NSString *titleStr = [NSString stringWithFormat:@"（%@）%@评审报告",self.woodOrSoft==1?self.serice.SeriesName:self.serice.FacName,self.typeStr];
     _titleStr = titleStr;
   }
   return _titleStr;
@@ -603,7 +609,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
   if (!_typeStr) {
     switch (self.code) {
       case 0:
-        _typeStr = @"白胚";
+        _typeStr = self.woodOrSoft==1?@"白胚":@"木架";
         break;
       case 1:
         _typeStr = @"成品";

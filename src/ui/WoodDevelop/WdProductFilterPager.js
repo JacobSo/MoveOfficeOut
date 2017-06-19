@@ -110,6 +110,7 @@ export default class WdProductFilterPager extends Component {
                                         if (Platform.OS === 'ios') {
                                             IosModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
+                                                App.workType==="板木驻场工程师"?1:0,
                                                 this.props.step - 1,
                                                 (result) => {
                                                     setTimeout(() => {

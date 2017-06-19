@@ -99,15 +99,9 @@ export default class LauncherPager extends Component {
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>
-                        <Text>板木研发</Text>
+                        <Text>板木/软体研发</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{alignItems:'center'}} onPress={() => {
-                        Toast.show("很想要吧")
-                    }}>
-                        <Image style={{width: 55, height: 55}} resizeMode="contain"
-                               source={ require('../drawable/ic_launcher_blue_grey.png')}/>
-                        <Text>软体研发</Text>
-                    </TouchableOpacity>
+
                 </View>
             </View>
 
