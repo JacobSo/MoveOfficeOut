@@ -19,6 +19,9 @@ import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
 import {NavigationActions} from "react-navigation";
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
+import SQLite from '../db/Sqlite';
+import {TABLE_W_D, TABLE_W_D_P} from "../db/DBConst";
+let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
 export default class PreferencesPager extends Component {
@@ -72,7 +75,6 @@ export default class PreferencesPager extends Component {
                                 [App.account, '注销登录'],
                                 [App.workType, this.state.department],
                                 ['修改密码', '点击修改密码'],
-
                             ]}
                             functions={[
                                 () => {
@@ -86,6 +88,8 @@ export default class PreferencesPager extends Component {
                                             },
                                             {
                                                 text: '确定', onPress: () => {
+                                                sqLite.clearTable(TABLE_W_D);
+                                                sqLite.clearTable(TABLE_W_D_P);
                                                 if (Platform.OS === 'ios') {
                                                     IosModule.unbindPushAccount('');
                                                     IosModule.logoutShareAccount();

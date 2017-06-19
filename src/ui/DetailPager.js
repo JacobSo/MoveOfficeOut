@@ -314,6 +314,7 @@ const {width, height} = Dimensions.get('window');
     _rejectDialog() {
         return (
             <InputDialog
+                isMulti={false}
                 action={[
                     (popupDialog) => {
                         this.popupDialog = popupDialog;

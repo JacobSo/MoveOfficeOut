@@ -98,6 +98,7 @@ export default class MainPager extends Component {
     _finishDialog() {
         return (
             <InputDialog
+                isMulti={false}
                 action={[
                     (popupDialog) => {
                         this.popupDialog = popupDialog;

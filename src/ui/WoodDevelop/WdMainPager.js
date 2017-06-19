@@ -20,13 +20,14 @@ import Color from '../../constant/Color';
 import App from '../../constant/Application';
 import Toast from 'react-native-root-toast';
 import {WdMainItem} from "../Component/WdMainItem";
-const {width, height} = Dimensions.get('window');
 import {WdActions} from "../../actions/WdAction";
-import SQLite from '../../db/Sqlite';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
+import SQLite from '../../db/Sqlite';
 let sqLite = new SQLite();
+const {width, height} = Dimensions.get('window');
+
 class WdMainPager extends Component {
     constructor(props) {
         super(props);
@@ -62,12 +63,12 @@ class WdMainPager extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (!responseJson.IsErr) {
-                    sqLite.insertWdData(responseJson.Serieslist);//save in db
                     this.setState({
                         items: responseJson.Serieslist,
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.Serieslist),
                         isRefreshing: false,
                     });
+                    sqLite.insertWdData(responseJson.Serieslist);//save in db
                 } else{
                     this.setState({  isRefreshing: false,});
                     Toast.show(responseJson.ErrDesc);
@@ -152,7 +153,7 @@ class WdMainPager extends Component {
 
                 <Toolbar
                     elevation={2}
-                    title={["板木研发"]}
+                    title={[App.workType==="板木驻厂工程师"?"板木研发":"软体研发"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
                     isAction={true}

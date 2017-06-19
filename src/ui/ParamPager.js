@@ -53,20 +53,20 @@ export default class PasswordPager extends Component {
             if (this.props.type === 2) {
                 ApiService.getCarList()
                     .then((responseJson) => {
-                         console.log(responseJson);
+                        console.log(responseJson);
                         if (!responseJson.IsErr) {
                             this.state.items = responseJson.list;
                             this.setState({
                                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                             });
-                        }else Toast.show(responseJson.ErrDesc)
+                        } else Toast.show(responseJson.ErrDesc)
 
                     })
                     .done(this.setState({isLoading: false}))
             } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
-                           console.log(responseJson);
+                        console.log(responseJson);
                         if (!responseJson.IsErr) {
                             this.state.items = responseJson.list;
                             this.setState({
@@ -74,7 +74,7 @@ export default class PasswordPager extends Component {
                                 selectDataSource: this.state.selectDataSource.cloneWithRows(this.state.selectItems),
 
                             });
-                        }else Toast.show(responseJson.ErrDesc)
+                        } else Toast.show(responseJson.ErrDesc)
                     })
                     .done(this.setState({isLoading: false}))
 
@@ -119,14 +119,15 @@ export default class PasswordPager extends Component {
     async  _search(text) {
         //console.log(JSON.stringify(this.state.items))
         return this.state.items.filter((item) => {
-            console.log(item)
-            return item?(item.toLowerCase().indexOf(text.toLowerCase()) > -1):("无");
+            console.log(item);
+            return item ? (item.toLowerCase().indexOf(text.toLowerCase()) > -1) : ("无");
         });
     }
 
     _editDialog() {
         return (
             <InputDialog
+                isMulti={this.props.title.indexOf('供应商') > -1}
                 action={[
                     (popupDialog) => {
                         this.popupDialog = popupDialog;
@@ -151,8 +152,15 @@ export default class PasswordPager extends Component {
                         } else {
                             Toast.show('未填写内容')
                         }
+                    },
+                    ()=>{
+
                     }
-                ]} str={['自行填写', '在此填写内容']}/>
+                ]} str={[
+                this.props.title.indexOf('供应商') > -1 ? '添加供应商' : '添加系列',
+                this.props.title.indexOf('供应商') > -1 ? '供应商简称':'系列名称',
+                '供应商地址，必须详细准确！'
+            ]}/>
         )
     }
 
@@ -162,14 +170,13 @@ export default class PasswordPager extends Component {
                 flex: 1,
                 backgroundColor: 'white'
             }}>
-
                 <Toolbar title={[this.props.title]}
                          color={Color.colorCyan}
                          elevation={2}
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={[this.props.title==="选择供应商"?null:'填写',this.state.isMulti?'完成':null]}
+                         actionArray={['添加', this.state.isMulti ? '完成' : null]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
@@ -177,9 +184,9 @@ export default class PasswordPager extends Component {
                              () => {
                                  this.popupDialog.show();
                              },
-                             this.state.isMulti?()=>{
-                             this._setSelect(this.state.selectItems.toString())
-                             }:null
+                             this.state.isMulti ? () => {
+                                 this._setSelect(this.state.selectItems.toString())
+                             } : null
                          ]}/>
                 <View style={styles.borderBottomLine}>
                     <TextInput style={styles.textInput}
@@ -235,13 +242,13 @@ export default class PasswordPager extends Component {
                                         enableEmptySections={true}
                                         renderRow={ (rowData, sectionID, rowID) =>
                                             <TouchableOpacity onPress={() => {
-                                                console.log(sectionID+','+rowID);
+                                                console.log(sectionID + ',' + rowID);
                                                 let temp = JSON.parse(JSON.stringify(this.state.selectItems));
                                                 temp.splice(rowID, 1);
                                                 console.log(JSON.stringify(this.state.selectItems));
                                                 this.setState({
                                                     selectDataSource: this.state.selectDataSource.cloneWithRows(temp),
-                                                    selectItems:temp
+                                                    selectItems: temp
                                                 });
                                             }}>
                                                 <Text style={{padding: 20}}>{rowData}</Text>

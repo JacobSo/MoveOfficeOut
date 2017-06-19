@@ -112,10 +112,11 @@ public class CommonModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void checkUpdate() {
-        PgyUpdateManager.register(getCurrentActivity(), new UpdateManagerListener() {
+        PgyUpdateManager.register(getCurrentActivity(), "lshome",
+                new UpdateManagerListener() {
 
-            @Override
-            public void onUpdateAvailable(final String result) {
+                    @Override
+                    public void onUpdateAvailable(final String result) {
                 System.out.println(result);
                 final AppBean appBean = getAppBeanFromString(result);
                 new AlertDialog.Builder(getCurrentActivity())

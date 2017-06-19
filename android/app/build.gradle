@@ -12,13 +12,13 @@ InputStream inputStream = project.rootProject.file('local.properties').newDataIn
 properties.load(inputStream)
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.lsapp.moveoffice.out"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 9
         versionName "2.2.0"
          multiDexEnabled true
@@ -94,13 +94,13 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.facebook.react:react-native:+'
     // From  node_modules
     compile 'com.aliyun.ams:alicloud-android-push:3.0.1@aar'
     compile 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
     compile 'com.aliyun.ams:alicloud-android-ut:5.0.0'
-    compile 'com.pgyersdk:sdk:2.2.2'
+    compile 'com.pgyersdk:sdk:2.5.6'
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
     compile project(path: ':library')
     compile project(path: ':react-native-image-picker')

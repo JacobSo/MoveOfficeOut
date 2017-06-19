@@ -14,11 +14,10 @@ const {width, height} = Dimensions.get('window');
 
 export default class InputDialog extends Component {
     static propTypes = {
-        action: PropTypes.array.isRequired,//[ref,change,confirm,dismiss]
-        str: PropTypes.array.isRequired,//[title,holder,]
-
+        action: PropTypes.array.isRequired,//[ref,change,confirm,dismiss,change2]
+        str: PropTypes.array.isRequired,//[title,holder1,holder2]
+        isMulti: PropTypes.bool.isRequired
     };
-
 
     render() {
         return (
@@ -37,6 +36,22 @@ export default class InputDialog extends Component {
                                    underlineColorAndroid="transparent"
                                    onChangeText={this.props.action[1]}/>
                     </View>
+
+                    {
+                        (() => {
+                            if (this.props.isMulti) {
+                                return <View style={styles.borderBottomLine}>
+                                    <TextInput style={styles.textInput}
+                                               placeholder={this.props.str[1]}
+                                               returnKeyType={'done'}
+                                               blurOnSubmit={true}
+                                               underlineColorAndroid="transparent"
+                                               onChangeText={this.props.action[4]}/>
+                                </View>
+                            }
+                        })()
+                    }
+
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={this.props.action[2]}>
                             <Text style={{margin: 16}}>取消</Text>
@@ -68,7 +83,7 @@ const styles = StyleSheet.create({
 
     textInput: {
         width: width - 64,
-        height: 65,
+        height: 45,
         marginLeft: 16,
         marginRight: 16,
         borderColor: Color.line,

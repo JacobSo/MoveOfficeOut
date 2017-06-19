@@ -104,13 +104,13 @@ class WdProductListPager extends Component {
                             {
                                 task: this.props.task,
                                 step: 1,
-                                stepName: App.workType === "板木驻厂工程师"?'打印白胚评审':'打印木架评审',
+                                stepName: App.workType === "板木驻厂工程师" ? '打印白胚评审' : '打印木架评审',
                                 selectMode: true,
                             },
                         );
                         this.popupDialog.dismiss();
                     }}>
-                        <Text style={{margin: 16}}>{App.workType === "板木驻厂工程师"?'白胚评审报表':'木架评审报表'}</Text>
+                        <Text style={{margin: 16}}>{App.workType === "板木驻厂工程师" ? '白胚评审报表' : '木架评审报表'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
@@ -157,7 +157,7 @@ class WdProductListPager extends Component {
                                 {
                                     task: this.props.task,
                                     step: 1,
-                                    stepName: App.workType === "板木驻厂工程师"?'白胚评审进度':'木架评审进度',
+                                    stepName: App.workType === "板木驻厂工程师" ? '白胚评审进度' : '木架评审进度',
                                     selectMode: false,
                                 },
                             );
@@ -165,7 +165,7 @@ class WdProductListPager extends Component {
                         style={{alignItems: 'center'}}>
                         <View style={styles.iconCircle}>
                             <Text>{this.state.aNum}</Text></View>
-                        <Text >{App.workType==="板木驻厂工程师"?'白胚':'木架'}</Text>
+                        <Text >{App.workType === "板木驻厂工程师" ? '白胚' : '木架'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
@@ -210,7 +210,7 @@ class WdProductListPager extends Component {
                                 })
                             }
                             Alert.alert(
-                                App.workType==="板木驻厂工程师"?this.props.task.SeriesName:'评审信息',
+                                App.workType === "板木驻厂工程师" ? this.props.task.SeriesName : '评审信息',
                                 "预约评审时间：" + this.props.task.SeriesName + '\n' +
                                 "工厂：" + this.props.task.FacName + '\n' +
                                 "电话：" + this.props.task.sFactoryCall + '\n' +
@@ -255,28 +255,49 @@ class WdProductListPager extends Component {
                 switch (data.stage) {
                     case 7://all
                         let temp = data.pResultList.split(",");
-                        result = (temp.length === 3) &&
-                            (data.pResultList.indexOf("0-1") > -1) &&
-                            (data.pResultList.indexOf("1-1") > -1) &&
-                            (data.pResultList.indexOf("2-1") > -1);
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+
+                            result = (temp.length === 3) &&
+                                (data.pResultList.indexOf("0-1") > -1) &&
+                                (data.pResultList.indexOf("1-1") > -1) &&
+                                (data.pResultList.indexOf("2-1") > -1);
+                        } else {
+                            result = (temp.length === 3) &&
+                                (data.pResultList.indexOf("0-") > -1) &&
+                                (data.pResultList.indexOf("1-") > -1) &&
+                                (data.pResultList.indexOf("2-") > -1);
+                        }
+
                         break;
                     case 6://ab
-                        result = ((data.pResultList.indexOf("0-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+                            result = ((data.pResultList.indexOf("0-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                        } else  result = ((data.pResultList.indexOf("0-") > -1 && data.pResultList.indexOf("1-") > -1));
                         break;
                     case 5://ac
-                        result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("0-1") > -1));
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+                            result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("0-1") > -1));
+                        } else  result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("0-") > -1));
                         break;
                     case 4://a
-                        result = (data.pResultList.indexOf("0-1") > -1);
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+                            result = (data.pResultList.indexOf("0-1") > -1);
+                        } else  result = (data.pResultList.indexOf("0-") > -1);
                         break;
                     case 3://bc
-                        result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+                            result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                        } else   result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("1-") > -1));
                         break;
                     case 2://b
-                        result = (data.pResultList.indexOf("1-1") > -1);
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+                            result = (data.pResultList.indexOf("1-1") > -1);
+                        } else   result = (data.pResultList.indexOf("1-") > -1);
                         break;
                     case 1://c
-                        result = (data.pResultList.indexOf("2-1") > -1);
+                        if (App.workType.indexOf("板木驻厂") > -1) {
+                            result = (data.pResultList.indexOf("2-1") > -1);
+                        } else result = (data.pResultList.indexOf("2-") > -1);
                         break;
                 }
             }
