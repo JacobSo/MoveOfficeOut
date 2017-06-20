@@ -9,7 +9,9 @@ import {
     Alert, Dimensions,
     Platform,
     Text,
-    StyleSheet
+    StyleSheet,
+    Linking
+
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -121,7 +123,8 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', "v3"]
+                                ['此版本更新记录', 'v3'],
+                                ['手动更新','http://pgyer.com/lsout']
                             ]}
                             functions={[
                                 () => {
@@ -133,6 +136,9 @@ export default class PreferencesPager extends Component {
                                 },
                                 () => {
                                     this.popupDialog.show();
+                                },
+                                ()=>{
+                                    Linking.openURL('http://pgyer.com/lsout');
                                 }]}/>
                     </View>
                 </ScrollView>
