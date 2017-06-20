@@ -332,7 +332,9 @@ const {width, height} = Dimensions.get('window');
                     }
                 ]} str={['驳回', '驳回内容']}/>
         )
-    }
+            }
+            
+            
 
 
     _finish(flag) {
