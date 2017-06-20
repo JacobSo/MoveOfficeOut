@@ -100,7 +100,7 @@ dependencies {
     compile 'com.aliyun.ams:alicloud-android-push:3.0.7@aar'
     compile 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
     compile 'com.aliyun.ams:alicloud-android-ut:5.0.0'
-    compile 'com.pgyersdk:sdk:2.2.2'
+    compile 'com.pgyersdk:sdk:2.4.5'
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
     compile project(path: ':library')
     compile project(path: ':react-native-image-picker')
