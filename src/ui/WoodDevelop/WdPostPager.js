@@ -88,13 +88,13 @@ class WdPostPager extends Component {
         sqLite.getWdDraftPic(this.props.product.ItemGuid, this.props.step)
             .then((result) => {
                 if (result) {
-                   // console.log(JSON.stringify(result));
+                    console.log(JSON.stringify(result));
 
                     this.setState({
                         pics: result,
                         dataSource: this.state.dataSource.cloneWithRows(result)
                     });
-                   // console.log(JSON.stringify(this.state.dataSource));
+                    console.log(JSON.stringify(this.state.dataSource));
 
                 }
             }).done();
@@ -117,7 +117,7 @@ class WdPostPager extends Component {
     formatString() {
         let temp = this.state.editContent.split('\n').join('');
         temp = temp.split("∝").join("|");
-        //console.log(temp);
+        console.log(temp);
         return temp
     }
 
@@ -248,15 +248,15 @@ class WdPostPager extends Component {
         this.state.product.pStatusPass = this.state.isPass;
 
         if (!this.state.product.pResultList) {
-            this.state.product.pResultList = result;//pass
+            this.state.product.pResultList = result;
         } else if (this.state.product.pResultList.indexOf(this.props.step + "-0") > -1) {
             this.state.product.pResultList = this.state.product.pResultList.replace(this.props.step + "-0", result)
         } else if (this.state.product.pResultList.indexOf(this.props.step + "-1") > -1) {
-            console.log('exist pre:' + this.state.product.pResultList);
-            this.state.product.pResultList = this.state.product.pResultList.replace(this.props.step + "-1", result);
-            console.log('exist after:' + this.state.product.pResultList)
+            console.log('3:' + this.state.product.pResultList);
+            this.state.product.pResultList = this.state.product.pResultList.replace(this.props.step + "-1", result)
+            console.log('3:' + this.state.product.pResultList)
         } else {
-            this.state.product.pResultList += (','+result);//pass
+            this.state.product.pResultList += (','+result);
         }
 
         let tempPicsPath = [];
@@ -275,7 +275,7 @@ class WdPostPager extends Component {
             this.state.product.pStatusPicC = tempPicsPath;
         }
         // console.log(result)
-        //\12313212/  console.log(this.state.product.pResultList)
+        ///  console.log(this.state.product.pResultList)
         sqLite.updateWdStatus(this.state.submitContent, tempPicsPath, this.state.product.pResultList);
         this.props.actions.updateProduct(JSON.parse(JSON.stringify(this.state.product)), this.props.position);
     }
@@ -333,7 +333,7 @@ class WdPostPager extends Component {
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                     //       console.log(JSON.stringify(this.state.pics));
+                                            console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
                                 }}>
@@ -344,11 +344,11 @@ class WdPostPager extends Component {
                                     /></TouchableOpacity>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchImageLibrary(options, (response) => {
-                                     //   console.log(JSON.stringify(response));
+                                        console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                           // console.log(JSON.stringify(this.state.pics));
+                                            console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
                                 }}>
@@ -398,7 +398,7 @@ class WdPostPager extends Component {
                                             onPress={() => {
                                                 //  console.log(rowID + ":" + sectionID);
                                                 this.state.pics.splice(sectionID, 1);
-                                                //console.log("delete:" + JSON.stringify(this.state.pics));
+                                                console.log("delete:" + JSON.stringify(this.state.pics));
                                                 this.setState(
                                                     {
                                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
