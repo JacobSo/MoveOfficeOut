@@ -22,6 +22,8 @@ import {connect} from "react-redux";
 import Toast from 'react-native-root-toast';
 import ApiService from '../../network/WdApiService';
 import App from '../../constant/Application';
+import SnackBar from 'react-native-snackbar-dialog'
+import Loading from 'react-native-loading-spinner-overlay';
 
 const {width, height} = Dimensions.get('window');
 
@@ -30,6 +32,7 @@ class WdProductListPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading:false,
             items: this.props.task.Itemlist,
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
@@ -358,6 +361,27 @@ class WdProductListPager extends Component {
                                         text: '确定', onPress: () => {
                                         if (this.finishCheck()) {
                                             ApiService.submitStatus(this.props.task.SeriesGuid)
+                                                .then((responseJson) => {
+                                                    console.log(JSON.stringify(responseJson));
+                                                    setTimeout(() => {
+                                                        this.setState({isLoading: false})
+                                                    }, 100);
+                                                    if (!responseJson.IsErr) {
+                                                        if (index === this.state.submitPic.length - 1) {
+                                                            SnackBar.show("提交成功", {duration: 3000});
+                                                            this.props.nav.goBack(null)
+                                                        }
+                                                    } else {
+                                                        SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                                                    }
+                                                })
+                                                .catch((error) => {
+                                                    console.log(error);
+                                                    SnackBar.show("出错了，请稍后再试", {duration: 3000});
+                                                        setTimeout(() => {
+                                                            this.setState({isLoading: false})
+                                                        }, 100);
+                                                }).done();
                                         }
                                     }
                                     },
@@ -399,6 +423,7 @@ class WdProductListPager extends Component {
                         />
                     }/>
                 {this.printSelection()}
+                <Loading visible={this.state.isLoading}/>
             </View>
         )
     }
