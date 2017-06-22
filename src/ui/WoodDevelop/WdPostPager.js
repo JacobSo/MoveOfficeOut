@@ -256,7 +256,7 @@ class WdPostPager extends Component {
             this.state.product.pResultList = this.state.product.pResultList.replace(this.props.step + "-1", result);
             console.log('exist after:' + this.state.product.pResultList)
         } else {
-            this.state.product.pResultList += (',,,,,,'+result);//pass
+            this.state.product.pResultList += (','+result);//pass
         }
 
         let tempPicsPath = [];
