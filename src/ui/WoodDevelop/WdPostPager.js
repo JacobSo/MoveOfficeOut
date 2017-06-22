@@ -275,7 +275,7 @@ class WdPostPager extends Component {
             this.state.product.pStatusPicC = tempPicsPath;
         }
         // console.log(result)
-        ///  console.log(this.state.product.pResultList)
+        //\12313212/  console.log(this.state.product.pResultList)
         sqLite.updateWdStatus(this.state.submitContent, tempPicsPath, this.state.product.pResultList);
         this.props.actions.updateProduct(JSON.parse(JSON.stringify(this.state.product)), this.props.position);
     }
