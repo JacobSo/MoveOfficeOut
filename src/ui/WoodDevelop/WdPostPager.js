@@ -256,7 +256,7 @@ class WdPostPager extends Component {
             this.state.product.pResultList = this.state.product.pResultList.replace(this.props.step + "-1", result);
             console.log('exist after:' + this.state.product.pResultList)
         } else {
-            this.state.product.pResultList += (','+result);//pass
+            this.state.product.pResultList += (',,,,,,'+result);//pass
         }
 
         let tempPicsPath = [];
@@ -275,7 +275,7 @@ class WdPostPager extends Component {
             this.state.product.pStatusPicC = tempPicsPath;
         }
         // console.log(result)
-        //\12313212/  console.log(this.state.product.pResultList)
+        //  console.log(this.state.product.pResultList)
         sqLite.updateWdStatus(this.state.submitContent, tempPicsPath, this.state.product.pResultList);
         this.props.actions.updateProduct(JSON.parse(JSON.stringify(this.state.product)), this.props.position);
     }
