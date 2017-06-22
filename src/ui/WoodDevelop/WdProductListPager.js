@@ -360,6 +360,7 @@ class WdProductListPager extends Component {
                                     {
                                         text: '确定', onPress: () => {
                                         if (this.finishCheck()) {
+                                            this.setState({isLoading: true})
                                             ApiService.submitStatus(this.props.task.SeriesGuid)
                                                 .then((responseJson) => {
                                                     console.log(JSON.stringify(responseJson));
