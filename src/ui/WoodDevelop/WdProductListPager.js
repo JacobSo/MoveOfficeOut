@@ -51,12 +51,16 @@ class WdProductListPager extends Component {
 
     componentWillReceiveProps(newProps) {
         this.countNumber();
-        //console.log("product:componentWillReceiveProps")
+      //  console.log("product:componentWillReceiveProps");
+      //  console.log(JSON.stringify(newProps));
+        //   console.log(JSON.stringify(this.props.task.Itemlist));
+        if (newProps.product)
+         this.state.items[newProps.position] = newProps.product;
+    //    newProps.task.Itemlist[newProps.position] = newProps.product
+     //   console.log(JSON.stringify(  '^^^^^^^^^^^^^^^^^^^^^^^'+JSON.stringify(this.state.items)));
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
-
-
     }
 
     countNumber() {

@@ -43,7 +43,7 @@ class WdProductDetailPager extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(newProps) + '-------------------------')
+        //console.log(JSON.stringify(newProps) + '------------WdProductDetailPager-------------')
         this.setStatus();
     }
 

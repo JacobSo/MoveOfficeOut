@@ -12,7 +12,7 @@ let database_version = "1.0";
 let database_displayname = "MySQLite";
 let database_size = -1;
 let db;
-SQLiteStorage.DEBUG(true);
+SQLiteStorage.DEBUG(false);
 
 export  default  class Sqlite extends Component {
     render() {

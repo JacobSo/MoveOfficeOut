@@ -19,6 +19,7 @@ export class WdProductItem extends Component {
             statusText: "未开始",
             statusColor: Color.content,
             isAllFinish: false,
+            product:this.props.product,
         }
     }
 
@@ -28,7 +29,10 @@ export class WdProductItem extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(newProps) + '---------product----------------');
+      //  console.log(JSON.stringify(newProps) + '---------product----------------');
+        this.setState({product:newProps.product});
+        this.state.product=newProps.product;
+
         this.setStatus();
 
     }
@@ -37,21 +41,22 @@ export class WdProductItem extends Component {
         let color;
         let text;
         let finish = false;
-        if (this.props.product.pResultList) {
-            finish = ((this.props.product.pResultList.indexOf("0-1") > -1)
-            && (this.props.product.pResultList.indexOf("1-1") > -1)
-            && (this.props.product.pResultList.indexOf("2-1") > -1));
-            if (this.props.product.pStatus === 0) {
+        console.log(this.state.product.pResultList);
+        if (this.state.product.pResultList) {
+            finish = ((this.state.product.pResultList.indexOf("0-1") > -1)
+            && (this.state.product.pResultList.indexOf("1-1") > -1)
+            && (this.state.product.pResultList.indexOf("2-1") > -1));
+            if (this.state.product.pStatus === 0) {
                 color = Color.colorOrange;
-                text = (this.props.product.pResultList.indexOf("0-1") > -1) ? "白胚-通过" : "白胚-不通过";
+                text = (this.state.product.pResultList.indexOf("0-1") > -1) ? "白胚-通过" : "白胚-不通过";
             }
-            else if (this.props.product.pStatus === 1) {
+            else if (this.state.product.pStatus === 1) {
                 color = Color.colorBlue;
-                text = (this.props.product.pResultList.indexOf("1-1") > -1) ? "成品-通过" : "成品-不通过";
+                text = (this.state.product.pResultList.indexOf("1-1") > -1) ? "成品-通过" : "成品-不通过";
             }
-            else if (this.props.product.pStatus === 2) {
+            else if (this.state.product.pStatus === 2) {
                 color = Color.colorGreen;
-                text = (this.props.product.pResultList.indexOf("2-1") > -1) ? "包装-通过" : "包装-不通过";
+                text = (this.state.product.pResultList.indexOf("2-1") > -1) ? "包装-通过" : "包装-不通过";
             }
 
             this.setState({
@@ -65,9 +70,9 @@ export class WdProductItem extends Component {
     getImageLocalPath(){
             const immutable = true;
             const observer = (path) => {
-                console.log(path);
+            //    console.log(path);
             };
-            const uri = {uri: this.props.product.pImage};
+            const uri = {uri: this.state.product.pImage};
             ImageCache.get().on(uri, observer, immutable);
     }
 
@@ -90,7 +95,7 @@ export class WdProductItem extends Component {
                                 resizeMode="contain"
                                 indicator={require('../../drawable/empty_image.png')}
                                 style={{width: 100, height: 100, margin: 5}}
-                                source={{uri: this.props.product.pImage?this.props.product.pImage:'-'}}/>
+                                source={{uri: this.state.product.pImage?this.state.product.pImage:'-'}}/>
                         </View>
 
                         <View style={{flexDirection: 'column'}}>
@@ -98,8 +103,8 @@ export class WdProductItem extends Component {
                                 margin: 10,
                                 fontSize: 15,
                                 color: 'black'
-                            }}>{'型号：' + this.props.product.ItemName}</Text>
-                            <Text style={{marginLeft: 10, marginRight: 10, width: 150,}}>{'描述：' + this.props.product.ItemRemark}</Text>
+                            }}>{'型号：' + this.state.product.ItemName}</Text>
+                            <Text style={{marginLeft: 10, marginRight: 10, width: 150,}}>{'描述：' + this.state.product.ItemRemark}</Text>
                         </View>
                     </View>
                     {

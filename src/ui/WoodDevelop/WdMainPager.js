@@ -45,16 +45,16 @@ class WdMainPager extends Component {
         InteractionManager.runAfterInteractions(() => {
             sqLite.createWdTable();
             this.getDataLocal();
-        //    this._onRefresh();
+            //    this._onRefresh();
         });
     }
 
     componentWillReceiveProps(newProps) {
-            console.log(JSON.stringify(newProps) + '-------------------------')
-            this.state.items[newProps.position] = newProps.product;
-         this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-         })
+      //  console.log(JSON.stringify( this.state.items) + '-------------------------')
+      //  this.state.items.Itemlist[newProps.position] = newProps.product;
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+        })
     }
 
     _onRefresh() {
@@ -69,13 +69,13 @@ class WdMainPager extends Component {
                         isRefreshing: false,
                     });
                     sqLite.insertWdData(responseJson.Serieslist);//save in db
-                } else{
-                    this.setState({  isRefreshing: false,});
+                } else {
+                    this.setState({isRefreshing: false,});
                     Toast.show(responseJson.ErrDesc);
                 }
             })
             .catch((error) => {
-                this.setState({  isRefreshing: false,});
+                this.setState({isRefreshing: false,});
                 console.log(error);
                 Toast.show("出错了，请稍后再试");
             }).done();
@@ -102,7 +102,9 @@ class WdMainPager extends Component {
 
     _getView() {
         if (this.state.items.length === 0) {
-            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={()=>{this._onRefresh()} } />)
+            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
+                this._onRefresh()
+            } }/>)
         } else {
             return (
                 <ListView
@@ -141,7 +143,7 @@ class WdMainPager extends Component {
     }
 
     async  _search(text) {
-        return this.state.items.filter((item) => (item.SeriesName.toLowerCase().indexOf(text.toLowerCase()) > -1)|| (item.FacName.indexOf(text) > -1));
+        return this.state.items.filter((item) => (item.SeriesName.toLowerCase().indexOf(text.toLowerCase()) > -1) || (item.FacName.indexOf(text) > -1));
     }
 
     render() {
@@ -153,7 +155,7 @@ class WdMainPager extends Component {
 
                 <Toolbar
                     elevation={2}
-                    title={[App.workType==="板木驻厂工程师"?"板木研发":"软体研发"]}
+                    title={[App.workType === "板木驻厂工程师" ? "板木研发" : "软体研发"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
                     isAction={true}
@@ -166,7 +168,7 @@ class WdMainPager extends Component {
                                     isSearch: !this.state.isSearch,
                                     isHeader: true
                                 })
-                            }else this.props.nav.goBack(null)
+                            } else this.props.nav.goBack(null)
                         },
                         () => {
                             this.setState({isSearch: !this.state.isSearch})
