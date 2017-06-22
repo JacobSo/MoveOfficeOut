@@ -367,10 +367,8 @@ class WdProductListPager extends Component {
                                                         this.setState({isLoading: false})
                                                     }, 100);
                                                     if (!responseJson.IsErr) {
-                                                        if (index === this.state.submitPic.length - 1) {
                                                             SnackBar.show("提交成功", {duration: 3000});
                                                             this.props.nav.goBack(null)
-                                                        }
                                                     } else {
                                                         SnackBar.show(responseJson.ErrDesc, {duration: 3000});
                                                     }
