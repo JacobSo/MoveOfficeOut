@@ -573,13 +573,13 @@ export default class WpWorkPager extends Component {
                                 enableEmptySections={true}
                                 renderRow={ (rowData, sectionID, rowID) =>
                                     <WpProductItem
-                                        isWood={this.props.task.ReviewType}
+                                        isWood={this.state.isWood}
                                         product={rowData}
                                         func={() => {
                                             this.props.nav.navigate(
                                                 'wpDetail',
                                                 {
-                                                    isWood:this.props.task.ReviewType,
+                                                    isWood:this.state.isWood,
                                                     product: rowData,
                                                     delFunc: () => {
                                                         delete this.state.items[rowData.Id];
