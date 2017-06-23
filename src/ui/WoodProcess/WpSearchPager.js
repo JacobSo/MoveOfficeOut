@@ -190,7 +190,7 @@ export default class PasswordPager extends Component {
                                             this.state.select[0] = !this.state.select[0];
                                             this.setState({select: this.state.select})
                                         }}>
-                                        <Text style={{color: "white", textAlign: "center"}}>白胚</Text>
+                                        <Text style={{color: "white", textAlign: "center"}}>{this.props.isWood===1?'白胚':'木架'}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorPurple : Color.line)},]}
