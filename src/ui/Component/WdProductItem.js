@@ -6,6 +6,7 @@ import React, {Component, PropTypes} from 'react';
 import {View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import {CachedImage, ImageCache} from "react-native-img-cache";
+import App from '../../constant/Application';
 const {width, height} = Dimensions.get('window');
 export class WdProductItem extends Component {
     static propTypes = {
@@ -48,7 +49,7 @@ export class WdProductItem extends Component {
             && (this.state.product.pResultList.indexOf("2-1") > -1));
             if (this.state.product.pStatus === 0) {
                 color = Color.colorOrange;
-                text = (this.state.product.pResultList.indexOf("0-1") > -1) ? "白胚-通过" : "白胚-不通过";
+                text =(App.workType === "板木驻厂工程师"?'白胚':'木架') +((this.state.product.pResultList.indexOf("0-1") > -1) ? "-通过" : "-不通过");
             }
             else if (this.state.product.pStatus === 1) {
                 color = Color.colorBlue;

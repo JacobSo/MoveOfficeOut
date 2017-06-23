@@ -25,28 +25,27 @@ export class WdMainItem extends Component {
     }
 
     componentDidMount() {
-        console.log("componentDidMount");
-        this.countNumber();
+     //   console.log("componentDidMount");
+        this.countNumber(this.props.task.Itemlist);//init
 
     }
 
     componentWillReceiveProps(newProps) {
-        console.log("componentWillReceiveProps");
-       this.countNumber();
+     //   console.log("componentWillReceiveProps:"+JSON.stringify(newProps));
+       this.countNumber(newProps.task.Itemlist);
     }
     componentDidUpdate(preProps, preState) {
-        console.log("componentDidUpdate");
-  //      this.countNumber();
+      //  console.log("componentDidUpdate");
     }
     componentWillUpdate(nextProps, nextState) {
-        console.log("componentWillUpdate");
+      //  console.log("componentWillUpdate");
     }
-    countNumber() {
+    countNumber(list) {
         let aNum = 0;
         let bNum = 0;
         let cNum = 0;
-        if (this.props.task.Itemlist) {
-            this.props.task.Itemlist.map((data) => {
+        if (list) {
+            list.map((data) => {
                 if (data.pResultList.indexOf("0-1") > -1) {
                     aNum++;
                 }

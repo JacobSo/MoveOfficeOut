@@ -154,7 +154,10 @@ export  default  class Sqlite extends Component {
             });
     }
 
-
+    clearWdData(){
+        this.clearTable(TABLE_W_D);
+        this.clearTable(TABLE_W_D_P);
+    }
     insertWdData(wdData) {
         // console.log('----------'+JSON.stringify(wdData))
         if (!db) {
@@ -163,8 +166,7 @@ export  default  class Sqlite extends Component {
         if (wdData && wdData.length !== 0) {
             let i = 0;
             db.transaction((tx) => {
-                this.clearTable(TABLE_W_D);
-                this.clearTable(TABLE_W_D_P);
+               this.clearWdData();
                 wdData.map((series) => {
                     // console.log('----------'+JSON.stringify(series))
                     db.executeSql(
@@ -411,6 +413,22 @@ export  default  class Sqlite extends Component {
                 })
         })
     }
+
+    clearWdSeries(sid){
+        if (!db) {
+            this.open();
+        }//
+        let temp = [];
+        db.executeSql("DELETE FROM " + TABLE_W_D +
+            " WHERE SeriesGuid = '" + sid + "';", [],
+            () => {
+                console.log("clearWdSeries success" )
+            }, (err) => {
+                console.log("clearWdSeries err:" + JSON.stringify(err))
+            })
+    }
+
+
 
     /**
      *  QC part

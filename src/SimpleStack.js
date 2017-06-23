@@ -258,7 +258,7 @@ const SimpleStack = StackNavigator({
         },
     },
     {
-        initialRouteName: 'wdMain',
+        initialRouteName: 'login',
         headerMode: 'none',
     });
 

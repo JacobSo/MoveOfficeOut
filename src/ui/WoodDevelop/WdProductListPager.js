@@ -32,7 +32,7 @@ class WdProductListPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading:false,
+            isLoading: false,
             items: this.props.task.Itemlist,
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
@@ -54,13 +54,13 @@ class WdProductListPager extends Component {
 
     componentWillReceiveProps(newProps) {
         this.countNumber();
-      //  console.log("product:componentWillReceiveProps");
-      //  console.log(JSON.stringify(newProps));
+        //  console.log("product:componentWillReceiveProps");
+        //  console.log(JSON.stringify(newProps));
         //   console.log(JSON.stringify(this.props.task.Itemlist));
         if (newProps.product)
-         this.state.items[newProps.position] = newProps.product;
-    //    newProps.task.Itemlist[newProps.position] = newProps.product
-     //   console.log(JSON.stringify(  '^^^^^^^^^^^^^^^^^^^^^^^'+JSON.stringify(this.state.items)));
+            this.state.items[newProps.position] = newProps.product;
+        //    newProps.task.Itemlist[newProps.position] = newProps.product
+        //   console.log(JSON.stringify(  '^^^^^^^^^^^^^^^^^^^^^^^'+JSON.stringify(this.state.items)));
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
@@ -243,7 +243,8 @@ class WdProductListPager extends Component {
                             this.popupDialog.show()
                         }}>
                         <Text style={{marginRight: 10, marginLeft: 10, color: Color.colorDeepOrange}}>生成报告
-                        </Text></TouchableOpacity>
+                        </Text>
+                    </TouchableOpacity>
 
                 </View>
             </View>)
@@ -316,6 +317,33 @@ class WdProductListPager extends Component {
         return true;
     }
 
+    finishTask(){
+        if (this.finishCheck()) {
+            this.setState({isLoading: true})
+            ApiService.submitStatus(this.props.task.SeriesGuid)
+                .then((responseJson) => {
+                    console.log(JSON.stringify(responseJson));
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                    if (!responseJson.IsErr) {
+                        SnackBar.show("提交成功", {duration: 3000});
+                        this.props.finishFunc();
+                        this.props.nav.goBack(null)
+                    } else {
+                        SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    SnackBar.show("出错了，请稍后再试", {duration: 3000});
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }).done();
+        }
+    }
+
 
     render() {
         console.log("product list render")
@@ -359,29 +387,7 @@ class WdProductListPager extends Component {
                                     },
                                     {
                                         text: '确定', onPress: () => {
-                                        if (this.finishCheck()) {
-                                            this.setState({isLoading: true})
-                                            ApiService.submitStatus(this.props.task.SeriesGuid)
-                                                .then((responseJson) => {
-                                                    console.log(JSON.stringify(responseJson));
-                                                    setTimeout(() => {
-                                                        this.setState({isLoading: false})
-                                                    }, 100);
-                                                    if (!responseJson.IsErr) {
-                                                            SnackBar.show("提交成功", {duration: 3000});
-                                                            this.props.nav.goBack(null)
-                                                    } else {
-                                                        SnackBar.show(responseJson.ErrDesc, {duration: 3000});
-                                                    }
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error);
-                                                    SnackBar.show("出错了，请稍后再试", {duration: 3000});
-                                                        setTimeout(() => {
-                                                            this.setState({isLoading: false})
-                                                        }, 100);
-                                                }).done();
-                                        }
+                                            this.finishTask();
                                     }
                                     },
                                 ]

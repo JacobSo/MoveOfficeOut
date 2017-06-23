@@ -397,8 +397,7 @@ class WdPostPager extends Component {
                                                 //  console.log(rowID + ":" + sectionID);
                                                 this.state.pics.splice(sectionID, 1);
                                                 //console.log("delete:" + JSON.stringify(this.state.pics));
-                                                this.setState(
-                                                    {
+                                                this.setState({
                                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
                                                     });
                                                 //   console.log(JSON.stringify(this.state.dataSource))

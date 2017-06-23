@@ -50,8 +50,8 @@ class WdMainPager extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-      //  console.log(JSON.stringify( this.state.items) + '-------------------------')
-      //  this.state.items.Itemlist[newProps.position] = newProps.product;
+        console.log(JSON.stringify(this.state.items) + '------------WdMainPager-------------')
+        //  this.state.items.Itemlist[newProps.position] = newProps.product;
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         })
@@ -59,6 +59,7 @@ class WdMainPager extends Component {
 
     _onRefresh() {
         this.setState({isRefreshing: true});
+        sqLite.clearWdData();
         ApiService.getSeries()
             .then((responseJson) => {
                 console.log(responseJson);
@@ -70,12 +71,20 @@ class WdMainPager extends Component {
                     });
                     sqLite.insertWdData(responseJson.Serieslist);//save in db
                 } else {
-                    this.setState({isRefreshing: false,});
                     Toast.show(responseJson.ErrDesc);
+                    this.setState({
+                        items: [],
+                        dataSource: this.state.dataSource.cloneWithRows([]),
+                        isRefreshing: false,
+                    });
                 }
             })
             .catch((error) => {
-                this.setState({isRefreshing: false,});
+                this.setState({
+                    items: [],
+                    dataSource: this.state.dataSource.cloneWithRows([]),
+                    isRefreshing: false,
+                });
                 console.log(error);
                 Toast.show("出错了，请稍后再试");
             }).done();
@@ -133,7 +142,16 @@ class WdMainPager extends Component {
                             func={() => {
                                 this.props.nav.navigate(
                                     'wdProduct',
-                                    {task: rowData,},
+                                    {
+                                        task: rowData,
+                                        finishFunc: () => {
+                                            sqLite.clearWdSeries(rowData.SeriesGuid);
+                                            this.state.items.splice(sectionID, 1);
+                                            this.setState({
+                                                dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                            });
+                                        }
+                                    },
                                 );
                             }}
                         />
@@ -141,6 +159,7 @@ class WdMainPager extends Component {
             )
         }
     }
+
 
     async  _search(text) {
         return this.state.items.filter((item) => (item.SeriesName.toLowerCase().indexOf(text.toLowerCase()) > -1) || (item.FacName.indexOf(text) > -1));
