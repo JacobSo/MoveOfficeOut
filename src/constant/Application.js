@@ -14,6 +14,7 @@ export  default  class Application extends Component {
     static dptList = "";
     static pwd = '';
     static jobType = '0';
+    static FirstDptId = '0';
 
     static initAccount(callback) {
         AsyncStorage.getAllKeys((err, keys) => {
@@ -30,6 +31,7 @@ export  default  class Application extends Component {
                     if (key === "check") this.check = value === '1';
                     if (key === "pwd") this.pwd = value;
                     if (key === "jobType") this.jobType = value;
+                    if (key === "FirstDptId") this.FirstDptId = value;
                     if (key === "dptList" && value && !value.includes('[object'))
                         this.dptList = JSON.parse(value);
                 });
@@ -37,7 +39,7 @@ export  default  class Application extends Component {
         });
     }
 
-    static saveAccount(session, account, department, workType, check, dptList, pwd, jobType) {
+    static saveAccount(session, account, department, workType, check, dptList, pwd, jobType,FirstDptId) {
         this.session = session;
         this.account = account;
         this.department = department;
@@ -46,6 +48,7 @@ export  default  class Application extends Component {
         this.dptList = dptList;
         this.pwd = pwd;
         this.jobType = jobType;
+        this.FirstDptId = FirstDptId;
         // console.log("---" + session + "---" + account + "---" + department + "---" + workType+'------'+JSON.stringify(dptList)+'-----'+pwd);
         AsyncStorage.multiSet(
             [
@@ -57,6 +60,7 @@ export  default  class Application extends Component {
                 ['dptList', check ? JSON.stringify(dptList) + '' : ''],
                 ['pwd', check ? pwd : ''],
                 ['jobType', check ? jobType : ''],
+                ['FirstDptId', check ? FirstDptId : ''],
             ])
             .then(() => {
                     console.log("save success!");

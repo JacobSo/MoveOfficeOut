@@ -42,7 +42,7 @@ export default class InputDialog extends Component {
                             if (this.props.isMulti) {
                                 return <View style={styles.borderBottomLine}>
                                     <TextInput style={styles.textInput}
-                                               placeholder={this.props.str[1]}
+                                               placeholder={this.props.str[2]}
                                                returnKeyType={'done'}
                                                blurOnSubmit={true}
                                                underlineColorAndroid="transparent"

@@ -18,6 +18,7 @@ import Loading from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import ApiService from '../network/ApiService';
 import InputDialog from "./Component/InputDialog";
+import App from '../constant/Application';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class PasswordPager extends Component {
@@ -28,6 +29,7 @@ export default class PasswordPager extends Component {
             isMulti: this.props.isMulti,
             isLoading: false,
             editContent: '',
+            editContentSub:'',
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
@@ -43,6 +45,7 @@ export default class PasswordPager extends Component {
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
         this._getData();
+      //  console.log(App.FirstDptId+'--------------')
         //     });
     }
 
@@ -85,7 +88,6 @@ export default class PasswordPager extends Component {
 
     _setSelect(rowData) {
         if (this.props.type === 2) {//car
-
             ApiService.addCar(this.props.searchKey, rowData)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {
@@ -127,7 +129,7 @@ export default class PasswordPager extends Component {
     _editDialog() {
         return (
             <InputDialog
-                isMulti={this.props.title.indexOf('供应商') > -1}
+                isMulti={(this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'}
                 action={[
                     (popupDialog) => {
                         this.popupDialog = popupDialog;
@@ -140,6 +142,21 @@ export default class PasswordPager extends Component {
                         this.popupDialog.dismiss();
                     },
                     () => {
+                    if((this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'){
+                        if (this.state.editContent&&this.state.editContentSub) {
+                            this.setState({isLoading: true});
+                            ApiService.addLocation(this.state.editContent,this.state.editContentSub)
+                                .then((responseJson) => {
+                                    console.log(responseJson);
+                                    if (!responseJson.IsErr) {
+                                        this._setSelect(this.state.editContent);
+                                        this.popupDialog.dismiss();
+                                    } else Toast.show(responseJson.ErrDesc)
+
+                                })
+                                .done(this.setState({isLoading: false}))
+                        }else Toast.show('未填写完整内容')
+                    }else{
                         if (this.state.editContent) {
                             if (this.state.isMulti) {
                                 this._addSelect(this.state.editContent);
@@ -148,14 +165,15 @@ export default class PasswordPager extends Component {
                                 this._setSelect(this.state.editContent);
                                 this.popupDialog.dismiss();
                             }
-
                         } else {
                             Toast.show('未填写内容')
                         }
-                    },
-                    ()=>{
-
                     }
+
+                    },
+                    (text) => {
+                        this.setState({editContentSub: text})
+                    },
                 ]} str={[
                 this.props.title.indexOf('供应商') > -1 ? '添加供应商' : '添加系列',
                 this.props.title.indexOf('供应商') > -1 ? '供应商简称':'系列名称',
@@ -176,14 +194,14 @@ export default class PasswordPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={['添加', this.state.isMulti ? '完成' : null]}
+                         actionArray={[(this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'?'添加':null, this.state.isMulti ? '完成' : null]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
                              },
-                             () => {
+                             (this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'? () => {
                                  this.popupDialog.show();
-                             },
+                             }:null,
                              this.state.isMulti ? () => {
                                  this._setSelect(this.state.selectItems.toString())
                              } : null

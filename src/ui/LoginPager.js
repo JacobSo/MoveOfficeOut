@@ -35,7 +35,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '陈枢明',
+            account: 'ck',
             pwd: '123',
             isLoading: false,
             check: false,
@@ -109,26 +109,28 @@ export default class LoginPager extends Component {
         this.setState({isLoading: true});
         ApiService.loginFuc(this.state.account, this.state.pwd)
             .then((responseJson) => {
-                      console.log(responseJson);
-                    if (!responseJson.IsErr) {
-                        //  Toast.show('登录成功');
-                        App.saveAccount(
-                            App.session = responseJson.uniqueIdentifier,
-                            App.account = responseJson.UserName,
-                            App.department = responseJson.DptName,
-                            App.workType = responseJson.WorkType,
-                            this.state.check,
-                            App.dptList = responseJson.Dptlist,
-                            this.state.pwd,
-                        App.jobType = responseJson.JobType+'');
-                        if (responseJson.WorkType)
-                            this._launchPager("launcher");
-                        else Toast.show('没有工作类型，无法登陆')
-                    } else {
-                        Toast.show(responseJson.ErrDesc);
+                console.log(responseJson);
+                if (!responseJson.IsErr) {
+                    //  Toast.show('登录成功');
+                    App.saveAccount(
+                        App.session = responseJson.uniqueIdentifier,
+                        App.account = responseJson.UserName,
+                        App.department = responseJson.DptName,
+                        App.workType = responseJson.WorkType,
+                        this.state.check,
+                        App.dptList = responseJson.Dptlist,
+                        this.state.pwd,
+                        App.jobType = responseJson.JobType + '',
+                        App.FirstDptId = responseJson.FirstDptId + ''
+                    );
+                    if (responseJson.WorkType)
+                        this._launchPager("launcher");
+                    else Toast.show('没有工作类型，无法登陆')
+                } else {
+                    Toast.show(responseJson.ErrDesc);
 
-                        
-                    }
+
+                }
             })
             .catch((error) => {
                 console.log(error);

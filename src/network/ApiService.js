@@ -223,7 +223,7 @@ export  default  class ApiService {
         return this._request(method, param);
     }
 
-    static taskSignNew(guid, lat, lng, address, type,remark,tripType,finishTime) {
+    static taskSignNew(guid, lat, lng, address, type,remark,tripType,finishTime,departmentId) {
         let method = 'Sign/punchclockn';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
@@ -235,9 +235,22 @@ export  default  class ApiService {
             remark: remark,
             signtype: type,
             dailytype:tripType,
-            dailyenddate:finishTime
+            dailyenddate:finishTime,
+            punchclockn:departmentId,
         });
 
         return this._request(method, param);
     }
+
+    static addLocation(shortName,address){
+        let method = 'LogisticSupplier/CheckSupplier';
+        let param = JSON.stringify({
+            shortname: shortName,
+            adress:address,
+            username:App.account
+        });
+
+        return this._request(method, param);
+    }
+
 }

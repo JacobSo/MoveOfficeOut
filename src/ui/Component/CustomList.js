@@ -281,7 +281,8 @@ class CustomList extends Component {
             this.state.selectType,
             this.state.editContent,
             this.state.todayTask[0].DailyType,
-            this.state.todayTask[0].DailyEndDate ? Utility.getTime(this.state.todayTask[0].DailyEndDate) : '')
+            this.state.todayTask[0].DailyEndDate ? Utility.getTime(this.state.todayTask[0].DailyEndDate) : '',
+            this.state.todayTask[0].Dptid)
             .then((responseJson) => {
                 console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
@@ -324,8 +325,8 @@ class CustomList extends Component {
                 temp.map((data) => {
                     let latlng = data.split(",");
                     let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
-                    console.log(min+"--"+process);
-                    if(min===0)
+                    console.log(min + "--" + process);
+                    if (min === 0)
                         min = process;
                     if (min > process) {
                         min = process;
