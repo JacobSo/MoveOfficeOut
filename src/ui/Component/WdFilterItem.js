@@ -42,7 +42,7 @@ export class WdFilterItem extends Component {
         if (this.props.product.pResultList) {
             if (this.props.step === 1) {
                 color = (this.props.product.pResultList.indexOf("0-1") > -1) ? Color.colorGreen : Color.colorRed;
-                text =  (App.workType === "板木驻场工程师"?"白胚":"木架")+((this.props.product.pResultList.indexOf("0-1") > -1) ?"通过" : "不通过");
+                text =  (App.workType === "板木驻厂工程师"?"白胚":"木架")+((this.props.product.pResultList.indexOf("0-1") > -1) ?"通过" : "不通过");
             }
             else if (this.props.step === 2) {
                 color = (this.props.product.pResultList.indexOf("1-1") > -1) ? Color.colorGreen : Color.colorRed;

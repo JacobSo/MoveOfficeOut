@@ -59,7 +59,7 @@ export class WpProductItem extends Component {
                                         <View
                                             style={styles.tips}>
                                             <Text
-                                                style={{color: "white"}}>{this.props.isWood===0?'白胚':'木架'}</Text>
+                                                style={{color: "white"}}>{this.props.isWood?'白胚':'木架'}</Text>
                                         </View>)
                                 }
                             })()

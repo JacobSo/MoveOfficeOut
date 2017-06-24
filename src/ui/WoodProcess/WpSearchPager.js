@@ -29,7 +29,7 @@ export default class PasswordPager extends Component {
             select: [false, false, false],
             isLoading: false,
             selectItems: 0,
-            selectItemsId:[],
+            selectItemsId: [],
 
             items: [],
             dataSource: new ListView.DataSource({
@@ -49,7 +49,7 @@ export default class PasswordPager extends Component {
         this.setState({
             isLoading: true
         });
-        ApiService.getProduct(keyword, this.props.isWood ? 0 : 1,this.props.series)
+        ApiService.getProduct(keyword, this.props.isWood ? 0 : 1, this.props.series)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
@@ -105,16 +105,19 @@ export default class PasswordPager extends Component {
                                          data.selectStep = this.state.select;
                                          temp.push(data);
                                      }
-                                     data.check=false;
+                                     data.check = false;
                                  });
-                                 this.props.selectFunc(temp);
-                                 Toast.show('成功添加产品+' + this.state.selectItems);
-                                 this.setState({//set default
-                                     select:[false,false,false],
-                                     dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
-                                     selectItems:0
-                                 })
-                                 // this.props.nav.goBack(null)
+                                 if (temp.length!==0) {
+                                     this.props.selectFunc(temp);
+                                     Toast.show('成功添加产品+' + this.state.selectItems);
+                                     this.setState({//set default
+                                         select: [false, false, false],
+                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                         selectItems: 0
+                                     })
+                                 } else   this.props.nav.goBack(null)
+
+
                              }
                          ]}/>
                 <View style={{flexDirection: "row"}}>
@@ -147,7 +150,7 @@ export default class PasswordPager extends Component {
 
                 <View style={{flexDirection: 'row'}}>
                     <ListView
-                        style={{marginBottom: 10, flex: 1,height:height-25-55*2}}
+                        style={{marginBottom: 10, flex: 1, height: height - 25 - 55 * 2}}
                         dataSource={this.state.dataSource}
                         removeClippedSubviews={false}
                         enableEmptySections={true}
@@ -155,6 +158,7 @@ export default class PasswordPager extends Component {
                             <View
                                 style={{backgroundColor: rowData.check ? Color.colorPrimary : Color.trans,}}>
                                 <WpProductItem
+                                    isWood={this.props.isWood}
                                     product={rowData}
                                     func={() => {
                                         let temp = this.state.selectItems;
@@ -180,7 +184,7 @@ export default class PasswordPager extends Component {
                                     flexDirection: "row",
                                     justifyContent: "space-between",
                                     position: 'absolute',
-                                    bottom: Platform.OS==='android'?25:0,
+                                    bottom: Platform.OS === 'android' ? 25 : 0,
                                     backgroundColor: 'white',
                                     elevation: 2
                                 }}>
@@ -190,7 +194,10 @@ export default class PasswordPager extends Component {
                                             this.state.select[0] = !this.state.select[0];
                                             this.setState({select: this.state.select})
                                         }}>
-                                        <Text style={{color: "white", textAlign: "center"}}>{this.props.isWood===1?'白胚':'木架'}</Text>
+                                        <Text style={{
+                                            color: "white",
+                                            textAlign: "center"
+                                        }}>{this.props.isWood ? '白胚' : '木架'}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorPurple : Color.line)},]}
