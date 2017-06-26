@@ -26,8 +26,13 @@ export default class InputDialog extends Component {
                 width={width - 32}
                 height={200}>
                 <View style={styles.layoutContainer}>
+                    {
+                        (()=>{
+                            if(!this.props.isMulti)
+                           return                    <Text style={styles.titleStyle}>{this.props.str[0]}</Text>
 
-                    <Text style={styles.titleStyle}>{this.props.str[0]}</Text>
+                        })()
+                    }
                     <View style={styles.borderBottomLine}>
                         <TextInput style={styles.textInput}
                                    placeholder={this.props.str[1]}
