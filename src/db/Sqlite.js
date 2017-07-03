@@ -691,18 +691,14 @@ export  default  class Sqlite extends Component {
                                         form.submitPic = temp;
 
                                     }
-
-
                                 }, (err) => console.log("fetchQcDraft_pic  err:" + JSON.stringify(err)));
-
                         }
                         if (i === formItems.length - 1) {
-                            console.log(JSON.stringify(formItems) + '--------------------')
+                         //   console.log(JSON.stringify(formItems) + '--------------------')
                             resolve(formItems)
                         }
                     }, (err) => console.log("fetchQcDraft  err:" + JSON.stringify(err)));
             });
-
         })
     }
 

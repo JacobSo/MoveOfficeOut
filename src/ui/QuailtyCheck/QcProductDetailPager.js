@@ -62,7 +62,6 @@ export default  class QcProductDetailPager extends Component {
             dataSourceB: this.state.dataSourceI.cloneWithRows(this.state.bFiles),
             dataSourceC: this.state.dataSourceI.cloneWithRows(this.state.cFiles),
         })
-
     }
 
     getStatus(flag) {
@@ -144,7 +143,7 @@ export default  class QcProductDetailPager extends Component {
                         })
                         .then((res) => {
                             console.log('The file saved to ', res.path());
-                            this.setState({isLoading: false})
+                            this.setState({isLoading: false});
                             setTimeout(() => {
                                 this.openFile(res.path())
                             }, 500);

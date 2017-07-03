@@ -107,4 +107,47 @@ export  default  class ApiService {
         let method = 'QualityInfo?UserName=' + App.account+ '&fentityID=' + pid+ '&stage=' + stage;
         return this.getRequest(method);
     }
+    ///////////////
+    static getProductListOld() {
+        let method = 'ConventionalQuality?QualityUser=' + App.account;
+        return this.getRequest(method);
+    }
+    static submitTaskOld(qcCheck,productList,qcNum,passNum,storeNum,percent,totalComment,qcResult,lat,lng) {
+        let method = 'ConventionalQualityResultN';
+        let param = JSON.stringify({
+            UserName: App.account,
+            QualityNoGuid: qcCheck,
+            pnliststr: productList,
+            QualityQty: qcNum,
+            PassQty: passNum,
+            PassPercent: percent,
+            ImprovementMeasures: totalComment,
+            qcliststr: qcResult,
+            GetInQuantity: storeNum,
+            Latitude: lat,
+            Longitude: lng,
+        });
+        return this.postRequest(method, param);
+    }
+    static uploadImageOld(pid,fid,name,img) {
+        let method = 'ConventionalQualityImgUpload';
+        let param = JSON.stringify({
+            imgCode: img,
+            fileName: name,
+            ProductNoGuidListStr: pid,
+            ReviewItemGuid: fid,
+        });
+        return this.postRequest(method, param);
+    }
+    static finishTaskOld(id,lat,lng) {
+        let method = 'ConventionalQualityState';
+        let param = JSON.stringify({
+            UserName: App.account,
+            QualityNoGuid: id,
+            state: 2,
+            Latitude: lat,
+            Longitude: lng,
+        });
+        return this.postRequest(method, param);
+    }
 }

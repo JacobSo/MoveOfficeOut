@@ -27,9 +27,9 @@ export default class InputDialog extends Component {
                 height={200}>
                 <View style={styles.layoutContainer}>
                     {
-                        (()=>{
-                            if(!this.props.isMulti)
-                           return                    <Text style={styles.titleStyle}>{this.props.str[0]}</Text>
+                        (() => {
+                            if (!this.props.isMulti)
+                                return <Text style={styles.titleStyle}>{this.props.str[0]}</Text>
 
                         })()
                     }

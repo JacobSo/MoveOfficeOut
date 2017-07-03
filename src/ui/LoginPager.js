@@ -35,7 +35,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: 'ck',
+            account: '李成功',//崔韵强//孙小伟//李成功
             pwd: '123',
             isLoading: false,
             check: false,
@@ -127,9 +127,10 @@ export default class LoginPager extends Component {
                         this._launchPager("launcher");
                     else Toast.show('没有工作类型，无法登陆')
                 } else {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
                     Toast.show(responseJson.ErrDesc);
-
-
                 }
             })
             .catch((error) => {

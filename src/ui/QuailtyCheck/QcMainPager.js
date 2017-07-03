@@ -5,7 +5,8 @@
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions,  RefreshControl, ListView, Text, TouchableOpacity,InteractionManager
+    View, StyleSheet, Dimensions, RefreshControl, ListView, Text, TouchableOpacity, InteractionManager,
+    TouchableWithoutFeedback
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
@@ -35,7 +36,7 @@ export default class QcMainPager extends Component {
         InteractionManager.runAfterInteractions(() => {
 
             sqLite.createQcTable();
-            this.getDataLocal();
+            this._onRefresh();
         });
     }
 
@@ -59,31 +60,33 @@ export default class QcMainPager extends Component {
 
     _onRefresh() {
         this.setState({isRefreshing: true,});
-        ApiService.getProductList()
+        ApiService.getProductListOld()
             .then((responseJson) => {
                 console.log(responseJson);
                 sqLite.insertQcData(responseJson.data);//save in db
                 if (!responseJson.IsErr) {
-                     this.setState({
-                     items: responseJson.data,
-                     dataSource: this.state.dataSource.cloneWithRows(responseJson.data),
-                     isRefreshing: false,
-                     });
-                } else{
-                    this.setState({  isRefreshing: false,});
-                    SnackBar.show(responseJson.ErrDesc, { duration: 3000 })
+                    this.setState({
+                        items: responseJson.QNlist,
+                        dataSource: this.state.dataSource.cloneWithRows(responseJson.QNlist),
+                        isRefreshing: false,
+                    });
+                } else {
+                    this.setState({isRefreshing: false,});
+                    SnackBar.show(responseJson.ErrDesc, {duration: 3000})
                 }
             })
             .catch((error) => {
-                this.setState({  isRefreshing: false,});
+                this.setState({isRefreshing: false,});
                 console.log(error);
-                SnackBar.show("出错了，请稍后再试", { duration: 3000 })
+                SnackBar.show("出错了，请稍后再试", {duration: 3000})
             }).done();
     }
 
     _getView() {
         if (this.state.items && this.state.items.length === 0) {
-            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={()=>{this._onRefresh()} } />)
+            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
+                this._onRefresh()
+            } }/>)
         } else {
             return (
                 <ListView
@@ -103,7 +106,7 @@ export default class QcMainPager extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
-                        <TouchableOpacity
+                        <TouchableWithoutFeedback
                             onPress={() => {
                                 this.props.nav.navigate('qcList', {
                                     task: rowData,
@@ -111,24 +114,24 @@ export default class QcMainPager extends Component {
                                         this._onRefresh()
                                     }
                                 });
-                            }}
-                            style={styles.itemCard}>
-                            <View style={styles.itemText}>
-                                <Text>{'采购单'}</Text>
-                                <Text
-                                    style={{color: Color.black_semi_transparent}}>{rowData.purchaseNo}
-                                </Text>
-                            </View>
-                            <View style={styles.itemText}>
-                                <Text>{'供应商'}</Text>
-                                <Text style={{color: Color.black_semi_transparent}}>{rowData.supplier}</Text>
-                            </View>
+                            }}>
+                            <View style={styles.itemCard}>
+                                <View style={styles.itemText}>
+                                    <Text>{'质检单'}</Text>
+                                    <Text
+                                        style={{color: Color.black_semi_transparent}}>{rowData.QualityNo}
+                                    </Text>
+                                </View>
+                                <View style={styles.itemText}>
+                                    <Text>{'供应商'}</Text>
+                                    <Text style={{color: Color.black_semi_transparent}}>{rowData.Supplier}</Text>
+                                </View>
 
-                            <View style={styles.itemText}>
-                                <Text>{'分配时间'}</Text>
-                                <Text style={{color: Color.black_semi_transparent}}>{rowData.lockTime}</Text>
-                            </View>
-                        </TouchableOpacity>
+                                <View style={styles.itemText}>
+                                    <Text>{'分配时间'}</Text>
+                                    <Text style={{color: Color.black_semi_transparent}}>{rowData.LockTime}</Text>
+                                </View></View>
+                        </TouchableWithoutFeedback>
                     }/>
             )
         }

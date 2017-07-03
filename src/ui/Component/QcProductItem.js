@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, Dimensions,  TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import Color from '../../constant/Color';
 const {width, height} = Dimensions.get('window');
 export default class QcProductItem extends Component {
@@ -27,14 +27,13 @@ export default class QcProductItem extends Component {
 
     getStatus(flag) {
         if (this.props.product.state && this.props.product.state.length === 3) {
-            if (this.props.product.state.substring(flag-1, flag) === "1")
+            if (this.props.product.state.substring(flag - 1, flag) === "1")
                 return 1;
             else
                 return 0;
         } else return 0;
 
     }
-
 
 
     render() {
@@ -45,46 +44,72 @@ export default class QcProductItem extends Component {
                 <View style={styles.mainContainer}>
                     <Text style={{
                         width: width - 32,
-                        padding:5,
-                        backgroundColor: this.getStatus(1)&&this.getStatus(2)&&this.getStatus(3)?   Color.colorPrimaryDark:Color.content,
+                        padding: 5,
+                        backgroundColor: this.props.product.state === 1 ? Color.colorPrimaryDark : Color.content,
                         color: 'white',
                         textAlign: 'center',
                         fontSize: 16
-                    }}>{this.getStatus(1)&&this.getStatus(2)&&this.getStatus(3)?'已完成':'未完成'}</Text>
+                    }}>{this.props.product.state === 1 ? '已完成' : '未完成'}</Text>
                     <View style={styles.itemText}>
                         <Text>{'型号'}</Text>
-                        <Text style={{backgroundColor: Color.colorAccent,color:'white',paddingLeft:10,paddingRight:10}}>{this.props.product.itemName}</Text>
+                        <Text style={{
+                            backgroundColor: Color.colorAccent,
+                            color: 'white',
+                            paddingLeft: 10,
+                            paddingRight: 10
+                        }}>{this.props.product.ProductNo}</Text>
+                    </View>
+                    <View style={styles.itemText}>
+                        <Text>{'批次'}</Text>
+                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.QualityLot}</Text>
                     </View>
                     <View style={styles.itemText}>
                         <Text>{'数量'}</Text>
-                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.qty}</Text>
+                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.Quantity}</Text>
                     </View>
                     <View style={styles.itemText}>
                         <Text>{'交接时间'}</Text>
-                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.deliverDate}</Text>
+                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.DeliveryDate}</Text>
                     </View>
-                    <View style={{
-                        width: width - 32 - 16,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row',
-                        marginTop: 16,
-                        marginBottom:5
-                    }}>
-                        <Text>材料</Text>
-                        <Text>工艺</Text>
-                        <Text>成品</Text>
+                    <View style={[styles.itemText, {marginBottom: 16}]}>
+                        <Text>{'描述'}</Text>
+                        <Text style={{
+                            color: Color.black_semi_transparent,
+                            width: 300,
+                            textAlign: 'right'
+                        }}>{this.props.product.StyleName}</Text>
                     </View>
-                    <View style={{
-                        width: width - 32 - 16,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row',
-                        marginBottom: 16
-                    }}>
-                        <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(1)===1?Color.colorAccent:Color.line}}/>
-                        <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(2)===1?Color.colorAccent:Color.line}}/>
-                        <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(3)===1?Color.colorAccent:Color.line}}/>
-                    </View>
+                    {/*    <View style={{
+                     width: width - 32 - 16,
+                     justifyContent: 'space-around',
+                     flexDirection: 'row',
+                     marginTop: 16,
+                     marginBottom:5
+                     }}>
+                     <Text>材料</Text>
+                     <Text>工艺</Text>
+                     <Text>成品</Text>
+                     </View>
+                     <View style={{
+                     width: width - 32 - 16,
+                     justifyContent: 'space-around',
+                     flexDirection: 'row',
+                     marginBottom: 16
+                     }}>
+                     <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(1)===1?Color.colorAccent:Color.line}}/>
+                     <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(2)===1?Color.colorAccent:Color.line}}/>
+                     <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(3)===1?Color.colorAccent:Color.line}}/>
+                     </View>*/}
                 </View>
+                {
+                    (() => {
+                        if (this.props.product.IsGetIn === 1) {
+                            return <Image source={require("../../drawable/get_in.png")}
+                                          style={{position: 'absolute', bottom: 45, right: 25}}/>
+
+                        }
+                    })()
+                }
             </TouchableOpacity>
         );
     }

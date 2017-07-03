@@ -29,7 +29,7 @@ export default class PasswordPager extends Component {
             isMulti: this.props.isMulti,
             isLoading: false,
             editContent: '',
-            editContentSub:'',
+            editContentSub: '',
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
@@ -45,10 +45,9 @@ export default class PasswordPager extends Component {
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
         this._getData();
-      //  console.log(App.FirstDptId+'--------------')
+        //  console.log(App.FirstDptId+'--------------')
         //     });
     }
-
 
     _getData() {
         this.setState({isLoading: true});
@@ -63,7 +62,6 @@ export default class PasswordPager extends Component {
                                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                             });
                         } else Toast.show(responseJson.ErrDesc)
-
                     })
                     .done(this.setState({isLoading: false}))
             } else {
@@ -80,9 +78,7 @@ export default class PasswordPager extends Component {
                         } else Toast.show(responseJson.ErrDesc)
                     })
                     .done(this.setState({isLoading: false}))
-
             }
-
         });
     }
 
@@ -129,7 +125,7 @@ export default class PasswordPager extends Component {
     _editDialog() {
         return (
             <InputDialog
-                isMulti={(this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'}
+                isMulti={(this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49'}
                 action={[
                     (popupDialog) => {
                         this.popupDialog = popupDialog;
@@ -142,33 +138,33 @@ export default class PasswordPager extends Component {
                         this.popupDialog.dismiss();
                     },
                     () => {
-                    if((this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'){
-                        if (this.state.editContent&&this.state.editContentSub) {
-                            this.setState({isLoading: true});
-                            ApiService.addLocation(this.state.editContent,this.state.editContentSub)
-                                .then((responseJson) => {
-                                    console.log(responseJson);
-                                    if (!responseJson.IsErr) {
-                                        this._setSelect(this.state.editContent);
-                                        this.popupDialog.dismiss();
-                                    } else Toast.show(responseJson.ErrDesc)
+                        if ((this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49') {
+                            if (this.state.editContent && this.state.editContentSub) {
+                                this.setState({isLoading: true});
+                                ApiService.addLocation(this.state.editContent, this.state.editContentSub)
+                                    .then((responseJson) => {
+                                        console.log(responseJson);
+                                        if (!responseJson.IsErr) {
+                                            this._setSelect(this.state.editContent);
+                                            this.popupDialog.dismiss();
+                                        } else Toast.show(responseJson.ErrDesc)
 
-                                })
-                                .done(this.setState({isLoading: false}))
-                        }else Toast.show('未填写完整内容')
-                    }else{
-                        if (this.state.editContent) {
-                            if (this.state.isMulti) {
-                                this._addSelect(this.state.editContent);
-                                this.popupDialog.dismiss();
-                            } else {
-                                this._setSelect(this.state.editContent);
-                                this.popupDialog.dismiss();
-                            }
+                                    })
+                                    .done(this.setState({isLoading: false}))
+                            } else Toast.show('未填写完整内容')
                         } else {
-                            Toast.show('未填写内容')
+                            if (this.state.editContent) {
+                                if (this.state.isMulti) {
+                                    this._addSelect(this.state.editContent);
+                                    this.popupDialog.dismiss();
+                                } else {
+                                    this._setSelect(this.state.editContent);
+                                    this.popupDialog.dismiss();
+                                }
+                            } else {
+                                Toast.show('未填写内容')
+                            }
                         }
-                    }
 
                     },
                     (text) => {
@@ -176,7 +172,7 @@ export default class PasswordPager extends Component {
                     },
                 ]} str={[
                 this.props.title.indexOf('供应商') > -1 ? '添加供应商' : '添加系列',
-                this.props.title.indexOf('供应商') > -1 ? '供应商简称':'系列名称',
+                this.props.title.indexOf('供应商') > -1 ? '供应商简称' : '系列名称',
                 '供应商地址，必须详细准确！'
             ]}/>
         )
@@ -194,14 +190,14 @@ export default class PasswordPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={[(this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'?'添加':null, this.state.isMulti ? '完成' : null]}
+                         actionArray={[(this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49' ? '添加' : null, this.state.isMulti ? '完成' : null]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
                              },
-                             (this.props.title.indexOf('供应商') > -1)&&App.FirstDptId==='49'? () => {
+                             (this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49' ? () => {
                                  this.popupDialog.show();
-                             }:null,
+                             } : null,
                              this.state.isMulti ? () => {
                                  this._setSelect(this.state.selectItems.toString())
                              } : null

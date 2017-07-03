@@ -32,10 +32,10 @@ export default class QcInputDialog extends Component {
             <PopupDialog
                 ref={this.props.action[0]}
                 width={width - 32}
-                height={250}>
+                height={200}>
                 <View style={styles.layoutContainer}>
-                    <Text style={styles.titleStyle}>质检总评</Text>
-                    <View style={styles.borderBottomLine}>
+                    <Text style={styles.titleStyle}>质检项结果</Text>
+                  {/*  <View style={styles.borderBottomLine}>
                         <TextInput style={styles.textInput}
                                    placeholder={"填写总评"}
                                    returnKeyType={'done'}
@@ -43,7 +43,7 @@ export default class QcInputDialog extends Component {
                                    blurOnSubmit={true}
                                    underlineColorAndroid="transparent"
                                    onChangeText={this.props.action[1]}/>
-                    </View>
+                    </View>*/}
                     <View style={styles.iconContainer}>
                         <View
                             style={{alignItems: 'center'}}>
@@ -60,24 +60,22 @@ export default class QcInputDialog extends Component {
                             <View style={styles.iconCircle}>
                                 <Text>{this.props.countArray[2]}</Text></View>
                             <Text>图片</Text></View>
-
-
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+  {/*                  <View style={{flexDirection: 'row', justifyContent: 'space-between',   }}>
                         <TouchableOpacity onPress={this.props.action[2]}>
                             <Text style={{margin: 16}}>保存</Text>
                         </TouchableOpacity>
-
+*/}
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity onPress={this.props.action[3]}>
                                 <Text style={{margin: 16}}>取消</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this.props.action[4]}>
-                                <Text style={{color: Color.colorPrimary, margin: 16}}>提交</Text>
+                            <TouchableOpacity onPress={this.props.action[2]}>
+                                <Text style={{color: Color.colorIndigo, margin: 16}}>保存</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-
+         {/*           </View>
+*/}
                 </View>
             </PopupDialog>
         )
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
     layoutContainer: {
         width: width - 32,
         flexDirection: 'column',
-        height: 250,
+        height: 200,
         backgroundColor: 'white'
     },
 
@@ -121,13 +119,13 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 16,
     },
     iconContainer: {
-        flex: 1,
         marginTop: 16,
         marginBottom: 16,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         width: width - 32,
+        height:60
     },
 
     iconCircle: {

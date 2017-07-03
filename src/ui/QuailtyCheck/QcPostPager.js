@@ -45,7 +45,7 @@ export default class QcPostPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            product: this.props.product,
+            product: this.props.product[0],
             pics: [],
             submitContent: {},
             submitPic: [],
@@ -59,7 +59,6 @@ export default class QcPostPager extends Component {
             lng: '',
         }
     }
-
 
     componentDidMount() {
         if (this.props.form.submitContent) {
@@ -79,8 +78,6 @@ export default class QcPostPager extends Component {
         } else {
             DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange)
         }
-
-
     }
 
     onAndroidLocationChange = (e) => {
@@ -114,7 +111,7 @@ export default class QcPostPager extends Component {
 
     pack() {
         let tempContent = {
-            index: this.props.product.fentityID + this.props.form.Guid,
+            index: this.state.product.ProductNoGuid + this.props.form.Guid,
             isPass: this.props.form.isPass,
             subContent: this.state.editContent,
             editDate: new Date().toLocaleString(),
@@ -128,11 +125,11 @@ export default class QcPostPager extends Component {
             if (data.uri)
                 tempPics.push({
                     fileName: data.fileName,
-                    index: this.props.product.fentityID + this.props.form.Guid,
+                    index: this.state.product.ProductNoGuid + this.props.form.Guid,
                     uri: data.uri//.replace('file://', '')
                 });
         });
-        console.log(JSON.stringify(tempPics))
+        console.log(JSON.stringify(tempPics)+'----tempPics');
 
         this.state.submitContent = tempContent;
         this.state.submitPic = tempPics;
@@ -140,7 +137,7 @@ export default class QcPostPager extends Component {
     }
 
     save() {
-        console.log(JSON.stringify(this.state.submitContent))
+        console.log(JSON.stringify(this.state.submitContent)+"-----submitContent");
         sqLite.insertQcDraftSingle(this.state.submitContent, this.state.submitPic)
             .then((result) => {
                 Toast.show(result, {duration: 3000});

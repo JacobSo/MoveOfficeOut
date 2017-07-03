@@ -44,9 +44,9 @@ export default class QcFormPager extends Component {
     }
 
     componentWillMount() {
-        sqLite.fetchQcDraft(this.state.formItems, this.props.product.fentityID)
+        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
             .then((result) => {
-                this.setState({editContent: result[0].submitContent.totalContent});
+                console.log(JSON.stringify(result));
                 this.setState({
                     formItems: result
                 })
@@ -80,27 +80,27 @@ export default class QcFormPager extends Component {
                     }
                 </View>
                 <Text style={{marginLeft: 16, marginRight: 16}}>{data.qualityContent}</Text>
-                <ListView
-                    style={{width: width, margin: 16}}
-                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2,}).cloneWithRows(data.qualityPic)}
-                    removeClippedSubviews={false}
-                    enableEmptySections={true}
-                    contentContainerStyle={{
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                    }}
-                    renderRow={(rowData, sectionID, rowID) =>
-                        <TouchableOpacity style={{width: 100, height: 100}} onPress={() => {
-                            this.props.nav.navigate('gallery', {
-                                pics: data.qualityPic
-                            })
-                        }}>
-                            <Image
-                                resizeMode="contain"
-                                style={{width: 100, height: 100,}}
-                                source={{uri: rowData}}/>
-                        </TouchableOpacity>
-                    }/>
+                {/*     <ListView
+                 style={{width: width, margin: 16}}
+                 dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2,}).cloneWithRows(data.qualityPic)}
+                 removeClippedSubviews={false}
+                 enableEmptySections={true}
+                 contentContainerStyle={{
+                 flexDirection: 'row',
+                 flexWrap: 'wrap',
+                 }}
+                 renderRow={(rowData, sectionID, rowID) =>
+                 <TouchableOpacity style={{width: 100, height: 100}} onPress={() => {
+                 this.props.nav.navigate('gallery', {
+                 pics: data.qualityPic
+                 })
+                 }}>
+                 <Image
+                 resizeMode="contain"
+                 style={{width: 100, height: 100,}}
+                 source={{uri: rowData}}/>
+                 </TouchableOpacity>
+                 }/>*/}
             </View>)
         });
         // console.log(pagerView.toString());
@@ -117,14 +117,14 @@ export default class QcFormPager extends Component {
     }
 
     setResult(isPass) {
-        if (this.state.pagerIndex !== this.state.formItems.length - 1) {
-            this.state.pagerIndex++;
-        }
         this.state.formItems[this.state.pagerIndex].isPass = isPass;
         this.setState({
             formItems: JSON.parse(JSON.stringify(this.state.formItems)),
             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.formItems)))
         });
+        if (this.state.pagerIndex !== this.state.formItems.length - 1) {
+            this.state.pagerIndex++;
+        }
         this.refs["viewPager"].setPage(this.state.pagerIndex)
     }
 
@@ -205,7 +205,6 @@ export default class QcFormPager extends Component {
                     tempFail++;
                 } else {
                     isAllFill = false
-
                 }
                 tempSubmit.push({
                     infoGuid: data.Guid,
@@ -224,20 +223,22 @@ export default class QcFormPager extends Component {
                 submitItems: tempSubmit
             });
             this.popupDialog.show()
+            //    this.totalSave();
         } else
             Toast.show('还有没有完成的项目')
     }
 
     totalSave() {
-        sqLite.insertQcDraftAll(this.state.formItems, this.props.product.fentityID, this.state.editContent)
+        sqLite.insertQcDraftAll(this.state.formItems, this.props.product.ProductNoGuid, this.state.editContent)
             .then((result) => {
                 Toast.show(result);
+                this.props.finishFunc(this.state.formItems);
                 this.props.nav.goBack(null);
             }).done()
     }
 
     totalSubmit() {
-        ApiService.submitQualityContent(this.props.product.fentityID,this.props.stage,JSON.stringify(this.state.submitItems),this.state.editContent,)
+        ApiService.submitQualityContent(this.props.product.ProductNoGuid, this.props.stage, JSON.stringify(this.state.submitItems), this.state.editContent,)
     }
 
     render() {
@@ -253,21 +254,20 @@ export default class QcFormPager extends Component {
                 <View style={{flex: 1, backgroundColor: "white",}}>
                     <Toolbar
                         elevation={2}
-                        title={[this.props.stage === 0 ? '材料质检' : (this.props.stage === 1 ? '工艺质检' : '成品质检')]}
+                        title={["质检项"]}
                         color={Color.colorIndigo}
                         isHomeUp={true}
                         isAction={true}
                         isActionByText={true}
-                        actionArray={['目录', '提交']}
+                        actionArray={['目录', '完成']}
                         functionArray={[
-                            () => this.props.nav.goBack(null),
                             () => {
-                                this.openControlPanel();
+                            //console.log(JSON.stringify(this.state.formItems))
+                                this.props.finishFunc(this.state.formItems);
+                                    this.props.nav.goBack(null)
                             },
-                            () => {
-                                this.count();
-
-                            }
+                            () => this.openControlPanel(),
+                            () => this.count(),
                         ]}
                     />
                     {
@@ -276,6 +276,13 @@ export default class QcFormPager extends Component {
                     <View style={{position: 'absolute', bottom: 25, width: width,}}>
                         <View style={{width: width, height: 1, backgroundColor: Color.line,}}/>
                         <View style={{flexDirection: 'row', justifyContent: 'space-around', padding: 16}}>
+                            <TouchableOpacity onPress={() => {
+                                this.setResult(0);
+
+                            }}>
+                                <Image style={{width: 25, height: 25}}
+                                       source={require('../../drawable/fail_ico.png')}/>
+                            </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 this.props.nav.navigate('qcPost', {
                                         product: this.props.product,
@@ -290,23 +297,20 @@ export default class QcFormPager extends Component {
                                 <Image style={{width: 25, height: 25}}
                                        source={require('../../drawable/pen_unwrite.png')}/>
                             </TouchableOpacity>
+
                             <TouchableOpacity onPress={() => {
-                                this.setResult(0)
-                            }}>
-                                <Image style={{width: 25, height: 25}}
-                                       source={require('../../drawable/fail_ico.png')}/>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
-                                this.setResult(1)
+                                this.setResult(1);
                             }}>
                                 <Image style={{width: 25, height: 25}}
                                        source={require('../../drawable/pass_ico.png')}/>
                             </TouchableOpacity>
                         </View></View>
                     {this.finishDialog()}
+
                 </View>
             </Drawer>
-        );
+        )
+            ;
     }
 
 }

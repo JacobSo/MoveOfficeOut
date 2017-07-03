@@ -40,6 +40,7 @@ import QcProductDetailPager from "./ui/QuailtyCheck/QcProductDetailPager";
 import WebViewPager from "./ui/WebViewPager";
 import QcFormPager from "./ui/QuailtyCheck/QcFormPager";
 import QcPostPager from "./ui/QuailtyCheck/QcPostPager";
+import QcSubmitPager from "./ui/QuailtyCheck/QcSubmitPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -165,6 +166,9 @@ const QcFormScreen = ({navigation}) => _renderScreen(<View
 const QcPostScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcPostPager {...navigation.state.params}
                                                                                       nav={navigation}/></View>);
+const QcSubmitScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcSubmitPager {...navigation.state.params}
+                                                                                      nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -255,6 +259,9 @@ const SimpleStack = StackNavigator({
         },
         qcPost: {
             screen: QcPostScreen,
+        },
+        qcSubmit: {
+            screen: QcSubmitScreen,
         },
     },
     {
