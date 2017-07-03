@@ -47,10 +47,6 @@ import com.lsapp.moveoffice.data.WDSeries;
 import com.lsapp.moveoffice.util.HeaderFooter;
 import com.lsapp.moveoffice.util.ImageTagProcessor;
 import com.lsapp.moveoffice.util.MyFontsProvider;
-import com.pgyersdk.crash.PgyCrashManager;
-import com.pgyersdk.javabean.AppBean;
-import com.pgyersdk.update.PgyUpdateManager;
-import com.pgyersdk.update.UpdateManagerListener;
 import com.zuni.library.utils.zBitmapUtil;
 import com.zuni.library.utils.zDateUtil;
 import com.zuni.library.utils.zFileUtil;
@@ -112,7 +108,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void checkUpdate() {
-        PgyUpdateManager.register(getCurrentActivity(), new UpdateManagerListener() {
+     /*   PgyUpdateManager.register(getCurrentActivity(), new UpdateManagerListener() {
 
                 @Override
                 public void onUpdateAvailable(final String result) {
@@ -134,7 +130,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             public void onNoUpdateAvailable() {
                 Toast.makeText(getCurrentActivity(), "现在已是最新版本", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @ReactMethod
@@ -146,7 +142,6 @@ public class CommonModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             e.printStackTrace();
             callback.invoke("获取错误");
-
         }
     }
 
@@ -226,7 +221,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             else if (code == 1) step = "成品评审";
             else step = "包装评审";
             title.html((woodOrSoft==1?series.getSeriesName():series.getFacName()) + step + "报告");
-            time.html("评审时间：" + zDateUtil.getDateTime());
+            time.html("生成时间：" + zDateUtil.getDateTime());
             factory.html(woodOrSoft==1?series.getFacName():"");
             quality.html(series.getsQualityText());
 
@@ -324,7 +319,6 @@ public class CommonModule extends ReactContextBaseJavaModule {
             callback.invoke(finalFile);
         } catch (Exception e) {
             e.printStackTrace();
-            PgyCrashManager.reportCaughtException(context, e);
             errorCall.invoke("出错了！！");
         }
     }
@@ -391,7 +385,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
         File html = new File(xhtmlPath);
         p.parse(new InputStreamReader(new FileInputStream(html), "UTF-8"));
         document.close();
-      //  zFileUtil.delSingleFile(xhtmlPath);
+        zFileUtil.delSingleFile(xhtmlPath);
         File htmlFile = new File(sourcePath);
         boolean f1 = outFile.delete();
         boolean f2 = htmlFile.delete();

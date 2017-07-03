@@ -18,7 +18,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.lsapp.moveoffice.react.ReactModulePackage;
-import com.pgyersdk.crash.PgyCrashManager;
 
 import org.pgsqlite.SQLitePluginPackage;
 
@@ -95,10 +94,10 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+   //     PgyCrashManager.register(this);
+
         SoLoader.init(this, /* native exopackage */ false);
-        PgyCrashManager.register(this);
         initCloudChannel();
-        initCloudAccount("test");
     }
 
 

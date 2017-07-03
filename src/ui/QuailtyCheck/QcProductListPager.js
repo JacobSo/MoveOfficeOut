@@ -12,9 +12,6 @@ import {
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
-import FloatButton from "../Component/FloatButton";
-import Toast from 'react-native-root-toast';
-import Utility from "../../utils/Utility";
 import Loading from 'react-native-loading-spinner-overlay';
 import QcProductItem from "../Component/QcProductItem";
 import Drawer from 'react-native-drawer'
