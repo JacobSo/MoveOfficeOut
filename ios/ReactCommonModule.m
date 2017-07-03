@@ -412,7 +412,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
   if (!_titleStr_Html) {
     NSString *title;
     //        if (self.phaseType == PhaseType_BP) {
-    title = [NSString stringWithFormat:self.htmlModel.HeadS,self.titleStr,self.woodOrSoft==1?self.serice.FacName:@"",[NSString stringWithFormat:@"评审时间：%@",[Utils kNowTime]]];
+    title = [NSString stringWithFormat:self.htmlModel.HeadS,self.titleStr,self.woodOrSoft==1?self.serice.FacName:@"",[NSString stringWithFormat:@"生成时间：%@",[Utils kNowTime]]];
     
     _titleStr_Html = title;
   }
