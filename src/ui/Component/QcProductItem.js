@@ -75,7 +75,7 @@ export default class QcProductItem extends Component {
                         <Text>{'描述'}</Text>
                         <Text style={{
                             color: Color.black_semi_transparent,
-                            width: 300,
+                            width: 200,
                             textAlign: 'right'
                         }}>{this.props.product.StyleName}</Text>
                     </View>
