@@ -132,10 +132,13 @@ export default class QcFormPager extends Component {
             formItems: JSON.parse(JSON.stringify(this.state.formItems)),
             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.formItems)))
         });
+      //  console.log('pre:'+this.state.pagerIndex);
         if (this.state.pagerIndex !== this.state.formItems.length - 1) {
             this.state.pagerIndex++;
         }
-        this.refs["viewPager"].setPage(this.state.pagerIndex)
+      //  console.log('after:'+this.state.pagerIndex);
+
+        this.refs["viewPager"].setPage(Platform.OS==='ios' ? this.state.pagerIndex-1:this.state.pagerIndex)
     }
 
     closeControlPanel = () => {
@@ -266,7 +269,7 @@ export default class QcFormPager extends Component {
                 ref={(ref) => this._drawer = ref}
                 content={this.drawerLayout()}
                 type="overlay"
-                side="right"
+                side="left"
                 tapToClose={true}
                 openDrawerOffset={0.2}
                 panCloseMask={0.2}
