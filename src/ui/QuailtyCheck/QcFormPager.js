@@ -148,7 +148,7 @@ export default class QcFormPager extends Component {
 
     drawerLayout() {
         return (
-            <View style={{flex: 1, backgroundColor: Color.drawerColor,marginBottom:25}}>
+            <View style={{flex: 1, backgroundColor: Color.drawerColor,paddingBottom:35}}>
                 <ListView
                     dataSource={this.state.dataSource}
                     removeClippedSubviews={false}
