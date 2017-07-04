@@ -48,13 +48,13 @@ export default class QcFormPager extends Component {
     }
 
     componentDidMount() {
-/*        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
-            .then((result) => {
-                console.log(JSON.stringify(result));
-                this.setState({
-                    formItems: result
-                })
-            }).done()*/
+        /*        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
+         .then((result) => {
+         console.log(JSON.stringify(result));
+         this.setState({
+         formItems: result
+         })
+         }).done()*/
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.props.formItems)
         })
@@ -71,10 +71,10 @@ export default class QcFormPager extends Component {
                     {
                         (() => {
                             if (data.isPass === 1) {
-                                return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                return <Image style={{width: 15, height: 15, marginLeft: 16}}
                                               source={require('../../drawable/pass_ico.png')}/>
                             } else if (data.isPass === 0) {
-                                return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                return <Image style={{width: 15, height: 15, marginLeft: 16}}
                                               source={require('../../drawable/fail_ico.png')}/>
                             } else return null
                         })()
@@ -83,7 +83,7 @@ export default class QcFormPager extends Component {
                     {
                         (() => {
                             if ((data.submitPic && data.submitPic.length !== 0) || (data.submitContent && data.submitContent.subContent)) {
-                                return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                return <Image style={{width: 15, height: 15, marginLeft: 16}}
                                               source={require('../../drawable/pen_unwrite.png')}/>
                             } else return null
                         })()
@@ -148,25 +148,26 @@ export default class QcFormPager extends Component {
 
     drawerLayout() {
         return (
-            <View style={{flex: 1, backgroundColor: Color.drawerColor,paddingBottom:35}}>
+            <View style={{flex: 1, backgroundColor: Color.drawerColor, paddingBottom: 35}}>
                 <ListView
                     dataSource={this.state.dataSource}
                     removeClippedSubviews={false}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
-                        <TouchableOpacity style={{flexDirection: 'row', margin: 16, alignItems: 'center'}}
-                                          onPress={() => {
-                                              this.closeControlPanel();
-                                              this.refs["viewPager"].setPage(Number(sectionID))
-                                          }}>
+                        <TouchableOpacity
+                            style={{flexDirection: 'row', margin: 16, alignItems: 'center'}}
+                            onPress={() => {
+                                this.closeControlPanel();
+                                this.refs["viewPager"].setPage(Number(sectionID))
+                            }}>
                             <Text style={{color: 'white'}}>{rowData.qualityItem}</Text>
                             {
                                 (() => {
                                     if (rowData.isPass === 1) {
-                                        return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                        return <Image style={{width: 15, height: 15, marginLeft: 16}}
                                                       source={require('../../drawable/pass_ico.png')}/>
                                     } else if (rowData.isPass === 0) {
-                                        return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                        return <Image style={{width: 15, height: 15, marginLeft: 16}}
                                                       source={require('../../drawable/fail_ico.png')}/>
                                     } else return null
                                 })()
@@ -174,7 +175,7 @@ export default class QcFormPager extends Component {
                             {
                                 (() => {
                                     if ((rowData.submitPic && rowData.submitPic.length !== 0) || (rowData.submitContent && rowData.submitContent.subContent)) {
-                                        return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                        return <Image style={{width: 15, height: 15, marginLeft: 16}}
                                                       source={require('../../drawable/pen_unwrite.png')}/>
                                     } else return null
                                 })()
@@ -314,6 +315,7 @@ export default class QcFormPager extends Component {
                                         appendFunc: (submitContent, submitPic) => {
                                             this.state.formItems[this.state.pagerIndex].submitContent = submitContent;
                                             this.state.formItems[this.state.pagerIndex].submitPic = submitPic;
+                                            this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.formItems)))})
                                         }
                                     }
                                 )
