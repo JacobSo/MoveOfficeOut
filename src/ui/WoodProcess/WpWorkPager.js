@@ -177,7 +177,6 @@ export default class WpWorkPager extends Component {
 
     postText() {
         this.setState({isLoading: true});
-
         this.createOrModifyReq().then((responseJson) => {
             console.log(JSON.stringify(responseJson));
             if (!responseJson.IsErr) {
@@ -238,7 +237,6 @@ export default class WpWorkPager extends Component {
             this.state.submitPic.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
                     this.postImgReq(data, index, callBackData, mainId);
-
                 })
             });
         }
