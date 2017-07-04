@@ -42,7 +42,6 @@ export default class WpMainPager extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (!responseJson.IsErr) {
-                    console.log(responseJson);
                     this.setState({
                         items: responseJson.list,
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.list),

@@ -130,12 +130,12 @@ class WdPostPager extends Component {
         };
 
         let tempPics = [];
-        this.state.pics.map((data) => {
+        this.state.pics.map((pic) => {
             tempPics.push({
-                fileName: data.fileName,
+                fileName: pic.fileName?pic.fileName:pic.uri.substring(pic.uri.lastIndexOf('/'),pic.uri.length),
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
-                uri: data.uri//.replace('file://', '')
+                uri: pic.uri//.replace('file://', '')
             });
         });
         this.state.submitContent = tempContent;

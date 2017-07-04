@@ -49,14 +49,14 @@ export default class WpProductDetailPager extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.product)
+     //   console.log(this.props.product)
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
         });
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(newProps) + '-------------------------')
+      //  console.log(JSON.stringify(newProps) + '-------------------------')
         this.setStatus();
     }
 
@@ -160,9 +160,10 @@ export default class WpProductDetailPager extends Component {
                         <TouchableOpacity onPress={() => {
                             ImagePicker.showImagePicker(options, (response) => {
                                 if (!response.didCancel) {
+                                    Toast.show(JSON.stringify(response));
                                     this.state.pics.push(response);
                                     this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                    console.log(JSON.stringify(this.state.pics));
+                                  //  console.log(JSON.stringify(this.state.pics));
                                 }
                             });
                         }}>
@@ -188,7 +189,7 @@ export default class WpProductDetailPager extends Component {
                                     onPress={() => {
                                         //  console.log(rowID + ":" + sectionID);
                                         this.state.pics.splice(sectionID, 1);
-                                        console.log("delete:" + JSON.stringify(this.state.pics));
+                                       // console.log("delete:" + JSON.stringify(this.state.pics));
                                         this.setState({
                                             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
                                         });

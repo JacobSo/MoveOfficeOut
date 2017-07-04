@@ -19,6 +19,7 @@ import {WpProductItem} from "../Component/WpProductItem";
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 import Utility from "../../utils/Utility";
+import SnackBar from 'react-native-snackbar-dialog'
 const {width, height} = Dimensions.get('window');
 
 export default class WpWorkPager extends Component {
@@ -112,7 +113,7 @@ export default class WpWorkPager extends Component {
                         path: pic.uri.replace('file://', ''),
                         id: this.state.isModify ? data.poldid : data.Id,
                         imgCode: '',
-                        fileName: pic.fileName,
+                        fileName: pic.fileName?pic.fileName:pic.uri.substring(pic.uri.lastIndexOf('/'),pic.uri.length),
                         reviewbillguid: '',
                         poldid: data.poldid,
                     })
@@ -230,12 +231,14 @@ export default class WpWorkPager extends Component {
         if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
+
                     this.postImgReq(data, index, callBackData, mainId);
                 });
             })
         } else {
             this.state.submitPic.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
+                    //SnackBar.show(mainId+','+index+','+JSON.stringify(data));
                     this.postImgReq(data, index, callBackData, mainId);
                 })
             });
@@ -243,6 +246,8 @@ export default class WpWorkPager extends Component {
     }
 
     postImgReq(data, index, callBackData, mainId) {
+        console.log('*****'+index+'********'+mainId+'**********'+JSON.stringify(data));
+        console.log('*****'+callBackData+'********');
         ApiService.uploadImamge(
             data.id,
             callBackData,
