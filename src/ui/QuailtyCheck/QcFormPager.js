@@ -71,10 +71,10 @@ export default class QcFormPager extends Component {
                     {
                         (() => {
                             if (data.isPass === 1) {
-                                return <Image style={{width: 15, height: 15}}
+                                return <Image style={{width: 15, height: 15,marginLeft:16}}
                                               source={require('../../drawable/pass_ico.png')}/>
                             } else if (data.isPass === 0) {
-                                return <Image style={{width: 15, height: 15}}
+                                return <Image style={{width: 15, height: 15,marginLeft:16}}
                                               source={require('../../drawable/fail_ico.png')}/>
                             } else return null
                         })()
@@ -83,7 +83,7 @@ export default class QcFormPager extends Component {
                     {
                         (() => {
                             if ((data.submitPic && data.submitPic.length !== 0) || (data.submitContent && data.submitContent.subContent)) {
-                                return <Image style={{width: 15, height: 15}}
+                                return <Image style={{width: 15, height: 15,marginLeft:16}}
                                               source={require('../../drawable/pen_unwrite.png')}/>
                             } else return null
                         })()
