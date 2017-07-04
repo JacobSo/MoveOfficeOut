@@ -93,11 +93,23 @@ export default class PasswordPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={["完成(" + this.state.selectItems + ")"]}
+                         actionArray={[this.props.isWood?"全选":null,"完成(" + this.state.selectItems + ")"]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
                              },
+                             this.props.isWood?()=>{
+                                 let flag = this.state.items[0].check;
+
+                                 this.state.items.map((data)=>{
+                                    data.check = !flag ;
+                                 });
+
+                                 this.setState({
+                                     selectItems: flag?0: this.state.items.length,
+                                     dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                 });
+                             }:null,
                              () => {
                                  let temp = [];
                                  this.state.items.map((data) => {
@@ -176,7 +188,6 @@ export default class PasswordPager extends Component {
                 </View>
                 {
                     (() => {
-
                         if (this.state.selectItems > 0) {
                             this.stepSelectView();
                             return (

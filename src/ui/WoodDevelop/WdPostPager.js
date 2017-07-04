@@ -88,13 +88,13 @@ class WdPostPager extends Component {
         sqLite.getWdDraftPic(this.props.product.ItemGuid, this.props.step)
             .then((result) => {
                 if (result) {
-                   // console.log(JSON.stringify(result));
+                    // console.log(JSON.stringify(result));
 
                     this.setState({
                         pics: result,
                         dataSource: this.state.dataSource.cloneWithRows(result)
                     });
-                   // console.log(JSON.stringify(this.state.dataSource));
+                    // console.log(JSON.stringify(this.state.dataSource));
 
                 }
             }).done();
@@ -200,7 +200,7 @@ class WdPostPager extends Component {
             })
         } else {
             this.state.submitPic.map((data, index) => {
-                IosModule.getImageBase64(data.uri.replace('file://',''), (callBackData) => {
+                IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
                     this.postImageReq(data, index, callBackData);
                 });
 
@@ -254,7 +254,7 @@ class WdPostPager extends Component {
         } else if (this.state.product.pResultList.indexOf(this.props.step + "-1") > -1) {
             this.state.product.pResultList = this.state.product.pResultList.replace(this.props.step + "-1", result);
         } else {
-            this.state.product.pResultList += (','+result);//pass
+            this.state.product.pResultList += (',' + result);//pass
         }
 
         let tempPicsPath = [];
@@ -331,22 +331,22 @@ class WdPostPager extends Component {
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                     //       console.log(JSON.stringify(this.state.pics));
+                                            //       console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
                                 }}>
                                     <Image
                                         resizeMode="contain"
                                         style={{height: 25}}
-                                        source={require('../../drawable/post_cam.png')}
-                                    /></TouchableOpacity>
+                                        source={require('../../drawable/post_cam.png')}/>
+                                </TouchableOpacity>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchImageLibrary(options, (response) => {
-                                     //   console.log(JSON.stringify(response));
+                                        //   console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                           // console.log(JSON.stringify(this.state.pics));
+                                            // console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
                                 }}>
@@ -398,8 +398,8 @@ class WdPostPager extends Component {
                                                 this.state.pics.splice(sectionID, 1);
                                                 //console.log("delete:" + JSON.stringify(this.state.pics));
                                                 this.setState({
-                                                        dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
-                                                    });
+                                                    dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
+                                                });
                                                 //   console.log(JSON.stringify(this.state.dataSource))
                                             }}>
                                             <Image

@@ -372,7 +372,7 @@ export default class QcSubmitPager extends Component {
                         <View style={styles.itemText}>
                             <Text>质检方式</Text>
                             <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? '单品质检' : '批量质检'}</Text>
+                                style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? '批量质检' : '单品质检'}</Text>
                         </View>
                         <View style={styles.itemText}>
                             <Text>总数</Text>

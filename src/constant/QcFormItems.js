@@ -50,7 +50,7 @@ export const QC_FORM_ITEM_WOOD = [
     {
         Guid: "5C96764D-D5BB-44FD-A0F1-8496BB02A823",
         qualityItem: "木材含水率",
-        qualityContent: "木材湿度控制在16度以内，夹板14度以内",
+        qualityContent: "木材湿度控制在14度以内，夹板12度以内",
     },
 
     {
@@ -115,7 +115,7 @@ export const QC_FORM_ITEM_SOFA = [
     {
         Guid: "12EC85FC-BB05-4833-914D-E643A8870D23",
         qualityItem: "木材含水率",
-        qualityContent: "木材湿度控制在20度以内，夹板14度以内",
+        qualityContent: "木材湿度控制在18度以内，夹板12度以内",
     },
     {
         Guid: "EC0CF596-47A8-4738-9C55-3E57C0E74503",

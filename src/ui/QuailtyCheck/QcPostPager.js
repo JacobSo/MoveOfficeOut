@@ -124,12 +124,12 @@ export default class QcPostPager extends Component {
         this.state.pics.map((data) => {
             if (data.uri)
                 tempPics.push({
-                    fileName: data.fileName,
+                    fileName: data.fileName?data.fileName:data.uri.substring(data.uri.lastIndexOf('/'),data.uri.length),
                     index: this.state.product.ProductNoGuid + this.props.form.Guid,
                     uri: data.uri//.replace('file://', '')
                 });
         });
-        console.log(JSON.stringify(tempPics)+'----tempPics');
+  //      console.log(JSON.stringify(tempPics)+'----tempPics');
 
         this.state.submitContent = tempContent;
         this.state.submitPic = tempPics;
@@ -137,7 +137,7 @@ export default class QcPostPager extends Component {
     }
 
     save() {
-        console.log(JSON.stringify(this.state.submitContent)+"-----submitContent");
+       // console.log(JSON.stringify(this.state.submitContent)+"-----submitContent");
         sqLite.insertQcDraftSingle(this.state.submitContent, this.state.submitPic)
             .then((result) => {
                 Toast.show(result, {duration: 3000});
@@ -192,11 +192,11 @@ export default class QcPostPager extends Component {
                                     alignItems: 'center'
                                 }}
                                 onPress={() => {
-                                    ImagePicker.launchImageLibrary(options, (response) => {
+                                    ImagePicker.launchCamera(options, (response) => {
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                            console.log(JSON.stringify(this.state.pics));
+                                          //  console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
                                 }}>

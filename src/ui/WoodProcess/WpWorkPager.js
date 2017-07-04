@@ -106,18 +106,20 @@ export default class WpWorkPager extends Component {
                 isAllFinish = false
             }
 
-            if (data.pics) {
+            if (data.pics.length !== 0) {
                 data.pics.map((pic) => {
                     //console.log(JSON.stringify(pic));
                     picTemp.push({
                         path: pic.uri.replace('file://', ''),
                         id: this.state.isModify ? data.poldid : data.Id,
                         imgCode: '',
-                        fileName: pic.fileName?pic.fileName:pic.uri.substring(pic.uri.lastIndexOf('/'),pic.uri.length),
+                        fileName: pic.fileName ? pic.fileName : pic.uri.substring(pic.uri.lastIndexOf('/'), pic.uri.length),
                         reviewbillguid: '',
                         poldid: data.poldid,
                     })
                 })
+            } else {
+                isAllFinish = false
             }
         }
         /* this.state.items.map((data) => {
@@ -153,7 +155,7 @@ export default class WpWorkPager extends Component {
         }
 
         if (!this.pack()) {
-            Toast.show("请选择每一个产品的评审阶段");
+            Toast.show("每个产品都需要添加阶段和图片");
             return
         }
 
@@ -246,8 +248,6 @@ export default class WpWorkPager extends Component {
     }
 
     postImgReq(data, index, callBackData, mainId) {
-        console.log('*****'+index+'********'+mainId+'**********'+JSON.stringify(data));
-        console.log('*****'+callBackData+'********');
         ApiService.uploadImamge(
             data.id,
             callBackData,
@@ -300,7 +300,7 @@ export default class WpWorkPager extends Component {
                                 Toast.show("提交成功");
                                 this.props.refreshFunc();
                                 this.props.nav.goBack(null)
-                            } else{
+                            } else {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
@@ -340,7 +340,7 @@ export default class WpWorkPager extends Component {
                                 Toast.show("删除成功");
                                 this.props.refreshFunc();
                                 this.props.nav.goBack(null)
-                            } else{
+                            } else {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
@@ -535,6 +535,11 @@ export default class WpWorkPager extends Component {
                                               color: 'white',
                                               width: 200,
                                           }}>{this.state.SupplierName === '' ? '供应商' : this.state.SupplierName}</Text>
+                                    <TouchableOpacity style={styles.closeStyle}
+                                                      onPress={() => this.setState({SupplierName: ''})}>
+                                        <Image source={require('../../drawable/close_white.png')}
+                                               style={{width: 15, height: 15,}}/>
+                                    </TouchableOpacity>
                                 </TouchableOpacity>
                                 {
                                     (() => {
@@ -562,6 +567,11 @@ export default class WpWorkPager extends Component {
                                                               color: 'white',
                                                               width: 200,
                                                           }}>{this.state.Series === '' ? '系列' : this.state.Series}</Text>
+                                                    <TouchableOpacity style={styles.closeStyle}
+                                                                      onPress={() => this.setState({Series: ''})}>
+                                                        <Image source={require('../../drawable/close_white.png')}
+                                                               style={{width: 15, height: 15,}}/>
+                                                    </TouchableOpacity>
                                                 </TouchableOpacity>)
                                         }
                                     })()
@@ -582,7 +592,7 @@ export default class WpWorkPager extends Component {
                                             this.props.nav.navigate(
                                                 'wpDetail',
                                                 {
-                                                    isWood:this.state.isWood,
+                                                    isWood: this.state.isWood,
                                                     product: rowData,
                                                     delFunc: () => {
                                                         delete this.state.items[rowData.Id];
@@ -602,8 +612,8 @@ export default class WpWorkPager extends Component {
                                         }/>}/>
 
                             <TouchableOpacity onPress={() => {
-                                if(this.state.isWood){
-                                    if(!this.state.Series){
+                                if (this.state.isWood) {
+                                    if (!this.state.Series) {
                                         Toast.show('请先选择系列')
                                         return
                                     }
@@ -613,7 +623,7 @@ export default class WpWorkPager extends Component {
                                     'wpSearch',
                                     {
                                         isWood: this.state.isWood,
-                                        series:this.state.Series,
+                                        series: this.state.Series,
                                         selectFunc: (data) => {
                                             data.map((d) => {
                                                 //console.log(JSON.stringify(d));
@@ -686,4 +696,12 @@ const styles = StyleSheet.create(
             marginBottom: 10,
 
         },
+        closeStyle: {
+            right: 0,
+            position: 'absolute',
+            width: 55,
+            height: 55,
+            alignItems: 'center',
+            justifyContent: 'center'
+        }
     });

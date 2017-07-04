@@ -193,14 +193,7 @@ export default class SearchPager extends Component {
                                 <Text
                                     style={{color: 'white'}}>{this.state.beginTime !== '' && this.state.endTime !== '' ?
                                     (this.state.beginTime + '到' + this.state.endTime) : '选择日期'}</Text>
-                                <TouchableOpacity style={{
-                                    right: 0,
-                                    position: 'absolute',
-                                    width: 55,
-                                    height: 55,
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }} onPress={() => {
+                                <TouchableOpacity style={styles.closeStyle} onPress={() => {
                                     this.setState({beginTime: '', endTime: ''});
                                 }}>
                                     <Image source={require('../drawable/close_white.png')}
@@ -224,17 +217,10 @@ export default class SearchPager extends Component {
                             );
                         }}>
                             <View style={styles.control}>
-                                <Text style={{color: 'white', marginLeft: 16, marginRight: 16}}>供应商</Text>
+                                <Image style={styles.ctrlIcon} source={require('../drawable/remark.png')}/>
                                 <Text
                                     style={{color: 'white'}}>{this.state.supply === '' ? '选择供应商' : this.state.supply}</Text>
-                                <TouchableOpacity style={{
-                                    right: 0,
-                                    position: 'absolute',
-                                    width: 55,
-                                    height: 55,
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }} onPress={() => {
+                                <TouchableOpacity style={styles.closeStyle} onPress={() => {
                                     this.setState({supply: ''})
                                 }}>
                                     <Image source={require('../drawable/close_white.png')}
@@ -258,17 +244,10 @@ export default class SearchPager extends Component {
                             );
                         }}>
                             <View style={styles.control}>
-                                <Text style={{color: 'white', marginLeft: 16, marginRight: 32}}>系列</Text>
+                                <Image style={styles.ctrlIcon} source={require('../drawable/remark.png')}/>
                                 <Text
                                     style={{color: 'white'}}>{this.state.series === '' ? '选择系列' : this.state.series}</Text>
-                                <TouchableOpacity style={{
-                                    right: 0,
-                                    position: 'absolute',
-                                    width: 55,
-                                    height: 55,
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }} onPress={() => {
+                                <TouchableOpacity style={styles.closeStyle} onPress={() => {
                                     this.setState({series: ''})
                                 }}>
                                     <Image source={require('../drawable/close_white.png')}
@@ -326,5 +305,13 @@ const styles = StyleSheet.create(
             marginLeft: 16,
             marginRight: 32,
             resizeMode: 'contain'
+        },
+        closeStyle:{
+            right: 0,
+            position: 'absolute',
+            width: 55,
+            height: 55,
+            alignItems: 'center',
+            justifyContent: 'center'
         }
     });

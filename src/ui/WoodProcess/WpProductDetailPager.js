@@ -160,7 +160,7 @@ export default class WpProductDetailPager extends Component {
                         <TouchableOpacity onPress={() => {
                             ImagePicker.showImagePicker(options, (response) => {
                                 if (!response.didCancel) {
-                                    Toast.show(JSON.stringify(response));
+                                   // Toast.show(JSON.stringify(response));
                                     this.state.pics.push(response);
                                     this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
                                   //  console.log(JSON.stringify(this.state.pics));
