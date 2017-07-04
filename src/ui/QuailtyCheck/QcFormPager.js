@@ -4,7 +4,7 @@
  */
 'user strict';
 
-import {StyleSheet, View, ListView, Text, Dimensions, TouchableOpacity, Image,Platform} from 'react-native';
+import {StyleSheet, View, ListView, Text, Dimensions, TouchableOpacity, Image, Platform} from 'react-native';
 import React, {Component} from 'react';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import Toolbar from './../Component/Toolbar';
@@ -44,16 +44,17 @@ export default class QcFormPager extends Component {
     }
 
     componentWillMount() {
-        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
+
+    }
+
+    componentDidMount() {
+/*        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
             .then((result) => {
                 console.log(JSON.stringify(result));
                 this.setState({
                     formItems: result
                 })
-            }).done()
-    }
-
-    componentDidMount() {
+            }).done()*/
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.props.formItems)
         })
@@ -75,6 +76,15 @@ export default class QcFormPager extends Component {
                             } else if (data.isPass === 0) {
                                 return <Image style={{width: 15, height: 15}}
                                               source={require('../../drawable/fail_ico.png')}/>
+                            } else return null
+                        })()
+
+                    }
+                    {
+                        (() => {
+                            if ((data.submitPic && data.submitPic.length !== 0) || (data.submitContent && data.submitContent.subContent)) {
+                                return <Image style={{width: 15, height: 15}}
+                                              source={require('../../drawable/pen_unwrite.png')}/>
                             } else return null
                         })()
                     }
@@ -138,7 +148,7 @@ export default class QcFormPager extends Component {
 
     drawerLayout() {
         return (
-            <View style={{flex: 1, backgroundColor: Color.drawerColor,}}>
+            <View style={{flex: 1, backgroundColor: Color.drawerColor,marginBottom:25}}>
                 <ListView
                     dataSource={this.state.dataSource}
                     removeClippedSubviews={false}
@@ -153,11 +163,19 @@ export default class QcFormPager extends Component {
                             {
                                 (() => {
                                     if (rowData.isPass === 1) {
-                                        return <Image style={{width: 15, height: 15}}
+                                        return <Image style={{width: 15, height: 15,marginLeft:16}}
                                                       source={require('../../drawable/pass_ico.png')}/>
                                     } else if (rowData.isPass === 0) {
-                                        return <Image style={{width: 15, height: 15}}
+                                        return <Image style={{width: 15, height: 15,marginLeft:16}}
                                                       source={require('../../drawable/fail_ico.png')}/>
+                                    } else return null
+                                })()
+                            }
+                            {
+                                (() => {
+                                    if ((rowData.submitPic && rowData.submitPic.length !== 0) || (rowData.submitContent && rowData.submitContent.subContent)) {
+                                        return <Image style={{width: 15, height: 15,marginLeft:16}}
+                                                      source={require('../../drawable/pen_unwrite.png')}/>
                                     } else return null
                                 })()
                             }
@@ -263,9 +281,9 @@ export default class QcFormPager extends Component {
                         actionArray={['目录', '完成']}
                         functionArray={[
                             () => {
-                            //console.log(JSON.stringify(this.state.formItems))
+                                //console.log(JSON.stringify(this.state.formItems))
                                 this.props.finishFunc(this.state.formItems);
-                                    this.props.nav.goBack(null)
+                                this.props.nav.goBack(null)
                             },
                             () => this.openControlPanel(),
                             () => this.count(),
@@ -274,7 +292,12 @@ export default class QcFormPager extends Component {
                     {
                         this.getPager()
                     }
-                    <View style={{position: 'absolute', bottom: Platform.OS==="ios"?0:25, width: width,backgroundColor:"white"}}>
+                    <View style={{
+                        position: 'absolute',
+                        bottom: Platform.OS === "ios" ? 0 : 25,
+                        width: width,
+                        backgroundColor: "white"
+                    }}>
                         <View style={{width: width, height: 1, backgroundColor: Color.line,}}/>
                         <View style={{flexDirection: 'row', justifyContent: 'space-around', padding: 16}}>
                             <TouchableOpacity onPress={() => {

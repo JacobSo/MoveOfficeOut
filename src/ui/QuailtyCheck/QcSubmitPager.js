@@ -61,13 +61,12 @@ export default class QcSubmitPager extends Component {
             this.state.arraySeries.push({title: data.QualityLot, IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
         });
 
-
         sqLite.fetchQcDraft(this.state.initFormItem, this.state.product.ProductNoGuid)
             .then((result) => {
                 console.log(JSON.stringify(result));
                 this.setState({
                     formItems: result,
-                    editContent: result[0].submitContent ? result[0].submitContent.totalContent : '',
+                    editContent:   this.props.product[0].state===1?this.props.product[0].ImprovementMeasures:(result[0].submitContent ? result[0].submitContent.totalContent : ''),
                 })
             }).done()
     }

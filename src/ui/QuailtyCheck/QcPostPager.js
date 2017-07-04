@@ -192,7 +192,7 @@ export default class QcPostPager extends Component {
                                     alignItems: 'center'
                                 }}
                                 onPress={() => {
-                                    ImagePicker.launchCamera(options, (response) => {
+                                    ImagePicker.launchImageLibrary(options, (response) => {
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
@@ -224,7 +224,7 @@ export default class QcPostPager extends Component {
                                             onPress={() => {
                                                 //  console.log(rowID + ":" + sectionID);
                                                 this.state.pics.splice(sectionID, 1);
-                                                console.log("delete:" + JSON.stringify(this.state.pics));
+                                               // console.log("delete:" + JSON.stringify(this.state.pics));
                                                 this.setState(
                                                     {
                                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
