@@ -4,7 +4,7 @@
  */
 'user strict';
 
-import {StyleSheet, View, ListView, Text, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, View, ListView, Text, Dimensions, TouchableOpacity, Image,Platform} from 'react-native';
 import React, {Component} from 'react';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 import Toolbar from './../Component/Toolbar';
@@ -138,7 +138,7 @@ export default class QcFormPager extends Component {
 
     drawerLayout() {
         return (
-            <View style={{flex: 1, backgroundColor: Color.black_semi_transparent,}}>
+            <View style={{flex: 1, backgroundColor: Color.drawerColor,}}>
                 <ListView
                     dataSource={this.state.dataSource}
                     removeClippedSubviews={false}
@@ -246,12 +246,13 @@ export default class QcFormPager extends Component {
             <Drawer
                 ref={(ref) => this._drawer = ref}
                 content={this.drawerLayout()}
-                type="static"
-                tapToClose={true}
+                type="overlay"
                 side="right"
+                tapToClose={true}
                 openDrawerOffset={0.2}
-                panCloseMask={0.2}>
-                <View style={{flex: 1, backgroundColor: "white",}}>
+                panCloseMask={0.2}
+            >
+                <View style={{flex: 1, backgroundColor: Color.backgroundColor,}}>
                     <Toolbar
                         elevation={2}
                         title={["质检项"]}
@@ -273,7 +274,7 @@ export default class QcFormPager extends Component {
                     {
                         this.getPager()
                     }
-                    <View style={{position: 'absolute', bottom: 25, width: width,}}>
+                    <View style={{position: 'absolute', bottom: Platform.OS==="ios"?0:25, width: width,backgroundColor:"white"}}>
                         <View style={{width: width, height: 1, backgroundColor: Color.line,}}/>
                         <View style={{flexDirection: 'row', justifyContent: 'space-around', padding: 16}}>
                             <TouchableOpacity onPress={() => {
@@ -310,7 +311,7 @@ export default class QcFormPager extends Component {
                 </View>
             </Drawer>
         )
-            ;
+
     }
 
 }

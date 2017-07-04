@@ -15,6 +15,7 @@ export  default  class  extends Component {
     static content = "#666666";
     static black_semi_transparent = "rgba(0,0,0,0.7)";
     static colorPrimary_semi_transparent = "rgba(0,151,167,0.7)";
+    static drawerColor = "#444444";
 
     static colorRed = "#F44336";//
     static colorPink = "#E91E63";

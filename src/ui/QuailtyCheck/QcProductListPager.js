@@ -45,7 +45,7 @@ export default class QcProductListPager extends Component {
 
     drawerLayout() {
         return (
-            <View style={{flex: 1, backgroundColor: Color.black_semi_transparent,}}>
+            <View style={{flex: 1, backgroundColor: Color.drawerColor,}}>
                 <Text style={{color: 'white', margin: 16, fontSize: 18}}>批量质检</Text>
 
                 <ListView
@@ -194,8 +194,8 @@ export default class QcProductListPager extends Component {
             <Drawer
                 ref={(ref) => this._drawer = ref}
                 content={this.drawerLayout()}
-                type="static"
                 tapToClose={true}
+                type="overlay"
                 side="right"
                 openDrawerOffset={0.2}
                 panCloseMask={0.2}>
