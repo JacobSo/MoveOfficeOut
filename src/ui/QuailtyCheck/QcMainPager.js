@@ -163,7 +163,7 @@ export default class QcMainPager extends Component {
                     color={Color.colorPink}
                     drawable={require('../../drawable/finger_print.png')}
                     action={() => {
-
+                        this.props.nav.navigate("qcSign")
                     }}/>
             </View>
         )

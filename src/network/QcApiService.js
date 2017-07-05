@@ -60,17 +60,26 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-    static arrivalSign(address, way, lat, lng) {
+    static arrivalSign(image,fileName,remark,address,lat, lng) {
         let method = 'QCSign';
         let param = JSON.stringify({
             UserName: App.account,
             Address: address,
-            Type: way,
+            Type: 1,
             Latitude: lat,
             Longitude: lng,
+            fileName:fileName,
+            remark:remark,
+            imgCode:image
         });
         return this.postRequest(method, param);
     }
+
+    static getSignHistory() {
+        let method = 'QCSignList?UserName=' + App.account;
+        return this.getRequest(method);
+    }
+
     static submitQualityContent(productId,state, contentJ, totalContent, lat, lng) {
         let method = 'SubmitQualityFeedback';
         let param = JSON.stringify({
@@ -94,10 +103,7 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-    static getSignHistory(type, startTimestamp, endTimestamp) {
-        let method = 'QCSignQuery?userName=' + App.account + '&type=' + type+ '&startTimestamp=' + startTimestamp+ '&endTimestamp=' + endTimestamp;
-        return this.getRequest(method);
-    }
+
 
     static getProductList() {
         let method = 'QualityTaskList?UserName=' + App.account;
@@ -150,4 +156,6 @@ export  default  class ApiService {
         });
         return this.postRequest(method, param);
     }
+
+
 }

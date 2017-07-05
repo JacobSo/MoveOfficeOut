@@ -15,22 +15,10 @@ import {
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import Toast from 'react-native-root-toast';
-import CheckBox from "../../ui/Component/CheckBox";
-import ApiService from '../../network/WdApiService';
 import Loading from 'react-native-loading-spinner-overlay';
-import {WdActions} from "../../actions/WdAction";
-import AndroidModule from '../../module/AndoridCommontModule'
-import IosModule from '../../module/IosCommontModule'
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import SnackBar from 'react-native-snackbar-dialog'
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
 const options = {
-    title: 'Select Avatar',
-    customButtons: [
-        {name: 'fb', title: 'Choose Photo from Facebook'},
-    ],
     quality: 0.2,
     noData: true,
     storageOptions: {

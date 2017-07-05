@@ -6,12 +6,11 @@
 import React, {Component} from 'react';
 import {
     View, StyleSheet, Dimensions, Alert, Platform, Text, TouchableOpacity, DeviceEventEmitter, Image, ScrollView,
-    KeyboardAvoidingView, TextInput, Picker
+    KeyboardAvoidingView, TextInput,
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
-import FloatButton from "../Component/FloatButton";
 import Toast from 'react-native-root-toast';
 import SQLite from '../../db/Sqlite';
 import AndroidModule from '../../module/AndoridCommontModule'

@@ -26,6 +26,13 @@ export  default  class ApiService {
         return d * Math.PI / 180;
     }
 
+    static getHourMinute(date){
+        let temp = new Date(date);
+        let hour = temp.getHours();
+        let min = temp.getMinutes();
+        return (hour<10?'0'+hour:hour)+":"+(min<10?'0'+min:min);
+    }
+
     static getVersion(){
 
     }
