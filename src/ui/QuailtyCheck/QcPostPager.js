@@ -209,7 +209,7 @@ export default class QcPostPager extends Component {
                                             style={{height: 200, margin: 16}}
                                             source={{uri: rowData.uri}}/>
                                         <TouchableOpacity
-                                            style={{position: 'absolute', right: 16,}}
+                                            style={{position: 'absolute', right: 8,}}
                                             onPress={() => {
                                                 //  console.log(rowID + ":" + sectionID);
                                                 this.state.pics.splice(sectionID, 1);
