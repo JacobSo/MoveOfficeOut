@@ -196,7 +196,7 @@ export default class WpProductDetailPager extends Component {
                                     }}>
                                     <Image
                                         resizeMode="contain"
-                                        style={{height: 25, width: 25,}}
+                                        style={{height: 30, width: 30,}}
                                         source={require('../../drawable/close_post_label.png')}/>
                                 </TouchableOpacity>
                             </View>

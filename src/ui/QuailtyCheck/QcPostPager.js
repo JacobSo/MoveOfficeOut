@@ -199,6 +199,7 @@ export default class QcPostPager extends Component {
 
                             <ListView
                                 dataSource={this.state.dataSource}
+                                style={{marginBottom:80}}
                                 removeClippedSubviews={false}
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
@@ -221,7 +222,7 @@ export default class QcPostPager extends Component {
                                             }}>
                                             <Image
                                                 resizeMode="contain"
-                                                style={{height: 25, width: 25,}}
+                                                style={{height: 30, width: 30,}}
                                                 source={require('../../drawable/close_post_label.png')}/>
                                         </TouchableOpacity>
 
