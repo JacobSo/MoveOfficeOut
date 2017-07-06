@@ -308,7 +308,7 @@ export default class QcSignPager extends Component {
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
                         <View style={{flexDirection: 'row', paddingLeft: 16,}}>
-                            <Text style={{marginTop: 25}}>{Utility.getHourMinute(rowData.SignTime)}</Text>
+                            <Text style={{marginTop: 25,width:40}}>{Utility.getHourMinute(rowData.SignTime)}</Text>
                             <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
                                 <View style={styles.timeLine}/>
                                 <View style={styles.timeLinePoint}/>
@@ -320,7 +320,6 @@ export default class QcSignPager extends Component {
                                             pics:[rowData.PicPath]
                                         })
                                 }>
-
                                 <Text>{this.getTimeStatus(new Date(rowData.SignTime))}</Text>
                                 <Text style={styles.signCardText}>{rowData.Address}</Text>
                                 <Text style={styles.signCardText}>{rowData.ReMark}</Text>
@@ -366,7 +365,6 @@ const styles = StyleSheet.create({
     timeLine: {
         backgroundColor: Color.line,
         width: 5,
-        height: 55,
         flex: 1
     },
     timeLinePoint: {
@@ -386,7 +384,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     signCardText: {
-        width: 200,
+        width: width/2,
         color: Color.black_semi_transparent,
         marginTop: 10
     },
