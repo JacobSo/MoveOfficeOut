@@ -135,7 +135,7 @@ class WdPostPager extends Component {
                 fileName: pic.fileName?pic.fileName:pic.uri.substring(pic.uri.lastIndexOf('/'),pic.uri.length),
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
-                uri: pic.uri//.replace('file://', '')
+                uri: pic.uri.replace('file://', '')
             });
         });
         this.state.submitContent = tempContent;
@@ -194,13 +194,14 @@ class WdPostPager extends Component {
     postImage() {
         if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
-                AndroidModule.getImageBase64(data.path, (callBackData) => {
+                AndroidModule.getImageBase64(data.uri, (callBackData) => {
+                    console.log(data.uri+","+callBackData);
                     this.postImageReq(data, index, callBackData);
                 });
             })
         } else {
             this.state.submitPic.map((data, index) => {
-                IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
+                IosModule.getImageBase64(data.uri, (callBackData) => {
                     this.postImageReq(data, index, callBackData);
                 });
 
@@ -327,7 +328,7 @@ class WdPostPager extends Component {
                             <View style={{flexDirection: 'row', padding: 5}}>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchCamera(options, (response) => {
-                                        //   console.log(JSON.stringify(response));
+                                          console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
@@ -342,7 +343,7 @@ class WdPostPager extends Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchImageLibrary(options, (response) => {
-                                        //   console.log(JSON.stringify(response));
+                                           console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
@@ -383,6 +384,7 @@ class WdPostPager extends Component {
 
                             <ListView
                                 dataSource={this.state.dataSource}
+                                style={{marginBottom:80}}
                                 removeClippedSubviews={false}
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>

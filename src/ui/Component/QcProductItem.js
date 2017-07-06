@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback} from 'react-native';
 import Color from '../../constant/Color';
 const {width, height} = Dimensions.get('window');
 export default class QcProductItem extends Component {
@@ -39,68 +39,72 @@ export default class QcProductItem extends Component {
     render() {
         //   console.log(JSON.stringify(this.props.task));
         return (
-            <TouchableOpacity
-                onPress={this.props.func}>
-                <View style={styles.mainContainer}>
-                    <Text style={{
-                        width: width - 32,
-                        padding: 5,
-                        backgroundColor: this.props.product.state === 1 ? Color.colorPrimaryDark : Color.content,
-                        color: 'white',
-                        textAlign: 'center',
-                        fontSize: 16
-                    }}>{this.props.product.state === 1 ? '已完成' : '未完成'}</Text>
-                    <View style={styles.itemText}>
-                        <Text>{'型号'}</Text>
+            <View>
+
+                <TouchableOpacity
+                    onPress={this.props.func}>
+                    <View style={styles.mainContainer}>
                         <Text style={{
-                            backgroundColor: Color.colorAccent,
+                            width: width - 32,
+                            padding: 5,
+                            backgroundColor: this.props.product.state === 1 ? Color.colorPrimaryDark : Color.content,
                             color: 'white',
-                            paddingLeft: 10,
-                            paddingRight: 10
-                        }}>{this.props.product.ProductNo}</Text>
+                            textAlign: 'center',
+                            fontSize: 16
+                        }}>{this.props.product.state === 1 ? '已完成' : '未完成'}</Text>
+                        <View style={styles.itemText}>
+                            <Text>{'型号'}</Text>
+                            <Text style={{
+                                backgroundColor: Color.colorAccent,
+                                color: 'white',
+                                paddingLeft: 10,
+                                paddingRight: 10
+                            }}>{this.props.product.ProductNo}</Text>
+                        </View>
+                        <View style={styles.itemText}>
+                            <Text>{'批次'}</Text>
+                            <Text style={{color: Color.black_semi_transparent}}>{this.props.product.QualityLot}</Text>
+                        </View>
+                        <View style={styles.itemText}>
+                            <Text>{'数量'}</Text>
+                            <Text style={{color: Color.black_semi_transparent}}>{this.props.product.Quantity}</Text>
+                        </View>
+                        <View style={styles.itemText}>
+                            <Text>{'交接时间'}</Text>
+                            <Text style={{color: Color.black_semi_transparent}}>{this.props.product.DeliveryDate}</Text>
+                        </View>
+                        <View style={[styles.itemText, {marginBottom: 16}]}>
+                            <Text>{'描述'}</Text>
+                            <Text style={{
+                                color: Color.black_semi_transparent,
+                                width: 200,
+                                textAlign: 'right'
+                            }}>{this.props.product.StyleName}</Text>
+                        </View>
+                        {/*    <View style={{
+                         width: width - 32 - 16,
+                         justifyContent: 'space-around',
+                         flexDirection: 'row',
+                         marginTop: 16,
+                         marginBottom:5
+                         }}>
+                         <Text>材料</Text>
+                         <Text>工艺</Text>
+                         <Text>成品</Text>
+                         </View>
+                         <View style={{
+                         width: width - 32 - 16,
+                         justifyContent: 'space-around',
+                         flexDirection: 'row',
+                         marginBottom: 16
+                         }}>
+                         <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(1)===1?Color.colorAccent:Color.line}}/>
+                         <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(2)===1?Color.colorAccent:Color.line}}/>
+                         <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(3)===1?Color.colorAccent:Color.line}}/>
+                         </View>*/}
                     </View>
-                    <View style={styles.itemText}>
-                        <Text>{'批次'}</Text>
-                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.QualityLot}</Text>
-                    </View>
-                    <View style={styles.itemText}>
-                        <Text>{'数量'}</Text>
-                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.Quantity}</Text>
-                    </View>
-                    <View style={styles.itemText}>
-                        <Text>{'交接时间'}</Text>
-                        <Text style={{color: Color.black_semi_transparent}}>{this.props.product.DeliveryDate}</Text>
-                    </View>
-                    <View style={[styles.itemText, {marginBottom: 16}]}>
-                        <Text>{'描述'}</Text>
-                        <Text style={{
-                            color: Color.black_semi_transparent,
-                            width: 200,
-                            textAlign: 'right'
-                        }}>{this.props.product.StyleName}</Text>
-                    </View>
-                    {/*    <View style={{
-                     width: width - 32 - 16,
-                     justifyContent: 'space-around',
-                     flexDirection: 'row',
-                     marginTop: 16,
-                     marginBottom:5
-                     }}>
-                     <Text>材料</Text>
-                     <Text>工艺</Text>
-                     <Text>成品</Text>
-                     </View>
-                     <View style={{
-                     width: width - 32 - 16,
-                     justifyContent: 'space-around',
-                     flexDirection: 'row',
-                     marginBottom: 16
-                     }}>
-                     <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(1)===1?Color.colorAccent:Color.line}}/>
-                     <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(2)===1?Color.colorAccent:Color.line}}/>
-                     <View style={{width: (width - 32 - 16) / 3, height: 3, backgroundColor: this.getStatus(3)===1?Color.colorAccent:Color.line}}/>
-                     </View>*/}
-                </View>
+
+                </TouchableOpacity>
                 {
                     (() => {
                         if (this.props.product.IsGetIn === 1) {
@@ -109,8 +113,7 @@ export default class QcProductItem extends Component {
 
                         }
                     })()
-                }
-            </TouchableOpacity>
+                }</View>
         );
     }
 }

@@ -94,7 +94,7 @@ export default class QcSubmitPager extends Component {
     countFinishItem() {
         let count = 0;
         this.state.formItems.map((data) => {
-            if (data.isPass && data.isPass !== 2) {
+            if (data.isPass ===0|| data.isPass === 1) {
                 count++;
             }
         });

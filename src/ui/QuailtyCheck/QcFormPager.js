@@ -269,7 +269,7 @@ export default class QcFormPager extends Component {
                 ref={(ref) => this._drawer = ref}
                 content={this.drawerLayout()}
                 type="overlay"
-                side="left"
+                side="right"
                 tapToClose={true}
                 openDrawerOffset={0.2}
                 panCloseMask={0.2}
