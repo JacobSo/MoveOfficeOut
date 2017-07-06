@@ -388,7 +388,7 @@ class WdPostPager extends Component {
                                 removeClippedSubviews={false}
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
-                                    <View >
+                                    <View>
                                         <Image
                                             resizeMode="contain"
                                             style={{height: 200, margin: 16}}
