@@ -27,12 +27,29 @@ export  default  class ApiService {
     }
 
     static getHourMinute(date){
-        let temp = new Date(date);
-        let hour = temp.getHours();
-        let min = temp.getMinutes();
+       // let datetemp = new Date(date);
+        let hour = date.getHours();
+        let min = date.getMinutes();
+        console.log(hour+":"+min);
         return (hour<10?'0'+hour:hour)+":"+(min<10?'0'+min:min);
     }
 
+    static  getTimeStatus(date) {
+        let hour = date.getHours();
+        let min = date.getMinutes();
+        let strTemp = hour + "" + (min < 10 ? "0" + min : min);
+        let timeNumber = Number(strTemp);
+        console.log(strTemp);
+        if (timeNumber <= 845) {
+            return "上午上班"
+        } else if (timeNumber <= 1245 && timeNumber > 1215 ) {
+            return "上午下班"
+        } else if (timeNumber <= 1345 && timeNumber > 1245) {
+            return "下午上班"
+        } else if (timeNumber >= 1815) {//1755
+            return "下午下班"
+        } else return "时候未到"
+    }
     static getVersion(){
 
     }

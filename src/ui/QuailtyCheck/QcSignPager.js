@@ -50,7 +50,6 @@ export default class QcSignPager extends Component {
 
     componentDidMount() {
         this.getSighToday();
-        this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.items)});
         if (Platform.OS === 'ios') {
             this.watchID = navigator.geolocation.watchPosition((position) => {
                 this.fetchData(position.coords.longitude, position.coords.latitude);
@@ -59,13 +58,19 @@ export default class QcSignPager extends Component {
             DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange)
         }
     }
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID);
+        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+    }
 
     onAndroidLocationChange = (e) => {
         // Toast.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
-            this.state.address = e.address;
-            this.state.lat = e.lat;
-            this.state.lng = e.lng;
+            this.setState({
+                address:e.address,
+                lat:e.lat,
+                lng:e.lng,
+            })
         }
     };
     fetchData = (longitude, latitude) => {
@@ -80,31 +85,17 @@ export default class QcSignPager extends Component {
             .then((response) => response.json())
             .then((responseBody) => {
                 console.log(JSON.stringify(responseBody));
-                this.state.address = responseBody.regeocode.formatted_address;
-                this.state.lat = latitude;
-                this.state.lng = longitude;
+                this.setState({
+                    address:responseBody.regeocode.formatted_address,
+                    lat:latitude,
+                    lng:longitude,
+                })
 
             }).catch((error) => {
             console.log(error);
         })
     };
 
-    getTimeStatus(date) {
-        let hour = date.getHours();
-        let min = date.getMinutes();
-        let strTemp = hour + "" + (min < 10 ? "0" + min : min);
-        let timeNumber = Number(strTemp);
-        console.log(strTemp);
-        if (timeNumber <= 845) {
-            return "上午上班"
-        } else if (timeNumber <= 1245 && timeNumber > 1215 ) {
-            return "上午下班"
-        } else if (timeNumber <= 1345 && timeNumber > 1245) {
-            return "下午上班"
-        } else if (timeNumber >= 1815) {//1755
-            return "下午下班"
-        } else return "时候未到"
-    }
 
     remarkDialog() {
         return (
@@ -148,7 +139,7 @@ export default class QcSignPager extends Component {
     }
 
     capFunc() {
-        ImagePicker.launchImageLibrary(options, (response) => {
+        ImagePicker.launchCamera(options, (response) => {
             console.log(JSON.stringify(response));
             if (!response.didCancel) {
                 this.setState({
@@ -244,12 +235,11 @@ export default class QcSignPager extends Component {
                         () => {
                             this.props.nav.goBack(null)
                         },
-
                     ]}/>
                 <View style={styles.topLayout}>
                     {/* <Image source={require("../../drawable/location_white.png")}
                      style={{width: 20, height: 30, marginRight: 10}}/>*/}
-                    <Text style={{color: 'white', fontSize: 25, margin: 10}}>{this.getTimeStatus(new Date())}</Text>
+                    <Text style={{color: 'white', fontSize: 25, margin: 10}}>今日签到</Text>
 
                     <Text style={{
                         color: 'white',
@@ -311,7 +301,7 @@ export default class QcSignPager extends Component {
                                     <View style={styles.timeLinePoint}/>
                                 </View>
                                 <View
-                                    style={[styles.signCard,{width:width/2+55}]}>
+                                    style={[styles.signCard,{width:width/2+25}]}>
                                     <Text>今天还没签到</Text>
                                 </View>
                             </View>
@@ -324,8 +314,8 @@ export default class QcSignPager extends Component {
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <View style={{flexDirection: 'row', paddingLeft: 16,}}>
-                                        <Text style={{marginTop: 25}}>{Utility.getHourMinute(rowData.SignTime)}</Text>
-                                        <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
+                                        <Text style={{marginTop: 25,width:45}}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "),rowData.SignTime.lastIndexOf(":"))}</Text>
+                                        <View style={{marginRight: 10, marginLeft: 16,width:45, alignItems: 'center',}}>
                                             <View style={styles.timeLine}/>
                                             <View style={styles.timeLinePoint}/>
                                         </View>
@@ -336,11 +326,9 @@ export default class QcSignPager extends Component {
                                                     pics: [rowData.PicPath]
                                                 })
                                             }>
-
-                                            <Text>{this.getTimeStatus(new Date(rowData.SignTime))}</Text>
+                                            <Text>签到详情</Text>
                                             <Text style={styles.signCardText}>{rowData.Address}</Text>
                                             <Text style={styles.signCardText}>{rowData.ReMark}</Text>
-
                                         </TouchableOpacity>
                                     </View>
                                 }/>
@@ -349,7 +337,6 @@ export default class QcSignPager extends Component {
                 }
                 {this.remarkDialog()}
                 <Loading visible={this.state.isLoading}/>
-
             </View>
         )
     }
@@ -404,7 +391,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     signCardText: {
-        width: width/2+55,
+        width: width/2+25,
         color: Color.black_semi_transparent,
         marginTop: 10
     },
