@@ -272,7 +272,7 @@ const SimpleStack = StackNavigator({
         },
     },
     {
-        initialRouteName: 'login',
+        initialRouteName: 'qcSign',
         headerMode: 'none',
     });
 

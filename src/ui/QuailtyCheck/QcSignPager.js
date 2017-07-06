@@ -97,9 +97,9 @@ export default class QcSignPager extends Component {
         console.log(strTemp);
         if (timeNumber <= 845) {
             return "上午上班"
-        } else if (timeNumber <= 1215 && timeNumber > 845) {
+        } else if (timeNumber <= 1245 && timeNumber > 1215 ) {
             return "上午下班"
-        } else if (timeNumber <= 1345 && timeNumber > 1215) {
+        } else if (timeNumber <= 1345 && timeNumber > 1245) {
             return "下午上班"
         } else if (timeNumber >= 1815) {//1755
             return "下午下班"
@@ -304,9 +304,16 @@ export default class QcSignPager extends Component {
                 {
                     (() => {
                         if (this.state.items.length === 0) {
-                            return <View
-                                style={styles.signCard}>
-                                <Text>没有数据</Text>
+                            return<View style={{flexDirection: 'row', paddingLeft: 16,}}>
+                                <Text style={{marginTop: 25}}>{Utility.getHourMinute(new Date())}</Text>
+                                <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
+                                    <View style={styles.timeLine}/>
+                                    <View style={styles.timeLinePoint}/>
+                                </View>
+                                <View
+                                    style={[styles.signCard,{width:width/2}]}>
+                                    <Text>今天还没签到</Text>
+                                </View>
                             </View>
                         } else {
                             return <ListView
@@ -378,7 +385,6 @@ const styles = StyleSheet.create({
     timeLine: {
         backgroundColor: Color.line,
         width: 5,
-        height: 55,
         flex: 1
     },
     timeLinePoint: {
@@ -398,7 +404,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     signCardText: {
-        width: 200,
+        width: width/2,
         color: Color.black_semi_transparent,
         marginTop: 10
     },
