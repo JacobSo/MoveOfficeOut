@@ -314,7 +314,7 @@ export default class QcSignPager extends Component {
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <View style={{flexDirection: 'row', paddingLeft: 10,}}>
-                                        <Text style={{marginTop:25,width:40,flex:1}}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "),rowData.SignTime.lastIndexOf(":"))}</Text>
+                                        <Text style={{marginTop:25,width:40,flex:1,textAlign:'center'}}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "),rowData.SignTime.lastIndexOf(":"))}</Text>
                                         <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
                                             <View style={styles.timeLine}/>
                                             <View style={styles.timeLinePoint}/>
@@ -385,6 +385,7 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     signCard: {
+        flex:4,
         elevation: 2,
         padding: 16,
         backgroundColor: 'white',
