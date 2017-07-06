@@ -311,7 +311,7 @@ export default class QcSignPager extends Component {
                                     <View style={styles.timeLinePoint}/>
                                 </View>
                                 <View
-                                    style={[styles.signCard,{width:width/2}]}>
+                                    style={[styles.signCard,{width:width/2+55}]}>
                                     <Text>今天还没签到</Text>
                                 </View>
                             </View>
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     signCardText: {
-        width: width/2,
+        width: width/2+55,
         color: Color.black_semi_transparent,
         marginTop: 10
     },
