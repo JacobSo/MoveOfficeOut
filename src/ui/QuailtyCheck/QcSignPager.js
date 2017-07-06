@@ -314,8 +314,8 @@ export default class QcSignPager extends Component {
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <View style={{flexDirection: 'row', paddingLeft: 16,}}>
-                                        <Text style={{marginTop: 25,width:45}}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "),rowData.SignTime.lastIndexOf(":"))}</Text>
-                                        <View style={{marginRight: 10, marginLeft: 16,width:45, alignItems: 'center',}}>
+                                        <Text style={{marginTop: 10,width:40}}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "),rowData.SignTime.lastIndexOf(":"))}</Text>
+                                        <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
                                             <View style={styles.timeLine}/>
                                             <View style={styles.timeLinePoint}/>
                                         </View>
