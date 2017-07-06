@@ -300,34 +300,46 @@ export default class QcSignPager extends Component {
                     </View>
                 </View>
 
-                <ListView
-                    ref="scrollView"
-                    dataSource={this.state.dataSource}
-                    style={{marginBottom: Platform.OS === 'ios' ? 0 : 25}}
-                    removeClippedSubviews={false}
-                    enableEmptySections={true}
-                    renderRow={(rowData, rowID, sectionID) =>
-                        <View style={{flexDirection: 'row', paddingLeft: 16,}}>
-                            <Text style={{marginTop: 25}}>{Utility.getHourMinute(rowData.SignTime)}</Text>
-                            <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
-                                <View style={styles.timeLine}/>
-                                <View style={styles.timeLinePoint}/>
+
+                {
+                    (() => {
+                        if (this.state.items.length === 0) {
+                            return <View
+                                style={styles.signCard}>
+                                <Text>没有数据</Text>
                             </View>
-                            <TouchableOpacity
-                                style={styles.signCard}
-                                onPress={
-                                    () => this.props.nav.navigate('gallery',{
-                                            pics:[rowData.PicPath]
-                                        })
-                                }>
+                        } else {
+                            return <ListView
+                                ref="scrollView"
+                                dataSource={this.state.dataSource}
+                                style={{marginBottom: Platform.OS === 'ios' ? 0 : 25}}
+                                removeClippedSubviews={false}
+                                enableEmptySections={true}
+                                renderRow={(rowData, rowID, sectionID) =>
+                                    <View style={{flexDirection: 'row', paddingLeft: 16,}}>
+                                        <Text style={{marginTop: 25}}>{Utility.getHourMinute(rowData.SignTime)}</Text>
+                                        <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
+                                            <View style={styles.timeLine}/>
+                                            <View style={styles.timeLinePoint}/>
+                                        </View>
+                                        <TouchableOpacity
+                                            style={styles.signCard}
+                                            onPress={
+                                                () => this.props.nav.navigate('gallery', {
+                                                    pics: [rowData.PicPath]
+                                                })
+                                            }>
 
-                                <Text>{this.getTimeStatus(new Date(rowData.SignTime))}</Text>
-                                <Text style={styles.signCardText}>{rowData.Address}</Text>
-                                <Text style={styles.signCardText}>{rowData.ReMark}</Text>
+                                            <Text>{this.getTimeStatus(new Date(rowData.SignTime))}</Text>
+                                            <Text style={styles.signCardText}>{rowData.Address}</Text>
+                                            <Text style={styles.signCardText}>{rowData.ReMark}</Text>
 
-                            </TouchableOpacity>
-                        </View>
-                    }/>
+                                        </TouchableOpacity>
+                                    </View>
+                                }/>
+                        }
+                    })()
+                }
                 {this.remarkDialog()}
                 <Loading visible={this.state.isLoading}/>
 
