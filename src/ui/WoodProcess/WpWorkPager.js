@@ -106,7 +106,7 @@ export default class WpWorkPager extends Component {
                 isAllFinish = false
             }
 
-            if (data.pics.length !== 0) {
+            if (data.pics&&data.pics.length !== 0) {
                 data.pics.map((pic) => {
                     //console.log(JSON.stringify(pic));
                     picTemp.push({
@@ -119,7 +119,7 @@ export default class WpWorkPager extends Component {
                     })
                 })
             } else {
-                isAllFinish = false
+                isAllFinish = this.state.isModify
             }
         }
         /* this.state.items.map((data) => {
