@@ -150,8 +150,10 @@ export default class PreferencesPager extends Component {
                                                                 },
                                                                 {
                                                                     text: '前往更新', onPress: () => {
-                                                                    Linking.openURL("http://www.pgyer.com/apiv1/app/install?_api_key=6dadcbe3be5652aec70a3d56f153bfb4&aKey=" +
-                                                                        responseJson.data[responseJson.data.length - 1].appKey)
+                                                                  //  Linking.openURL("http://www.pgyer.com/apiv1/app/install?_api_key=6dadcbe3be5652aec70a3d56f153bfb4&aKey=" +
+                                                                   //     responseJson.data[responseJson.data.length - 1].appKey);
+                                                                    Linking.openURL("itms-services://?action=download-manifest&url=https://www.pgyer.com/app/plist/" +
+                                                                        responseJson.data[responseJson.data.length - 1].appKey);
                                                                 }
                                                                 },
                                                             ]

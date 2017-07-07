@@ -7,11 +7,12 @@ import React, {Component} from 'react';
 import {
     View,
     StyleSheet,
-    Text,
+    Text,Platform,
     TouchableOpacity, Image,
 } from 'react-native';
 import {TABLE_PIC, TABLE_Q_S, TABLE_Q_S_PRODUCT, TABLE_Q_S_DRAFT, TABLE_W_D_P, TABLE_W_D_Q} from "./../db/DBConst";
-
+import AndroidModule from '../module/AndoridCommontModule'
+import IosModule from '../module/IosCommontModule'
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Toast from 'react-native-root-toast';
@@ -28,7 +29,9 @@ export default class LauncherPager extends Component {
     }
 
     componentDidMount() {
-      //  sqLite.drop(TABLE_Q_S_DRAFT);
+        this._bindPush();
+
+        //  sqLite.drop(TABLE_Q_S_DRAFT);
        // sqLite.drop(TABLE_Q_S_DRAFT);
       //  sqLite.drop(TABLE_Q_S_PRODUCT);
         //    sqLite.drop(TABLE_W_D);
@@ -38,6 +41,12 @@ export default class LauncherPager extends Component {
         //     sqLite.createWdTable();
     }
 
+    _bindPush() {
+        if (Platform.OS === 'ios')
+            IosModule.bindPushAccount(App.account);
+        else
+            AndroidModule.bindPushAccount(App.account);
+    }
     componentWillUnmount() {
        // sqLite.close();
     }
