@@ -123,7 +123,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v3'],
+                                ['此版本更新记录', 'v1'],
                                 ['手动更新','http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -153,19 +153,11 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16,}}>
-                                v2-v3:{'\n'}
-                                1.修复距离计算问题{'\n'}
                                 v1:{'\n'}
-                                1.助理新增查看审核模块{'\n'}
-                                2.增加launcher处理合并多部门app{'\n'}
-                                3.关闭供应商填写{'\n'}
-                                4.修复工作页面【完成】时签到提示错误问题{'\n'}
-                                5.修复删除工作问题{'\n'}
-                                6.签到距离提示{'\n'}
-                                7.新增外出类型{'\n'}
-                                8.调整签到按钮{'\n'}
-                                9.填写对接工作填入已有内容{'\n'}
-                                10.新增评审单模块{'\n'}
+                                1.评审单模块launch{'\n'}
+                                2.板木/软体评审模块launch{'\n'}
+                                3.质检模块launch{'\n'}
+
                             </Text>
 
                         </ScrollView>
