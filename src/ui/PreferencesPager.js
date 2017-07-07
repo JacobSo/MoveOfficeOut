@@ -23,6 +23,8 @@ import {NavigationActions} from "react-navigation";
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
 import SQLite from '../db/Sqlite';
 import {TABLE_W_D, TABLE_W_D_P} from "../db/DBConst";
+import ApiService from "../network/ApiService";
+import Toast from 'react-native-root-toast';
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
@@ -124,20 +126,51 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
                                 ['此版本更新记录', 'v1'],
-                                ['手动更新','http://pgyer.com/lsout']
+                                ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
                                 () => {
-                                    if (Platform.OS === 'ios') {
-                                        IosModule.checkUpdate('');
-                                    } else {
-                                        AndroidModule.checkUpdate();
-                                    }
+                               //     if (Platform.OS === 'ios')
+                                //        IosModule.checkUpdate('');
+                                 //    else{
+                                        ApiService.pgyerApiCheck()
+                                            .then((responseJson) => {
+                                                console.log(responseJson);
+                                                if (responseJson.code === 0) {
+                                                    if (responseJson.data[responseJson.data.length - 1].appBuildVersion >= 10) {
+                                                        Toast.show("已经是最新版本")
+                                                    } else {
+                                                        Alert.alert(
+                                                            '发现新版本',
+                                                            "新版本："+responseJson.data[responseJson.data.length - 1].appVersion,
+                                                            [
+                                                                {
+                                                                    text: '取消', onPress: () => {
+                                                                }
+                                                                },
+                                                                {
+                                                                    text: '前往更新', onPress: () => {
+                                                                    Linking.openURL("http://www.pgyer.com/apiv1/app/install?_api_key=6dadcbe3be5652aec70a3d56f153bfb4&aKey=" +
+                                                                        responseJson.data[responseJson.data.length - 1].appKey)
+                                                                }
+                                                                },
+                                                            ]
+                                                        )
+                                                    }
+                                                } else {
+                                                    Toast.show("检查错误，请稍后再试")
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                console.log(error);
+                                                Toast.show("检查错误，请稍后再试")
+                                            }).done();
+                               //     }
                                 },
                                 () => {
                                     this.popupDialog.show();
                                 },
-                                ()=>{
+                                () => {
                                     Linking.openURL('http://pgyer.com/lsout');
                                 }]}/>
                     </View>

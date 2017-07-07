@@ -31,7 +31,7 @@ export default class MainPager extends Component {
 
     }
 
-    componentDidMount() {``
+    componentDidMount() {
         this._bindPush();
     }
 

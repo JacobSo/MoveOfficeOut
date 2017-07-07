@@ -37,6 +37,39 @@ export  default  class ApiService {
             });*/
     }
 
+    static pgyerApiCheck(){
+        console.log("pgyerApiCheck");
+        return fetch("http://www.pgyer.com/apiv1/app/viewGroup", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;',
+            },
+            body: "aId=37afc1bd768906cf61bc6cd873fdf09a&_api_key=6dadcbe3be5652aec70a3d56f153bfb4"
+        })
+            .then((response) => {
+                console.log(response);
+                return response;
+            })
+            .then((response) => response.json())
+    }
+
+    static pgyerApiInstall(akey){
+        console.log("pgyerApiInstall");
+        return fetch("http://www.pgyer.com/apiv1/app/install?_api_key=6dadcbe3be5652aec70a3d56f153bfb4&aKey="+akey, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                return response;
+            })
+            .then((response) => response.json())
+    }
+
     static loginFuc(name, pwd) {
         let method = 'User/ToLogin';
         let param = JSON.stringify({

@@ -96,36 +96,39 @@ export default class WpWorkPager extends Component {
         let picTemp = [];
         for (let Id in this.state.items) {
             let data = this.state.items[Id];
-            //  console.log(JSON.stringify(data));
+            console.log(JSON.stringify(data));
             if (data.selectStep && (data.selectStep.indexOf(true) > -1)) {
                 temp.push({
-                    id: this.state.isModify ? data.poldid : data.Id,
+                    id: data.poldid ? data.poldid : data.Id,//poldid 存在，已有产品//不存在则新增
                     stage: JSON.stringify(data.selectStep)
                 })
             } else {
                 isAllFinish = false
             }
 
-            if (data.pics&&data.pics.length !== 0) {
+
+            if (data.pics && data.pics.length !== 0) {
                 data.pics.map((pic) => {
                     //console.log(JSON.stringify(pic));
                     picTemp.push({
                         path: pic.uri.replace('file://', ''),
-                        id: this.state.isModify ? data.poldid : data.Id,
+                        id: data.poldid ? data.poldid : data.Id,
                         imgCode: '',
                         fileName: pic.fileName ? pic.fileName : pic.uri.substring(pic.uri.lastIndexOf('/'), pic.uri.length),
                         reviewbillguid: '',
                         poldid: data.poldid,
                     })
                 })
-            } else {
-                isAllFinish = this.state.isModify
+            } else {//no photo ，check existed photo
+                if (!data.FacPicPath)
+                    isAllFinish = false;
             }
         }
         /* this.state.items.map((data) => {
 
          });*/
         if (isAllFinish) {
+            console.log(JSON.stringify(temp));
             this.state.submitProduct = temp;
             this.state.submitPic = picTemp;
 
