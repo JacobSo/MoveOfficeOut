@@ -27,6 +27,7 @@ import {NavigationActions,} from 'react-navigation';
 import CheckBox from "../ui/Component/CheckBox";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
+import UpdateService from "../network/UpdateService";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -45,6 +46,8 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
+        UpdateService.update(false);
+
         InteractionManager.runAfterInteractions(() => {
             this._requestShareInfo();
         });

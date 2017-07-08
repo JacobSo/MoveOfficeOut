@@ -14,13 +14,8 @@ import Drawer from 'react-native-drawer'
 import ApiService from '../../network/QcApiService';
 
 import Toast from 'react-native-root-toast';
-import {WdActions} from "../../actions/WdAction";
-import SnackBar from 'react-native-snackbar-dialog'
-import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
+
 import SQLite from '../../db/Sqlite';
-import InputDialog from "../Component/InputDialog";
 import QcInputDialog from "../Component/QcInputDialog";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');

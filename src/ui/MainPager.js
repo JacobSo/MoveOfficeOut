@@ -32,14 +32,6 @@ export default class MainPager extends Component {
     }
 
     componentDidMount() {
-        this._bindPush();
-    }
-
-    _bindPush() {
-        if (Platform.OS === 'ios')
-            IosModule.bindPushAccount(App.account);
-        else
-            AndroidModule.bindPushAccount(App.account);
     }
 
     _get() {

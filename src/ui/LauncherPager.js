@@ -18,6 +18,7 @@ import Toolbar from './Component/Toolbar'
 import Toast from 'react-native-root-toast';
 import App from '../constant/Application';
 import SQLite from '../db/Sqlite';
+import UpdateService from "../network/UpdateService";
 let sqLite = new SQLite();
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -30,7 +31,6 @@ export default class LauncherPager extends Component {
 
     componentDidMount() {
         this._bindPush();
-
         //  sqLite.drop(TABLE_Q_S_DRAFT);
        // sqLite.drop(TABLE_Q_S_DRAFT);
       //  sqLite.drop(TABLE_Q_S_PRODUCT);

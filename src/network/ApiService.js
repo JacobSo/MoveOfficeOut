@@ -37,7 +37,7 @@ export  default  class ApiService {
             });*/
     }
 
-    static pgyerApiCheck(){
+    static pgyerApiCheck(key){
         console.log("pgyerApiCheck");
         return fetch("http://www.pgyer.com/apiv1/app/viewGroup", {
             method: 'POST',
@@ -45,7 +45,7 @@ export  default  class ApiService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded;',
             },
-            body: "aId=662cbac6fcc48aca832a63511afdc0bc&_api_key=6dadcbe3be5652aec70a3d56f153bfb4"
+            body: "aId="+key+"&_api_key=6dadcbe3be5652aec70a3d56f153bfb4"
         })
             .then((response) => {
                 console.log(response);

@@ -42,12 +42,14 @@ import QcFormPager from "./ui/QuailtyCheck/QcFormPager";
 import QcPostPager from "./ui/QuailtyCheck/QcPostPager";
 import QcSubmitPager from "./ui/QuailtyCheck/QcSubmitPager";
 import QcSignPager from "./ui/QuailtyCheck/QcSignPager";
+import UpdateService from "./network/UpdateService";
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
     //  console.log("screen1");
     // codePush.sync();
+
     return (
         <Provider store={store}>
             <View
