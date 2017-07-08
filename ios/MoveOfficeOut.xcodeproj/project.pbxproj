@@ -76,8 +76,6 @@
 		49F302DB1E8C9572003967E8 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F302DA1E8C9572003967E8 /* CoreTelephony.framework */; };
 		49F302DD1E8C9586003967E8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F302DC1E8C9586003967E8 /* SystemConfiguration.framework */; };
 		49F3035A1E8CBC37003967E8 /* ReactCommonModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F303591E8CBC37003967E8 /* ReactCommonModule.m */; };
-		49F3035D1E8CEE26003967E8 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F3035B1E8CEE26003967E8 /* PgySDK.framework */; };
-		49F3035E1E8CEE26003967E8 /* PgyUpdate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F3035C1E8CEE26003967E8 /* PgyUpdate.framework */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		BEB1F9615E4B4FF997D4E681 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD24752497EB45A9ADF1A0D0 /* libRNImagePicker.a */; };
@@ -428,8 +426,6 @@
 		49F303551E8CBC12003967E8 /* MoveOfficeOut-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MoveOfficeOut-Bridging-Header.h"; sourceTree = "<group>"; };
 		49F303581E8CBC37003967E8 /* ReactCommonModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactCommonModule.h; sourceTree = "<group>"; };
 		49F303591E8CBC37003967E8 /* ReactCommonModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactCommonModule.m; sourceTree = "<group>"; };
-		49F3035B1E8CEE26003967E8 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PgySDK.framework; sourceTree = "<group>"; };
-		49F3035C1E8CEE26003967E8 /* PgyUpdate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PgyUpdate.framework; sourceTree = "<group>"; };
 		4CA597888E234893B7BDA4CF /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -469,8 +465,6 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				49F302BA1E8C9481003967E8 /* UTDID.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
-				49F3035E1E8CEE26003967E8 /* PgyUpdate.framework in Frameworks */,
-				49F3035D1E8CEE26003967E8 /* PgySDK.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				49F302B91E8C9481003967E8 /* CloudPushSDK.framework in Frameworks */,
@@ -568,8 +562,6 @@
 				491B96D81EE7992200E497B4 /* Other */,
 				491B96B01EE7991A00E497B4 /* Model */,
 				495528AE1E94DCDE0031F108 /* MoveOfficeOut.entitlements */,
-				49F3035B1E8CEE26003967E8 /* PgySDK.framework */,
-				49F3035C1E8CEE26003967E8 /* PgyUpdate.framework */,
 				49F302B51E8C9481003967E8 /* AlicloudUtils.framework */,
 				49F302B61E8C9481003967E8 /* CloudPushSDK.framework */,
 				49F302B71E8C9481003967E8 /* UTDID.framework */,

@@ -13,8 +13,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <CloudPushSDK/CloudPushSDK.h>
-#import <PgySDK/PgyManager.h>
-#import <PgyUpdate/PgyUpdateManager.h>
+
 
 @implementation AppDelegate
 
@@ -47,7 +46,6 @@
   [self registerMessageReceive];
   [CloudPushSDK sendNotificationAck:launchOptions];
   
-  [self pgyUpdateSEL];
   return YES;
 }
 
@@ -71,18 +69,6 @@
   self.arrays = [NSMutableArray arrayWithObjects:username,password,nil];
   
   return NO;
-}
-
-
-
--(void)pgyUpdateSEL
-{
-  [[PgyManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
- 
-  [[PgyManager sharedPgyManager]setEnableFeedback:NO];
-  //update
-   [[PgyUpdateManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
-  [[PgyUpdateManager sharedPgyManager]checkUpdate];
 }
 
 

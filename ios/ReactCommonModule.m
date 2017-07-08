@@ -8,8 +8,7 @@
 
 #import "ReactCommonModule.h"
 #import <CloudPushSDK/CloudPushSDK.h>
-#import <PgySDK/PgyManager.h>
-#import <PgyUpdate/PgyUpdateManager.h>
+
 
 #import "AppDelegate.h"
 
@@ -82,7 +81,7 @@ RCT_EXPORT_METHOD(checkUpdate:(NSString *)un)
 {
   NSLog(@"check update");
  // [[PgyUpdateManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
-  [[PgyUpdateManager sharedPgyManager]checkUpdate];
+  
  // [[PgyUpdateManager sharedPgyManager] checkUpdateWithDelegete:self selector:@selector(updateMethod:)];
   
 }
