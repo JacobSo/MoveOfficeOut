@@ -13,7 +13,7 @@ import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/WpApiService';
 import Color from '../../constant/Color';
 import FloatButton from "../Component/FloatButton";
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import Utility from "../../utils/Utility";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import WpMainItem from "../Component/WpMainItem";
@@ -49,13 +49,13 @@ export default class WpMainPager extends Component {
                     });
                 } else{
                     this.setState({  isRefreshing: false,});
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                 }
             })
             .catch((error) => {
                 this.setState({  isRefreshing: false,});
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
             }).done();
     }
 

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import {WdActions} from "../../actions/WdAction";
 
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
@@ -86,7 +86,7 @@ class WdProductDetailPager extends Component {
                                 },
                             );
                         } else {
-                            Toast.show("没有评审内容")
+                            SnackBar.show("没有评审内容")
                         }
                         this.popupDialog.dismiss();
 
@@ -108,7 +108,7 @@ class WdProductDetailPager extends Component {
                                     position: this.props.position
                                 },
                             );
-                        } else Toast.show("本阶段你不需要评审")
+                        } else SnackBar.show("本阶段你不需要评审")
                         this.popupDialog.dismiss();
                     }}>
                         <Text style={{margin: 16}}>填写评审</Text>

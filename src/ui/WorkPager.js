@@ -17,7 +17,7 @@ import {
     Switch, Alert,
     KeyboardAvoidingView,
 } from 'react-native';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import ApiService from '../network/ApiService';
@@ -69,20 +69,20 @@ class WorkPager extends Component {
 
     _createWork() {
         if (this.state.items.length === 0) {
-            Toast.show('请添加工作');
+            SnackBar.show('请添加工作');
             return;
         }
         if (this.state.date === '') {
-            Toast.show('请选择对接时间');
+            SnackBar.show('请选择对接时间');
             return;
         }
         if (this.state.departmentId === '') {
-            Toast.show('请选择部门');
+            SnackBar.show('请选择部门');
             return;
         }
 
         if(this.state.tripType===2&&!this.state.tripDate){
-            Toast.show("请选择出差结束时间")
+            SnackBar.show("请选择出差结束时间")
             return
         }
 
@@ -93,12 +93,12 @@ class WorkPager extends Component {
             }
         });
         if (!isHasTrip && this.state.isNeedTrip) {
-            Toast.show('至少添加一个走访工作');
+            SnackBar.show('至少添加一个走访工作');
             return;
         }
 
         if (isHasTrip && !this.state.isNeedTrip) {
-            Toast.show('需要选择外出类型');
+            SnackBar.show('需要选择外出类型');
             return;
         }
 
@@ -127,10 +127,10 @@ class WorkPager extends Component {
                         .then((responseJson) => {
                             if (!responseJson.IsErr) {
                                 this.props.actions.refreshList(true);
-                                Toast.show('操作成功');
+                                SnackBar.show('操作成功');
                                 this.props.nav.goBack(null);
                             } else {
-                                Toast.show(responseJson.ErrDesc);
+                                SnackBar.show(responseJson.ErrDesc);
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
@@ -138,7 +138,7 @@ class WorkPager extends Component {
                         })
                         .catch((error) => {
                             console.log(error);
-                            Toast.show("出错了，请稍后再试");
+                            SnackBar.show("出错了，请稍后再试");
                             setTimeout(() => {
                                 this.setState({isLoading: false})
                             }, 100);

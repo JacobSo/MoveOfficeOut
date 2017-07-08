@@ -15,7 +15,7 @@ import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 
 const {width, height} = Dimensions.get('window');
@@ -50,7 +50,7 @@ export default class WdFileListPager extends Component {
         } else {
             IosModule.getAllPrint((result) => {
                     //console.log(result)
-                   // Toast.show(result)
+                   // SnackBar.show(result)
                     if (result) {
                         this.state.items = JSON.parse(result);
                         this.setState({
@@ -136,7 +136,7 @@ export default class WdFileListPager extends Component {
                                 marginLeft: 16
                             }}
                             onPress={() => {
-                                Toast.show(rowData)
+                                SnackBar.show(rowData)
                                 if (Platform.OS === 'android')
                                     AndroidModule.openOfficeFile(rowData);
                                 else {

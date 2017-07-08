@@ -15,7 +15,7 @@ import {
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
 import ApiService from '../../network/WpApiService';
 import {WpProductItem} from "../Component/WpProductItem";
@@ -63,11 +63,11 @@ export default class PasswordPager extends Component {
                         items: responseJson.list,
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.list)
                     })
-                } else Toast.show(responseJson.ErrDesc)
+                } else SnackBar.show(responseJson.ErrDesc)
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -122,7 +122,7 @@ export default class PasswordPager extends Component {
                                  });
                                  if (temp.length!==0) {
                                      this.props.selectFunc(temp);
-                                     Toast.show('成功添加产品+' + this.state.selectItems);
+                                     SnackBar.show('成功添加产品+' + this.state.selectItems);
                                      this.setState({//set default
                                          select: [false, false, false],
                                          dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),

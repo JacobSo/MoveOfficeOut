@@ -15,7 +15,7 @@ import {
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import ApiService from '../network/ApiService';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -36,13 +36,13 @@ export default class WorkSignPager extends Component {
             ApiService.sighWork(this.state.items[this.props.position].Guid, this.state.comment)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {
-                        Toast.show('操作成功');
+                        SnackBar.show('操作成功');
                         this.state.items[this.props.position].WorkResult = this.state.comment;
                         //    console.log('----------'+JSON.stringify(this.state.items));
                         this.props.commentWork(this.state.items);
                         this.props.nav.goBack(null);
                     } else {
-                        Toast.show(responseJson.ErrDesc);
+                        SnackBar.show(responseJson.ErrDesc);
                         setTimeout(() => {
                             this.setState({isLoading: false})
                         }, 100);
@@ -50,13 +50,13 @@ export default class WorkSignPager extends Component {
                 })
                 .catch((error) => {
                     console.log(error);
-                    Toast.show("出错了，请稍后再试");
+                    SnackBar.show("出错了，请稍后再试");
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
                 })
                 .done();
-        } else Toast.show('未填写内容');
+        } else SnackBar.show('未填写内容');
     }
 
     render() {

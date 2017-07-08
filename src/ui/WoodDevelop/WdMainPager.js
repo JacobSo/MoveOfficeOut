@@ -18,7 +18,7 @@ import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/WdApiService';
 import Color from '../../constant/Color';
 import App from '../../constant/Application';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import {WdMainItem} from "../Component/WdMainItem";
 import {WdActions} from "../../actions/WdAction";
 import {bindActionCreators} from "redux";
@@ -71,7 +71,7 @@ class WdMainPager extends Component {
                     });
                     sqLite.insertWdData(responseJson.Serieslist);//save in db
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     this.setState({
                         items: [],
                         dataSource: this.state.dataSource.cloneWithRows([]),
@@ -86,7 +86,7 @@ class WdMainPager extends Component {
                     isRefreshing: false,
                 });
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
             }).done();
     }
 
@@ -105,7 +105,7 @@ class WdMainPager extends Component {
             }
         }).catch((err) => {
             this.setState({isRefreshing: false});
-            Toast.show("出错了，请稍后再试");
+            SnackBar.show("出错了，请稍后再试");
         }).done();
     }
 

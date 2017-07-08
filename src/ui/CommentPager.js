@@ -17,7 +17,7 @@ import {
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import App from '../constant/Application';
 import ApiService from '../network/ApiService';
 import StarSeek from "./Component/StarSeek";
@@ -49,7 +49,7 @@ export default class CommentPager extends Component {
             this.state.comment, type)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-                    Toast.show('操作成功');
+                    SnackBar.show('操作成功');
                     if ((App.jobType==='2'||App.jobType==='5')) {
                         this.state.task.list[this.props.position].ZhuanYuanScore = score;
                         this.state.task.list[this.props.position].ZhuanYuanSuggest = this.state.comment;
@@ -61,7 +61,7 @@ export default class CommentPager extends Component {
 
                     this.props.nav.goBack(null)
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
@@ -70,7 +70,7 @@ export default class CommentPager extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);

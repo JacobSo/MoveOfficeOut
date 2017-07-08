@@ -15,7 +15,7 @@ import {
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import CheckBox from '../ui/Component/CheckBox';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import App from '../constant/Application';
 
 const Dimensions = require('Dimensions');
@@ -98,7 +98,7 @@ export default class PasswordPager extends Component {
                             if (this.state.WorkContent === '' || this.state.SupplierName === '' ||
                                 (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)
                                 || ( this.state.Series === '' && App.department.indexOf('仓库')<0)) {
-                                Toast.show('填写不完整');
+                                SnackBar.show('填写不完整');
                             } else {
                                 //       console.log(this.state);
                                 this.setState({
@@ -159,7 +159,7 @@ export default class PasswordPager extends Component {
                                         (!this.state.wayMeet ? "走访" : ""))
                                     });
                                     if (this.state.SupplierName.split(',').length > 1) {
-                                        Toast.show("请重新选择供应商");
+                                        SnackBar.show("请重新选择供应商");
                                         this.setState({SupplierName: '',})
                                     }
                                 } }
@@ -196,7 +196,7 @@ export default class PasswordPager extends Component {
                                         },
                                     );
                                 } else {
-                                    Toast.show("请先选择对接方式")
+                                    SnackBar.show("请先选择对接方式")
                                 }
 
                             }}
@@ -224,7 +224,7 @@ export default class PasswordPager extends Component {
                                                     },
                                                 );
                                             } else {
-                                                Toast.show("请先选择对接方式")
+                                                SnackBar.show("请先选择对接方式")
                                             }
 
                                         }}>

@@ -12,7 +12,6 @@ import {
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/WpApiService';
 import Color from '../../constant/Color';
-import Toast from 'react-native-root-toast';
 import Loading from 'react-native-loading-spinner-overlay';
 import DatePicker from "../Component/DatePicker";
 import {WpProductItem} from "../Component/WpProductItem";
@@ -140,26 +139,26 @@ export default class WpWorkPager extends Component {
     postDialog() {
         // console.log(JSON.stringify(this.state.items));
         if (!Object.getOwnPropertyNames(this.state.items).length) {
-            Toast.show("请选择评审产品");
+            SnackBar.show("请选择评审产品");
             return
         }
 
         if (!this.state.date) {
-            Toast.show("请选择评审时间");
+            SnackBar.show("请选择评审时间");
             return
         }
 
         if (!this.state.isWood && !this.state.SupplierName) {
-            Toast.show("请选择供应商");
+            SnackBar.show("请选择供应商");
             return
         }
         if (this.state.isWood && (!this.state.Series || !this.state.SupplierName)) {
-            Toast.show("请选择系列和供应商");
+            SnackBar.show("请选择系列和供应商");
             return
         }
 
         if (!this.pack()) {
-            Toast.show("每个产品都需要添加阶段和图片");
+            SnackBar.show("每个产品都需要添加阶段和图片");
             return
         }
 
@@ -190,12 +189,12 @@ export default class WpWorkPager extends Component {
                 if (this.state.submitPic.length !== 0)
                     this.postImage(responseJson.ReviewBillGuid);
                 else {
-                    Toast.show("提交成功");
+                    SnackBar.show("提交成功");
                     this.props.refreshFunc();
                     this.props.nav.goBack(null)
                 }
             } else {
-                Toast.show(responseJson.ErrDesc)
+                SnackBar.show(responseJson.ErrDesc)
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -203,7 +202,7 @@ export default class WpWorkPager extends Component {
         })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -261,12 +260,12 @@ export default class WpWorkPager extends Component {
                 console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
-                        Toast.show("提交成功");
+                        SnackBar.show("提交成功");
                         this.props.refreshFunc();
                         this.props.nav.goBack(null)
                     }
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     if (index === this.state.submitPic.length - 1) {
                         setTimeout(() => {
                             this.setState({isLoading: false})
@@ -276,7 +275,7 @@ export default class WpWorkPager extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 if (index === this.state.submitPic.length - 1) {
                     setTimeout(() => {
                         this.setState({isLoading: false})
@@ -301,14 +300,14 @@ export default class WpWorkPager extends Component {
                         .then((responseJson) => {
                             console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
-                                Toast.show("提交成功");
+                                SnackBar.show("提交成功");
                                 this.props.refreshFunc();
                                 this.props.nav.goBack(null)
                             } else {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
-                                Toast.show(responseJson.ErrDesc);
+                                SnackBar.show(responseJson.ErrDesc);
 
                             }
                         })
@@ -317,7 +316,7 @@ export default class WpWorkPager extends Component {
                             setTimeout(() => {
                                 this.setState({isLoading: false})
                             }, 100);
-                            Toast.show("出错了，请稍后再试");
+                            SnackBar.show("出错了，请稍后再试");
                         }).done();
                 }
                 },
@@ -341,14 +340,14 @@ export default class WpWorkPager extends Component {
                         .then((responseJson) => {
                             console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
-                                Toast.show("删除成功");
+                                SnackBar.show("删除成功");
                                 this.props.refreshFunc();
                                 this.props.nav.goBack(null)
                             } else {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);
-                                Toast.show(responseJson.ErrDesc);
+                                SnackBar.show(responseJson.ErrDesc);
 
                             }
                         })
@@ -357,7 +356,7 @@ export default class WpWorkPager extends Component {
                             setTimeout(() => {
                                 this.setState({isLoading: false})
                             }, 100);
-                            Toast.show("出错了，请稍后再试");
+                            SnackBar.show("出错了，请稍后再试");
                         }).done();
                 }
                 },
@@ -430,11 +429,11 @@ export default class WpWorkPager extends Component {
                             this.postDialog();
                         },
                         () => {
-                        if(this.state.isModify&&this.state.isChange){
-                            SnackBar.show("请先点击【修改】，才可【提交】",{duration:3000})
-                        }else{
-                            this.submitWork();
-                        }
+                            if (this.state.isModify && this.state.isChange) {
+                                SnackBar.show("请先点击【修改】，才可【提交】")
+                            } else {
+                                this.submitWork();
+                            }
                         }
                     ]}/>
                 <ScrollView >
@@ -519,7 +518,6 @@ export default class WpWorkPager extends Component {
                                 }
                                 {
                                     this._carView()
-
                                 }
 
                                 <TouchableOpacity style={styles.control} onPress={() => {
@@ -584,8 +582,6 @@ export default class WpWorkPager extends Component {
                                         }
                                     })()
                                 }
-
-
                             </View>
 
                             <ListView
@@ -603,12 +599,14 @@ export default class WpWorkPager extends Component {
                                                     isWood: this.state.isWood,
                                                     product: rowData,
                                                     delFunc: () => {
-                                                        delete this.state.items[rowData.Id];
+                                                        this.state.isChange = true;
+                                                        delete this.state.items[rowData.poldid];
                                                         this.setState({
                                                             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
                                                         });
                                                     },
                                                     finishFunc: (modifyData) => {
+                                                        this.state.isChange = this.state.items[rowID] !== modifyData;
                                                         this.state.items[rowID] = modifyData;
                                                         this.setState({
                                                             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
@@ -617,16 +615,15 @@ export default class WpWorkPager extends Component {
                                                 },
                                             )
                                         }
-                                        }/>}/>
-
+                                        }/>
+                                }/>
                             <TouchableOpacity onPress={() => {
                                 if (this.state.isWood) {
                                     if (!this.state.Series) {
-                                        Toast.show('请先选择系列')
+                                        SnackBar.show('请先选择系列');
                                         return
                                     }
                                 }
-
                                 this.props.nav.navigate(
                                     'wpSearch',
                                     {

@@ -12,7 +12,6 @@ import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import FloatButton from "../Component/FloatButton";
-import Toast from 'react-native-root-toast';
 import SQLite from '../../db/Sqlite';
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SnackBar from 'react-native-snackbar-dialog'
@@ -54,7 +53,7 @@ export default class QcMainPager extends Component {
                 this._onRefresh();
         }).catch((err) => {
             this.setState({isRefreshing: false});
-            Toast.show("出错了，请稍后再试");
+            SnackBar.show("出错了，请稍后再试");
         }).done();
     }
 

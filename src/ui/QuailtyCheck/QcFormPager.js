@@ -12,9 +12,7 @@ import Color from '../../constant/Color';
 import {CachedImage} from "react-native-img-cache";
 import Drawer from 'react-native-drawer'
 import ApiService from '../../network/QcApiService';
-
-import Toast from 'react-native-root-toast';
-
+import SnackBar from 'react-native-snackbar-dialog'
 import SQLite from '../../db/Sqlite';
 import QcInputDialog from "../Component/QcInputDialog";
 let sqLite = new SQLite();
@@ -242,13 +240,13 @@ export default class QcFormPager extends Component {
             this.popupDialog.show()
             //    this.totalSave();
         } else
-            Toast.show('还有没有完成的项目')
+            SnackBar.show('还有没有完成的项目')
     }
 
     totalSave() {
         sqLite.insertQcDraftAll(this.state.formItems, this.props.product.ProductNoGuid, this.state.editContent)
             .then((result) => {
-                Toast.show(result);
+                SnackBar.show(result);
                 this.props.finishFunc(this.state.formItems);
                 this.props.nav.goBack(null);
             }).done()

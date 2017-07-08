@@ -15,7 +15,7 @@ import {
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import ApiService from '../network/ApiService';
 import {NavigationActions,} from 'react-navigation';
 const Dimensions = require('Dimensions');
@@ -34,11 +34,11 @@ export default class PasswordPager extends Component {
 
     _password() {
         if (this.state.oldPwd === '' || this.state.newPwd === '' || this.state.confirmPwd === '') {
-            Toast.show('请填写完整信息');
+            SnackBar.show('请填写完整信息');
         } else if (this.state.newPwd !== this.state.confirmPwd) {
-            Toast.show('两次密码不一样');
+            SnackBar.show('两次密码不一样');
         } else if (this.state.newPwd.length < 3) {
-            Toast.show('密码不能太短')
+            SnackBar.show('密码不能太短')
         } else {
 
             Alert.alert(
@@ -56,7 +56,7 @@ export default class PasswordPager extends Component {
                             .then((responseJson) => {
                                     //
                                     if (!responseJson.IsErr) {
-                                        Toast.show('修改成功');
+                                        SnackBar.show('修改成功');
                                         const resetAction = NavigationActions.reset({
                                             index: 0,
                                             actions: [
@@ -65,7 +65,7 @@ export default class PasswordPager extends Component {
                                         });
                                         this.props.nav.dispatch(resetAction)
                                     } else {
-                                        Toast.show(responseJson.ErrDesc)
+                                        SnackBar.show(responseJson.ErrDesc)
                                         setTimeout(() => {
                                             this.setState({isLoading: false})
                                         }, 100);
@@ -74,7 +74,7 @@ export default class PasswordPager extends Component {
                             )
                             .catch((error) => {
                                 console.log(error);
-                                Toast.show("出错了，请稍后再试");
+                                SnackBar.show("出错了，请稍后再试");
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
                                 }, 100);

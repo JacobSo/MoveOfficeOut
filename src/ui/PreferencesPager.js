@@ -24,7 +24,6 @@ import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog
 import SQLite from '../db/Sqlite';
 import {TABLE_W_D, TABLE_W_D_P} from "../db/DBConst";
 import ApiService from "../network/ApiService";
-import Toast from 'react-native-root-toast';
 import UpdateService from "../network/UpdateService";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');

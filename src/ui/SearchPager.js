@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Moment from 'moment';
 import DatePicker from '../ui/Component/DatePicker';
@@ -64,7 +64,7 @@ export default class SearchPager extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
             })
             .done()
     }
@@ -85,12 +85,12 @@ export default class SearchPager extends Component {
                     isEndUp: responseJson.list.length === 0
                 });
                 if (this.state.isEndUp) {
-                    Toast.show('已经没有了', {});
+                    SnackBar.show('已经没有了', {});
                 }
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
             })
             .done()
     }

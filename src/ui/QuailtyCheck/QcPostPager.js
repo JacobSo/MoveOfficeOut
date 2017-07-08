@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import Loading from 'react-native-loading-spinner-overlay';
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
@@ -69,7 +69,7 @@ export default class QcPostPager extends Component {
     }
 
     onAndroidLocationChange = (e) => {
-        // Toast.show(e.address + ":" + e.lat + ":" + e.lng)
+        // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
             this.state.address = e.address;
             this.state.lat = e.lat;
@@ -128,7 +128,7 @@ export default class QcPostPager extends Component {
        // console.log(JSON.stringify(this.state.submitContent)+"-----submitContent");
         sqLite.insertQcDraftSingle(this.state.submitContent, this.state.submitPic)
             .then((result) => {
-                Toast.show(result, {duration: 3000});
+                SnackBar.show(result, {duration: 3000});
                 this.props.appendFunc(this.state.submitContent, this.state.submitPic);
                 this.props.nav.goBack(null);
             }).done();

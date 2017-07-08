@@ -11,7 +11,6 @@ import {
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
-import Toast from 'react-native-root-toast';
 import SQLite from '../../db/Sqlite';
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
@@ -82,7 +81,7 @@ export default class QcSubmitPager extends Component {
     }
 
     onAndroidLocationChange = (e) => {
-        // Toast.show(e.address + ":" + e.lat + ":" + e.lng)
+        // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
             this.state.address = e.address;
             this.state.lat = e.lat;
@@ -255,7 +254,7 @@ export default class QcSubmitPager extends Component {
                         setTimeout(() => {
                             this.setState({isLoading: false})
                         }, 100);
-                        Toast.show("提交成功");
+                        SnackBar.show("提交成功");
                         this.props.nav.goBack(null);
                         if (this.props.product.length > 1)
                             this.props.finishFuncMulti(this.state.arraySeries);
@@ -300,7 +299,7 @@ export default class QcSubmitPager extends Component {
                 console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
-                        Toast.show("提交成功");
+                        SnackBar.show("提交成功");
                         this.props.nav.goBack(null);
                         if (this.props.product.length > 1)
                             this.props.finishFuncMulti(this.state.arraySeries);
@@ -308,7 +307,7 @@ export default class QcSubmitPager extends Component {
                             this.props.finishFunc(this.state.singleStore ? 1 : 0, this.state.qcNumber, this.state.passNumber, this.state.storeNumber)
                     }
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     if (index === this.state.submitPic.length - 1) {
                         setTimeout(() => {
                             this.setState({isLoading: false})
@@ -318,7 +317,7 @@ export default class QcSubmitPager extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 if (index === this.state.submitPic.length - 1) {
                     setTimeout(() => {
                         this.setState({isLoading: false})
@@ -351,7 +350,7 @@ export default class QcSubmitPager extends Component {
                                 () => {
                                     sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
                                         .then((result) => {
-                                            Toast.show(result);
+                                            SnackBar.show(result);
                                             this.props.nav.goBack(null);
                                         }).done()
                                 },

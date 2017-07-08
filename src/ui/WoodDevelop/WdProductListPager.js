@@ -19,7 +19,6 @@ import Color from '../../constant/Color';
 import {WdProductItem} from "../Component/WdProductItem";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import Toast from 'react-native-root-toast';
 import ApiService from '../../network/WdApiService';
 import App from '../../constant/Application';
 import SnackBar from 'react-native-snackbar-dialog'
@@ -310,7 +309,7 @@ class WdProductListPager extends Component {
                 }
             }
             if (!result) {
-                Toast.show("还有没有评审完成的任务");
+                SnackBar.show("还有没有评审完成的任务");
                 return;
             }
         }

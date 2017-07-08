@@ -17,7 +17,7 @@ import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import {WdFilterItem} from "../Component/WdFilterItem";
 import SQLite from '../../db/Sqlite';
 let sqLite = new SQLite();
@@ -100,7 +100,7 @@ export default class WdProductFilterPager extends Component {
                                             data.check = Number(data.check)
                                         });
                                         if (selectCount === 0) {
-                                            Toast.show("请选择一个产品打印");
+                                            SnackBar.show("请选择一个产品打印");
                                             return
                                         }
                                         this.setState({isLoading: true});
@@ -116,7 +116,7 @@ export default class WdProductFilterPager extends Component {
                                                     setTimeout(() => {
                                                         this.setState({isLoading: false})
                                                     }, 100);
-                                                    Toast.show('生成成功');
+                                                    SnackBar.show('生成成功');
                                                     this.props.nav.navigate('wdFile');
                                                 })
                                         } else {
@@ -128,19 +128,19 @@ export default class WdProductFilterPager extends Component {
                                                     setTimeout(() => {
                                                         this.setState({isLoading: false})
                                                     }, 100);
-                                                    Toast.show('生成成功');
+                                                    SnackBar.show('生成成功');
                                                     this.props.nav.navigate('wdFile');
                                                 },
                                                 (error) => {
                                                     setTimeout(() => {
                                                         this.setState({isLoading: false})
                                                     }, 100);
-                                                    Toast.show(error)
+                                                    SnackBar.show(error)
                                                 })
                                         }
 
 
-                                    } else Toast.show('正在获取填写内容，请稍后')
+                                    } else SnackBar.show('正在获取填写内容，请稍后')
                                 }
                             ] :
                             [

@@ -15,7 +15,6 @@ import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
-import Toast from 'react-native-root-toast';
 import App from '../constant/Application';
 import SQLite from '../db/Sqlite';
 import UpdateService from "../network/UpdateService";

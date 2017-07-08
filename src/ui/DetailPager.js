@@ -19,7 +19,7 @@ import Toolbar from './Component/Toolbar'
 import Moment from 'moment';
 import ApiService from '../network/ApiService';
 import  App from '../constant/Application'
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import Loading from 'react-native-loading-spinner-overlay';
 import {DetailItem} from "./Component/DetailItem";
 import InputDialog from "./Component/InputDialog";
@@ -117,7 +117,7 @@ const {width, height} = Dimensions.get('window');
                                 type = 1;
                             } else if (this.props.task.DailyRecordState === 3 && App.jobType==='3') {
                                 type = 0;
-                            } else Toast.show('当前你不需要操作本工作');
+                            } else SnackBar.show('当前你不需要操作本工作');
 
                             if (type !== -1) {
                                 this.props.nav.navigate('comment',{
@@ -219,7 +219,7 @@ const {width, height} = Dimensions.get('window');
 
     _carSelect() {
         if (this.props.task.CarType === '') {
-            Toast.show('不需要车牌');
+            SnackBar.show('不需要车牌');
         } else {
             this.props.nav.navigate('param',{
                 title: '选择车牌',
@@ -264,16 +264,16 @@ const {width, height} = Dimensions.get('window');
         });
 
         if (!allFinish) {
-            Toast.show('还有未对接内容');
+            SnackBar.show('还有未对接内容');
             return;
         }
 
 /*        if(!allSign){
-            Toast.show('还没完成签到');
+            SnackBar.show('还没完成签到');
             return;
         }*/
         if ((this.props.task.CarType === '公司车辆' || this.props.task.CarType === '私车公用') && !this.props.task.CarNumber) {
-            Toast.show('请先联系助理，填写公司车牌号码');
+            SnackBar.show('请先联系助理，填写公司车牌号码');
             return;
         }
         Alert.alert(
@@ -342,12 +342,12 @@ const {width, height} = Dimensions.get('window');
         ApiService.finishWork(this.props.task.Guid, flag, this.state.rejectContent)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-                    Toast.show('操作成功');
+                    SnackBar.show('操作成功');
                    // this.props.nav.pop();
                     this.props.actions.refreshList(true);
                     this.props.nav.goBack(null);
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
@@ -355,7 +355,7 @@ const {width, height} = Dimensions.get('window');
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -368,12 +368,12 @@ const {width, height} = Dimensions.get('window');
         ApiService.deleteWork(this.props.task.Guid)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-                    Toast.show('操作成功');
+                    SnackBar.show('操作成功');
                     //this.props.nav.pop();
                     this.props.actions.refreshList(true);
                     this.props.nav.goBack(null);
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
@@ -381,7 +381,7 @@ const {width, height} = Dimensions.get('window');
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);

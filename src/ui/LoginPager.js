@@ -19,7 +19,6 @@ import {
     Platform,
 } from 'react-native';
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
 import ApiService from '../network/ApiService';
 import Color from '../constant/Color';
 import App from '../constant/Application';
@@ -28,6 +27,7 @@ import CheckBox from "../ui/Component/CheckBox";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
 import UpdateService from "../network/UpdateService";
+import SnackBar from 'react-native-snackbar-dialog'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -36,7 +36,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '崔韵强',//崔韵强//孙小伟//李成功//张选国
+            account: '张选国',//崔韵强//孙小伟//李成功//张选国
             pwd: '123',
             isLoading: false,
             check: false,
@@ -46,7 +46,7 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-        UpdateService.update(false);
+      //  UpdateService.update(false);
 
         InteractionManager.runAfterInteractions(() => {
             this._requestShareInfo();
@@ -88,7 +88,7 @@ export default class LoginPager extends Component {
         } else {
             this._localLogin();
         }
-        //    Toast.show(user+":"+pwd)
+        //    SnackBar.show(user+":"+pwd)
     }
 
     _requestShareInfo() {
@@ -106,7 +106,7 @@ export default class LoginPager extends Component {
 //登录请求
     _login() {
         if (this.state.account.length === 0 || this.state.pwd.length === 0) {
-            Toast.show("信息不能为空");
+            SnackBar.show("信息不能为空");
             return
         }
         this.setState({isLoading: true});
@@ -114,7 +114,7 @@ export default class LoginPager extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (!responseJson.IsErr) {
-                    //  Toast.show('登录成功');
+                    //  SnackBar.show('登录成功');
                     App.saveAccount(
                         App.session = responseJson.uniqueIdentifier,
                         App.account = responseJson.UserName,
@@ -128,17 +128,17 @@ export default class LoginPager extends Component {
                     );
                     if (responseJson.WorkType)
                         this._launchPager("launcher");
-                    else Toast.show('没有工作类型，无法登陆')
+                    else SnackBar.show('没有工作类型，无法登陆')
                 } else {
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                 }
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);

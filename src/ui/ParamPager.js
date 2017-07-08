@@ -15,7 +15,7 @@ import {
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import ApiService from '../network/ApiService';
 import InputDialog from "./Component/InputDialog";
 import App from '../constant/Application';
@@ -61,7 +61,7 @@ export default class PasswordPager extends Component {
                             this.setState({
                                 dataSource: this.state.dataSource.cloneWithRows(this.state.items),
                             });
-                        } else Toast.show(responseJson.ErrDesc)
+                        } else SnackBar.show(responseJson.ErrDesc)
                     })
                     .done(this.setState({isLoading: false}))
             } else {
@@ -75,7 +75,7 @@ export default class PasswordPager extends Component {
                                 selectDataSource: this.state.selectDataSource.cloneWithRows(this.state.selectItems),
 
                             });
-                        } else Toast.show(responseJson.ErrDesc)
+                        } else SnackBar.show(responseJson.ErrDesc)
                     })
                     .done(this.setState({isLoading: false}))
             }
@@ -87,9 +87,9 @@ export default class PasswordPager extends Component {
             ApiService.addCar(this.props.searchKey, rowData)
                 .then((responseJson) => {
                     if (!responseJson.IsErr) {
-                        Toast.show('操作成功');
+                        SnackBar.show('操作成功');
                         this.props.setSelect(rowData);
-                    } else Toast.show(responseJson.ErrDesc)
+                    } else SnackBar.show(responseJson.ErrDesc)
                 })
                 .done(this.props.nav.goBack(null))
         } else {
@@ -147,11 +147,11 @@ export default class PasswordPager extends Component {
                                         if (!responseJson.IsErr) {
                                             this._setSelect(this.state.editContent);
                                             this.popupDialog.dismiss();
-                                        } else Toast.show(responseJson.ErrDesc)
+                                        } else SnackBar.show(responseJson.ErrDesc)
 
                                     })
                                     .done(this.setState({isLoading: false}))
-                            } else Toast.show('未填写完整内容')
+                            } else SnackBar.show('未填写完整内容')
                         } else {
                             if (this.state.editContent) {
                                 if (this.state.isMulti) {
@@ -162,7 +162,7 @@ export default class PasswordPager extends Component {
                                     this.popupDialog.dismiss();
                                 }
                             } else {
-                                Toast.show('未填写内容')
+                                SnackBar.show('未填写内容')
                             }
                         }
 

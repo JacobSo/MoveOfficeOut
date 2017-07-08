@@ -21,7 +21,7 @@ import {
     Alert,
     DeviceEventEmitter,
 } from 'react-native';
-import Toast from 'react-native-root-toast';
+import SnackBar from 'react-native-snackbar-dialog'
 import {MainItem} from '../Component/MainItem';
 import ApiService from '../../network/ApiService';
 import Color from '../../constant/Color';
@@ -91,7 +91,7 @@ class CustomList extends Component {
                     console.log("PubSub:loop");
                     if (data.Signtype !== 2 && data.VisitingMode.indexOf('走访') > -1) {
                         isAllFinish = false;
-                        Toast.show('没有完成全部签到，必须填写备注说明')
+                        SnackBar.show('没有完成全部签到，必须填写备注说明')
                         return
                     }
                 });
@@ -134,7 +134,7 @@ class CustomList extends Component {
     }
 
     onAndroidLocationChange = (e) => {
-        // Toast.show(e.address + ":" + e.lat + ":" + e.lng)
+        // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
             this.setState({
                 address: e.address,
@@ -188,14 +188,14 @@ class CustomList extends Component {
                     });
                 } else {
                     this.setState({isRefreshing: false,});
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                 }
                 this.props.actions.refreshList(false);
             })
             .catch((error) => {
                 console.log(error);
                 this.setState({isRefreshing: false,});
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
             }).done();
         this._todayTask();
 
@@ -215,12 +215,12 @@ class CustomList extends Component {
                         })
 
 
-                    } else Toast.show(responseJson.ErrDesc);
+                    } else SnackBar.show(responseJson.ErrDesc);
                     this.props.actions.refreshList(false);
                 })
                 .catch((error) => {
                     console.log(error);
-                    Toast.show("出错了，请稍后再试");
+                    SnackBar.show("出错了，请稍后再试");
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
@@ -244,10 +244,10 @@ class CustomList extends Component {
                         isTopTips: true,
                     });
                     if (this.state.isEndUp) {
-                        Toast.show('已经没有了', {});
+                        SnackBar.show('已经没有了', {});
                     }
 
-                } else Toast.show(responseJson.ErrDesc);
+                } else SnackBar.show(responseJson.ErrDesc);
                 this.props.actions.refreshList(false);
             }).done()
         }
@@ -286,13 +286,13 @@ class CustomList extends Component {
             .then((responseJson) => {
                 console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
-                    Toast.show("签到完成");
+                    SnackBar.show("签到完成");
                     this._todayTask();
                     if (this.state.selectType === 3) {
                         this._onRefresh()
                     }
                 } else {
-                    Toast.show(responseJson.ErrDesc);
+                    SnackBar.show(responseJson.ErrDesc);
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
@@ -301,7 +301,7 @@ class CustomList extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                Toast.show("出错了，请稍后再试");
+                SnackBar.show("出错了，请稍后再试");
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -315,7 +315,7 @@ class CustomList extends Component {
         this.state.todayTask[0].list.map((data) => {
             if (data.Signtype === 1 && data !== rowData) {
                 isFinish = false;
-                Toast.show('没有完成上一个签到，不可操作')
+                SnackBar.show('没有完成上一个签到，不可操作')
             }
         });
         if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
@@ -340,7 +340,7 @@ class CustomList extends Component {
                 "目标距离：" + min + "米");
             this.state.selectGuid = rowData.Guid;
             this.state.selectType = (rowData.Signtype === -1 ? 1 : 2);
-        } else Toast.show("没完成出发签到")
+        } else SnackBar.show("没完成出发签到")
     }
 
     render() {

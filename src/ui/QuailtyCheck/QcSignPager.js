@@ -12,7 +12,6 @@ import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay'
-import Toast from 'react-native-root-toast';
 import SQLite from '../../db/Sqlite';
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SnackBar from 'react-native-snackbar-dialog'

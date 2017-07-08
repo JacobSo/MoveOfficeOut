@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
-import Toast from 'react-native-root-toast';
 import {WdActions} from "../../actions/WdAction";
 
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
