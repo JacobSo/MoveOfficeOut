@@ -115,6 +115,7 @@ export default class PasswordPager extends Component {
                                  this.state.items.map((data) => {
                                      if (data.check) {
                                          data.selectStep = this.state.select;
+                                         data.poldid =data.Id;
                                          temp.push(data);
                                      }
                                      data.check = false;
@@ -182,7 +183,6 @@ export default class PasswordPager extends Component {
                                             selectItems: temp,
                                             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                         });
-
                                     }}/></View>
                         }/>
                 </View>
