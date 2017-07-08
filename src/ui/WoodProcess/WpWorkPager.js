@@ -26,7 +26,8 @@ export default class WpWorkPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isModify: false,
+            isModify: false,//modify mode
+            isChange: false,//in modify mode which is data change flag
             isLoading: false,
             isCarVisible: false,
             isWood: false,
@@ -429,7 +430,11 @@ export default class WpWorkPager extends Component {
                             this.postDialog();
                         },
                         () => {
+                        if(this.state.isModify&&this.state.isChange){
+                            SnackBar.show("请先点击【修改】，才可【提交】",{duration:1500})
+                        }else{
                             this.submitWork();
+                        }
                         }
                     ]}/>
                 <ScrollView >
@@ -628,6 +633,7 @@ export default class WpWorkPager extends Component {
                                         isWood: this.state.isWood,
                                         series: this.state.Series,
                                         selectFunc: (data) => {
+                                            this.state.isChange = true;
                                             data.map((d) => {
                                                 this.state.items[d.poldid] = d;
                                                 console.log(JSON.stringify(this.state.items));
