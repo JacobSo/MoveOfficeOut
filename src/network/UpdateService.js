@@ -53,14 +53,14 @@ export  default  class UpdateService {
                 } else {
                     console.log('pgyerApiCheck:failed');
                     if (isNotice)
-                        SnackBar.show("检查更新服务错误，请稍后再试",{duration:1500})
+                        SnackBar.show("检查更新服务错误，请稍后再试",{duration:3000})
                 }
             })
             .catch((error) => {
                 console.log('pgyerApiCheck:error');
                 console.log(error);
                 if (isNotice)
-                    SnackBar.show("检查更新失败，请稍后再试",{duration:1500})
+                    SnackBar.show("检查更新失败，请稍后再试",{duration:3000})
             }).done();
     }
 

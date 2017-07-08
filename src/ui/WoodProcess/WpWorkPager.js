@@ -431,7 +431,7 @@ export default class WpWorkPager extends Component {
                         },
                         () => {
                         if(this.state.isModify&&this.state.isChange){
-                            SnackBar.show("请先点击【修改】，才可【提交】",{duration:1500})
+                            SnackBar.show("请先点击【修改】，才可【提交】",{duration:3000})
                         }else{
                             this.submitWork();
                         }
