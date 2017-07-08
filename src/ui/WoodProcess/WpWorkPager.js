@@ -73,7 +73,7 @@ export default class WpWorkPager extends Component {
                         break;
                 }
                 data.selectStep = temp;
-                this.state.items[data.Id] = data;
+                this.state.items[data.poldid] = data;
             });
 
 
@@ -629,17 +629,8 @@ export default class WpWorkPager extends Component {
                                         series: this.state.Series,
                                         selectFunc: (data) => {
                                             data.map((d) => {
-
-                                                //console.log(JSON.stringify(d));
-                                                let exist = false;
-                                                for (let key in this.state.items) {
-                                                    if (key === d.Id) {
-                                                        exist = true;
-                                                    }
-                                                }
-                                                if (exist)
-                                                    this.state.items[d.Id] = d;
-                                                // console.log(JSON.stringify(this.state.items));
+                                                this.state.items[d.poldid] = d;
+                                                console.log(JSON.stringify(this.state.items));
                                             });
                                             // this.state.items =  this.state.items.concat(data);
                                             this.setState({
