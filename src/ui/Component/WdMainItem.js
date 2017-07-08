@@ -3,7 +3,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import App from '../../constant/Application';
 
@@ -67,7 +67,7 @@ export class WdMainItem extends Component {
     render() {
         //   console.log(JSON.stringify(this.props.task));
         return (
-            <TouchableWithoutFeedback
+            <TouchableOpacity
                 onPress={ this.props.func}>
                 <View style={styles.mainContainer}>
                     <View style={styles.iconContainer}>
@@ -113,7 +113,7 @@ export class WdMainItem extends Component {
                         <Text >{this.props.task.Appointtime}</Text>
                     </View>
 
-                </View></TouchableWithoutFeedback>
+                </View></TouchableOpacity>
         );
     }
 }

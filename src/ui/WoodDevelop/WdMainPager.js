@@ -9,9 +9,6 @@ import {
     InteractionManager,
     ListView,
     RefreshControl,
-    ScrollView,
-    Text,
-    StyleSheet,
     Dimensions,
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
@@ -160,7 +157,6 @@ class WdMainPager extends Component {
         }
     }
 
-
     async  _search(text) {
         return this.state.items.filter((item) => (item.SeriesName.toLowerCase().indexOf(text.toLowerCase()) > -1) || (item.FacName.indexOf(text) > -1));
     }
@@ -171,7 +167,6 @@ class WdMainPager extends Component {
                 flex: 1,
                 backgroundColor: Color.background
             }}>
-
                 <Toolbar
                     elevation={2}
                     title={[App.workType === "板木驻厂工程师" ? "板木研发" : "软体研发"]}

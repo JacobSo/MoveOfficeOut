@@ -105,7 +105,7 @@ export default class QcMainPager extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
-                        <TouchableWithoutFeedback
+                        <TouchableOpacity
                             onPress={() => {
                                 this.props.nav.navigate('qcList', {
                                     task: rowData,
@@ -130,10 +130,14 @@ export default class QcMainPager extends Component {
                                     <Text>{'分配时间'}</Text>
                                     <Text style={{color: Color.black_semi_transparent}}>{rowData.LockTime}</Text>
                                 </View></View>
-                        </TouchableWithoutFeedback>
+                        </TouchableOpacity>
                     }/>
             )
         }
+    }
+
+    async  _search(text) {
+        return this.state.items.filter((item) => (item.QualityNo.toLowerCase().indexOf(text.toLowerCase()) > -1) );
     }
 
     render() {
@@ -142,7 +146,6 @@ export default class QcMainPager extends Component {
                 flex: 1,
                 backgroundColor: Color.background
             }}>
-
                 <Toolbar
                     elevation={2}
                     title={["常规质检"]}
@@ -150,13 +153,30 @@ export default class QcMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[]}
+                    actionArray={[require("../../drawable/search.png")]}
                     functionArray={[
                         () => {
-                            this.props.nav.goBack(null)
+                            if (this.state.isSearch) {
+                                this.setState({
+                                    isSearch: !this.state.isSearch,
+                                    isHeader: true
+                                })
+                            } else this.props.nav.goBack(null)
                         },
-
-                    ]}/>
+                        () => {
+                            this.setState({isSearch: !this.state.isSearch})
+                        },
+                    ]}
+                    isSearch={this.state.isSearch}
+                    searchFunc={(text) => {
+                        this._search(text).then((array) => {
+                            //       console.log(array);
+                            this.setState({
+                                dataSource: this.state.dataSource.cloneWithRows(array),
+                            });
+                        })
+                    }}
+                   />
                 {this._getView()}
                 <FloatButton
                     color={Color.colorPink}
