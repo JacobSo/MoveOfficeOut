@@ -46,11 +46,8 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-      //  UpdateService.update(false);
-
-        InteractionManager.runAfterInteractions(() => {
-            this._requestShareInfo();
-        });
+        //  UpdateService.update(false);
+        this._localLogin();
     }
 
 //导航器-页面跳转
@@ -75,32 +72,6 @@ export default class LoginPager extends Component {
                 this._login();
             }
         });
-    }
-
-    _shareLogin(user, pwd) {
-        if (App.session && App.account && user === App.account) {
-            this._launchPager("main");
-        } else if (user && pwd) {
-            this.state.account = user;
-            this.state.pwd = pwd;
-            this.state.check = true;
-            this._login();
-        } else {
-            this._localLogin();
-        }
-        //    SnackBar.show(user+":"+pwd)
-    }
-
-    _requestShareInfo() {
-        if (Platform.OS === 'android') {
-            AndroidModule.getShareUser((user, pwd) => {
-                this._shareLogin(user, pwd);
-            });
-        } else {
-            IosModule.getShareUser((user, pwd) => {
-                this._shareLogin(user, pwd);
-            });
-        }
     }
 
 //登录请求

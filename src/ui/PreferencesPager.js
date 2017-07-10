@@ -96,12 +96,9 @@ export default class PreferencesPager extends Component {
                                                 sqLite.clearTable(TABLE_W_D_P);
                                                 if (Platform.OS === 'ios') {
                                                     IosModule.unbindPushAccount('');
-                                                    IosModule.logoutShareAccount();
-
                                                 }
                                                 else {
                                                     AndroidModule.unbindPushAccount();
-                                                    AndroidModule.logoutShareAccount();
                                                 }
 
                                                 App.saveAccount('', '', '', '', false);

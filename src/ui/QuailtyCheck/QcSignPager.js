@@ -13,7 +13,6 @@ import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay'
 import SQLite from '../../db/Sqlite';
-import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SnackBar from 'react-native-snackbar-dialog'
 import InputDialog from "../Component/InputDialog";
 import AndroidModule from '../../module/AndoridCommontModule'

@@ -47,6 +47,7 @@ import com.lsapp.moveoffice.data.WDSeries;
 import com.lsapp.moveoffice.util.HeaderFooter;
 import com.lsapp.moveoffice.util.ImageTagProcessor;
 import com.lsapp.moveoffice.util.MyFontsProvider;
+
 import com.zuni.library.utils.zBitmapUtil;
 import com.zuni.library.utils.zDateUtil;
 import com.zuni.library.utils.zFileUtil;
@@ -107,33 +108,6 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void checkUpdate() {
-     /*   PgyUpdateManager.register(getCurrentActivity(), new UpdateManagerListener() {
-
-                @Override
-                public void onUpdateAvailable(final String result) {
-                System.out.println(result);
-                final AppBean appBean = getAppBeanFromString(result);
-                new AlertDialog.Builder(getCurrentActivity())
-                        .setTitle("更新")
-                        .setMessage("检测到新版本，是否更新")
-                        .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startDownloadTask(getCurrentActivity(), appBean.getDownloadURL());
-                            }
-                        }).show();
-            }
-
-            @Override
-            public void onNoUpdateAvailable() {
-                Toast.makeText(getCurrentActivity(), "现在已是最新版本", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-    }
-
-    @ReactMethod
     public void getVersionName(Callback callback) {
         try {
             PackageManager packageManager = getCurrentActivity().getPackageManager();
@@ -146,17 +120,6 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
 
-    @ReactMethod
-    public void getShareUser(Callback callback) {
-        callback.invoke(MainApplication.get(getCurrentActivity()).getShareUser(),
-                MainApplication.get(getCurrentActivity()).getSharePwd());
-    }
-
-    @ReactMethod
-    public void logoutShareAccount() {
-        MainApplication.get(getCurrentActivity()).setSharePwd(null);
-        MainApplication.get(getCurrentActivity()).setShareUser(null);
-    }
 
     @ReactMethod
     public void getLocation(Callback callback) {
