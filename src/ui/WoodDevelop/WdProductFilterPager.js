@@ -90,7 +90,6 @@ export default class WdProductFilterPager extends Component {
                                     })
                                 },
                                 () => {
-
                                     if (this.state.problemList.length === this.props.task.Itemlist.length) {
                                         let selectCount = 0;
                                         this.state.items.map((data, index) => {
@@ -105,6 +104,7 @@ export default class WdProductFilterPager extends Component {
                                         }
                                         this.setState({isLoading: true});
                                         let tempSeries = this.props.task;
+                                        console.log(JSON.stringify(tempSeries))
                                         tempSeries.Itemlist = this.state.items;
                                         console.log(JSON.stringify(tempSeries));
                                         if (Platform.OS === 'ios') {
