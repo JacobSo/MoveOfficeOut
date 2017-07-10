@@ -262,49 +262,54 @@ class WdProductListPager extends Component {
                 switch (data.stage) {
                     case 7://all
                         let temp = data.pResultList.split(",");
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-
+  /*                      if (App.workType.indexOf("板木驻厂") > -1)
                             result = (temp.length === 3) &&
                                 (data.pResultList.indexOf("0-1") > -1) &&
                                 (data.pResultList.indexOf("1-1") > -1) &&
                                 (data.pResultList.indexOf("2-1") > -1);
-                        } else {
+                         else*/
                             result = (temp.length === 3) &&
                                 (data.pResultList.indexOf("0-") > -1) &&
                                 (data.pResultList.indexOf("1-") > -1) &&
                                 (data.pResultList.indexOf("2-") > -1);
-                        }
+
 
                         break;
                     case 6://ab
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-                            result = ((data.pResultList.indexOf("0-1") > -1 && data.pResultList.indexOf("1-1") > -1));
-                        } else  result = ((data.pResultList.indexOf("0-") > -1 && data.pResultList.indexOf("1-") > -1));
+                        /*       if (App.workType.indexOf("板木驻厂") > -1) {
+                         result = ((data.pResultList.indexOf("0-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                         } else */
+                        result = ((data.pResultList.indexOf("0-") > -1 && data.pResultList.indexOf("1-") > -1));
                         break;
                     case 5://ac
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-                            result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("0-1") > -1));
-                        } else  result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("0-") > -1));
+                        /*              if (App.workType.indexOf("板木驻厂") > -1) {
+                         result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("0-1") > -1));
+                         } else*/
+                        result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("0-") > -1));
                         break;
                     case 4://a
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-                            result = (data.pResultList.indexOf("0-1") > -1);
-                        } else  result = (data.pResultList.indexOf("0-") > -1);
+                        /*                  if (App.workType.indexOf("板木驻厂") > -1) {
+                         result = (data.pResultList.indexOf("0-1") > -1);
+                         } else */
+                        result = (data.pResultList.indexOf("0-") > -1);
                         break;
                     case 3://bc
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-                            result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("1-1") > -1));
-                        } else   result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("1-") > -1));
+                        /*                if (App.workType.indexOf("板木驻厂") > -1) {
+                         result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("1-1") > -1));
+                         } else*/
+                        result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("1-") > -1));
                         break;
                     case 2://b
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-                            result = (data.pResultList.indexOf("1-1") > -1);
-                        } else   result = (data.pResultList.indexOf("1-") > -1);
+                        /*                     if (App.workType.indexOf("板木驻厂") > -1) {
+                         result = (data.pResultList.indexOf("1-1") > -1);
+                         } else  */
+                        result = (data.pResultList.indexOf("1-") > -1);
                         break;
                     case 1://c
-                        if (App.workType.indexOf("板木驻厂") > -1) {
-                            result = (data.pResultList.indexOf("2-1") > -1);
-                        } else result = (data.pResultList.indexOf("2-") > -1);
+                        /*                        if (App.workType.indexOf("板木驻厂") > -1) {
+                         result = (data.pResultList.indexOf("2-1") > -1);
+                         } else */
+                        result = (data.pResultList.indexOf("2-") > -1);
                         break;
                 }
             }
@@ -316,7 +321,7 @@ class WdProductListPager extends Component {
         return true;
     }
 
-    finishTask(){
+    finishTask() {
         if (this.finishCheck()) {
             this.setState({isLoading: true})
             ApiService.submitStatus(this.props.task.SeriesGuid)
@@ -386,7 +391,7 @@ class WdProductListPager extends Component {
                                     },
                                     {
                                         text: '确定', onPress: () => {
-                                            this.finishTask();
+                                        this.finishTask();
                                     }
                                     },
                                 ]

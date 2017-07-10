@@ -104,19 +104,11 @@ dependencies {
     compile project(path: ':react-native-image-picker')
     compile project(path: ':react-native-code-push')
     compile project(path: ':react-native-interactable')
-    compile project(path:':react-native-sqlite-storage')
-    compile project(path:':react-native-fetch-blob')
+    compile project(path: ':react-native-sqlite-storage')
+    compile project(path: ':react-native-fetch-blob')
     //print tool
     compile 'org.jsoup:jsoup:1.9.1'
-    compile files('libs/itext-pdfa-5.5.9.jar')
-    compile files('libs/iTextAsian.jar')
-    compile files('libs/jxl-2.6.12.jar')
-    compile files('libs/xmlworker-5.5.9.jar')
-    compile files('libs/itextpdf-5.5.9.jar')
-    compile files('libs/jtidy-r938.jar')
-
     compile 'com.google.code.gson:gson:2.8.0'
-    compile files('libs/AMap_Location_V3.4.0_20170427.jar')
 }
 
 // Run this once to be able to run the application with BUCK

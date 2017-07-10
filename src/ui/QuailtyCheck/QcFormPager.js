@@ -232,6 +232,7 @@ export default class QcFormPager extends Component {
                 })
             }
         );
+        console.log(JSON.stringify( this.state.formItems))
         if (isAllFill) {
             this.setState({
                 countArray: [tempPass, tempFail, tempPic],

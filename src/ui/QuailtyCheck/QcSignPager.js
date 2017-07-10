@@ -322,7 +322,7 @@ export default class QcSignPager extends Component {
                                                     pics: [rowData.PicPath]
                                                 })
                                             }>
-                                            <Text>签到详情(点击查看图片)</Text>
+                                            <Text>r'r'r'r'r(点击查看图片)</Text>
                                             <Text style={styles.signCardText}>{rowData.Address}</Text>
                                             <Text style={styles.signCardText}>{rowData.ReMark}</Text>
                                         </TouchableOpacity>

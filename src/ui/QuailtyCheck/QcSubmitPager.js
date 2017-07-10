@@ -173,13 +173,13 @@ export default class QcSubmitPager extends Component {
     formatFormItem() {
         let temp = [];
         this.state.formItems.map((data) => {
-            if (data.submitContent) {
+        //    if () {
                 temp.push({
-                    IsPass: data.submitContent.isPass,
-                    UnPassDescription: data.submitContent.subContent,
+                    IsPass: data.isPass,
+                    UnPassDescription: data.submitContent?data.submitContent.subContent:"",
                     picAdresslist: [],
                 })
-            }
+         //   }
         });
         return temp;
     }
