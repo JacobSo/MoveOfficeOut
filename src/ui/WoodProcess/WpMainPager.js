@@ -103,7 +103,7 @@ export default class WpMainPager extends Component {
             }}>
 
                 <Toolbar
-                    elevation={0}
+                    elevation={2}
                     title={["评审单"]}
                     color={Color.colorPurple}
                     isHomeUp={true}

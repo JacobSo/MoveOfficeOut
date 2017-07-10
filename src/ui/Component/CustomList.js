@@ -77,7 +77,6 @@ class CustomList extends Component {
             selectType: "",
             tripType: "",
             endTime: "",
-
         };
 
         PubSub.subscribe('finish', (msg, data) => {
@@ -91,7 +90,7 @@ class CustomList extends Component {
                     console.log("PubSub:loop");
                     if (data.Signtype !== 2 && data.VisitingMode.indexOf('走访') > -1) {
                         isAllFinish = false;
-                        SnackBar.show('没有完成全部签到，必须填写备注说明')
+                        SnackBar.show('没有完成全部签到，必须填写备注说明');
                         return
                     }
                 });

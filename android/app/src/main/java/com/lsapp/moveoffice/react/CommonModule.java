@@ -120,7 +120,6 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
 
-
     @ReactMethod
     public void getLocation(Callback callback) {
         callback.invoke(MainApplication.get(getCurrentActivity()).getAddress(),

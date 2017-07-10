@@ -204,7 +204,7 @@ export default class QcProductListPager extends Component {
                     backgroundColor: Color.background
                 }}>
                     <Toolbar
-                        elevation={0}
+                        elevation={2}
                         title={[ this.props.task.QualityNo,'产品列表']}
                         color={Color.colorIndigo}
                         isHomeUp={true}

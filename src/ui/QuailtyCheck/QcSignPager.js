@@ -107,8 +107,9 @@ export default class QcSignPager extends Component {
                         this.setState({editContent: text})
                     },
                     () => {
+                        this.setState({editContent: ''});
                         this.popupDialog.dismiss();
-                    },
+                        },
                     () => {
                         this.popupDialog.dismiss();
                     }
@@ -235,10 +236,7 @@ export default class QcSignPager extends Component {
                         },
                     ]}/>
                 <View style={styles.topLayout}>
-                    {/* <Image source={require("../../drawable/location_white.png")}
-                     style={{width: 20, height: 30, marginRight: 10}}/>*/}
                     <Text style={{color: 'white', fontSize: 25, margin: 10}}>今日签到</Text>
-
                     <Text style={{
                         color: 'white',
                         width: 200,
@@ -324,7 +322,7 @@ export default class QcSignPager extends Component {
                                                     pics: [rowData.PicPath]
                                                 })
                                             }>
-                                            <Text>签到详情</Text>
+                                            <Text>签到详情(点击查看图片)</Text>
                                             <Text style={styles.signCardText}>{rowData.Address}</Text>
                                             <Text style={styles.signCardText}>{rowData.ReMark}</Text>
                                         </TouchableOpacity>
@@ -333,8 +331,9 @@ export default class QcSignPager extends Component {
                         }
                     })()
                 }
-                {this.remarkDialog()}
                 <Loading visible={this.state.isLoading}/>
+                {this.remarkDialog()}
+
             </View>
         )
     }
@@ -365,7 +364,6 @@ const styles = StyleSheet.create({
     topLayout: {
         backgroundColor: Color.colorIndigo,
         alignItems: 'center',
-        elevation: 2
     },
     timeLine: {
         backgroundColor: Color.line,

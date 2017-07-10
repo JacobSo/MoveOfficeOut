@@ -114,7 +114,7 @@ export default class SearchPager extends Component {
                         {task: rowData,},)
                 }}/>
                 }/>
-        };
+        }
     }
 
     _timeSelect() {
@@ -167,7 +167,6 @@ export default class SearchPager extends Component {
 
                 <Toolbar title={['']}
                          color={Color.colorCyanDark}
-                         elevation={2}
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
