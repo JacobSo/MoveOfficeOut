@@ -96,7 +96,6 @@ export class WdFilterItem extends Component {
                         marginRight: 10,
                         width: 90,
                         height:35,
-                        numberOfLines :1,
                         textAlign: 'center'
                     }}>{this.props.product.ItemRemark}</Text>
             </TouchableOpacity>
