@@ -99,7 +99,7 @@ export default class QcPostPager extends Component {
 
     pack() {
         let tempContent = {
-            index: this.state.product.ProductNoGuid + this.props.form.Guid,
+            index: this.state.product[0].ProductNoGuid + this.props.form.Guid,
             isPass: this.props.form.isPass,
             subContent: this.state.editContent,
             editDate: new Date().toLocaleString(),
@@ -112,20 +112,20 @@ export default class QcPostPager extends Component {
         this.state.pics.map((data) => {
             if (data.uri)
                 tempPics.push({
-                    fileName: data.fileName?data.fileName:data.uri.substring(data.uri.lastIndexOf('/'),data.uri.length),
-                    index: this.state.product.ProductNoGuid + this.props.form.Guid,
+                    fileName: data.fileName ? data.fileName : data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
+                    index: this.state.product[0].ProductNoGuid + this.props.form.Guid,
                     uri: data.uri//.replace('file://', '')
                 });
         });
-  //      console.log(JSON.stringify(tempPics)+'----tempPics');
-
+        //console.log(JSON.stringify(tempPics)+'----tempPics');
+        //console.log(JSON.stringify(tempContent)+'----tempContent');
         this.state.submitContent = tempContent;
         this.state.submitPic = tempPics;
         this.save()
     }
 
     save() {
-       // console.log(JSON.stringify(this.state.submitContent)+"-----submitContent");
+        // console.log(JSON.stringify(this.state.submitContent)+"-----submitContent");
         sqLite.insertQcDraftSingle(this.state.submitContent, this.state.submitPic)
             .then((result) => {
                 SnackBar.show(result, {duration: 3000});
@@ -184,7 +184,7 @@ export default class QcPostPager extends Component {
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
-                                          //  console.log(JSON.stringify(this.state.pics));
+                                            //  console.log(JSON.stringify(this.state.pics));
                                         }
                                     });
                                 }}>
@@ -199,7 +199,7 @@ export default class QcPostPager extends Component {
 
                             <ListView
                                 dataSource={this.state.dataSource}
-                                style={{marginBottom:80}}
+                                style={{marginBottom: 80}}
                                 removeClippedSubviews={false}
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
@@ -213,7 +213,7 @@ export default class QcPostPager extends Component {
                                             onPress={() => {
                                                 //  console.log(rowID + ":" + sectionID);
                                                 this.state.pics.splice(sectionID, 1);
-                                               // console.log("delete:" + JSON.stringify(this.state.pics));
+                                                // console.log("delete:" + JSON.stringify(this.state.pics));
                                                 this.setState(
                                                     {
                                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),

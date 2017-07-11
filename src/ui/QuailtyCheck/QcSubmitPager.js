@@ -348,6 +348,7 @@ export default class QcSubmitPager extends Component {
                                     this.props.nav.goBack(null)
                                 },
                                 () => {
+                               // console.log(this.state.product.ProductNoGuid+"===========================");
                                     sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
                                         .then((result) => {
                                             SnackBar.show(result);

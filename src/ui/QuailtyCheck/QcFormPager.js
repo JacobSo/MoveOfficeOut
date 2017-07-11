@@ -6,10 +6,9 @@
 
 import {StyleSheet, View, ListView, Text, Dimensions, TouchableOpacity, Image, Platform} from 'react-native';
 import React, {Component} from 'react';
-import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import { IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
-import {CachedImage} from "react-native-img-cache";
 import Drawer from 'react-native-drawer'
 import ApiService from '../../network/QcApiService';
 import SnackBar from 'react-native-snackbar-dialog'
@@ -71,7 +70,6 @@ export default class QcFormPager extends Component {
                                               source={require('../../drawable/fail_ico.png')}/>
                             } else return null
                         })()
-
                     }
                     {
                         (() => {
@@ -232,7 +230,7 @@ export default class QcFormPager extends Component {
                 })
             }
         );
-        console.log(JSON.stringify( this.state.formItems))
+        console.log(JSON.stringify( this.state.formItems));
         if (isAllFill) {
             this.setState({
                 countArray: [tempPass, tempFail, tempPic],
@@ -245,7 +243,8 @@ export default class QcFormPager extends Component {
     }
 
     totalSave() {
-        sqLite.insertQcDraftAll(this.state.formItems, this.props.product.ProductNoGuid, this.state.editContent)
+        console.log( this.props.product[0].ProductNoGuid+"+++++++++++++++++++++")
+        sqLite.insertQcDraftAll(this.state.formItems, this.props.product[0].ProductNoGuid, this.state.editContent)
             .then((result) => {
                 SnackBar.show(result);
                 this.props.finishFunc(this.state.formItems);
@@ -254,7 +253,7 @@ export default class QcFormPager extends Component {
     }
 
     totalSubmit() {
-        ApiService.submitQualityContent(this.props.product.ProductNoGuid, this.props.stage, JSON.stringify(this.state.submitItems), this.state.editContent,)
+        ApiService.submitQualityContent(this.props.product[0].ProductNoGuid, this.props.stage, JSON.stringify(this.state.submitItems), this.state.editContent,)
     }
 
     render() {

@@ -36,7 +36,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '杨伟军',//崔韵强//孙小伟//李成功//张选国//杨伟军
+            account: '崔韵强',//崔韵强//孙小伟//李成功//张选国//杨伟军
             pwd: '123',
             isLoading: false,
             check: false,
@@ -95,6 +95,7 @@ export default class LoginPager extends Component {
                         App.dptList = responseJson.Dptlist,
                         this.state.pwd,
                         App.jobType = responseJson.JobType + '',
+                        App.PowerNum = responseJson.PowerNum + '',
                         App.FirstDptId = responseJson.FirstDptId + ''
                     );
                     if (responseJson.WorkType)
