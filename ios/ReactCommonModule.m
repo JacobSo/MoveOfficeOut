@@ -22,6 +22,7 @@
 #import "NSString+sha1.h"
 
 
+
 @interface ReactCommonModule ()<UIWebViewDelegate>
 
 @property (nonatomic,strong)UIWebView *lsWebView;
@@ -96,13 +97,13 @@ RCT_EXPORT_METHOD(getVersionName:(RCTResponseSenderBlock)callback)
   callback(@[appCurVersion]);
 }
 
-RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)
-{
-  NSString *user = ((AppDelegate *)[UIApplication sharedApplication].delegate).userName;
-  NSString *pwd = ((AppDelegate *)[UIApplication sharedApplication].delegate).password;
-  NSArray *arrays = [NSArray arrayWithObjects:user,pwd,nil];
-  callback(arrays);
-}
+//RCT_EXPORT_METHOD(getShareUser:(RCTResponseSenderBlock)callback)
+//{
+//  NSString *user = ((AppDelegate *)[UIApplication sharedApplication].delegate).userName;
+//  NSString *pwd = ((AppDelegate *)[UIApplication sharedApplication].delegate).password;
+//  NSArray *arrays = [NSArray arrayWithObjects:user,pwd,nil];
+//  callback(arrays);
+//}
 
 RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callback)
 {
@@ -120,10 +121,10 @@ RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callba
 }
 
 
-RCT_EXPORT_METHOD(logoutShareAccount){
-  ((AppDelegate *)[UIApplication sharedApplication].delegate).userName = nil;
- ((AppDelegate *)[UIApplication sharedApplication].delegate).password = nil;
-}
+//RCT_EXPORT_METHOD(logoutShareAccount){
+//  ((AppDelegate *)[UIApplication sharedApplication].delegate).userName = nil;
+// ((AppDelegate *)[UIApplication sharedApplication].delegate).password = nil;
+//}
 
 RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson:(int)woodOrSoft:(int)code:(RCTResponseSenderBlock)callback)
 {
@@ -510,19 +511,56 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
           NSString *imgBase64str = [imgData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
           
           NSString *isAccess;
-          switch (obj.pStatusPass) {
-            case WD_Result_Null:
-              isAccess = @"";
-              break;
-            case WD_Result_Fail:
-              isAccess = @"不通过";
-              break;
-            case WD_Result_Pass:
+//          switch (obj.pStatusPass) {
+//            case WD_Result_Null:
+//              isAccess = @"-";
+//              break;
+//            case WD_Result_Fail:
+//              isAccess = @"不通过";
+//              break;
+//            case WD_Result_Pass:
+//              isAccess = @"通过";
+//              break;
+//            default:
+//              isAccess = @"-";
+//              break;
+//          }
+
+          
+          if(self.code==0){
+            if ([obj.pResultList rangeOfString:@"0-1"].location !=NSNotFound) {
               isAccess = @"通过";
-              break;
-            default:
-              break;
+            }else  if ([obj.pResultList rangeOfString:@"0-0"].location !=NSNotFound){
+              isAccess = @"不通过";
+            }else{
+               isAccess = @"-";
+            }
+            
+            
+            
+            
+          }else if(self.code==1){
+            if ([obj.pResultList rangeOfString:@"1-1"].location !=NSNotFound) {
+                isAccess = @"通过";
+            }else  if ([obj.pResultList rangeOfString:@"1-0"].location !=NSNotFound){
+               isAccess = @"不通过";
+            }else{
+              isAccess = @"-";
+            }
+
+          }else{
+            if ([obj.pResultList rangeOfString:@"2-1"].location !=NSNotFound) {
+                isAccess = @"通过";
+            }else  if ([obj.pResultList rangeOfString:@"2-0"].location !=NSNotFound){
+               isAccess = @"不通过";
+            }else{
+              isAccess = @"-";
+            }
+
           }
+
+          
+          
           NSString *pop = @"";
           @autoreleasepool {
             for (NSInteger i = 1; i <= countProduct - 1; i++) {

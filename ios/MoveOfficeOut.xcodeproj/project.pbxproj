@@ -66,6 +66,7 @@
 		491B97511EE7A71200E497B4 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B973D1EE7A71200E497B4 /* UIView+WebCacheOperation.m */; };
 		491B97531EE7A86500E497B4 /* LZDataString_H.plist in Resources */ = {isa = PBXBuildFile; fileRef = 491B97521EE7A86500E497B4 /* LZDataString_H.plist */; };
 		491B97661EE7F1F100E497B4 /* NSString+sha1.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B97651EE7F1F100E497B4 /* NSString+sha1.m */; };
+		4937C56D1F1458E0001CB368 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */; };
 		49B878B81ED56E530075E99A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B878B71ED56E530075E99A /* libsqlite3.tbd */; };
 		49B878BA1ED56E600075E99A /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B878B91ED56E600075E99A /* libsqlite3.0.tbd */; };
 		49F302B81E8C9481003967E8 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F302B51E8C9481003967E8 /* AlicloudUtils.framework */; };
@@ -448,6 +449,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4937C56D1F1458E0001CB368 /* libcxxreact.a in Frameworks */,
 				491B960C1EDBF99000E497B4 /* libRNFetchBlob.a in Frameworks */,
 				49B878BA1ED56E600075E99A /* libsqlite3.0.tbd in Frameworks */,
 				49B878B81ED56E530075E99A /* libsqlite3.tbd in Frameworks */,
