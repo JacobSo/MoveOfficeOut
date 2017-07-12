@@ -526,14 +526,13 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
 //              break;
 //          }
 
-          
           if(self.code==0){
             if ([obj.pResultList rangeOfString:@"0-1"].location !=NSNotFound) {
               isAccess = @"通过";
             }else  if ([obj.pResultList rangeOfString:@"0-0"].location !=NSNotFound){
               isAccess = @"不通过";
             }else{
-               isAccess = @"-";
+              isAccess = @"-";
             }
             
             
@@ -541,23 +540,24 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
             
           }else if(self.code==1){
             if ([obj.pResultList rangeOfString:@"1-1"].location !=NSNotFound) {
-                isAccess = @"通过";
+              isAccess = @"通过";
             }else  if ([obj.pResultList rangeOfString:@"1-0"].location !=NSNotFound){
-               isAccess = @"不通过";
+              isAccess = @"不通过";
             }else{
               isAccess = @"-";
             }
-
+            
           }else{
             if ([obj.pResultList rangeOfString:@"2-1"].location !=NSNotFound) {
-                isAccess = @"通过";
+              isAccess = @"通过";
             }else  if ([obj.pResultList rangeOfString:@"2-0"].location !=NSNotFound){
-               isAccess = @"不通过";
+              isAccess = @"不通过";
             }else{
               isAccess = @"-";
             }
-
+            
           }
+          
 
           
           
@@ -584,6 +584,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
                                 isAccess,
                                 countProduct+1,
                                 pop
+
                                 //                                                  ,
                                 //                                                  style,
                                 //                                                  self.htmlModel.Enpty
@@ -612,10 +613,12 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
 
 
 - (NSString *)footStr_Html{
+  __block NSString *materialList = @"";
+  NSString *fb;
   if(!_footStr_Html){
     
-    __block NSString *materialList = @"";
-    NSString *fb;
+    
+    
     [self.serice.sMaterialText enumerateObjectsUsingBlock:^(WDMaterial * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
       NSString *title = obj.mTitle.length > 0 ? obj.mTitle :@"&nbsp;";
       NSString *content = obj.mContent.length > 0 ? obj.mContent: @"&nbsp;";
@@ -624,9 +627,10 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
     }];
     fb = [NSString stringWithFormat:self.htmlModel.FootB,self.serice.sQualityText,self.htmlModel.FootB_Explain];
     NSLog(@"%@",self.serice.sQualityText);
-    _footStr_Html = [NSString stringWithFormat:self.htmlModel.FootF,materialList,fb];
+    _footStr_Html = [NSString stringWithFormat:self.htmlModel.FootF,materialList,fb,self.serice.Appointtime];
     
   }
+  NSLog(@"%@----%@____%@",self.htmlModel.FootF,materialList,fb);
   return _footStr_Html;
 }
 
