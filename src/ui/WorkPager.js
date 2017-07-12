@@ -15,7 +15,7 @@ import {
     TouchableOpacity,
     TextInput,
     Switch, Alert,
-    KeyboardAvoidingView,
+    KeyboardAvoidingView, BackHandler,Platform
 } from 'react-native';
 import SnackBar from 'react-native-snackbar-dialog'
 import Color from '../constant/Color';
@@ -66,6 +66,34 @@ class WorkPager extends Component {
         };
     }
 
+    componentWillUnmount() {
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+    }
+
+    componentWillMount() {
+        if (Platform.OS === "android")
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
+    }
+
+    onBackAction = () => {
+        Alert.alert(
+            '退出编辑？',
+            '放弃当前填写内容？退出后不可恢复',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.props.nav.goBack(null)
+                }
+                },
+            ]
+        );
+        return true
+    };
 
     _createWork() {
         if (this.state.items.length === 0) {
@@ -81,7 +109,7 @@ class WorkPager extends Component {
             return;
         }
 
-        if(this.state.tripType===2&&!this.state.tripDate){
+        if (this.state.tripType === 2 && !this.state.tripDate) {
             SnackBar.show("请选择出差结束时间")
             return
         }
@@ -329,25 +357,7 @@ class WorkPager extends Component {
                                  () => {
                                      if (this.state.items.length === 0) {
                                          this.props.nav.goBack(null)
-                                     } else {
-                                         Alert.alert(
-                                             '退出创建？',
-                                             '放弃当编辑的工作？退出后不可恢复',
-                                             [
-                                                 {
-                                                     text: '取消', onPress: () => {
-                                                 }
-                                                 },
-                                                 {
-                                                     text: '确定', onPress: () => {
-                                                     this.props.nav.goBack(null)
-                                                 }
-                                                 },
-                                             ]
-                                         );
-                                     }
-
-
+                                     } else this.onBackAction()
                                  },
                                  () => this._createWork()
                              ]}/>
@@ -426,7 +436,7 @@ class WorkPager extends Component {
                                                    source={require('../drawable/calendar.png')}/>
                                             <Text numberOfLines={1}
                                                   style={{color: 'white', width: 200}}>
-                                                {this.state.isNeedTrip ?(this.state.tripType===2?( this.state.tripText+"，"+this.state.tripDate):this.state.tripText) : '不需外出'}
+                                                {this.state.isNeedTrip ? (this.state.tripType === 2 ? ( this.state.tripText + "，" + this.state.tripDate) : this.state.tripText) : '不需外出'}
                                             </Text>
                                         </View>
                                     </TouchableOpacity>
@@ -463,8 +473,8 @@ class WorkPager extends Component {
                                                         addWork: (array) => {
                                                             //    console.log(array);
                                                             this.state.items[rowID] = array[0];
-                                                         //   console.log(JSON.stringify(array[0]));
-                                                           // console.log(JSON.stringify(this.state.items));
+                                                            //   console.log(JSON.stringify(array[0]));
+                                                            // console.log(JSON.stringify(this.state.items));
 
                                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),});
                                                         },

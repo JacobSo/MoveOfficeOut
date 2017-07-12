@@ -86,7 +86,8 @@ export default class QcSubmitPager extends Component {
     }
 
     componentWillUnmount(){
-        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+        if (Platform.OS === "android")
+            DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
     }
 
     onBackAction = () => {

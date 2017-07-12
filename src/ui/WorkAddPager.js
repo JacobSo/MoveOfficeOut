@@ -10,7 +10,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    Alert,
+    Alert,Platform,BackHandler
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -36,6 +36,34 @@ export default class PasswordPager extends Component {
         //  console.log(JSON.stringify(this.state))
     }
 
+    componentWillUnmount() {
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+    }
+
+    componentWillMount() {
+        if (Platform.OS === "android")
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
+    }
+    onBackAction=()=>{
+        Alert.alert(
+            '退出编辑？',
+            '放弃当前填写内容？退出后不可恢复',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.props.nav.goBack(null)
+                }
+                },
+            ]
+        );
+        return true
+    };
+
     render() {
         return (
             <View
@@ -55,21 +83,7 @@ export default class PasswordPager extends Component {
                     functionArray={[
                         () => {
                             if (this.state.SupplierName || this.state.Series || this.state.WorkContent) {
-                                Alert.alert(
-                                    '退出编辑？',
-                                    '放弃当前填写内容？退出后不可恢复',
-                                    [
-                                        {
-                                            text: '取消', onPress: () => {
-                                        }
-                                        },
-                                        {
-                                            text: '确定', onPress: () => {
-                                            this.props.nav.goBack(null)
-                                        }
-                                        },
-                                    ]
-                                );
+
                             } else {
                                 this.props.nav.goBack(null)
                             }

@@ -9,7 +9,7 @@ import {
     Alert,
     ListView,
     ScrollView,
-    StyleSheet,
+    StyleSheet,BackHandler,
     Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Platform
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
@@ -78,7 +78,34 @@ class WdPostPager extends Component {
             ]
         );
     }
+    componentWillUnmount() {
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+    }
 
+    componentWillMount() {
+        if (Platform.OS === "android")
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
+    }
+
+    onBackAction = () => {
+        Alert.alert(
+            '退出编辑？',
+            '放弃当前填写内容？退出后不可恢复',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.props.nav.goBack(null)
+                }
+                },
+            ]
+        );
+        return true
+    };
     componentDidMount() {
         sqLite.getWdDraftContent(this.props.product.ItemGuid, this.props.step)
             .then((result) => {
@@ -294,7 +321,7 @@ class WdPostPager extends Component {
                     isActionByText={true}
                     actionArray={["保存", "提交"]}
                     functionArray={[
-                        () => this.props.nav.goBack(null),
+                        () => this.onBackAction(),
                         () => {
                             this.pack();
                             sqLite.insertWdDraft(this.state.submitContent, this.state.submitPic)
