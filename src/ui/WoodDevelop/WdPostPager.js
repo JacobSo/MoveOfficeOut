@@ -91,7 +91,7 @@ class WdPostPager extends Component {
     onBackAction = () => {
         Alert.alert(
             '退出编辑？',
-            '放弃当前填写内容？退出后不可恢复',
+            '放弃当前填写内容？退出后不可恢复，请先保存',
             [
                 {
                     text: '取消', onPress: () => {

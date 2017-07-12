@@ -9,7 +9,7 @@ import {
     Alert,
     ListView,
     ScrollView,
-    StyleSheet,
+    StyleSheet,BackHandler,
     Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Platform, Text, DeviceEventEmitter
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
@@ -64,15 +64,36 @@ export default class QcPostPager extends Component {
                 this.fetchData(position.coords.longitude, position.coords.latitude);
             });
         } else {
-            DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange)
+            DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange);
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
         }
     }
 
-    componentWillUnmount(){
-        if (Platform.OS === "android")
-            DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+    componentWillUnmount() {
+        if (Platform.OS === "android"){
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+            DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange);
+        }
     }
 
+    onBackAction = () => {
+        Alert.alert(
+            '退出编辑？',
+            '放弃当前填写内容？退出后不可恢复，请先保存',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.props.nav.goBack(null)
+                }
+                },
+            ]
+        );
+        return true
+    };
     onAndroidLocationChange = (e) => {
         // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
@@ -154,11 +175,8 @@ export default class QcPostPager extends Component {
                     isActionByText={true}
                     actionArray={["保存"]}
                     functionArray={[
-                        () => this.props.nav.goBack(null),
-                        () => {
-                            this.pack();
-                        },
-
+                        () => this.onBackAction(),
+                        () => this.pack(),
                     ]}
                 />
                 <KeyboardAvoidingView behavior={'padding'}>
