@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View, StyleSheet, Dimensions, Alert, Platform, Text, TouchableOpacity, DeviceEventEmitter, Image, ScrollView,
-    KeyboardAvoidingView, TextInput,
+    KeyboardAvoidingView, TextInput, BackHandler
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
@@ -30,7 +30,7 @@ export default class QcSubmitPager extends Component {
             isLoading: false,
             product: this.props.product[0],
             isMulti: this.props.product.length > 1,
-            initFormItem: this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA,
+            initFormItem: JSON.parse(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA)),//
             formItems: [],
             editContent: this.props.product[0].ImprovementMeasures,
             isEdit: false,
@@ -54,17 +54,22 @@ export default class QcSubmitPager extends Component {
     }
 
     componentWillMount() {
+        if (Platform.OS === "android")
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
+
+        //    console.log("componentWillMount:"+JSON.stringify(this.state.initFormItem))
         this.state.arrayNumber = this.getNumberArray(0);
         this.props.product.map((data) => {
             this.state.arraySeries.push({title: data.QualityLot, IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
         });
 
+
         sqLite.fetchQcDraft(this.state.initFormItem, this.state.product.ProductNoGuid)
             .then((result) => {
-                console.log(JSON.stringify(result));
+                //   console.log(JSON.stringify(result) + "***fetchQcDraft***");
                 this.setState({
                     formItems: result,
-                    editContent:   this.props.product[0].state===1?this.props.product[0].ImprovementMeasures:(result[0].submitContent ? result[0].submitContent.totalContent : ''),
+                    editContent: this.props.product[0].state === 1 ? this.props.product[0].ImprovementMeasures : (result[0].submitContent ? result[0].submitContent.totalContent : ''),
                 })
             }).done()
     }
@@ -80,6 +85,20 @@ export default class QcSubmitPager extends Component {
         }
     }
 
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+    }
+
+    onBackAction = () => {
+        sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
+            .then((result) => {
+                SnackBar.show(result);
+                this.props.nav.goBack(null);
+                BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+
+            }).done();
+        return true
+    };
     onAndroidLocationChange = (e) => {
         // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
@@ -93,7 +112,7 @@ export default class QcSubmitPager extends Component {
     countFinishItem() {
         let count = 0;
         this.state.formItems.map((data) => {
-            if (data.isPass ===0|| data.isPass === 1) {
+            if (data.isPass === 0 || data.isPass === 1) {
                 count++;
             }
         });
@@ -173,13 +192,11 @@ export default class QcSubmitPager extends Component {
     formatFormItem() {
         let temp = [];
         this.state.formItems.map((data) => {
-        //    if () {
-                temp.push({
-                    IsPass: data.isPass,
-                    UnPassDescription: data.submitContent?data.submitContent.subContent:"",
-                    picAdresslist: [],
-                })
-         //   }
+            temp.push({
+                IsPass: data.isPass,
+                UnPassDescription: data.submitContent ? data.submitContent.subContent : "",
+                picAdresslist: [],
+            })
         });
         return temp;
     }
@@ -342,18 +359,11 @@ export default class QcSubmitPager extends Component {
                             isHomeUp={true}
                             isAction={true}
                             isActionByText={true}
-                            actionArray={["保存", "提交"]}
+                            actionArray={["提交"]}
                             functionArray={[
                                 () => {
-                                    this.props.nav.goBack(null)
-                                },
-                                () => {
-                               // console.log(this.state.product.ProductNoGuid+"===========================");
-                                    sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
-                                        .then((result) => {
-                                            SnackBar.show(result);
-                                            this.props.nav.goBack(null);
-                                        }).done()
+                                    // console.log(this.state.product.ProductNoGuid+"===========================");
+this.onBackAction();
                                 },
                                 () => this.submitDialog()
 
@@ -380,11 +390,13 @@ export default class QcSubmitPager extends Component {
 
                         <Text style={{color: Color.colorIndigo, margin: 16}}>质检结果</Text>
                         <TouchableOpacity style={styles.itemText} onPress={() => {
+                            console.log("onPress:" + JSON.stringify(this.state.initFormItem))
                             this.props.nav.navigate('qcForm',
                                 {
                                     product: this.props.product,
                                     formItems: this.state.formItems,
-                                    finishFunc: (result) => {
+                                    finishFormFunc: (result) => {
+                                        console.log("onPress:" + JSON.stringify(result))
                                         this.setState({
                                             formItems: result
                                         });

@@ -667,7 +667,6 @@ export  default  class Sqlite extends Component {
             if (!db) {
                 this.open();
             }//
-
             formItems.map((form, i) => {
                 db.executeSql('SELECT * FROM ' + TABLE_Q_S_DRAFT + " where draft_index = '" + pid + form.Guid + "';",
                     [],
@@ -694,7 +693,7 @@ export  default  class Sqlite extends Component {
                                 }, (err) => console.log("fetchQcDraft_pic  err:" + JSON.stringify(err)));
                         }
                         if (i === formItems.length - 1) {
-                         //   console.log(JSON.stringify(formItems) + '--------------------')
+                            console.log(JSON.stringify(formItems) + '---------fetchQcDraft-----------')
                             resolve(formItems)
                         }
                     }, (err) => console.log("fetchQcDraft  err:" + JSON.stringify(err)));

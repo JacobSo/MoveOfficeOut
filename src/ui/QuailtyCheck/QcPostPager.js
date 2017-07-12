@@ -68,6 +68,10 @@ export default class QcPostPager extends Component {
         }
     }
 
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+    }
+
     onAndroidLocationChange = (e) => {
         // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
@@ -99,7 +103,7 @@ export default class QcPostPager extends Component {
 
     pack() {
         let tempContent = {
-            index: this.state.product[0].ProductNoGuid + this.props.form.Guid,
+            index: this.state.product.ProductNoGuid + this.props.form.Guid,
             isPass: this.props.form.isPass,
             subContent: this.state.editContent,
             editDate: new Date().toLocaleString(),
@@ -113,7 +117,7 @@ export default class QcPostPager extends Component {
             if (data.uri)
                 tempPics.push({
                     fileName: data.fileName ? data.fileName : data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
-                    index: this.state.product[0].ProductNoGuid + this.props.form.Guid,
+                    index: this.state.product.ProductNoGuid + this.props.form.Guid,
                     uri: data.uri//.replace('file://', '')
                 });
         });

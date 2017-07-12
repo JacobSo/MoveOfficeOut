@@ -246,7 +246,7 @@ class WdPostPager extends Component {
         let result = this.props.step + "-" + (this.state.isPass ? 1 : 0);
 
         this.state.product.pStatus = this.props.step;
-        this.state.product.pStatusPass = this.state.isPass;
+        this.state.product.pStatusPass = this.state.isPass?1:0;
 
         if (!this.state.product.pResultList) {
             this.state.product.pResultList = result;//pass

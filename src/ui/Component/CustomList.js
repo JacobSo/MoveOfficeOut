@@ -128,7 +128,7 @@ class CustomList extends Component {
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
-        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+        DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange);
         PubSub.clearAllSubscriptions();
     }
 

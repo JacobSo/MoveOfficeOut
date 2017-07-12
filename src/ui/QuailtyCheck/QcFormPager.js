@@ -4,9 +4,19 @@
  */
 'user strict';
 
-import {StyleSheet, View, ListView, Text, Dimensions, TouchableOpacity, Image, Platform} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    ListView,
+    Text,
+    Dimensions,
+    TouchableOpacity,
+    Image,
+    Platform,
+    BackHandler
+} from 'react-native';
 import React, {Component} from 'react';
-import { IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
+import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import Drawer from 'react-native-drawer'
@@ -14,6 +24,7 @@ import ApiService from '../../network/QcApiService';
 import SnackBar from 'react-native-snackbar-dialog'
 import SQLite from '../../db/Sqlite';
 import QcInputDialog from "../Component/QcInputDialog";
+import {QC_FORM_ITEM_SOFA, QC_FORM_ITEM_WOOD} from "../../constant/QcFormItems";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
@@ -33,11 +44,25 @@ export default class QcFormPager extends Component {
             countArray: [0, 0, 0],
             submitItems: [],
         }
+
     }
 
     componentWillMount() {
+        if (Platform.OS === "android")
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
 
+        // console.log(JSON.stringify(this.props.formItems))
     }
+
+
+
+    onBackAction = () => {
+        //console.log(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA) + "***static***")
+        this.props.finishFormFunc(this.state.formItems);
+        this.props.nav.goBack(null);
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        return true;
+    };
 
     componentDidMount() {
         /*        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
@@ -47,6 +72,7 @@ export default class QcFormPager extends Component {
          formItems: result
          })
          }).done()*/
+
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.props.formItems)
         })
@@ -55,8 +81,8 @@ export default class QcFormPager extends Component {
     getPager() {
         let pagerView = [];
         this.state.formItems.map((data, index) => {
-            if (data.isPass === undefined)
-                data.isPass = 2;
+            /*            if (data.isPass === undefined)
+             data.isPass = 2;*/
             pagerView.push(<View key={index}>
                 <View style={{flexDirection: 'row', margin: 16, alignItems: 'center'}}>
                     <Text style={{color: Color.colorIndigo, fontSize: 18,}}>{data.qualityItem}</Text>
@@ -81,27 +107,6 @@ export default class QcFormPager extends Component {
                     }
                 </View>
                 <Text style={{marginLeft: 16, marginRight: 16}}>{data.qualityContent}</Text>
-                {/*     <ListView
-                 style={{width: width, margin: 16}}
-                 dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2,}).cloneWithRows(data.qualityPic)}
-                 removeClippedSubviews={false}
-                 enableEmptySections={true}
-                 contentContainerStyle={{
-                 flexDirection: 'row',
-                 flexWrap: 'wrap',
-                 }}
-                 renderRow={(rowData, sectionID, rowID) =>
-                 <TouchableOpacity style={{width: 100, height: 100}} onPress={() => {
-                 this.props.nav.navigate('gallery', {
-                 pics: data.qualityPic
-                 })
-                 }}>
-                 <Image
-                 resizeMode="contain"
-                 style={{width: 100, height: 100,}}
-                 source={{uri: rowData}}/>
-                 </TouchableOpacity>
-                 }/>*/}
             </View>)
         });
         // console.log(pagerView.toString());
@@ -123,13 +128,13 @@ export default class QcFormPager extends Component {
             formItems: JSON.parse(JSON.stringify(this.state.formItems)),
             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.formItems)))
         });
-      //  console.log('pre:'+this.state.pagerIndex);
+        //  console.log('pre:'+this.state.pagerIndex);
         if (this.state.pagerIndex !== this.state.formItems.length - 1) {
             this.state.pagerIndex++;
         }
-      //  console.log('after:'+this.state.pagerIndex);
+        //  console.log('after:'+this.state.pagerIndex);
 
-        this.refs["viewPager"].setPage(Platform.OS==='ios' ? this.state.pagerIndex-1:this.state.pagerIndex)
+        this.refs["viewPager"].setPage(Platform.OS === 'ios' ? this.state.pagerIndex - 1 : this.state.pagerIndex)
     }
 
     closeControlPanel = () => {
@@ -230,7 +235,7 @@ export default class QcFormPager extends Component {
                 })
             }
         );
-        console.log(JSON.stringify( this.state.formItems));
+        console.log(JSON.stringify(this.state.formItems));
         if (isAllFill) {
             this.setState({
                 countArray: [tempPass, tempFail, tempPic],
@@ -243,17 +248,22 @@ export default class QcFormPager extends Component {
     }
 
     totalSave() {
-        console.log( this.props.product[0].ProductNoGuid+"+++++++++++++++++++++")
         sqLite.insertQcDraftAll(this.state.formItems, this.props.product[0].ProductNoGuid, this.state.editContent)
             .then((result) => {
                 SnackBar.show(result);
-                this.props.finishFunc(this.state.formItems);
+                this.props.finishFormFunc(this.state.formItems);
                 this.props.nav.goBack(null);
             }).done()
     }
 
     totalSubmit() {
         ApiService.submitQualityContent(this.props.product[0].ProductNoGuid, this.props.stage, JSON.stringify(this.state.submitItems), this.state.editContent,)
+    }
+
+    backAction() {
+        console.log(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA) + "***static***")
+        this.props.finishFormFunc(JSON.parse(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA)),);
+        this.props.nav.goBack(null)
     }
 
     render() {
@@ -277,11 +287,7 @@ export default class QcFormPager extends Component {
                         isActionByText={true}
                         actionArray={['目录', '完成']}
                         functionArray={[
-                            () => {
-                                //console.log(JSON.stringify(this.state.formItems))
-                                this.props.finishFunc(this.state.formItems);
-                                this.props.nav.goBack(null)
-                            },
+                            () => this.onBackAction(),
                             () => this.openControlPanel(),
                             () => this.count(),
                         ]}

@@ -23,7 +23,7 @@ export default class QcProductListPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading:false,
+            isLoading: false,
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
@@ -108,28 +108,34 @@ export default class QcProductListPager extends Component {
         if (this.state.multiTask.length === 0) {
             //提取组别
             let group = [];
+            let groupTemp = [];
             this.props.task.Productlist.map((data) => {
                 group.push(data.ProductNo);
             });
             group = Array.from(new Set(group));
+ //           console.log("group:" + JSON.stringify(group));
             //分组
             group.map((groupName) => {
                 let groupData = [];
                 this.props.task.Productlist.map((item) => {
-                    if (item.ProductNo === groupName) {
+                    if ((item.Quantity === 1)&&(item.ProductNo === groupName)) {
                         groupData.push(item);
                     }
                 });
-                this.state.multiTask.push(groupData);
+                groupTemp.push(groupData);
             });
+         //   console.log("group content:" + JSON.stringify(this.state.multiTask));
+
             //校验组别是否只有一个任务,
-            this.state.multiTask.map((data, index) => {
-                if (data.length < 2) {
-                    this.state.multiTask.splice(index, 1)
+            groupTemp.map((data) => {
+             //   console.log("remove content:" + JSON.stringify(data));
+                if (data.length >2) {
+                    // console.log("remove content:"+JSON.stringify( data));
+                    this.state.multiTask.push(data)
                 }
             });
-            //  console.log(JSON.stringify(this.state.multiTask[0].length));
         }
+        console.log("remove content:"+JSON.stringify( this.state.multiTask));
         if (this.state.multiTask.length !== 0) {
             this.setState({dataSourceMulti: this.state.dataSourceMulti.cloneWithRows(this.state.multiTask)});
             this.openControlPanel();
@@ -138,16 +144,16 @@ export default class QcProductListPager extends Component {
 
     finishDialog() {
         let flag = false;
-        this.state.items.map((data)=>{
-            if(!flag){
-                if(data.state===0){
+        this.state.items.map((data) => {
+            if (!flag) {
+                if (data.state === 0) {
                     flag = true;
                 }
             }
 
         });
-        if(flag){
-            SnackBar.show("还有没完成的质检",{duration:2000});
+        if (flag) {
+            SnackBar.show("还有没完成的质检", {duration: 2000});
             return
         }
 
@@ -165,8 +171,8 @@ export default class QcProductListPager extends Component {
     }
 
     finishTask() {
-        this.setState({isLoading:true});
-        ApiService.finishTaskOld(this.props.task.QualityNoGuid,'0.0','0.0')
+        this.setState({isLoading: true});
+        ApiService.finishTaskOld(this.props.task.QualityNoGuid, '0.0', '0.0')
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
@@ -205,7 +211,7 @@ export default class QcProductListPager extends Component {
                 }}>
                     <Toolbar
                         elevation={2}
-                        title={[ this.props.task.QualityNo,'产品列表']}
+                        title={[this.props.task.QualityNo, '产品列表']}
                         color={Color.colorIndigo}
                         isHomeUp={true}
                         isAction={true}
@@ -238,7 +244,7 @@ export default class QcProductListPager extends Component {
                                         product: [rowData],
                                         task: this.props.task,
                                         finishFunc: (isStore, qcNum, passNum, storeNum) => {
-                                           // console.log('--------------------');
+                                            // console.log('--------------------');
                                             this.state.items[sectionID].GetInQuantity = storeNum;
                                             this.state.items[sectionID].IsGetIn = isStore;
                                             this.state.items[sectionID].PassQty = passNum;
