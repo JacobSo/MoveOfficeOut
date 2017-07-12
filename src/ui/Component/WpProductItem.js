@@ -42,14 +42,27 @@ export class WpProductItem extends Component {
                     <CachedImage
                         resizeMode="contain"
                         style={{width: 100, height: 100,}}
-                        source={{uri: this.props.product.PicPath?this.props.product.PicPath:'-'}}/>
+                        source={{uri: this.props.product.PicPath ? this.props.product.PicPath : '-'}}/>
                 </View>
                 <View>
-                    <Text style={{
-                        color: Color.black_semi_transparent,
-                        margin: 5,
-                        width: 150
-                    }}>{ this.props.product.ItemName}</Text>
+                    <View style={{flexDirection: "row",alignItems:"center"}}>
+                        <Text style={{
+                            color: Color.black_semi_transparent,
+                            margin: 5,
+                        }}>{ this.props.product.ItemName}</Text>
+                        {
+                            (()=>{
+                                if(this.props.product.pics&&this.props.product.pics.length>0){
+                                    return  <Image
+                                        style={{width:15,height:15}}
+                                        source={require('../../drawable/pass_ico.png')}/>
+                                }
+                            })()
+
+                        }
+
+
+                    </View>
                     <Text style={{margin: 5, width: 150}}>{ this.props.product.ItemRemark}</Text>
                     <View style={{flexDirection: "row"}}>
                         {
@@ -59,7 +72,7 @@ export class WpProductItem extends Component {
                                         <View
                                             style={styles.tips}>
                                             <Text
-                                                style={{color: "white"}}>{this.props.isWood?'白胚':'木架'}</Text>
+                                                style={{color: "white"}}>{this.props.isWood ? '白胚' : '木架'}</Text>
                                         </View>)
                                 }
                             })()
@@ -88,21 +101,21 @@ export class WpProductItem extends Component {
                                 }
                             })()
                         }
-{/*                        {
-                            (() => {
-                                if (this.props.product.pics) {
-                                    return (
-                                        <View
-                                            style={styles.tips}>
-                                            <Text
-                                                style={{color: "white"}}>{this.props.product.pics.length + "张"}</Text>
-                                        </View>)
-                                }
+                        {/*                        {
+                         (() => {
+                         if (this.props.product.pics) {
+                         return (
+                         <View
+                         style={styles.tips}>
+                         <Text
+                         style={{color: "white"}}>{this.props.product.pics.length + "张"}</Text>
+                         </View>)
+                         }
 
 
-                            })()
-                        }*/}
-                        </View>
+                         })()
+                         }*/}
+                    </View>
                 </View>
             </TouchableOpacity>
         );

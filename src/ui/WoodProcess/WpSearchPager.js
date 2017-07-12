@@ -122,7 +122,7 @@ export default class PasswordPager extends Component {
                                  });
                                  if (temp.length!==0) {
                                      this.props.selectFunc(temp);
-                                     SnackBar.show('成功添加产品+' + this.state.selectItems);
+
                                      this.setState({//set default
                                          select: [false, false, false],
                                          dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),

@@ -631,11 +631,19 @@ export default class WpWorkPager extends Component {
                                         series: this.state.Series,
                                         selectFunc: (data) => {
                                             this.state.isChange = true;
+                                            let exist=0,add=0;
                                             data.map((d) => {
-                                                this.state.items[d.poldid] = d;
-                                                console.log(JSON.stringify(this.state.items));
+                                                if ( this.state.items[d.poldid]&&(d.poldid === this.state.items[d.poldid].poldid)) {
+                                                    exist++;
+                                                } else{
+                                                    this.state.items[d.poldid] = d;
+                                                    add++;
+                                                }
+                                                // console.log(JSON.stringify(this.state.items));
                                             });
                                             // this.state.items =  this.state.items.concat(data);
+                                            SnackBar.show("添加产品 "+add+" 件"+(exist===0?"":("，重复 "+exist+" 件")));
+
                                             this.setState({
                                                 dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
                                             });
@@ -644,69 +652,69 @@ export default class WpWorkPager extends Component {
                                 );
                             }}>
                                 <View
-                                    style={styles.addCard}>
-                                    <Image style={styles.ctrlIcon} source={require('../../drawable/pin_add.png')}/>
-                                    <Text style={{fontSize: 15}}>添加评审产品</Text>
+                                style={styles.addCard}>
+                                <Image style={styles.ctrlIcon} source={require('../../drawable/pin_add.png')}/>
+                                <Text style={{fontSize: 15}}>添加评审产品</Text>
                                 </View>
 
-                            </TouchableOpacity>
-                        </ScrollView>
-                        <Loading visible={this.state.isLoading}/>
-                    </View>
-                </ScrollView>
-            </View>
-        )
-    }
-}
-const styles = StyleSheet.create(
-    {
-        addCard: {
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderColor: Color.trans,
-            margin: 16,
-            padding: 15,
-            shadowColor: Color.background,
-            shadowOffset: {width: 2, height: 2,},
-            shadowOpacity: 0.5,
-            shadowRadius: 3,
-            alignItems: 'center',
-            elevation: 2,
-        },
-        control: {
-            width: width - 32,
-            height: 55,
-            backgroundColor: Color.colorPurple,
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 8,
-            marginTop: 8,
-        },
-        ctrlIcon: {
-            width: 25,
-            height: 25,
-            marginLeft: 16,
-            marginRight: 16,
-            resizeMode: 'contain'
-        },
-        textRemark: {
-            width: width - 64,
-            height: 45,
-            marginLeft: 32,
-            marginRight: 32,
-            marginTop: 16,
-            color: 'white',
-            borderColor: Color.colorAccent,
-            borderBottomWidth: 2,
-            marginBottom: 10,
+                                </TouchableOpacity>
+                                </ScrollView>
+                                <Loading visible={this.state.isLoading}/>
+                                </View>
+                                </ScrollView>
+                                </View>
+                                )
+                            }
+                            }
+                            const styles=StyleSheet.create(
+                            {
+                                addCard: {
+                                borderWidth: 1,
+                                backgroundColor: 'white',
+                                borderColor: Color.trans,
+                                margin: 16,
+                                padding: 15,
+                                shadowColor: Color.background,
+                                shadowOffset: {width: 2, height: 2,},
+                                shadowOpacity: 0.5,
+                                shadowRadius: 3,
+                                alignItems: 'center',
+                                elevation: 2,
+                            },
+                                control: {
+                                width: width - 32,
+                                height: 55,
+                                backgroundColor: Color.colorPurple,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginBottom: 8,
+                                marginTop: 8,
+                            },
+                                ctrlIcon: {
+                                width: 25,
+                                height: 25,
+                                marginLeft: 16,
+                                marginRight: 16,
+                                resizeMode: 'contain'
+                            },
+                                textRemark: {
+                                width: width - 64,
+                                height: 45,
+                                marginLeft: 32,
+                                marginRight: 32,
+                                marginTop: 16,
+                                color: 'white',
+                                borderColor: Color.colorAccent,
+                                borderBottomWidth: 2,
+                                marginBottom: 10,
 
-        },
-        closeStyle: {
-            right: 0,
-            position: 'absolute',
-            width: 55,
-            height: 55,
-            alignItems: 'center',
-            justifyContent: 'center'
-        }
-    });
+                            },
+                                closeStyle: {
+                                right: 0,
+                                position: 'absolute',
+                                width: 55,
+                                height: 55,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }
+                            });

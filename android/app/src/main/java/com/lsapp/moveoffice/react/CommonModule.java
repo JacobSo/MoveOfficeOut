@@ -141,7 +141,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
      * wood develop module
      */
     @ReactMethod
-    private void outputReportAction(String seriesJson,int woodOrSoft, int code, Callback callback, Callback errorCall) {
+    private void outputReportAction(String seriesJson, int woodOrSoft, int code, Callback callback, Callback errorCall) {
         createDir();
         Context context = getCurrentActivity();
         String TAG = "WD Print";
@@ -159,7 +159,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             ArrayList<WDProduct> selectList = new ArrayList<>();
 
             for (int i = 0; i < series.getItemlist().size(); i++) {
-                if (series.getItemlist().get(i).getCheck()==1) {
+                if (series.getItemlist().get(i).getCheck() == 1) {
                     selectList.add(series.getItemlist().get(i));
                 }
             }
@@ -170,16 +170,16 @@ public class CommonModule extends ReactContextBaseJavaModule {
             Element product = doc.getElementById("product");
             Element material = doc.getElementById("material");
             Element quality = doc.getElementById("total_quality");
-            //     Element nextTime = doc.getElementById("next_time");
+            Element nextTime = doc.getElementById("next_time");
+            nextTime.html(series.getAppointtime());
 
-            //     nextTime.html(series.getNextCheckedTime());
             String step = "";
-            if (code == 0) step = woodOrSoft==1?"白胚评审":"木架";
+            if (code == 0) step = woodOrSoft == 1 ? "白胚评审" : "木架";
             else if (code == 1) step = "成品评审";
             else step = "包装评审";
-            title.html((woodOrSoft==1?series.getSeriesName():series.getFacName()) + step + "报告");
+            title.html((woodOrSoft == 1 ? series.getSeriesName() : series.getFacName()) + step + "报告");
             time.html("生成时间：" + zDateUtil.getDateTime());
-            factory.html(woodOrSoft==1?series.getFacName():"");
+            factory.html(woodOrSoft == 1 ? series.getFacName() : "");
             quality.html(series.getsQualityText());
 
             //product builder
@@ -265,7 +265,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             }
             product.html(productBuilder.toString());
 
-            String outputPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + (woodOrSoft==1?series.getSeriesName():series.getFacName())+ "_" + step + ".html";
+            String outputPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + (woodOrSoft == 1 ? series.getSeriesName() : series.getFacName()) + "_" + step + ".html";
             File outputFile = new File(outputPath);
             BufferedWriter htmlWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));
             htmlWriter.write(doc.html());
