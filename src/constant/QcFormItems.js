@@ -11,7 +11,7 @@ export const QC_FORM_ITEM_WOOD = [
     {
         Guid: "C7AA62AC-990B-48FA-A03E-F6FDDC211EB6",
         qualityItem: "包装结构方式",
-        qualityContent: "了解包装材料的材质品质(K=K包装外纸箱)，产品四角要用泡沫（20mm）护角和硬纸护角,四周用5MM中纤板和泡沫（20mm）保护到位.包装方式要正确，以确保对产品的有效保护，特殊产品结构需特",
+        qualityContent: "是否符合包装资料要求，已确保对产品的有效保护，特殊产品结构需特别保护，工厂个别更改的包材要看联络函说明",
     },
     {
         Guid: "16E73C7D-E639-4FD2-B3CC-2D3BAA46C90D",
