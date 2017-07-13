@@ -405,7 +405,7 @@ export default class WpWorkPager extends Component {
     }
 
     _carView() {
-        if (this.state.isCarVisible) {
+        if (this.state.isCarVisible&&this.state.isWood) {
             return (
                 <View>
                     <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
@@ -414,6 +414,8 @@ export default class WpWorkPager extends Component {
                             style={{marginRight: 32}}
                             onValueChange={(value) => this.setState({isNeedCar: value})}
                             onTintColor={Color.colorAccent}
+                            tintColor={Color.colorBlueGrey}
+                            thumbTintColor={"white"}
                             value={this.state.isNeedCar}/>
                     </View>
 
@@ -496,6 +498,7 @@ export default class WpWorkPager extends Component {
                                                             this.state.items = {};
                                                             this.setState({
                                                                 isWood: value,
+                                                               // isCarVisible:false,
                                                                 dataSource: this.state.dataSource.cloneWithRows([])
                                                             })
                                                         }
@@ -505,6 +508,8 @@ export default class WpWorkPager extends Component {
                                             } else this.setState({isWood: value})
                                         }}
                                         onTintColor={Color.colorAccent}
+                                        tintColor={Color.colorBlueGrey}
+                                        thumbTintColor={"white"}
                                         value={this.state.isWood}/>
                                 </View>
                                 <View style={styles.control}>
@@ -523,8 +528,6 @@ export default class WpWorkPager extends Component {
                                         }}
                                     />
                                 </View>
-
-
                                 {
                                     (() => {
                                         if (this.state.isWood) {
@@ -543,7 +546,11 @@ export default class WpWorkPager extends Component {
 
                                 }
                                 {
-                                    this._carView()
+
+                                            this._carView()
+
+
+
                                 }
 
                                 <TouchableOpacity style={styles.control} onPress={() => {

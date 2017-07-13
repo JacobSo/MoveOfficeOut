@@ -57,7 +57,6 @@ _renderScreen = (pager) => {
                     width: width,
                     height: height,
                 }}>
-
                 {pager}
             </View>
         </Provider>)

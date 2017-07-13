@@ -13,7 +13,7 @@ public class WDProduct implements Serializable {
     private String ItemRemark;
     private String pSize;
     private String pImage;
-    private boolean pStatusPass;
+    private int pStatusPass;
     private int pStatus;
     private String pStatusResultA;
     private String pStatusResultB;
@@ -36,11 +36,11 @@ public class WDProduct implements Serializable {
         this.wdp_index = wdp_index;
     }
 
-    public boolean ispStatusPass() {
+    public int getpStatusPass() {
         return pStatusPass;
     }
 
-    public void setpStatusPass(boolean pStatusPass) {
+    public void setpStatusPass(int pStatusPass) {
         this.pStatusPass = pStatusPass;
     }
 

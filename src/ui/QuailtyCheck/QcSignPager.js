@@ -316,7 +316,7 @@ export default class QcSignPager extends Component {
                                             <View style={styles.timeLinePoint}/>
                                         </View>
                                         <TouchableOpacity
-                                            style={styles.signCard}
+                                            style={[styles.signCard,{elevation: 2,}]}
                                             onPress={
                                                 () => this.props.nav.navigate('gallery', {
                                                     pics: [rowData.PicPath]
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     },
     signCard: {
         flex:4,
-        elevation: 2,
+
         padding: 16,
         backgroundColor: 'white',
         margin: 10

@@ -1,8 +1,8 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    <!-- Customize your theme here. -->
+  <!--  &lt;!&ndash; Customize your theme here. &ndash;&gt;
     <item name="android:windowIsTranslucent">true</item>
-    <!--<item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>-->
-    <item name="colorControlActivated">#ffffff</item>
+    &lt;!&ndash;<item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>&ndash;&gt;
+    <item name="colorControlActivated">#ffffff</item>-->
     </style>
 </resources>

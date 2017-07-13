@@ -192,6 +192,8 @@ class WorkPager extends Component {
                                 }
                             }}
                             onTintColor={Color.colorAccent}
+                            tintColor  ={Color.colorBlueGrey}
+                            thumbTintColor ={"white"}
                             value={this.state.isNeedCar}/>
                     </View>
                     <RadioForm
@@ -237,6 +239,8 @@ class WorkPager extends Component {
                                 this.setState({isNeedTrip: value,});
                             }}
                             onTintColor={Color.colorAccent}
+                            tintColor  ={Color.colorBlueGrey}
+                            thumbTintColor ={"white"}
                             value={this.state.isNeedTrip}/>
                     </View>
                     <RadioForm
