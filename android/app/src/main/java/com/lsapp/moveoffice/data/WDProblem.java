@@ -9,7 +9,7 @@ public class WDProblem {
     private int phaseCode;
     private String pGuid;
     private int pResult;
-    private String productProblems;
+    private String productProblems="";
 
     public WDProblem(int phaseCode, String pGuid, int pResult, String productProblems) {
         this.phaseCode = phaseCode;

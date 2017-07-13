@@ -22,7 +22,7 @@ public class WDSeries implements Serializable {
     private String sQualityText;
     private ArrayList<WDMaterial> sMaterialText;
 
-    private int isFin;
+    /*private boolean isFin;*/
     private String sFactoryCall;
     private ArrayList<WDProduct> Itemlist;
     private int State;
@@ -33,13 +33,15 @@ public class WDSeries implements Serializable {
 
     private int wd_id;
 
-    public int getIsFin() {
+/*
+    public boolean isFin() {
         return isFin;
     }
 
-    public void setIsFin(int isFin) {
-        this.isFin = isFin;
+    public void setFin(boolean fin) {
+        isFin = fin;
     }
+*/
 
     public int getWd_id() {
         return wd_id;

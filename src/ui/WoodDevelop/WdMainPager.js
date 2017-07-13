@@ -92,6 +92,7 @@ class WdMainPager extends Component {
         sqLite.getWdData().then((results) => {
             this.setState({isRefreshing: false});
             if (results.length !== 0) {
+                console.log("****************************"+JSON.stringify(results));
                 this.setState({
                     items: results,
                     dataSource: this.state.dataSource.cloneWithRows(results),
