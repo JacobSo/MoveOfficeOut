@@ -57,8 +57,7 @@ export default class WpWorkPager extends Component {
     }
 
     componentWillUnmount() {
-        if (Platform.OS === "android")
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+
     }
 
     componentWillMount() {
@@ -121,14 +120,18 @@ export default class WpWorkPager extends Component {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
-                    this.props.nav.goBack(null)
-                }
+                    text: '确定', onPress: () => this.goBack()
                 },
             ]
         );
         return true;
     };
+
+    goBack() {
+        this.props.nav.goBack(null);
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+    }
 
     pack() {
         let isAllFinish = true;
@@ -231,7 +234,7 @@ export default class WpWorkPager extends Component {
                 else {
                     SnackBar.show("提交成功");
                     this.props.refreshFunc();
-                    this.props.nav.goBack(null)
+                    this.goBack()
                 }
             } else {
                 SnackBar.show(responseJson.ErrDesc)
@@ -302,7 +305,7 @@ export default class WpWorkPager extends Component {
                     if (index === this.state.submitPic.length - 1) {
                         SnackBar.show("提交成功");
                         this.props.refreshFunc();
-                        this.props.nav.goBack(null)
+                        this.goBack()
                     }
                 } else {
                     SnackBar.show(responseJson.ErrDesc);
@@ -342,7 +345,7 @@ export default class WpWorkPager extends Component {
                             if (!responseJson.IsErr) {
                                 SnackBar.show("提交成功");
                                 this.props.refreshFunc();
-                                this.props.nav.goBack(null)
+                                this.goBack()
                             } else {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
@@ -382,7 +385,7 @@ export default class WpWorkPager extends Component {
                             if (!responseJson.IsErr) {
                                 SnackBar.show("删除成功");
                                 this.props.refreshFunc();
-                                this.props.nav.goBack(null)
+                                this.goBack()
                             } else {
                                 setTimeout(() => {
                                     this.setState({isLoading: false})
@@ -405,7 +408,7 @@ export default class WpWorkPager extends Component {
     }
 
     _carView() {
-        if (this.state.isCarVisible&&this.state.isWood) {
+        if (this.state.isCarVisible && this.state.isWood) {
             return (
                 <View>
                     <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
@@ -498,7 +501,7 @@ export default class WpWorkPager extends Component {
                                                             this.state.items = {};
                                                             this.setState({
                                                                 isWood: value,
-                                                               // isCarVisible:false,
+                                                                // isCarVisible:false,
                                                                 dataSource: this.state.dataSource.cloneWithRows([])
                                                             })
                                                         }
@@ -547,7 +550,7 @@ export default class WpWorkPager extends Component {
                                 }
                                 {
 
-                                            this._carView()
+                                    this._carView()
 
 
 

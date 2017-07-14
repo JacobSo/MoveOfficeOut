@@ -22,12 +22,14 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SQLite from '../../db/Sqlite';
+import Loading from 'react-native-loading-spinner-overlay';
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
 class WdMainPager extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             items: [],
             dataSource: new ListView.DataSource({
@@ -47,7 +49,7 @@ class WdMainPager extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(this.state.items) + '------------WdMainPager-------------')
+        console.log(JSON.stringify(this.state.items) + '------------WdMainPager-------------');
         //  this.state.items.Itemlist[newProps.position] = newProps.product;
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
@@ -66,7 +68,8 @@ class WdMainPager extends Component {
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.Serieslist),
                         isRefreshing: false,
                     });
-                    sqLite.insertWdData(responseJson.Serieslist);//save in db
+                    sqLite.insertWdData(responseJson.Serieslist);//db save
+                    SnackBar.show("同步数据完成")
                 } else {
                     SnackBar.show(responseJson.ErrDesc);
                     this.setState({
@@ -92,12 +95,13 @@ class WdMainPager extends Component {
         sqLite.getWdData().then((results) => {
             this.setState({isRefreshing: false});
             if (results.length !== 0) {
-                console.log("****************************"+JSON.stringify(results));
+              //  console.log("****************************" + JSON.stringify(results));
                 this.setState({
                     items: results,
                     dataSource: this.state.dataSource.cloneWithRows(results),
                     isRefreshing: false,
                 });
+                SnackBar.show("本地数据")
             } else {
                 this._onRefresh();
             }

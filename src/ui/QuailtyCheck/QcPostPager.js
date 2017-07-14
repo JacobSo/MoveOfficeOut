@@ -9,7 +9,7 @@ import {
     Alert,
     ListView,
     ScrollView,
-    StyleSheet,BackHandler,
+    StyleSheet, BackHandler,
     Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Platform, Text, DeviceEventEmitter
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
@@ -70,8 +70,7 @@ export default class QcPostPager extends Component {
     }
 
     componentWillUnmount() {
-        if (Platform.OS === "android"){
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        if (Platform.OS === "android") {
             DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange);
         }
     }
@@ -86,14 +85,19 @@ export default class QcPostPager extends Component {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
-                    this.props.nav.goBack(null)
-                }
+                    text: '确定', onPress: () => this.goBack()
                 },
             ]
         );
         return true
     };
+
+    goBack() {
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        this.props.nav.goBack(null);
+    }
+
     onAndroidLocationChange = (e) => {
         // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
@@ -156,7 +160,7 @@ export default class QcPostPager extends Component {
             .then((result) => {
                 SnackBar.show(result, {duration: 3000});
                 this.props.appendFunc(this.state.submitContent, this.state.submitPic);
-                this.props.nav.goBack(null);
+                this.goBack();
             }).done();
     }
 

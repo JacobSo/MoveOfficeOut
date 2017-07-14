@@ -67,8 +67,7 @@ class WorkPager extends Component {
     }
 
     componentWillUnmount() {
-        if (Platform.OS === "android")
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+
     }
 
     componentWillMount() {
@@ -78,7 +77,7 @@ class WorkPager extends Component {
 
     onBackAction = () => {
         Alert.alert(
-            '退出编辑？',
+            '退出编辑2？',
             '放弃当前填写内容？退出后不可恢复',
             [
                 {
@@ -86,14 +85,18 @@ class WorkPager extends Component {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
-                    this.props.nav.goBack(null)
-                }
+                    text: '确定', onPress: () => this.goBack()
                 },
             ]
         );
         return true
     };
+
+    goBack(){
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        this.props.nav.goBack(null);
+    }
 
     _createWork() {
         if (this.state.items.length === 0) {
@@ -156,7 +159,7 @@ class WorkPager extends Component {
                             if (!responseJson.IsErr) {
                                 this.props.actions.refreshList(true);
                                 SnackBar.show('操作成功');
-                                this.props.nav.goBack(null);
+                                this.goBack()
                             } else {
                                 SnackBar.show(responseJson.ErrDesc);
                                 setTimeout(() => {
@@ -360,7 +363,7 @@ class WorkPager extends Component {
                              functionArray={[
                                  () => {
                                      if (this.state.items.length === 0) {
-                                         this.props.nav.goBack(null)
+                                          this.goBack()
                                      } else this.onBackAction()
                                  },
                                  () => this._createWork()

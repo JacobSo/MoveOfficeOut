@@ -85,21 +85,27 @@ export default class QcSubmitPager extends Component {
         }
     }
 
-    componentWillUnmount(){
-        if (Platform.OS === "android")
-            DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange);
+        }
     }
 
     onBackAction = () => {
         sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
             .then((result) => {
+                this.goBack();
                 SnackBar.show(result);
-                this.props.nav.goBack(null);
-                BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
-
             }).done();
         return true
     };
+
+    goBack() {
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        this.props.nav.goBack(null);
+    }
+
     onAndroidLocationChange = (e) => {
         // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
@@ -206,7 +212,7 @@ export default class QcSubmitPager extends Component {
         this.state.formItems.map((data) => {
             if (data.submitPic) {
                 data.submitPic.map((pic) => {
-                    console.log(JSON.stringify(data.submitPic));
+                    // console.log(JSON.stringify(data.submitPic));
                     pic.fid = data.Guid;
                     this.state.submitPic.push(pic);
 
@@ -273,7 +279,7 @@ export default class QcSubmitPager extends Component {
                             this.setState({isLoading: false})
                         }, 100);
                         SnackBar.show("提交成功");
-                        this.props.nav.goBack(null);
+                        this.goBack();
                         if (this.props.product.length > 1)
                             this.props.finishFuncMulti(this.state.arraySeries);
                         else
@@ -318,7 +324,7 @@ export default class QcSubmitPager extends Component {
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
                         SnackBar.show("提交成功");
-                        this.props.nav.goBack(null);
+                        this.goBack();
                         if (this.props.product.length > 1)
                             this.props.finishFuncMulti(this.state.arraySeries);
                         else
@@ -364,7 +370,7 @@ export default class QcSubmitPager extends Component {
                             functionArray={[
                                 () => {
                                     // console.log(this.state.product.ProductNoGuid+"===========================");
-this.onBackAction();
+                                    this.onBackAction();
                                 },
                                 () => this.submitDialog()
 
@@ -391,13 +397,13 @@ this.onBackAction();
 
                         <Text style={{color: Color.colorIndigo, margin: 16}}>质检结果</Text>
                         <TouchableOpacity style={styles.itemText} onPress={() => {
-                            console.log("onPress:" + JSON.stringify(this.state.initFormItem))
+                            //     console.log("onPress:" + JSON.stringify(this.state.initFormItem))
                             this.props.nav.navigate('qcForm',
                                 {
                                     product: this.props.product,
                                     formItems: this.state.formItems,
                                     finishFormFunc: (result) => {
-                                        console.log("onPress:" + JSON.stringify(result))
+                                        //   console.log("onPress:" + JSON.stringify(result))
                                         this.setState({
                                             formItems: result
                                         });

@@ -12,7 +12,7 @@ let database_version = "1.0";
 let database_displayname = "MySQLite";
 let database_size = -1;
 let db;
-SQLiteStorage.DEBUG(true);
+SQLiteStorage.DEBUG(false);
 
 export  default  class Sqlite extends Component {
     render() {
@@ -21,10 +21,10 @@ export  default  class Sqlite extends Component {
 
     componentWillUnmount() {
         if (db) {
-            console.log("SQLiteStorage close success");
+        //    console.log("SQLiteStorage close success");
             db.close();
         } else {
-            console.log("SQLiteStorage not open");
+        //    console.log("SQLiteStorage not open");
         }
     }
 
@@ -35,7 +35,7 @@ export  default  class Sqlite extends Component {
             database_displayname,
             database_size,
             () => {
-                console.log("SQLiteStorage open success");
+              //  console.log("SQLiteStorage open success");
             },
             (err) => {
                 console.log("SQLiteStorage open error:" + JSON.stringify(err));
@@ -48,7 +48,7 @@ export  default  class Sqlite extends Component {
 
         db.executeSql("DROP TABLE " + table + " ;",
             () => {
-                console.log("drop success");
+              //  console.log("drop success");
             },
             (err) => {
                 console.log("drop fail" + JSON.stringify(err));
@@ -57,10 +57,10 @@ export  default  class Sqlite extends Component {
 
     close() {
         if (db) {
-            console.log("SQLiteStorage close success");
+          //  console.log("SQLiteStorage close success");
             db.close();
         } else {
-            console.log("SQLiteStorage not open");
+          //  console.log("SQLiteStorage not open");
         }
         db = null;
     }
@@ -71,14 +71,14 @@ export  default  class Sqlite extends Component {
 
         db.executeSql("DELETE FROM " + table + " ;",
             () => {
-                console.log("delete1 success");
+              //  console.log("delete1 success");
             },
             (err) => {
                 console.log("delete1 fail" + JSON.stringify(err));
             });
         db.executeSql("DELETE FROM sqlite_sequence;",
             () => {
-                console.log("delete2 success");
+             //   console.log("delete2 success");
             },
             (err) => {
                 console.log("delete2 fail" + JSON.stringify(err));
@@ -92,7 +92,7 @@ export  default  class Sqlite extends Component {
 
         db.executeSql("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='" + table + "'"
             , [], () => {
-                console.log("---SQLiteStorage--- create pic success");
+              //  console.log("---SQLiteStorage--- create pic success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create pic fail:");
             });
@@ -105,25 +105,25 @@ export  default  class Sqlite extends Component {
 
         db.executeSql(DBConst.Pic_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create pic success");
+             //   console.log("---SQLiteStorage--- create pic success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create pic fail:");
             });
         db.executeSql(DBConst.Wood_Develop_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Wood_Develop_Create success");
+            //    console.log("---SQLiteStorage--- create Wood_Develop_Create success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create Wood_Develop_Create fail:");
             });
         db.executeSql(DBConst.Wood_Develop_Product_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Wood_Develop_Product_Create success");
+          //      console.log("---SQLiteStorage--- create Wood_Develop_Product_Create success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create Wood_Develop_Product_Create fail:");
             });
         db.executeSql(DBConst.Wood_Develop_Quality_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Wood_Develop_Quality_Create success");
+            //    console.log("---SQLiteStorage--- create Wood_Develop_Quality_Create success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create Wood_Develop_Quality_Create fail:");
             });
@@ -136,95 +136,99 @@ export  default  class Sqlite extends Component {
 
         db.executeSql(DBConst.Quality_Store_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Quality_Store_Create success");
+             //   console.log("---SQLiteStorage--- create Quality_Store_Create success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create Quality_Store_Create fail:");
             });
         db.executeSql(DBConst.Quality_Store_Product_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Quality_Store_Product_Create success");
+           //     console.log("---SQLiteStorage--- create Quality_Store_Product_Create success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create Quality_Store_Product_Create fail:");
             });
         db.executeSql(DBConst.Quality_Store_Draft_Create
             , [], () => {
-                console.log("---SQLiteStorage--- create Quality_Store_Draft_Create success");
+            //    console.log("---SQLiteStorage--- create Quality_Store_Draft_Create success");
             }, (err) => {
                 console.log("---SQLiteStorage--- create Quality_Store_Draft_Create fail:");
             });
     }
 
-    clearWdData(){
+    clearWdData() {
         this.clearTable(TABLE_W_D);
         this.clearTable(TABLE_W_D_P);
     }
+
     insertWdData(wdData) {
         // console.log('----------'+JSON.stringify(wdData))
-        if (!db) {
-            this.open();
-        }
-        if (wdData && wdData.length !== 0) {
-            let i = 0;
-            db.transaction((tx) => {
-               this.clearWdData();
-                wdData.map((series) => {
-                    // console.log('----------'+JSON.stringify(series))
-                    db.executeSql(
-                        'INSERT INTO ' + TABLE_W_D + ' (' + DBConst.W_D_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-                        [
-                            series.SeriesGuid,
-                            series.SeriesName,
-                            series.isFin,
-                            series.State,
-                            series.FacName,
-                            series.sFactoryCall,
-                            series.sFactoryAdress,
-                            series.Appointtime,
-                            series.NextCheckedTime,
-                            series.sQualityText,
-                            JSON.stringify(series.sMaterialText)
-                        ],
-                        () => console.log('series save success'),
-                        (err) => console.log('series save fail:')
-                    );
-
-                    series.Itemlist.map((product) => {
-                        // console.log('----------'+JSON.stringify(product))
+            if (!db) {
+                this.open();
+            }
+            if (wdData && wdData.length !== 0) {
+                let i = 0;
+                db.transaction((tx) => {
+                    this.clearWdData();
+                    wdData.map((series) => {
+                        // console.log('----------'+JSON.stringify(series))
                         db.executeSql(
-                            'INSERT INTO ' + TABLE_W_D_P + ' (' + DBConst.W_D_P_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                            'INSERT INTO ' + TABLE_W_D + ' (' + DBConst.W_D_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?)',
                             [
                                 series.SeriesGuid,
-                                product.ItemGuid,
-                                product.ItemName,
-                                product.ProjectNo,
-                                product.pSize,
-                                product.pImage,
-                                product.ItemRemark,
-                                (product.pStatusPass),
-                                product.pStatus,
-                                product.pStatusResultA,
-                                product.pStatusResultB,
-                                product.pStatusResultC,
-                                JSON.stringify(product.pStatusPicA),
-                                JSON.stringify(product.pStatusPicB),
-                                JSON.stringify(product.pStatusPicC),
-                                product.pResultList,
-                                product.stage
+                                series.SeriesName,
+                                series.isFin,
+                                series.State,
+                                series.FacName,
+                                series.sFactoryCall,
+                                series.sFactoryAdress,
+                                series.Appointtime,
+                                series.NextCheckedTime,
+                                series.sQualityText,
+                                JSON.stringify(series.sMaterialText)
                             ],
-                            () => Toast.show('保存数据中，不要在后台关闭app：' + i++),
-                            (err) => console.log('product save fail:')
+                            () => console.log('series save success'),
+                            (err) => console.log('series save fail:')
                         );
-                    })
-                });
-            }, (err) => {
-                console.log('insert transaction:');
-            }, () => {
-                console.log('insert transaction: success');
-            })
-        } else {
-            this.clearTable(TABLE_W_D);
-            this.clearTable(TABLE_W_D_P);
-        }
+
+                        series.Itemlist.map((product) => {
+                            // console.log('----------'+JSON.stringify(product))
+                            db.executeSql(
+                                'INSERT INTO ' + TABLE_W_D_P + ' (' + DBConst.W_D_P_KEYS + ') VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                [
+                                    series.SeriesGuid,
+                                    product.ItemGuid,
+                                    product.ItemName,
+                                    product.ProjectNo,
+                                    product.pSize,
+                                    product.pImage,
+                                    product.ItemRemark,
+                                    (product.pStatusPass),
+                                    product.pStatus,
+                                    product.pStatusResultA,
+                                    product.pStatusResultB,
+                                    product.pStatusResultC,
+                                    JSON.stringify(product.pStatusPicA),
+                                    JSON.stringify(product.pStatusPicB),
+                                    JSON.stringify(product.pStatusPicC),
+                                    product.pResultList,
+                                    product.stage
+                                ],
+                                () => {
+                                    i++;
+                                    console.log("save product:"+i);
+                                },
+                                (err) => console.log('product save fail:')
+                            );
+                        })
+                    });
+                }, (err) => {
+                    console.log('insert transaction:');
+                }, () => {
+                    console.log('insert transaction: success');
+                })
+            } else {
+                this.clearTable(TABLE_W_D);
+                this.clearTable(TABLE_W_D_P);
+            }
     }
 
     getWdData() {
@@ -414,7 +418,7 @@ export  default  class Sqlite extends Component {
         })
     }
 
-    clearWdSeries(sid){
+    clearWdSeries(sid) {
         if (!db) {
             this.open();
         }//
@@ -422,12 +426,11 @@ export  default  class Sqlite extends Component {
         db.executeSql("DELETE FROM " + TABLE_W_D +
             " WHERE SeriesGuid = '" + sid + "';", [],
             () => {
-                console.log("clearWdSeries success" )
+                console.log("clearWdSeries success")
             }, (err) => {
                 console.log("clearWdSeries err:" + JSON.stringify(err))
             })
     }
-
 
 
     /**
@@ -565,14 +568,14 @@ export  default  class Sqlite extends Component {
                             db.executeSql("UPDATE " + TABLE_Q_S_DRAFT +
                                 " SET " +
                                 "draft_index = '" + productId + draftData.Guid +
-                                "',subContent = '" +(draftData.submitContent? draftData.submitContent.subContent:'')+
+                                "',subContent = '" + (draftData.submitContent ? draftData.submitContent.subContent : '') +
                                 "',totalContent = '" + mainContent +
                                 "',isPass = '" + draftData.isPass +
-                                "',editDate = '" +(draftData.submitContent? draftData.submitContent.editDate:new Date().toLocaleString() )+
-                                "',editAddress = '" + (draftData.submitContent?draftData.submitContent.editAddress:'') +
-                                "',lat = '" + (draftData.submitContent?draftData.submitContent.lat:'') +
-                                "',lng = '" + (draftData.submitContent?draftData.submitContent.lng:'') +
-                                "' WHERE draft_index = '" +  productId +draftData.Guid + "';", [],
+                                "',editDate = '" + (draftData.submitContent ? draftData.submitContent.editDate : new Date().toLocaleString() ) +
+                                "',editAddress = '" + (draftData.submitContent ? draftData.submitContent.editAddress : '') +
+                                "',lat = '" + (draftData.submitContent ? draftData.submitContent.lat : '') +
+                                "',lng = '" + (draftData.submitContent ? draftData.submitContent.lng : '') +
+                                "' WHERE draft_index = '" + productId + draftData.Guid + "';", [],
                                 (results) => {
                                     resolve("保存成功")
                                 }, (err) => console.log("insertWdDraft content update err:" + JSON.stringify(err)))
@@ -580,13 +583,13 @@ export  default  class Sqlite extends Component {
                             db.executeSql('INSERT INTO ' + TABLE_Q_S_DRAFT + ' (' + DBConst.QS_DRAFT_KEYS + ') VALUES(?,?,?,?,?,?,?,?)',
                                 [
                                     productId + draftData.Guid,
-                                    (draftData.submitContent? draftData.submitContent.subContent:''),
+                                    (draftData.submitContent ? draftData.submitContent.subContent : ''),
                                     mainContent,
                                     draftData.isPass,
-                                    (draftData.submitContent? draftData.submitContent.editDate:new Date().toLocaleString() ),
-                                    (draftData.submitContent?draftData.submitContent.editAddress:'') ,
-                                    (draftData.submitContent?draftData.submitContent.lat:''),
-                                    (draftData.submitContent?draftData.submitContent.lng:''),
+                                    (draftData.submitContent ? draftData.submitContent.editDate : new Date().toLocaleString() ),
+                                    (draftData.submitContent ? draftData.submitContent.editAddress : ''),
+                                    (draftData.submitContent ? draftData.submitContent.lat : ''),
+                                    (draftData.submitContent ? draftData.submitContent.lng : ''),
                                 ],
                                 (results) => {
                                     resolve("保存成功")
@@ -634,7 +637,7 @@ export  default  class Sqlite extends Component {
                                 draftData.lng,
                             ],
                             (results) => {
-                                 console.log("draft content save!")
+                                console.log("draft content save!");
                                 if (picData.length === 0) resolve("保存成功")
                             }, (err) => console.log("insertQcDraftSingle content create err:" + JSON.stringify(err)))
                     }
@@ -653,7 +656,7 @@ export  default  class Sqlite extends Component {
                         data.fileName,
                     ],
                     (results) => {
-                        console.log("draft pic save!")
+                        console.log("draft pic save!");
                         if (index === picData.length - 1) {
                             resolve("保存成功")
                         }
@@ -673,7 +676,7 @@ export  default  class Sqlite extends Component {
                     (results) => {
                         if (results.rows.item(0)) {
                             form.submitContent = results.rows.item(0);
-                            form.isPass= form.submitContent.isPass;
+                            form.isPass = form.submitContent.isPass;
                             db.executeSql('SELECT * FROM ' + TABLE_PIC + " where pic_index = '" + pid + form.Guid + "';",
                                 [],
                                 (results) => {
@@ -693,7 +696,7 @@ export  default  class Sqlite extends Component {
                                 }, (err) => console.log("fetchQcDraft_pic  err:" + JSON.stringify(err)));
                         }
                         if (i === formItems.length - 1) {
-                            console.log(JSON.stringify(formItems) + '---------fetchQcDraft-----------')
+                          //  console.log(JSON.stringify(formItems) + '---------fetchQcDraft-----------')
                             resolve(formItems)
                         }
                     }, (err) => console.log("fetchQcDraft  err:" + JSON.stringify(err)));

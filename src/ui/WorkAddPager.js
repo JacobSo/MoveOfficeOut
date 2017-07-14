@@ -10,7 +10,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    Alert,Platform,BackHandler
+    Alert, Platform, BackHandler
 } from 'react-native';
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
@@ -37,17 +37,17 @@ export default class PasswordPager extends Component {
     }
 
     componentWillUnmount() {
-        if (Platform.OS === "android")
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+
     }
 
     componentWillMount() {
         if (Platform.OS === "android")
             BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
     }
-    onBackAction=()=>{
+
+    onBackAction = () => {
         Alert.alert(
-            '退出编辑？',
+            '退出编辑1？',
             '放弃当前填写内容？退出后不可恢复',
             [
                 {
@@ -55,14 +55,17 @@ export default class PasswordPager extends Component {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
-                    this.props.nav.goBack(null)
-                }
+                    text: '确定', onPress: () => this.goBack()
                 },
             ]
         );
         return true
     };
+
+    goBack(){
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        this.props.nav.goBack(null);
+    }
 
     render() {
         return (
@@ -83,9 +86,9 @@ export default class PasswordPager extends Component {
                     functionArray={[
                         () => {
                             if (this.state.SupplierName || this.state.Series || this.state.WorkContent) {
-
+                                this.onBackAction()
                             } else {
-                                this.props.nav.goBack(null)
+                                this.goBack()
                             }
 
                         },
@@ -101,7 +104,7 @@ export default class PasswordPager extends Component {
                                     {
                                         text: '确定', onPress: () => {
                                         this.props.deleteData();
-                                        this.props.nav.goBack(null)
+                                        this.goBack()
                                     }
                                     },
                                 ]
@@ -111,7 +114,7 @@ export default class PasswordPager extends Component {
                         () => {
                             if (this.state.WorkContent === '' || this.state.SupplierName === '' ||
                                 (this.state.wayCall === false && this.state.wayQQ === false && this.state.wayMeet === false)
-                                || ( this.state.Series === '' && App.department.indexOf('仓库')<0)) {
+                                || ( this.state.Series === '' && App.department.indexOf('仓库') < 0)) {
                                 SnackBar.show('填写不完整');
                             } else {
                                 //       console.log(this.state);
@@ -121,7 +124,7 @@ export default class PasswordPager extends Component {
                                     (this.state.wayMeet ? "走访" : ""))
                                 });
                                 this.props.addWork([this.state]);
-                                this.props.nav.goBack(null)
+                                this.goBack()
                             }
                         }]}/>
                 <ScrollView>

@@ -54,16 +54,6 @@ export default class QcFormPager extends Component {
         // console.log(JSON.stringify(this.props.formItems))
     }
 
-
-
-    onBackAction = () => {
-        //console.log(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA) + "***static***")
-        this.props.finishFormFunc(this.state.formItems);
-        this.props.nav.goBack(null);
-        BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
-        return true;
-    };
-
     componentDidMount() {
         /*        sqLite.fetchQcDraft(this.state.formItems, this.props.product.ProductNoGuid)
          .then((result) => {
@@ -76,6 +66,19 @@ export default class QcFormPager extends Component {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.props.formItems)
         })
+    }
+
+    onBackAction = () => {
+        //console.log(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA) + "***static***")
+        this.props.finishFormFunc(this.state.formItems);
+        this.goBack();
+        return true;
+    };
+
+    goBack() {
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        this.props.nav.goBack(null);
     }
 
     getPager() {
@@ -252,18 +255,12 @@ export default class QcFormPager extends Component {
             .then((result) => {
                 SnackBar.show(result);
                 this.props.finishFormFunc(this.state.formItems);
-                this.props.nav.goBack(null);
+                this.goBack();
             }).done()
     }
 
     totalSubmit() {
         ApiService.submitQualityContent(this.props.product[0].ProductNoGuid, this.props.stage, JSON.stringify(this.state.submitItems), this.state.editContent,)
-    }
-
-    backAction() {
-        console.log(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA) + "***static***")
-        this.props.finishFormFunc(JSON.parse(JSON.stringify(this.props.product[0].QualityType === "板木" ? QC_FORM_ITEM_WOOD : QC_FORM_ITEM_SOFA)),);
-        this.props.nav.goBack(null)
     }
 
     render() {

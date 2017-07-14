@@ -9,7 +9,7 @@ import {
     Alert,
     ListView,
     ScrollView,
-    StyleSheet,BackHandler,
+    StyleSheet, BackHandler,
     Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Platform
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
@@ -78,10 +78,7 @@ class WdPostPager extends Component {
             ]
         );
     }
-    componentWillUnmount() {
-        if (Platform.OS === "android")
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
-    }
+
 
     componentWillMount() {
         if (Platform.OS === "android")
@@ -98,14 +95,19 @@ class WdPostPager extends Component {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
-                    this.props.nav.goBack(null)
-                }
+                    text: '确定', onPress: () => this.goBack()
                 },
             ]
         );
         return true
     };
+
+    goBack(){
+        if (Platform.OS === "android")
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
+        this.props.nav.goBack(null)
+    }
+
     componentDidMount() {
         sqLite.getWdDraftContent(this.props.product.ItemGuid, this.props.step)
             .then((result) => {
@@ -159,7 +161,7 @@ class WdPostPager extends Component {
         let tempPics = [];
         this.state.pics.map((pic) => {
             tempPics.push({
-                fileName: pic.fileName?pic.fileName:pic.uri.substring(pic.uri.lastIndexOf('/'),pic.uri.length),
+                fileName: pic.fileName ? pic.fileName : pic.uri.substring(pic.uri.lastIndexOf('/'), pic.uri.length),
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
                 uri: pic.uri.replace('file://', '')
@@ -199,7 +201,7 @@ class WdPostPager extends Component {
                     else {
                         this.updateStatus();
                         SnackBar.show("提交成功", {duration: 3000});
-                        this.props.nav.goBack(null)
+                        this.goBack()
 
                     }
                 } else {
@@ -222,7 +224,7 @@ class WdPostPager extends Component {
         if (Platform.OS === 'android') {
             this.state.submitPic.map((data, index) => {
                 AndroidModule.getImageBase64(data.uri, (callBackData) => {
-                    console.log(data.uri+","+callBackData);
+                    console.log(data.uri + "," + callBackData);
                     this.postImageReq(data, index, callBackData);
                 });
             })
@@ -247,7 +249,7 @@ class WdPostPager extends Component {
                     if (index === this.state.submitPic.length - 1) {
                         SnackBar.show("提交成功", {duration: 3000});
                         this.updateStatus();
-                        this.props.nav.goBack(null)
+                        this.goBack()
                     }
                 } else {
                     SnackBar.show(responseJson.ErrDesc, {duration: 3000});
@@ -327,7 +329,7 @@ class WdPostPager extends Component {
                             sqLite.insertWdDraft(this.state.submitContent, this.state.submitPic)
                                 .then((result) => {
                                     SnackBar.show(result, {duration: 3000});
-                                    this.props.nav.goBack(null);
+                                    this.goBack()
                                 }).done();
                         },
                         () => {
@@ -355,7 +357,7 @@ class WdPostPager extends Component {
                             <View style={{flexDirection: 'row', padding: 5}}>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchCamera(options, (response) => {
-                                          console.log(JSON.stringify(response));
+                                        console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
@@ -370,7 +372,7 @@ class WdPostPager extends Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{flex: 1, height: 25, alignItems: 'center'}} onPress={() => {
                                     ImagePicker.launchImageLibrary(options, (response) => {
-                                           console.log(JSON.stringify(response));
+                                        console.log(JSON.stringify(response));
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
@@ -411,7 +413,7 @@ class WdPostPager extends Component {
 
                             <ListView
                                 dataSource={this.state.dataSource}
-                                style={{marginBottom:80}}
+                                style={{marginBottom: 80}}
                                 removeClippedSubviews={false}
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
