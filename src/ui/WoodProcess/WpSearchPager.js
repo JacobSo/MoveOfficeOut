@@ -75,10 +75,6 @@ export default class PasswordPager extends Component {
             .done()
     }
 
-    stepSelectView() {
-
-    }
-
 
     render() {
         return (
@@ -189,7 +185,6 @@ export default class PasswordPager extends Component {
                 {
                     (() => {
                         if (this.state.selectItems > 0) {
-                            this.stepSelectView();
                             return (
                                 <View style={{
                                     flexDirection: "row",

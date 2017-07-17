@@ -77,7 +77,7 @@ class WorkPager extends Component {
 
     onBackAction = () => {
         Alert.alert(
-            '退出编辑2？',
+            '退出创建工作？',
             '放弃当前填写内容？退出后不可恢复',
             [
                 {

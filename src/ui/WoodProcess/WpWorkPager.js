@@ -139,7 +139,7 @@ export default class WpWorkPager extends Component {
         let picTemp = [];
         for (let Id in this.state.items) {
             let data = this.state.items[Id];
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             if (data.selectStep && (data.selectStep.indexOf(true) > -1)) {
                 temp.push({
                     id: data.poldid ? data.poldid : data.Id,//poldid 存在，已有产品//不存在则新增
@@ -171,7 +171,7 @@ export default class WpWorkPager extends Component {
 
          });*/
         if (isAllFinish) {
-            console.log(JSON.stringify(temp));
+            //   console.log(JSON.stringify(temp));
             this.state.submitProduct = temp;
             this.state.submitPic = picTemp;
 
@@ -206,8 +206,8 @@ export default class WpWorkPager extends Component {
         }
 
         Alert.alert(
-            '确认上传',
-            '是否提交，包含图片共' + this.state.submitPic.length + "张",
+            this.state.isModify ? '确认修改' : '确认上传',
+            (this.state.isModify ? '确认修改' : '确认上传') + '，包含图片共' + this.state.submitPic.length + "张",
             [
                 {
                     text: '取消', onPress: () => {
@@ -237,7 +237,7 @@ export default class WpWorkPager extends Component {
                     this.goBack()
                 }
             } else {
-                SnackBar.show(responseJson.ErrDesc)
+                SnackBar.show(responseJson.ErrDesc);
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
@@ -549,11 +549,7 @@ export default class WpWorkPager extends Component {
 
                                 }
                                 {
-
                                     this._carView()
-
-
-
                                 }
 
                                 <TouchableOpacity style={styles.control} onPress={() => {

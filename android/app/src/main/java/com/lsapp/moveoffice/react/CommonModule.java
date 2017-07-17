@@ -281,9 +281,9 @@ public class CommonModule extends ReactContextBaseJavaModule {
     }
 
     private String tidy(String seriesName, String path, int code) throws Exception {
-        String sourcePath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + zFileUtil.getFileName(path);
-        String xhtmlPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + "temp_" + zFileUtil.getFileName(path);
-        String pdfPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + zFileUtil.getFileName(path) + ".pdf";
+        String sourcePath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + zFileUtil.getFileName(path,true);
+        String xhtmlPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + "temp_" + zFileUtil.getFileName(path,true);
+        String pdfPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + zFileUtil.getFileName(path,false) + ".pdf";
         String header2Path = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_IMG_PATH + Const.WD_STEP1_TITLE;
         String header3Path = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_IMG_PATH + Const.WD_STEP23_TITLE;
 

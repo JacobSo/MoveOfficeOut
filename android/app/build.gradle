@@ -109,6 +109,7 @@ dependencies {
     //print tool
     compile 'org.jsoup:jsoup:1.9.1'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile project(path: ':react-native-fs')
 }
 
 // Run this once to be able to run the application with BUCK

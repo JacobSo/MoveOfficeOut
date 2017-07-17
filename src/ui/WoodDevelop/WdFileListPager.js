@@ -9,7 +9,7 @@ import {
     ListView,
     StyleSheet,
     Dimensions,
-    TouchableOpacity, Platform, Text, Share,
+    TouchableOpacity, Platform, Text, Share, Alert
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
@@ -19,7 +19,7 @@ import SnackBar from 'react-native-snackbar-dialog'
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 
 const {width, height} = Dimensions.get('window');
-
+const RNFS = require('react-native-fs');
 export default class WdFileListPager extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +29,6 @@ export default class WdFileListPager extends Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
             isSearch: false
-
         };
     }
 
@@ -50,7 +49,7 @@ export default class WdFileListPager extends Component {
         } else {
             IosModule.getAllPrint((result) => {
                     //console.log(result)
-                   // SnackBar.show(result)
+                    // SnackBar.show(result)
                     if (result) {
                         this.state.items = JSON.parse(result);
                         this.setState({
@@ -74,7 +73,6 @@ export default class WdFileListPager extends Component {
         return (
             <View style={{
                 flex: 1,
-                backgroundColor: 'white'
             }}>
                 <Toolbar
                     elevation={2}
@@ -112,10 +110,11 @@ export default class WdFileListPager extends Component {
                 />
 
                 {
-                    (()=>{
-                       if(this.state.items.length===0){
-                           return (<RefreshEmptyView isRefreshing={false} onRefreshFunc={()=>{}}  />)
-                       }
+                    (() => {
+                        if (this.state.items.length === 0) {
+                            return (<RefreshEmptyView isRefreshing={false} onRefreshFunc={() => {
+                            }}/>)
+                        }
                     })()
                 }
 
@@ -136,13 +135,28 @@ export default class WdFileListPager extends Component {
                                 marginLeft: 16
                             }}
                             onPress={() => {
-                               // SnackBar.show(rowData)
-                                if (Platform.OS === 'android')
-                                    AndroidModule.openOfficeFile(rowData);
-                                else {
-                                    this.props.nav.navigate('web', {
-                                        filePath: rowData
-                                    })
+                                // SnackBar.show(rowData)
+                                if (Platform.OS === 'android') {
+                                    // AndroidModule.openOfficeFile(rowData);
+                                    AndroidModule.shereFile(rowData)
+                                } else {
+                                    //   console.log(rowData);
+                                    /*   this.props.nav.navigate('web', {
+                                     filePath: rowData
+                                     })*/
+                                    Share.share({
+                                            url: rowData,
+                                            title: 'React Native'
+                                        },
+                                        {
+                                            dialogTitle: 'Share React Native website',
+                                            excludedActivityTypes: [
+                                                'com.apple.UIKit.activity.PostToTwitter'
+                                            ],
+                                            tintColor: 'green'
+                                        })
+                                    // .then(this._showResult)
+                                        .catch((error) => this.setState({result: 'error: ' + error.message}));
                                 }
                             }}>
                             <Text>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
@@ -150,30 +164,40 @@ export default class WdFileListPager extends Component {
                                 style={{
                                     position: 'absolute',
                                     right: 0,
-                                    backgroundColor: Color.colorLightBlue,
+                                    backgroundColor: Color.line,
                                     padding: 10,
                                     borderRadius: 10
                                 }}
                                 onPress={() => {
-                                    if (Platform.OS === 'android')
-                                        AndroidModule.shereFile(rowData)
-                                    else {
-                                        console.log(rowData);
-                                        Share.share({
-                                            url: rowData,
-                                            title: 'React Native'
-                                        }, {
-                                            dialogTitle: 'Share React Native website',
-                                            excludedActivityTypes: [
-                                                'com.apple.UIKit.activity.PostToTwitter'
-                                            ],
-                                            tintColor: 'green'
+                                    return RNFS.unlink(rowData)
+                                        .then(() => {
+                                            Alert.alert(
+                                                '删除？',
+                                                "删除"+rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length),
+                                                [
+                                                    {
+                                                        text: '取消', onPress: () => {
+                                                    }
+                                                    },
+                                                    {
+                                                        text: '确定', onPress: () => {
+                                                        console.log('FILE DELETED');
+                                                        this.state.items.splice(rowID, 1);
+                                                        this.setState({dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))});
+                                                        SnackBar.show("删除成功");
+                                                    }
+                                                    },
+                                                ]
+                                            );
+
+
                                         })
-                                            .then(this._showResult)
-                                            .catch((error) => this.setState({result: 'error: ' + error.message}));
-                                    }
+                                        .catch((err) => {
+                                            console.log(err.message);
+                                            SnackBar.show("删除失败");
+                                        });
                                 }}>
-                                <Text style={{color: 'white'}}>发送</Text>
+                                <Text style={{color: 'white'}}>删除</Text>
                             </TouchableOpacity>
                         </TouchableOpacity>
                     }/>

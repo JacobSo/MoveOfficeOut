@@ -8,6 +8,7 @@ import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import com.wix.interactable.Interactable;
 import com.imagepicker.ImagePickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -52,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+                    new RNFSPackage(),
                     new RNFetchBlobPackage(),
                     new Interactable(),
                     new ImagePickerPackage(),
@@ -77,7 +79,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-   //     PgyCrashManager.register(this);
+        //     PgyCrashManager.register(this);
 
         SoLoader.init(this, /* native exopackage */ false);
         initCloudChannel();

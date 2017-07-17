@@ -25,6 +25,7 @@ export class WdFilterItem extends Component {
             statusText: "未开始",
             statusColor: Color.content,
         }
+
     }
 
     componentDidMount() {
@@ -40,17 +41,34 @@ export class WdFilterItem extends Component {
         let color;
         let text;
         if (this.props.product.pResultList) {
+            text = "未开始";
+            color = Color.content;
             if (this.props.step === 1) {
-                color = (this.props.product.pResultList.indexOf("0-1") > -1) ? Color.colorGreen : Color.colorRed;
-                text =  (App.workType === "板木驻厂工程师"?"白胚":"木架")+((this.props.product.pResultList.indexOf("0-1") > -1) ?"通过" : "不通过");
+                if (this.props.product.pResultList.indexOf("0-1") > -1) {
+                    color = Color.colorGreen;
+                    text = (App.workType === "板木驻厂工程师" ? "白胚" : "木架") + "-通过";
+                } else if (this.props.product.pResultList.indexOf("0-0") > -1) {
+                    color = Color.colorRed;
+                    text = (App.workType === "板木驻厂工程师" ? "白胚" : "木架") + "-不通过";
+                }
             }
             else if (this.props.step === 2) {
-                color = (this.props.product.pResultList.indexOf("1-1") > -1) ? Color.colorGreen : Color.colorRed;
-                text = (this.props.product.pResultList.indexOf("1-1") > -1) ? "成品-通过" : "成品-不通过";
+                if (this.props.product.pResultList.indexOf("1-1") > -1) {
+                    color = Color.colorGreen;
+                    text = "成品-通过"
+                } else if (this.props.product.pResultList.indexOf("1-0") > -1) {
+                    color = Color.colorRed;
+                    text = "成品-不通过"
+                }
             }
             else if (this.props.step === 3) {
-                color = (this.props.product.pResultList.indexOf("2-1") > -1) ? Color.colorGreen : Color.colorRed;
-                text = (this.props.product.pResultList.indexOf("2-1") > -1) ? "包装-通过" : "包装-不通过";
+                if (this.props.product.pResultList.indexOf("2-1") > -1) {
+                    color = Color.colorGreen;
+                    text = "包装-通过"
+                } else if (this.props.product.pResultList.indexOf("2-0") > -1) {
+                    color = Color.colorRed;
+                    text = "包装-不通过"
+                }
             }
 
             this.setState({
@@ -95,7 +113,7 @@ export class WdFilterItem extends Component {
                         marginLeft: 10,
                         marginRight: 10,
                         width: 90,
-                        height:35,
+                        height: 35,
                         textAlign: 'center'
                     }}>{this.props.product.ItemRemark}</Text>
             </TouchableOpacity>
