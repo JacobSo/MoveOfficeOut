@@ -70,8 +70,8 @@ class CustomList extends Component {
             }),
 
             address: "未有位置信息",
-            lat: "0.0",
-            lng: "0.0",
+            lng: "112.94481472439236",
+            lat: "22.864382052951388",
             editContent: "",
             selectGuid: "",
             selectType: "",
@@ -319,20 +319,30 @@ class CustomList extends Component {
         });
         if ((this.state.todayTask[0].Signtype === 0 && isFinish)) {
             let min = 0;
+            let plist=[];
             if (rowData.LatitudeLongitudes) {
-                let temp = rowData.LatitudeLongitudes.split("|");
+                //let temp = rowData.LatitudeLongitudes.split("|");
+                let temp = "112.946405,22.864130|113.035598,22.902548".split("|");
                 temp.map((data) => {
                     let latlng = data.split(",");
                     let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
                     console.log(min + "--" + process);
-                    if (min === 0)
+                    //0-166
+                    //166-102324
+                    if (min === 0){
                         min = process;
+                    }
                     if (min > process) {
                         min = process;
                     }
+                    else {
+                        console.log('aaa:'+min + "--" + process);
+                    }
+
+                    // plist.push(process);
                 });
             }
-
+            // min=Math.min(...plist);
             this._confirmDialog(rowData.Signtype === -1 ?
                     "到达供应商" : "离开供应商",
                 "当前位置：" + this.state.address + "\n" +
