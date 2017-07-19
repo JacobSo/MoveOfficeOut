@@ -36,12 +36,12 @@
     "rn-viewpager": "^1.2.3"
   },
   "devDependencies": {
-    "babel-jest": "18.0.0",
-    "babel-plugin-flow-react-proptypes": "^1.0.0",
-    "babel-preset-react-native": "1.9.1",
+    "babel-jest": "20.0.3",
+    "babel-plugin-flow-react-proptypes": "^3.4.2",
+    "babel-preset-react-native": "2.1.0",
     "invariant": "^2.2.2",
-    "jest": "18.1.0",
-    "react-test-renderer": "~15.4.0-rc.4"
+    "jest": "20.0.4",
+    "react-test-renderer": "~16.0.0-alpha.13"
   },
   "jest": {
     "preset": "react-native"
