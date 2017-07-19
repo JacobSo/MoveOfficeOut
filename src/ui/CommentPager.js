@@ -50,7 +50,7 @@ export default class CommentPager extends Component {
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     SnackBar.show('操作成功');
-                    if ((App.jobType==='2'||App.jobType==='5')) {
+                    if ((App.jobType === '2' || App.jobType === '5')) {
                         this.state.task.list[this.props.position].ZhuanYuanScore = score;
                         this.state.task.list[this.props.position].ZhuanYuanSuggest = this.state.comment;
                     } else {

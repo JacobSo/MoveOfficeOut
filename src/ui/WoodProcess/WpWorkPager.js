@@ -476,6 +476,7 @@ export default class WpWorkPager extends Component {
                                 flexDirection: 'column',
                                 backgroundColor: Color.colorPurpleDark,
                                 alignItems: 'center',
+                                elevation:2
                             }}>
                                 <View style={[styles.control, {justifyContent: 'space-between'}]}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>

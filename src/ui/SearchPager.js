@@ -181,6 +181,7 @@ export default class SearchPager extends Component {
                         flexDirection: 'column',
                         backgroundColor: Color.colorCyanDark,
                         alignItems: 'center',
+                        elevation:2
                     }}>
                         <TouchableOpacity onPress={() => {
                             this.setState({isTimeSelect: !this.state.isTimeSelect});

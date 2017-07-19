@@ -364,6 +364,7 @@ const styles = StyleSheet.create({
     topLayout: {
         backgroundColor: Color.colorIndigo,
         alignItems: 'center',
+        elevation:2
     },
     timeLine: {
         backgroundColor: Color.line,

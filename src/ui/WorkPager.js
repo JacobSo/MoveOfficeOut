@@ -355,7 +355,7 @@ class WorkPager extends Component {
                 <View style={{backgroundColor: Color.background, height: height}}>
                     <Toolbar title={['外出申请']}
                              color={Color.colorCyanDark}
-                             elevation={2}
+                             elevation={0}
                              isHomeUp={true}
                              isAction={true}
                              isActionByText={true}
@@ -380,6 +380,7 @@ class WorkPager extends Component {
                                     flexDirection: 'column',
                                     backgroundColor: Color.colorCyanDark,
                                     alignItems: 'center',
+                                    elevation:2
                                 }}>
 
                                     <View style={styles.control}>

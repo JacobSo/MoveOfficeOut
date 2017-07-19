@@ -108,7 +108,7 @@ class WdProductDetailPager extends Component {
                                     position: this.props.position
                                 },
                             );
-                        } else SnackBar.show("本阶段你不需要评审")
+                        } else SnackBar.show("本阶段你不需要评审");
                         this.popupDialog.dismiss();
                     }}>
                         <Text style={{margin: 16}}>填写评审</Text>
@@ -140,7 +140,7 @@ class WdProductDetailPager extends Component {
                             resizeMode="contain"
                             indicator={require('../../drawable/empty_image.png')}
                             style={{width: width, height: 150,}}
-                            source={{uri: this.props.product.pImage?this.props.product.pImage:'-'}}/>
+                            source={{uri: this.props.product.pImage ? this.props.product.pImage : '-'}}/>
                     </View>
 
                     <View style={styles.textStyle}>
@@ -156,59 +156,86 @@ class WdProductDetailPager extends Component {
                         <Text style={{width: 200, textAlign: 'right'}}>{this.props.product.ItemRemark}</Text>
                     </View>
                     <Text style={{width: width - 32, textAlign: 'center', margin: 16}}>评审流程记录</Text>
-                    <TouchableOpacity
-                        style={[styles.mainButton, {borderColor: this.state.aFinish ? Color.colorRed : Color.content}]}
-                        onPress={() => {
-                            this.state.intentStep = 0;
-                            this.state.intentTitle =App.workType === "板木驻厂工程师"?'白胚评审':'木架评审';
-                            this.popupDialog.show();
-                        }}>
-                        <Text> {App.workType === "板木驻厂工程师"?'白胚评审':'木架评审'}</Text>
-                        <View style={{
-                            backgroundColor: Color.line,
-                            width: 1,
-                            height: 25,
-                            marginLeft: 16,
-                            marginRight: 16
-                        }}/>
-                        <Text>{this.state.aFinish ? (this.state.aPass ? '通过' : '未通过') : '未提交'}</Text>
-                    </TouchableOpacity>
+                    {
+                        (() => {
+                            if (this.props.product.stage === 7 || this.props.product.stage === 6 || this.props.product.stage === 5 || this.props.product.stage === 4) {
+                                return (
+                                    <TouchableOpacity
+                                        style={[styles.mainButton, {borderColor: this.state.aFinish ? Color.colorRed : Color.content}]}
+                                        onPress={() => {
+                                            this.state.intentStep = 0;
+                                            this.state.intentTitle = App.workType === "板木驻厂工程师" ? '白胚评审' : '木架评审';
+                                            this.popupDialog.show();
+                                        }}>
+                                        <Text> {App.workType === "板木驻厂工程师" ? '白胚评审' : '木架评审'}</Text>
+                                        <View style={{
+                                            backgroundColor: Color.line,
+                                            width: 1,
+                                            height: 25,
+                                            marginLeft: 16,
+                                            marginRight: 16
+                                        }}/>
+                                        <Text>{this.state.aFinish ? (this.state.aPass ? '通过' : '未通过') : '未提交'}</Text>
+                                    </TouchableOpacity>)
+                            }
+                        })()
+                    }
+                    {
+                        (() => {
+                            if (this.props.product.stage === 7 || this.props.product.stage === 6 || this.props.product.stage === 3 || this.props.product.stage === 2) {
+                                return (
+                                    <TouchableOpacity
+                                        style={[styles.mainButton, {borderColor: this.state.bFinish ? Color.colorRed : Color.content}]}
+                                        onPress={() => {
+                                            this.state.intentStep = 1;
+                                            this.state.intentTitle = "成品评审";
+                                            this.popupDialog.show();
+                                        }}>
+                                        <Text> 成品评审</Text>
+                                        <View style={{
+                                            backgroundColor: Color.line,
+                                            width: 1,
+                                            height: 25,
+                                            marginLeft: 16,
+                                            marginRight: 16
+                                        }}/>
+                                        <Text>{this.state.bFinish ? (this.state.bPass ? '通过' : '未通过') : '未提交'}</Text>
+                                    </TouchableOpacity>
+                                )
 
-                    <TouchableOpacity
-                        style={[styles.mainButton, {borderColor: this.state.bFinish ? Color.colorRed : Color.content}]}
-                        onPress={() => {
-                            this.state.intentStep = 1;
-                            this.state.intentTitle = "成品评审";
-                            this.popupDialog.show();
-                        }}>
-                        <Text> 成品评审</Text>
-                        <View style={{
-                            backgroundColor: Color.line,
-                            width: 1,
-                            height: 25,
-                            marginLeft: 16,
-                            marginRight: 16
-                        }}/>
-                        <Text>{this.state.bFinish ? (this.state.bPass ? '通过' : '未通过') : '未提交'}</Text>
-                    </TouchableOpacity>
+                            }
 
-                    <TouchableOpacity
-                        style={[styles.mainButton, {borderColor: this.state.cFinish ? Color.colorRed : Color.content}]}
-                        onPress={() => {
-                            this.state.intentStep = 2;
-                            this.state.intentTitle = "包装评审";
-                            this.popupDialog.show();
-                        }}>
-                        <Text> 包装评审</Text>
-                        <View style={{
-                            backgroundColor: Color.line,
-                            width: 1,
-                            height: 25,
-                            marginLeft: 16,
-                            marginRight: 16
-                        }}/>
-                        <Text>{this.state.cFinish ? (this.state.cPass ? '通过' : '未通过') : '未提交'}</Text>
-                    </TouchableOpacity>
+                        })()
+                    }
+
+
+                    {
+                        (() => {
+                            if (this.props.product.stage === 7 || this.props.product.stage === 5 || this.props.product.stage === 3 || this.props.product.stage === 1){
+                                return (
+                                    <TouchableOpacity
+                                        style={[styles.mainButton, {borderColor: this.state.cFinish ? Color.colorRed : Color.content}]}
+                                        onPress={() => {
+                                            this.state.intentStep = 2;
+                                            this.state.intentTitle = "包装评审";
+                                            this.popupDialog.show();
+                                        }}>
+                                        <Text> 包装评审</Text>
+                                        <View style={{
+                                            backgroundColor: Color.line,
+                                            width: 1,
+                                            height: 25,
+                                            marginLeft: 16,
+                                            marginRight: 16
+                                        }}/>
+                                        <Text>{this.state.cFinish ? (this.state.cPass ? '通过' : '未通过') : '未提交'}</Text>
+                                    </TouchableOpacity>
+
+                                )
+                            }
+
+                        })()
+                    }
 
                 </View>
                 </ScrollView>

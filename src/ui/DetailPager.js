@@ -398,7 +398,7 @@ const {width, height} = Dimensions.get('window');
 
                 <Toolbar title={['对接内容', this.props.task.DailyRecordStateName]}
                          color={Color.colorCyan}
-                         elevation={2}
+                         elevation={0}
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
@@ -413,6 +413,7 @@ const {width, height} = Dimensions.get('window');
                         flexDirection: 'column',
                         backgroundColor: Color.colorCyan,
                         padding: 16,
+                        elevation:2
                     }}>
                         <Text style={{color: 'white', marginBottom: 5}}>{'对接时间：' + this.props.task.DockingDate}</Text>
                         <Text style={{color: 'white', marginBottom: 5}}>{'车辆类型：' + this.props.task.CarType}</Text>
