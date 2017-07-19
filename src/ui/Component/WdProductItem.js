@@ -42,7 +42,7 @@ export class WdProductItem extends Component {
         let color;
         let text;
         let finish = false;
-        console.log(this.state.product.pResultList);
+      //  console.log(this.state.product.pResultList);
         if (this.state.product.pResultList) {
             finish = ((this.state.product.pResultList.indexOf("0-1") > -1)
             && (this.state.product.pResultList.indexOf("1-1") > -1)

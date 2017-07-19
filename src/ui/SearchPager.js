@@ -166,6 +166,7 @@ export default class SearchPager extends Component {
             }}>
 
                 <Toolbar title={['']}
+                         elevation={0}
                          color={Color.colorCyanDark}
                          isHomeUp={true}
                          isAction={true}

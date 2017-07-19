@@ -132,7 +132,8 @@ export default class WdFileListPager extends Component {
                                 justifyContent: 'space-between',
                                 height: 65,
                                 marginRight: 16,
-                                marginLeft: 16
+                                marginLeft: 16,
+
                             }}
                             onPress={() => {
                                 // SnackBar.show(rowData)
@@ -159,7 +160,7 @@ export default class WdFileListPager extends Component {
                                         .catch((error) => this.setState({result: 'error: ' + error.message}));
                                 }
                             }}>
-                            <Text>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
+                            <Text style={{                width:width/3*2}}>{rowData.substring(rowData.lastIndexOf('/') + 1, rowData.length)}</Text>
                             <TouchableOpacity
                                 style={{
                                     position: 'absolute',

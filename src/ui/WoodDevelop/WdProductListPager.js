@@ -350,7 +350,7 @@ class WdProductListPager extends Component {
 
 
     render() {
-        console.log("product list render")
+       // console.log("product list render")
         return (
             <View style={{
                 flex: 1,

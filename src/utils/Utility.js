@@ -19,7 +19,7 @@ export  default  class ApiService {
         let a = radLat1 - radLat2;
         let b = radLng1 - radLng2;
         let result = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS;
-        return result.toFixed(0);
+        return Number(result.toFixed(0));
     }
 
     static Rad(d) {

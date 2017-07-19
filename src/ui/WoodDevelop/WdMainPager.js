@@ -49,7 +49,7 @@ class WdMainPager extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(this.state.items) + '------------WdMainPager-------------');
+        //console.log(JSON.stringify(this.state.items) + '------------WdMainPager-------------');
         //  this.state.items.Itemlist[newProps.position] = newProps.product;
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
