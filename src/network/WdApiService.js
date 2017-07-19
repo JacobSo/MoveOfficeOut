@@ -3,8 +3,8 @@
  */
 'use strict';
 //let BASE_URL = "http://119.145.166.182:8806/MoveOffice/";
-//npmlet BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
-let BASE_URL = "http://192.168.1.190:8806/moveofficeTest/";
+let BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
+//let BASE_URL = "http://192.168.1.190:8806/moveofficeTest/";
 import App from '../constant/Application';
 
 export  default  class ApiService {
