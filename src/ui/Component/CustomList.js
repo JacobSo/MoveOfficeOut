@@ -40,8 +40,6 @@ const Screen = {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - 150
 };
-
-
 class CustomList extends Component {
     static propTypes = {
         type: PropTypes.string.isRequired,
@@ -70,8 +68,8 @@ class CustomList extends Component {
             }),
 
             address: "未有位置信息",
-            lng: "112.94481472439236",
-            lat: "22.864382052951388",
+            lng: "0.0",
+            lat: "0.0",
             editContent: "",
             selectGuid: "",
             selectType: "",
@@ -83,11 +81,11 @@ class CustomList extends Component {
             console.log("PubSub:start");
             let isAllFinish = true;
             this.state.editContent = data;
-            console.log("PubSub:" + JSON.stringify(this.state));
+          //  console.log("PubSub:" + JSON.stringify(this.state));
             if (!this.state.editContent && this.state.todayTask[0] && this.state.todayTask[0].list) {
-                console.log("PubSub:if");
+               // console.log("PubSub:if");
                 this.state.todayTask[0].list.map((data) => {
-                    console.log("PubSub:loop");
+                  //  console.log("PubSub:loop");
                     if (data.Signtype !== 2 && data.VisitingMode.indexOf('走访') > -1) {
                         isAllFinish = false;
                         SnackBar.show('没有完成全部签到，必须填写备注说明');
@@ -133,7 +131,7 @@ class CustomList extends Component {
     }
 
     onAndroidLocationChange = (e) => {
-        // SnackBar.show(e.address + ":" + e.lat + ":" + e.lng)
+        console.log((e.address + ":" + e.lat + ":" + e.lng));
         if (this.state.address !== e.address) {
             this.setState({
                 address: e.address,
@@ -150,7 +148,6 @@ class CustomList extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-
         })
             .then((response) => response.json())
             .then((responseBody) => {
@@ -212,8 +209,6 @@ class CustomList extends Component {
                             todayTaskItem: this.state.todayTaskItem.cloneWithRows(responseJson.list.length !== 0 ? responseJson.list[0].list : []),
                             isLoading: false
                         })
-
-
                     } else SnackBar.show(responseJson.ErrDesc);
                     this.props.actions.refreshList(false);
                 })
@@ -271,6 +266,10 @@ class CustomList extends Component {
     }
 
     _sign() {
+        if(this.state.address==="未有位置信息"||!this.state.address||this.state.lat==="0.0"||this.state.lng==="0.0"){
+            SnackBar.show("没有位置信息不能签到，请确认开启定位，或尝试后台关闭app重新获取");
+            return
+        }
         this.setState({isLoading: true});
         ApiService.taskSignNew(
             this.state.selectGuid,

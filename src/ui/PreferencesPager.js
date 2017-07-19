@@ -150,6 +150,7 @@ export default class PreferencesPager extends Component {
                                 1.评审单模块launch{'\n'}
                                 2.板木/软体评审模块launch{'\n'}
                                 3.质检模块launch{'\n'}
+                                4.修复距离问题{'\n'}
 
                             </Text>
 
