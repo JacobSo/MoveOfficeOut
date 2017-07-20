@@ -5,7 +5,8 @@
  * Created by Administrator on 2017/3/15.
  */
 'use strict';
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
     ListView,
     View,
@@ -320,7 +321,9 @@ class CustomList extends Component {
             let plist=[];
             if (rowData.LatitudeLongitudes) {
                 let temp = rowData.LatitudeLongitudes.split("|");
-                //let temp = "112.946405,22.864130|113.035598,22.902548".split("|");
+              //  let temp = "112.946405,22.864130|113.035598,22.902548".split("|");
+                //112.817938660295	22.9814394151572
+                //
                 temp.map((data) => {
                     let latlng = data.split(",");
                     let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
