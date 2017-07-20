@@ -131,7 +131,6 @@ export default class PasswordPager extends Component {
                          ]}/>
                 <View style={{flexDirection: "row"}}>
 
-                    <View style={styles.borderBottomLine}>
                         <TextInput style={styles.textInput}
                                    placeholder="输入产品关键字"
                                    returnKeyType={'done'}
@@ -140,7 +139,6 @@ export default class PasswordPager extends Component {
                                    onChangeText={(text) => {
                                        this.state.keyword = text
                                    }}/>
-                    </View>
                     <TouchableOpacity
                         style={{
                             backgroundColor: Color.colorPurple,

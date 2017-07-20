@@ -322,6 +322,8 @@ class CustomList extends Component {
                 let temp = rowData.LatitudeLongitudes.split("|");
                 //let temp = "112.946405,22.864130|113.035598,22.902548".split("|");
                 temp.map((data) => {
+                    console.log(data);
+                    SnackBar.show(data)
                     let latlng = data.split(",");
                     let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
                     plist.push(process);

@@ -36,8 +36,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
-            pwd: '',
+            account: 'cs',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            pwd: '123',
             isLoading: false,
             check: false,
         };
@@ -137,17 +137,15 @@ export default class LoginPager extends Component {
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
 
                             <Text style={styles.textTitle}>账号</Text>
-                            <View style={styles.borderBottomLine}>
                                 <TextInput style={styles.textInput}
                                            placeholder="请输入登录账号"
                                            returnKeyType={'done'}
                                            blurOnSubmit={true}
                                            clearButtonMode={'always'}
                                            underlineColorAndroid="transparent"
-                                           onChangeText={(text) => this.setState({account: text})}/></View>
+                                           onChangeText={(text) => this.setState({account: text})}/>
 
                             <Text style={styles.textTitle}>密码</Text>
-                            <View style={styles.borderBottomLine}>
                                 <TextInput style={styles.textInput}
                                            placeholder="请输入密码"
                                            secureTextEntry={true}
@@ -156,7 +154,6 @@ export default class LoginPager extends Component {
                                            blurOnSubmit={true}
                                            clearButtonMode={'always'}
                                            onChangeText={(text) => this.setState({pwd: text})}/>
-                            </View>
 
                             <CheckBox
                                 style={{padding: 10}}
