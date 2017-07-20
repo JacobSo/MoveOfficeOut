@@ -2,7 +2,8 @@
  * Created by Administrator on 2017/3/15.
  */
 'use strict';
-import React, {Component, PropTypes} from 'react';
+import React, {Component, } from 'react';
+import PropTypes from 'prop-types';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Color from '../../constant/Color'
 const Dimensions = require('Dimensions');

@@ -2,15 +2,11 @@
  * Created by Administrator on 2017/3/14.
  */
 'use strict';
-import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity} from 'react-native';
+import React, {Component, } from 'react';
+import PropTypes from 'prop-types';
+import {View, Text, StyleSheet,  Image,  TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {WdActions} from "../../actions/WdAction";
-import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
-import RNFetchBlob from "react-native-fetch-blob";
-const {width, height} = Dimensions.get('window');
+import {CachedImage} from "react-native-img-cache";
 export class WpProductItem extends Component {
     static propTypes = {
         product: PropTypes.any.isRequired,
