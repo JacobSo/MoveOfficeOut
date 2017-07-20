@@ -28,7 +28,9 @@ public class MainActivity extends ReactActivity {
                 MainApplication.get(MainActivity.this).setGeoLng(aMapLocation.getLongitude());
                 MainApplication.get(MainActivity.this).setAddress(aMapLocation.getAddress());
 
-                Log.d(TAG, ":11 " + aMapLocation.getAddress());
+                Log.d(TAG, ":address " + aMapLocation.getAddress());
+                Log.d(TAG, ":lat " + aMapLocation.getLatitude());
+                Log.d(TAG, ":lng " + aMapLocation.getLongitude());
                 MainApplication.getReactPackage().commonModule.callLocationChange(aMapLocation.getAddress(),aMapLocation.getLatitude()+"",aMapLocation.getLongitude()+"");
 
            /*     Log.d(TAG, ": " + aMapLocation.getCountry());//中国
@@ -104,12 +106,12 @@ public class MainActivity extends ReactActivity {
         mLocationClient = new AMapLocationClient(getApplicationContext());
         mLocationClient.setLocationListener(mLocationListener);
         mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        mLocationOption.setOnceLocation(false);
-        mLocationOption.setOnceLocationLatest(false);//一次
-        mLocationOption.setInterval(3000);
-        mLocationOption.setNeedAddress(true);
-        mLocationOption.setLocationCacheEnable(false);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//模式
+        mLocationOption.setOnceLocation(false);//连续定位
+        mLocationOption.setOnceLocationLatest(true);//3s内最优结果
+        mLocationOption.setInterval(3000);//间隔
+        mLocationOption.setNeedAddress(true);//地址
+        mLocationOption.setLocationCacheEnable(false);//缓存
         mLocationClient.setLocationOption(mLocationOption);
     }
 
