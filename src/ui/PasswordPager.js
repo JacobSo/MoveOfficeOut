@@ -157,8 +157,5 @@ const styles = StyleSheet.create({
         borderColor: Color.line,
         borderBottomWidth: 1,
     },
-    borderBottomLine: {
-        borderBottomWidth: 1,
-        borderBottomColor: Color.line,
-    }
+
 });

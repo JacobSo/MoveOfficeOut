@@ -220,10 +220,4 @@ const styles = StyleSheet.create({
         borderBottomColor: Color.line
     },
 
-    borderBottomLine: {
-        borderBottomWidth: 1,
-        borderBottomColor: Color.line,
-        borderBottomLeftRadius: 16,
-        borderBottomRightRadius: 16,
-    }
 });

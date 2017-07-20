@@ -239,12 +239,7 @@ const styles = StyleSheet.create({
         borderColor: Color.line,
         borderBottomWidth: 1,
     },
-    borderBottomLine: {
-        borderBottomWidth: 1,
-        borderBottomColor: Color.line,
-        borderBottomLeftRadius: 16,
-        borderBottomRightRadius: 16,
-    },
+
     stepButton: {
         flex: 1,
         margin: 8,

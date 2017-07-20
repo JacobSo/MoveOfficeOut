@@ -34,26 +34,23 @@ export default class InputDialog extends Component {
 
                         })()
                     }
-                    <View style={styles.borderBottomLine}>
                         <TextInput style={styles.textInput}
                                    placeholder={this.props.str[1]}
                                    returnKeyType={'done'}
                                    blurOnSubmit={true}
                                    underlineColorAndroid="transparent"
                                    onChangeText={this.props.action[1]}/>
-                    </View>
 
                     {
                         (() => {
                             if (this.props.isMulti) {
-                                return <View style={styles.borderBottomLine}>
-                                    <TextInput style={styles.textInput}
+                                return <TextInput style={styles.textInput}
                                                placeholder={this.props.str[2]}
                                                returnKeyType={'done'}
                                                blurOnSubmit={true}
                                                underlineColorAndroid="transparent"
                                                onChangeText={this.props.action[4]}/>
-                                </View>
+
                             }
                         })()
                     }
@@ -102,10 +99,5 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0
     },
-    borderBottomLine: {
-        borderBottomWidth: 1,
-        borderBottomColor: Color.line,
-        borderBottomLeftRadius: 16,
-        borderBottomRightRadius: 16,
-    }
+
 });

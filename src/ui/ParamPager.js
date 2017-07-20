@@ -202,7 +202,6 @@ export default class PasswordPager extends Component {
                                  this._setSelect(this.state.selectItems.toString())
                              } : null
                          ]}/>
-                <View style={styles.borderBottomLine}>
                     <TextInput style={styles.textInput}
                                placeholder="搜索"
                                returnKeyType={'done'}
@@ -215,7 +214,7 @@ export default class PasswordPager extends Component {
                                            dataSource: this.state.dataSource.cloneWithRows(array),
                                        });
                                    })
-                               }}/></View>
+                               }}/>
                 {
                     (() => {
                         if (this.state.isMulti)
@@ -289,10 +288,5 @@ const styles = StyleSheet.create({
         borderColor: Color.line,
         borderBottomWidth: 1,
     },
-    borderBottomLine: {
-        borderBottomWidth: 1,
-        borderBottomColor: Color.line,
-        borderBottomLeftRadius: 16,
-        borderBottomRightRadius: 16,
-    }
+
 });
