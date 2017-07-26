@@ -13,7 +13,7 @@ const {width, height} = Dimensions.get('window');
 
 export default class QcCarItem extends Component {
     static propTypes = {
-        catInfo: PropTypes.any.isRequired,
+        carInfo: PropTypes.any.isRequired,
         deleteCar: PropTypes.func.isRequired,
     };
 
@@ -23,7 +23,7 @@ export default class QcCarItem extends Component {
             <View style={{
                 backgroundColor: 'white',
                 elevation: 2,
-                marginBottom: 100
+                marginBottom: 16,
 
             }}>
                 <View style={{
@@ -60,7 +60,7 @@ export default class QcCarItem extends Component {
 
 
                 <View style={{
-                    backgroundColor: this.props.carInfo.IsAduit ? Color.colorCyanDark : Color.black_semi_transparent,
+                    backgroundColor: this.props.carInfo.IsAduit? Color.colorCyanDark : Color.black_semi_transparent,
                     borderRadius: 10,
                     width: width - 32,
                     margin: 16,

@@ -100,7 +100,7 @@ export default class QcCarPager extends Component {
     getView() {
         if (this.state.items && this.state.items.length === 0) {
             return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
-                this._onRefresh()
+                this.getCar()
             } }/>)
         } else {
             return (
@@ -120,10 +120,13 @@ export default class QcCarPager extends Component {
                             progressBackgroundColor="white"
                         />}
                     enableEmptySections={true}
-                    renderRow={(rowData, rowID, sectionID) =>
-                        <QcCarItem catInfo={rowData} deleteCar={() => {
+                    renderRow={(rowData, rowID, sectionID) =>{
+                        console.log(JSON.stringify(rowData));
+                        return         <QcCarItem carInfo={rowData} deleteCar={() => {
                             this.deleteCar(rowData.Guid)
                         }}/>
+                    }
+
                     }/>
             )
         }
