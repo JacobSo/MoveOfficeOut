@@ -103,8 +103,6 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-
-
     static getProductList() {
         let method = 'QualityTaskList?UserName=' + App.account;
         return this.getRequest(method);
@@ -113,6 +111,7 @@ export  default  class ApiService {
         let method = 'QualityInfo?UserName=' + App.account+ '&fentityID=' + pid+ '&stage=' + stage;
         return this.getRequest(method);
     }
+
     ///////////////
     static getProductListOld() {
         let method = 'ConventionalQuality?QualityUser=' + App.account;
@@ -157,5 +156,32 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
+    static getCarInfo() {
+        let method = 'Quality_CarRequest/getMyCarRequest';
+        let param = JSON.stringify({
+            UserName: App.account,
+        });
+        return this.postRequest(method, param);
+    }
 
+
+    static requestCar(remark,myCar,type,date) {
+        let method = 'Quality_CarRequest/createCarRequest';
+        let param = JSON.stringify({
+            UserName: App.account,
+            QualityDate: date,
+            IsApplyCar: 1,
+            CarType: type,
+            CarNumber: myCar,
+            Remark: remark,
+        });
+        return this.postRequest(method, param);
+    }
+    static deleteCar(guid) {
+        let method = 'Quality_CarRequest/del';
+        let param = JSON.stringify({
+            Guid: guid,
+        });
+        return this.postRequest(method, param);
+    }
 }

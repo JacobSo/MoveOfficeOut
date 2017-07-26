@@ -13,7 +13,7 @@ properties.load(inputStream)
 //2017.7.6
 android {
     compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.lsapp.moveoffice.out"

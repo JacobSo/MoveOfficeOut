@@ -43,6 +43,8 @@ import QcPostPager from "./ui/QuailtyCheck/QcPostPager";
 import QcSubmitPager from "./ui/QuailtyCheck/QcSubmitPager";
 import QcSignPager from "./ui/QuailtyCheck/QcSignPager";
 import UpdateService from "./network/UpdateService";
+import QcCarPager from "./ui/QuailtyCheck/QcCarPager";
+import QcCarCreatePager from "./ui/QuailtyCheck/QcCarCreatePager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -174,6 +176,12 @@ const QcSubmitScreen = ({navigation}) => _renderScreen(<View
 const QcSignScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcSignPager {...navigation.state.params}
                                                                              nav={navigation}/></View>);
+const QcCarScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcCarPager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
+const QcCarCreateScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcCarCreatePager {...navigation.state.params}
+                                                                             nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -270,6 +278,12 @@ const SimpleStack = StackNavigator({
         },
         qcSign: {
             screen: QcSignScreen,
+        },
+        qcCar: {
+            screen: QcCarScreen,
+        },
+        qcCarCreate: {
+            screen: QcCarCreateScreen,
         },
     },
     {

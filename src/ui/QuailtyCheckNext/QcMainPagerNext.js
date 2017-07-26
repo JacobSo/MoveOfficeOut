@@ -19,7 +19,7 @@ import SnackBar from 'react-native-snackbar-dialog'
 const {width, height} = Dimensions.get('window');
 let sqLite = new SQLite();
 
-export default class QcMainPager extends Component {
+export default class QcMainPagerNext extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -137,7 +137,7 @@ export default class QcMainPager extends Component {
     }
 
     async  _search(text) {
-        return this.state.items.filter((item) => (item.QualityNo.toLowerCase().indexOf(text.toLowerCase()) > -1));
+        return this.state.items.filter((item) => (item.QualityNo.toLowerCase().indexOf(text.toLowerCase()) > -1) );
     }
 
     render() {
@@ -153,7 +153,7 @@ export default class QcMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../../drawable/search.png"), require("../../drawable/car_ico.png")]}
+                    actionArray={[require("../../drawable/search.png")]}
                     functionArray={[
                         () => {
                             if (this.state.isSearch) {
@@ -166,8 +166,6 @@ export default class QcMainPager extends Component {
                         () => {
                             this.setState({isSearch: !this.state.isSearch})
                         },
-                        () => this.props.nav.navigate("qcCar")
-
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {
@@ -178,7 +176,7 @@ export default class QcMainPager extends Component {
                             });
                         })
                     }}
-                />
+                   />
                 {this._getView()}
                 <FloatButton
                     color={Color.colorPink}

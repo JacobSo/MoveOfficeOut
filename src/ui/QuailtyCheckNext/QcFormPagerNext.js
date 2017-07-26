@@ -28,7 +28,7 @@ import {QC_FORM_ITEM_SOFA, QC_FORM_ITEM_WOOD} from "../../constant/QcFormItems";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
-export default class QcFormPager extends Component {
+export default class QcFormPagerNext extends Component {
 
     constructor(props) {
         super(props);
@@ -272,7 +272,8 @@ export default class QcFormPager extends Component {
                 side="right"
                 tapToClose={true}
                 openDrawerOffset={0.2}
-                panCloseMask={0.2}>
+                panCloseMask={0.2}
+            >
                 <View style={{flex: 1, backgroundColor: Color.backgroundColor,}}>
                     <Toolbar
                         elevation={2}
@@ -301,6 +302,7 @@ export default class QcFormPager extends Component {
                         <View style={{flexDirection: 'row', justifyContent: 'space-around', padding: 16}}>
                             <TouchableOpacity onPress={() => {
                                 this.setResult(0);
+
                             }}>
                                 <Image style={{width: 25, height: 25}}
                                        source={require('../../drawable/fail_ico.png')}/>
