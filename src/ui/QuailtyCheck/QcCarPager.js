@@ -112,7 +112,7 @@ export default class QcCarPager extends Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
+                            onRefresh={() => this.getCar()}
                             tintColor={Color.colorBlueGrey}//ios
                             title="刷新中..."//ios
                             titleColor='white'
@@ -144,8 +144,8 @@ export default class QcCarPager extends Component {
                     color={Color.colorIndigo}
                     isHomeUp={true}
                     isAction={true}
-                    isActionByText={false}
-                    actionArray={[require("../../drawable/add.png")]}
+                    isActionByText={true}
+                    actionArray={['创建']}
                     functionArray={[
                         () => this.props.nav.goBack(null),
                         () => this.props.nav.navigate("qcCarCreate")
