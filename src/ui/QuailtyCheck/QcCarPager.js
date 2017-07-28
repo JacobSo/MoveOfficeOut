@@ -5,7 +5,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, Platform, ListView, Text, TouchableOpacity, Alert,
+    View, StyleSheet, Dimensions,  ListView, Text, TouchableOpacity, Alert,
     DeviceEventEmitter, Image, TextInput, ScrollView, KeyboardAvoidingView, RefreshControl
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';

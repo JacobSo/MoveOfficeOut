@@ -207,7 +207,7 @@ export default class QcPostPager extends Component {
                                     alignItems: 'center'
                                 }}
                                 onPress={() => {
-                                    ImagePicker.launchImageLibrary(options, (response) => {
+                                    ImagePicker.launchCamera(options, (response) => {
                                         if (!response.didCancel) {
                                             this.state.pics.push(response);
                                             this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
