@@ -165,12 +165,12 @@ export  default  class ApiService {
     }
 
 
-    static requestCar(remark,myCar,type,date) {
+    static requestCar(remark,myCar,type,date,flag) {
         let method = 'Quality_CarRequest/createCarRequest';
         let param = JSON.stringify({
             UserName: App.account,
             QualityDate: date,
-            IsApplyCar: 1,
+            IsApplyCar: flag,
             CarType: type,
             CarNumber: myCar,
             Remark: remark,

@@ -60,7 +60,7 @@ export default class QcSubmitPager extends Component {
         //    console.log("componentWillMount:"+JSON.stringify(this.state.initFormItem))
         this.state.arrayNumber = this.getNumberArray(0);
         this.props.product.map((data) => {
-            this.state.arraySeries.push({title: data.QualityLot, IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
+            this.state.arraySeries.push({title: data.QualityLot+"()", IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
         });
 
 
@@ -95,7 +95,7 @@ export default class QcSubmitPager extends Component {
         sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
             .then((result) => {
                 this.goBack();
-                SnackBar.show(result);
+               // SnackBar.show(result);
             }).done();
         return true
     };
@@ -380,7 +380,7 @@ export default class QcSubmitPager extends Component {
                             <Text>质检产品</Text>
                             <View style={{flexDirection: 'row',}}>
                                 <Text
-                                    style={{color: Color.black_semi_transparent}}>{this.state.product.ProductNo}</Text>
+                                    style={{color: Color.black_semi_transparent}}>{this.state.product.ProductNo+(this.state.isMulti?"等":"")}</Text>
                                 <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
                             </View>
                         </TouchableOpacity>

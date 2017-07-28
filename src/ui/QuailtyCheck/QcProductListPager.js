@@ -24,6 +24,8 @@ export default class QcProductListPager extends Component {
         super(props);
         this.state = {
             isLoading: false,
+            isMulti: false,
+            selectNum: 0,
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
@@ -37,111 +39,120 @@ export default class QcProductListPager extends Component {
     }
 
     componentDidMount() {
+        this.initData();
+    }
+
+    initData() {
+        this.props.task.Productlist.map((data) => {
+            data.check = false;
+        });
         this.setState({
+            isMulti: false,
+            selectNum: 0,
             items: this.props.task.Productlist,
             dataSource: this.state.dataSource.cloneWithRows(this.props.task.Productlist)
         })
     }
 
-    drawerLayout() {
-        return (
-            <View style={{flex: 1, backgroundColor: Color.drawerColor,}}>
-                <Text style={{color: 'white', margin: 16, fontSize: 18}}>批量质检</Text>
+    /*  drawerLayout() {
+     return (
+     <View style={{flex: 1, backgroundColor: Color.drawerColor,}}>
+     <Text style={{color: 'white', margin: 16, fontSize: 18}}>批量质检</Text>
 
-                <ListView
-                    style={styles.tabView}
-                    dataSource={this.state.dataSourceMulti}
-                    removeClippedSubviews={false}
-                    enableEmptySections={true}
-                    renderRow={(rowData, rowID, sectionID) =>
-                        <TouchableOpacity onPress={() => {
-                            this.props.nav.navigate('qcSubmit',
-                                {
-                                    product: rowData,
-                                    task: this.props.task,
-                                    finishFuncMulti: (result) => {
-                                        result.map((data, index) => {
-                                            this.state.items[index].IsGetIn = data.IsGetIn;
-                                            this.state.items[index].state = 1;
+     <ListView
+     style={styles.tabView}
+     dataSource={this.state.dataSourceMulti}
+     removeClippedSubviews={false}
+     enableEmptySections={true}
+     renderRow={(rowData, rowID, sectionID) =>
+     <TouchableOpacity onPress={() => {
+     this.props.nav.navigate('qcSubmit',
+     {
+     product: rowData,
+     task: this.props.task,
+     finishFuncMulti: (result) => {
+     result.map((data, index) => {
+     this.state.items[index].IsGetIn = data.IsGetIn;
+     this.state.items[index].state = 1;
 
-                                        });
-                                        this.setState({
-                                            dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
-                                        })
-                                    },
-                                });
-                            this.closeControlPanel();
-                        }}>
-                            <View style={{
-                                justifyContent: 'space-between',
-                                flexDirection: 'row',
-                                width: width * 0.7,
-                                alignItems: 'center',
-                            }}>
-                                <View style={{margin: 16, width: width * 0.6, height: 45}}>
-                                    <Text style={{color: 'white'}}>批量型号：{JSON.stringify(rowData[0].ProductNo)}</Text>
-                                    <Text style={{color: 'white'}}>批量总数：{rowData.length}</Text>
-                                    <View style={{
-                                        backgroundColor: Color.content,
-                                        width: width * 0.8,
-                                        height: 1,
-                                        marginTop: 16,
-                                        marginBottom: 16
-                                    }}/>
-                                </View>
-                                <Image source={require('../../drawable/arrow.png')} style={{width: 10, height: 20,}}/>
-                            </View>
-                        </TouchableOpacity>
-                    }/>
-            </View>)
-    }
+     });
+     this.setState({
+     dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+     })
+     },
+     });
+     this.closeControlPanel();
+     }}>
+     <View style={{
+     justifyContent: 'space-between',
+     flexDirection: 'row',
+     width: width * 0.7,
+     alignItems: 'center',
+     }}>
+     <View style={{margin: 16, width: width * 0.6, height: 45}}>
+     <Text style={{color: 'white'}}>批量型号：{JSON.stringify(rowData[0].ProductNo)}</Text>
+     <Text style={{color: 'white'}}>批量总数：{rowData.length}</Text>
+     <View style={{
+     backgroundColor: Color.content,
+     width: width * 0.8,
+     height: 1,
+     marginTop: 16,
+     marginBottom: 16
+     }}/>
+     </View>
+     <Image source={require('../../drawable/arrow.png')} style={{width: 10, height: 20,}}/>
+     </View>
+     </TouchableOpacity>
+     }/>
+     </View>)
+     }
 
-    closeControlPanel = () => {
-        this._drawer.close()
-    };
+     closeControlPanel = () => {
+     this._drawer.close()
+     };
 
-    openControlPanel = () => {
-        this._drawer.open()
-    };
+     openControlPanel = () => {
+     this._drawer.open()
+     };
 
-    getMultiData() {
-        if (this.state.multiTask.length === 0) {
-            //提取组别
-            let group = [];
-            let groupTemp = [];
-            this.props.task.Productlist.map((data) => {
-                group.push(data.ProductNo);
-            });
-            group = Array.from(new Set(group));
- //           console.log("group:" + JSON.stringify(group));
-            //分组
-            group.map((groupName) => {
-                let groupData = [];
-                this.props.task.Productlist.map((item) => {
-                    if ((item.Quantity === 1)&&(item.ProductNo === groupName)) {
-                        groupData.push(item);
-                    }
-                });
-                groupTemp.push(groupData);
-            });
-         //   console.log("group content:" + JSON.stringify(this.state.multiTask));
+     getMultiData() {
+     if (this.state.multiTask.length === 0) {
+     //提取组别
+     let group = [];
+     let groupTemp = [];
+     this.props.task.Productlist.map((data) => {
+     group.push(data.ProductNo);
+     });
+     group = Array.from(new Set(group));
+     //           console.log("group:" + JSON.stringify(group));
+     //分组
+     group.map((groupName) => {
+     let groupData = [];
+     this.props.task.Productlist.map((item) => {
+     if ((item.Quantity === 1) && (item.ProductNo === groupName)) {
+     groupData.push(item);
+     }
+     });
+     groupTemp.push(groupData);
+     });
+     //   console.log("group content:" + JSON.stringify(this.state.multiTask));
 
-            //校验组别是否只有一个任务,
-            groupTemp.map((data) => {
-             //   console.log("remove content:" + JSON.stringify(data));
-                if (data.length >2) {
-                    // console.log("remove content:"+JSON.stringify( data));
-                    this.state.multiTask.push(data)
-                }
-            });
-        }
-        console.log("remove content:"+JSON.stringify( this.state.multiTask));
-        if (this.state.multiTask.length !== 0) {
-            this.setState({dataSourceMulti: this.state.dataSourceMulti.cloneWithRows(this.state.multiTask)});
-            this.openControlPanel();
-        } else SnackBar.show("没有可以批量任务", {duration: 1000})
-    }
-
+     //校验组别是否只有一个任务,
+     groupTemp.map((data) => {
+     //   console.log("remove content:" + JSON.stringify(data));
+     if (data.length > 2) {
+     // console.log("remove content:"+JSON.stringify( data));
+     this.state.multiTask.push(data)
+     }
+     });
+     }
+     console.log("remove content:" + JSON.stringify(this.state.multiTask));
+     if (this.state.multiTask.length !== 0) {
+     this.setState({dataSourceMulti: this.state.dataSourceMulti.cloneWithRows(this.state.multiTask)});
+     this.openControlPanel();
+     } else SnackBar.show("没有可以批量任务", {duration: 1000})
+     }
+     */
     finishDialog() {
         let flag = false;
         this.state.items.map((data) => {
@@ -197,70 +208,122 @@ export default class QcProductListPager extends Component {
 
     render() {
         return (
-            <Drawer
-                ref={(ref) => this._drawer = ref}
-                content={this.drawerLayout()}
-                tapToClose={true}
-                type="overlay"
-                side="right"
-                openDrawerOffset={0.2}
-                panCloseMask={0.2}>
-                <View style={{
-                    flex: 1,
-                    backgroundColor: Color.background
-                }}>
-                    <Toolbar
-                        elevation={2}
-                        title={[this.props.task.QualityNo, '产品列表']}
-                        color={Color.colorIndigo}
-                        isHomeUp={true}
-                        isAction={true}
-                        isActionByText={true}
-                        actionArray={['批量', '完成']}
-                        functionArray={[
-                            () => {
-                                this.props.nav.goBack(null)
-                            },
-                            () => {
-                                if (this.state.items.length > 1)
-                                    this.getMultiData();
-                                else
-                                    SnackBar.show("没有可以批量任务", {duration: 1000})
-                            },
-                            () => {
-                                this.finishDialog();
+            /*            <Drawer
+             ref={(ref) => this._drawer = ref}
+             content={this.drawerLayout()}
+             tapToClose={true}
+             type="overlay"
+             side="right"
+             openDrawerOffset={0.2}
+             panCloseMask={0.2}>*/
+            <View style={{
+                flex: 1,
+                backgroundColor: Color.background
+            }}>
+                <Toolbar
+                    elevation={2}
+                    title={this.state.isMulti ? ['批量质检'] : [this.props.task.QualityNo, '产品列表']}
+                    color={this.state.isMulti ? Color.colorRed : Color.colorIndigo}
+                    isHomeUp={true}
+                    isAction={true}
+                    isActionByText={true}
+                    actionArray={this.state.isMulti ? ['开始质检(' + this.state.selectNum + ')'] : ['批量', '完成']}
+                    functionArray={[
+                        () => {
+                            if (this.state.isMulti) {
+                                this.initData();
+                            } else {
+                                this.props.nav.goBack(null);
                             }
-                        ]}/>
-                    <ListView
-                        ref="scrollView"
-                        style={styles.tabView}
-                        dataSource={this.state.dataSource}
-                        removeClippedSubviews={false}
-                        enableEmptySections={true}
-                        renderRow={(rowData, rowID, sectionID) =>
+                        },
+                        () => {
+                            /*                        if (this.state.items.length > 1)
+                             this.getMultiData();
+                             else
+                             SnackBar.show("没有可以批量任务", {duration: 1000})*/
+                            let multiTaskTemp = [];
+                            this.state.items.map((data) => {
+                                if (data.check)
+                                    multiTaskTemp.push(data);
+                            });
+                            if (this.state.isMulti) {
+                                if (this.state.selectNum > 1) {
+                                    this.props.nav.navigate('qcSubmit',
+                                        {
+                                            product: multiTaskTemp,
+                                            task: this.props.task,
+                                            finishFuncMulti: (result) => {
+                                                result.map((data, index) => {
+                                                    this.state.items[index].IsGetIn = data.IsGetIn;
+                                                    this.state.items[index].state = 1;
+                                                });
+                                                this.setState({
+                                                    dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+                                                })
+                                            },
+                                        });
+                                    this.initData();
+                                } else SnackBar.show("批量至少选择2个")
+
+                            } else {
+                                if (this.state.items.length > 1)
+                                    this.setState({isMulti: true});
+                                else
+                                    SnackBar.show("批量质检至少两个批次")
+                            }
+
+                        },
+                        () => {
+                            this.finishDialog();
+                        }
+                    ]}/>
+                <ListView
+                    ref="scrollView"
+                    style={styles.tabView}
+                    dataSource={this.state.dataSource}
+                    removeClippedSubviews={false}
+                    enableEmptySections={true}
+                    renderRow={(rowData, sectionID, rowID) =>
+                        <View
+                            style={{backgroundColor: rowData.check ? Color.colorPrimary : Color.trans,}}>
                             <QcProductItem product={rowData} func={() => {
-                                this.props.nav.navigate('qcSubmit',
-                                    {
-                                        product: [rowData],
-                                        task: this.props.task,
-                                        finishFunc: (isStore, qcNum, passNum, storeNum) => {
-                                            // console.log('--------------------');
-                                            this.state.items[sectionID].GetInQuantity = storeNum;
-                                            this.state.items[sectionID].IsGetIn = isStore;
-                                            this.state.items[sectionID].PassQty = passNum;
-                                            this.state.items[sectionID].QualityQty = qcNum;
-                                            this.state.items[sectionID].state = 1;
-                                            this.setState({
-                                                dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
-                                            })
-                                        }
+                                if (this.state.isMulti) {
+                                    let temp = this.state.selectNum;//select
+                                    this.state.items[rowID].check = !this.state.items[rowID].check;
+                                    if (this.state.items[rowID].check)
+                                        ++temp;
+                                    else --temp;
+                                    this.setState({
+                                        selectNum: temp,
+                                        isMulti: temp !== 0,
+                                        dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                    });
+                                } else {
+                                    this.props.nav.navigate('qcSubmit',
+                                        {
+                                            product: [rowData],
+                                            task: this.props.task,
+                                            finishFunc: (isStore, qcNum, passNum, storeNum) => {
+                                                // console.log('--------------------');
+                                                this.state.items[sectionID].GetInQuantity = storeNum;
+                                                this.state.items[sectionID].IsGetIn = isStore;
+                                                this.state.items[sectionID].PassQty = passNum;
+                                                this.state.items[sectionID].QualityQty = qcNum;
+                                                this.state.items[sectionID].state = 1;
+                                                this.setState({
+                                                    dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+                                                })
+                                            }
 
-                                    })
-                            }}/>
-                        }/>
-                    <Loading visible={this.state.isLoading}/>
+                                        })
+                                }
 
-                </View></Drawer>
+                            }}/></View>
+                    }/>
+                <Loading visible={this.state.isLoading}/>
+
+            </View>
+            //</Drawer>
         )
     }
 }

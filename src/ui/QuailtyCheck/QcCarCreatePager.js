@@ -47,7 +47,7 @@ export default class QcCarCreatePager extends Component {
             return
         }
         this.setState({isLoading: true});
-        ApiService.requestCar(this.state.editContent, this.state.myCar, this.state.carType, this.state.useTime)
+        ApiService.requestCar(this.state.editContent, this.state.myCar, this.state.carType, this.state.useTime,this.state.carType==="其他用车"?0:1)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
@@ -114,7 +114,7 @@ export default class QcCarCreatePager extends Component {
                                 margin: 16
                             }}>
                                 <Text style={{color: Color.black_semi_transparent, fontSize: 18}}>车辆申请</Text>
-                                <Text>外出车辆只能申请明天用车</Text>
+                                <Text>外出车辆申请审核后才可以用车</Text>
                                 <View style={{
                                     backgroundColor: Color.line,
                                     justifyContent: 'center',
@@ -165,7 +165,7 @@ export default class QcCarCreatePager extends Component {
                                 <View style={{backgroundColor: Color.line, width: 1, height: 25}}/>
 
                                 <TouchableOpacity onPress={() => {
-                                    this.setState({selection: 2, carType: "其他车辆"})
+                                    this.setState({selection: 2, carType: "其他用车"})
                                 }}>
                                     <Text>其他用车</Text>
                                     <View style={[styles.selection, {

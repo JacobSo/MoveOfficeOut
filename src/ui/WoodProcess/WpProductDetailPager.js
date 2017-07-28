@@ -153,7 +153,6 @@ export default class WpProductDetailPager extends Component {
                         })()
                     }
 
-
                     <View style={styles.textStyle}>
                         <Text>工厂图片</Text>
                         <TouchableOpacity onPress={() => {
