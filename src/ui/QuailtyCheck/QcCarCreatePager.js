@@ -96,7 +96,6 @@ export default class QcCarCreatePager extends Component {
                             backgroundColor: 'white',
                             elevation: 2,
                             marginBottom: 100
-
                         }}>
                             <View style={{
                                 width: width - 32,

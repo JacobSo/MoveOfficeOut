@@ -60,7 +60,7 @@ export default class QcSubmitPager extends Component {
         //    console.log("componentWillMount:"+JSON.stringify(this.state.initFormItem))
         this.state.arrayNumber = this.getNumberArray(0);
         this.props.product.map((data) => {
-            this.state.arraySeries.push({title: data.QualityLot+"()", IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
+            this.state.arraySeries.push({title: data.QualityLot+"("+data.ProductNo+")", IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
         });
 
 
@@ -352,8 +352,7 @@ export default class QcSubmitPager extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior={'padding'}>
-                <ScrollView>
+
                     <View style={{
                         flex: 1,
                         backgroundColor: Color.background,
@@ -375,6 +374,9 @@ export default class QcSubmitPager extends Component {
                                 () => this.submitDialog()
 
                             ]}/>
+                        <KeyboardAvoidingView behavior={'padding'}>
+                            <ScrollView>
+                                <View>
                         <Text style={{color: Color.colorIndigo, margin: 16}}>质检概览</Text>
                         <TouchableOpacity style={styles.itemText} onPress={() => this.infoDialog()}>
                             <Text>质检产品</Text>
@@ -568,13 +570,15 @@ export default class QcSubmitPager extends Component {
                                 <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
                             </View>
                         </TouchableOpacity>
+
+
+                                </View>
+                            </ScrollView>
+                        </KeyboardAvoidingView>
+                        {this.numberPicker()}
+                        {this.multiPicker()}
                         <Loading visible={this.state.isLoading}/>
                     </View>
-                </ScrollView>
-                {this.numberPicker()}
-                {this.multiPicker()}
-                <Loading visible={this.state.isLoading}/>
-            </KeyboardAvoidingView>
         )
     }
 }
