@@ -60,9 +60,12 @@ export default class QcSubmitPager extends Component {
         //    console.log("componentWillMount:"+JSON.stringify(this.state.initFormItem))
         this.state.arrayNumber = this.getNumberArray(0);
         this.props.product.map((data) => {
-            this.state.arraySeries.push({title: data.QualityLot+"("+data.ProductNo+")", IsGetIn: 1, ProductNoGuid: data.ProductNoGuid})
+            this.state.arraySeries.push({
+                title: data.QualityLot + "(" + data.ProductNo + ")",
+                IsGetIn: 1,
+                ProductNoGuid: data.ProductNoGuid
+            })
         });
-
 
         sqLite.fetchQcDraft(this.state.initFormItem, this.state.product.ProductNoGuid)
             .then((result) => {
@@ -95,7 +98,7 @@ export default class QcSubmitPager extends Component {
         sqLite.insertQcDraftAll(this.state.formItems, this.state.product.ProductNoGuid, this.state.editContent)
             .then((result) => {
                 this.goBack();
-               // SnackBar.show(result);
+                // SnackBar.show(result);
             }).done();
         return true
     };
@@ -128,15 +131,16 @@ export default class QcSubmitPager extends Component {
 
 
     infoDialog() {
-        Alert.alert(
-            this.state.product.ProductNo + "详情",
-            '质检单：' + this.props.task.QualityNo + '\n' +
-            '交货时间：' + this.state.product.DeliveryDate + '\n' +
-            '商品编码：' + this.state.product.ProductCode + '\n' +
-            '采购单号：' + this.state.product.JPNo + '\n' +
-            '类型：' + this.state.product.QualityType + '\n' +
-            this.state.product.StyleName + '\n' +
-            '备注：' + this.state.product.Remark + '\n')
+        if (!this.state.isMulti)
+            Alert.alert(
+                this.state.product.ProductNo + "详情",
+                '质检单：' + this.props.task.QualityNo + '\n' +
+                '交货时间：' + this.state.product.DeliveryDate + '\n' +
+                '商品编码：' + this.state.product.ProductCode + '\n' +
+                '采购单号：' + this.state.product.JPNo + '\n' +
+                '类型：' + this.state.product.QualityType + '\n' +
+                this.state.product.StyleName + '\n' +
+                '备注：' + this.state.product.Remark + '\n')
     }
 
     numberPicker() {
@@ -353,232 +357,232 @@ export default class QcSubmitPager extends Component {
     render() {
         return (
 
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: Color.background,
-                        height: height
-                    }}>
-                        <Toolbar
-                            elevation={2}
-                            title={["质检中"]}
-                            color={Color.colorIndigo}
-                            isHomeUp={true}
-                            isAction={true}
-                            isActionByText={true}
-                            actionArray={["提交"]}
-                            functionArray={[
-                                () => {
-                                    // console.log(this.state.product.ProductNoGuid+"===========================");
-                                    this.onBackAction();
-                                },
-                                () => this.submitDialog()
+            <View style={{
+                flex: 1,
+                backgroundColor: Color.background,
+                height: height
+            }}>
+                <Toolbar
+                    elevation={2}
+                    title={["质检中"]}
+                    color={Color.colorIndigo}
+                    isHomeUp={true}
+                    isAction={true}
+                    isActionByText={true}
+                    actionArray={["提交"]}
+                    functionArray={[
+                        () => {
+                            // console.log(this.state.product.ProductNoGuid+"===========================");
+                            this.onBackAction();
+                        },
+                        () => this.submitDialog()
 
-                            ]}/>
-                        <KeyboardAvoidingView behavior={'padding'}>
-                            <ScrollView>
-                                <View>
-                        <Text style={{color: Color.colorIndigo, margin: 16}}>质检概览</Text>
-                        <TouchableOpacity style={styles.itemText} onPress={() => this.infoDialog()}>
-                            <Text>质检产品</Text>
-                            <View style={{flexDirection: 'row',}}>
+                    ]}/>
+                <KeyboardAvoidingView behavior={'padding'}>
+                    <ScrollView>
+                        <View>
+                            <Text style={{color: Color.colorIndigo, margin: 16}}>质检概览</Text>
+                            <TouchableOpacity style={styles.itemText} onPress={() => this.infoDialog()}>
+                                <Text>质检产品</Text>
+                                <View style={{flexDirection: 'row',}}>
+                                    <Text
+                                        style={{color: Color.black_semi_transparent}}>{this.state.product.ProductNo + (this.state.isMulti ? "等" : "")}</Text>
+                                    <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.itemText}>
+                                <Text>质检方式</Text>
                                 <Text
-                                    style={{color: Color.black_semi_transparent}}>{this.state.product.ProductNo+(this.state.isMulti?"等":"")}</Text>
-                                <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
+                                    style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? '批量质检' : '单品质检'}</Text>
                             </View>
-                        </TouchableOpacity>
-                        <View style={styles.itemText}>
-                            <Text>质检方式</Text>
-                            <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? '批量质检' : '单品质检'}</Text>
-                        </View>
-                        <View style={styles.itemText}>
-                            <Text>总数</Text>
-                            <Text
-                                style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? this.props.product.length : this.state.product.Quantity}</Text>
-                        </View>
-
-                        <Text style={{color: Color.colorIndigo, margin: 16}}>质检结果</Text>
-                        <TouchableOpacity style={styles.itemText} onPress={() => {
-                            //     console.log("onPress:" + JSON.stringify(this.state.initFormItem))
-                            this.props.nav.navigate('qcForm',
-                                {
-                                    product: this.props.product,
-                                    formItems: this.state.formItems,
-                                    finishFormFunc: (result) => {
-                                        //   console.log("onPress:" + JSON.stringify(result))
-                                        this.setState({
-                                            formItems: result
-                                        });
-                                    }
-                                })
-                        }}>
-                            <Text>质检项目</Text>
-                            <View style={{flexDirection: 'row',}}>
+                            <View style={styles.itemText}>
+                                <Text>总数</Text>
                                 <Text
-                                    style={{color: Color.black_semi_transparent}}>{this.countFinishItem() + '项/' + this.state.initFormItem.length + '项'}</Text>
-                                <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
+                                    style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? this.props.product.length : this.state.product.Quantity}</Text>
                             </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.itemText} onPress={() => {
-                            this.setState({
-                                isEdit: !this.state.isEdit
-                            })
-                        }}>
-                            <Text>质检反馈</Text>
-                            <View style={{flexDirection: 'row',}}>
-                                <Text style={{color: Color.black_semi_transparent, width: 150, textAlign: 'right'}}
-                                      numberOfLines={1}>{this.state.editContent ? this.state.editContent : '未填写'}</Text>
-                                <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
-                            </View>
-                        </TouchableOpacity>
-                        {
-                            (() => {
-                                if (this.state.isEdit) {
-                                    return <TextInput
-                                        style={styles.textInput}
-                                        placeholder="在此输入"
-                                        returnKeyType={'done'}
-                                        blurOnSubmit={true}
-                                        multiline={true}
-                                        defaultValue={this.state.formItems[0].submitContent ? this.state.formItems[0].submitContent.totalContent : ''}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => this.setState({editContent: text})}/>
-                                }
-                            })()
-                        }
 
-                        {
-                            (() => {
-                                if (!this.state.isMulti) {
-                                    return (
-                                        <TouchableOpacity style={styles.itemText} onPress={() => {
+                            <Text style={{color: Color.colorIndigo, margin: 16}}>质检结果</Text>
+                            <TouchableOpacity style={styles.itemText} onPress={() => {
+                                //     console.log("onPress:" + JSON.stringify(this.state.initFormItem))
+                                this.props.nav.navigate('qcForm',
+                                    {
+                                        product: this.props.product,
+                                        formItems: this.state.formItems,
+                                        finishFormFunc: (result) => {
+                                            //   console.log("onPress:" + JSON.stringify(result))
                                             this.setState({
-                                                arrayNumber: this.getNumberArray(0),
-                                                selectTitle: '质检数',
-                                                selectFunc: (number) => {
-                                                    this.popupDialog.dismiss();
-                                                    this.setState({
-                                                        qcNumber: number,
-                                                        passNumber: 0,
-                                                        storeNumber: 0
-                                                    });
-                                                }
+                                                formItems: result
                                             });
-                                            this.popupDialog.show();
-                                        }}>
-                                            <Text>质检数</Text>
-                                            <View style={{flexDirection: 'row',}}>
-                                                <Text
-                                                    style={{color: Color.black_semi_transparent}}>{this.state.qcNumber === 0 ? '选择' : this.state.qcNumber}</Text>
-                                                <Image source={require('../../drawable/arrow.png')}
-                                                       style={styles.arrow}/>
-                                            </View>
-                                        </TouchableOpacity>
+                                        }
+                                    })
+                            }}>
+                                <Text>质检项目</Text>
+                                <View style={{flexDirection: 'row',}}>
+                                    <Text
+                                        style={{color: Color.black_semi_transparent}}>{this.countFinishItem() + '项/' + this.state.initFormItem.length + '项'}</Text>
+                                    <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.itemText} onPress={() => {
+                                this.setState({
+                                    isEdit: !this.state.isEdit
+                                })
+                            }}>
+                                <Text>质检反馈</Text>
+                                <View style={{flexDirection: 'row',}}>
+                                    <Text style={{color: Color.black_semi_transparent, width: 150, textAlign: 'right'}}
+                                          numberOfLines={1}>{this.state.editContent ? this.state.editContent : '未填写'}</Text>
+                                    <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
+                                </View>
+                            </TouchableOpacity>
+                            {
+                                (() => {
+                                    if (this.state.isEdit) {
+                                        return <TextInput
+                                            style={styles.textInput}
+                                            placeholder="在此输入"
+                                            returnKeyType={'done'}
+                                            blurOnSubmit={true}
+                                            multiline={true}
+                                            defaultValue={this.state.formItems[0].submitContent ? this.state.formItems[0].submitContent.totalContent : ''}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => this.setState({editContent: text})}/>
+                                    }
+                                })()
+                            }
 
-                                    )
-                                }
-                            })()
-                        }
-
-                        {
-                            (() => {
-                                if (!this.state.isMulti && this.state.singleStore) {
-                                    return (
-                                        <View>
+                            {
+                                (() => {
+                                    if (!this.state.isMulti) {
+                                        return (
                                             <TouchableOpacity style={styles.itemText} onPress={() => {
-                                                if (this.state.qcNumber === 0) {
-                                                    SnackBar.show("请先选择质检数", {duration: 2000});
-                                                    return
-                                                }
                                                 this.setState({
-                                                    arrayNumber: this.getNumberArray(1),
-                                                    selectTitle: '合格数',
+                                                    arrayNumber: this.getNumberArray(0),
+                                                    selectTitle: '质检数',
                                                     selectFunc: (number) => {
                                                         this.popupDialog.dismiss();
                                                         this.setState({
-                                                            passNumber: number,
+                                                            qcNumber: number,
+                                                            passNumber: 0,
                                                             storeNumber: 0
                                                         });
                                                     }
                                                 });
                                                 this.popupDialog.show();
                                             }}>
-                                                <Text>合格数</Text>
+                                                <Text>质检数</Text>
                                                 <View style={{flexDirection: 'row',}}>
                                                     <Text
-                                                        style={{color: Color.black_semi_transparent}}>{this.state.passNumber === 0 ? '选择' : this.state.passNumber}</Text>
+                                                        style={{color: Color.black_semi_transparent}}>{this.state.qcNumber === 0 ? '选择' : this.state.qcNumber}</Text>
                                                     <Image source={require('../../drawable/arrow.png')}
                                                            style={styles.arrow}/>
                                                 </View>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={styles.itemText} onPress={() => {
-                                                if (this.state.passNumber === 0) {
-                                                    SnackBar.show("请先选择合格数", {duration: 2000});
-                                                    return
-                                                }
-                                                this.setState({
-                                                    arrayNumber: this.getNumberArray(2),
-                                                    selectTitle: '入库量',
-                                                    selectFunc: (number) => {
-                                                        this.popupDialog.dismiss();
-                                                        this.setState({storeNumber: number});
+
+                                        )
+                                    }
+                                })()
+                            }
+
+                            {
+                                (() => {
+                                    if (!this.state.isMulti && this.state.singleStore) {
+                                        return (
+                                            <View>
+                                                <TouchableOpacity style={styles.itemText} onPress={() => {
+                                                    if (this.state.qcNumber === 0) {
+                                                        SnackBar.show("请先选择质检数", {duration: 2000});
+                                                        return
                                                     }
-                                                });
-                                                this.popupDialog.show();
-                                            }}>
-                                                <Text>入库量</Text>
-                                                <View style={{flexDirection: 'row',}}>
-                                                    <Text
-                                                        style={{color: Color.black_semi_transparent}}>{this.state.storeNumber === 0 ? '选择' : this.state.storeNumber}</Text>
-                                                    <Image source={require('../../drawable/arrow.png')}
-                                                           style={styles.arrow}/>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>)
-                                }
-                            })()
-                        }
+                                                    this.setState({
+                                                        arrayNumber: this.getNumberArray(1),
+                                                        selectTitle: '合格数',
+                                                        selectFunc: (number) => {
+                                                            this.popupDialog.dismiss();
+                                                            this.setState({
+                                                                passNumber: number,
+                                                                storeNumber: 0
+                                                            });
+                                                        }
+                                                    });
+                                                    this.popupDialog.show();
+                                                }}>
+                                                    <Text>合格数</Text>
+                                                    <View style={{flexDirection: 'row',}}>
+                                                        <Text
+                                                            style={{color: Color.black_semi_transparent}}>{this.state.passNumber === 0 ? '选择' : this.state.passNumber}</Text>
+                                                        <Image source={require('../../drawable/arrow.png')}
+                                                               style={styles.arrow}/>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity style={styles.itemText} onPress={() => {
+                                                    if (this.state.passNumber === 0) {
+                                                        SnackBar.show("请先选择合格数", {duration: 2000});
+                                                        return
+                                                    }
+                                                    this.setState({
+                                                        arrayNumber: this.getNumberArray(2),
+                                                        selectTitle: '入库量',
+                                                        selectFunc: (number) => {
+                                                            this.popupDialog.dismiss();
+                                                            this.setState({storeNumber: number});
+                                                        }
+                                                    });
+                                                    this.popupDialog.show();
+                                                }}>
+                                                    <Text>入库量</Text>
+                                                    <View style={{flexDirection: 'row',}}>
+                                                        <Text
+                                                            style={{color: Color.black_semi_transparent}}>{this.state.storeNumber === 0 ? '选择' : this.state.storeNumber}</Text>
+                                                        <Image source={require('../../drawable/arrow.png')}
+                                                               style={styles.arrow}/>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>)
+                                    }
+                                })()
+                            }
 
-                        <TouchableOpacity style={styles.itemText} onPress={() => {
-                            this.setState({
-                                selectTitle: '入库批次',
-                                selectFunc: (result) => {
-                                    this.popupDialog1.dismiss();
-                                    let i = 0;
-                                    result.map((data) => {
-                                        if (!(data.IsGetIn === 1))
-                                            i++;
-                                    });
-                                    this.state.arraySeries = result;
-                                    this.setState({
-                                        arraySeries: result,
-                                        storeStr: i === 0 ? '全部入库' : i + '项不入库',
-                                        singleStore: i === 0,
-                                        passNumber: i === 0 ? 0 : this.state.passNumber,
-                                        storeNumber: i === 0 ? 0 : this.state.storeNumber
-                                    })
+                            <TouchableOpacity style={styles.itemText} onPress={() => {
+                                this.setState({
+                                    selectTitle: '入库批次',
+                                    selectFunc: (result) => {
+                                        this.popupDialog1.dismiss();
+                                        let i = 0;
+                                        result.map((data) => {
+                                            if (!(data.IsGetIn === 1))
+                                                i++;
+                                        });
+                                        this.state.arraySeries = result;
+                                        this.setState({
+                                            arraySeries: result,
+                                            storeStr: i === 0 ? '全部入库' : i + '项不入库',
+                                            singleStore: i === 0,
+                                            passNumber: i === 0 ? 0 : this.state.passNumber,
+                                            storeNumber: i === 0 ? 0 : this.state.storeNumber
+                                        })
 
-                                }
-                            });
-                            this.popupDialog1.show();
-                        }
-                        }>
+                                    }
+                                });
+                                this.popupDialog1.show();
+                            }
+                            }>
 
-                            <Text>入库批次</Text>
-                            <View style={{flexDirection: 'row',}}>
-                                <Text style={{color: Color.black_semi_transparent}}>{this.state.storeStr}</Text>
-                                <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
-                            </View>
-                        </TouchableOpacity>
-
-
+                                <Text>入库批次</Text>
+                                <View style={{flexDirection: 'row',}}>
+                                    <Text style={{color: Color.black_semi_transparent}}>{this.state.storeStr}</Text>
+                                    <Image source={require('../../drawable/arrow.png')} style={styles.arrow}/>
                                 </View>
-                            </ScrollView>
-                        </KeyboardAvoidingView>
-                        {this.numberPicker()}
-                        {this.multiPicker()}
-                        <Loading visible={this.state.isLoading}/>
-                    </View>
+                            </TouchableOpacity>
+
+
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+                {this.numberPicker()}
+                {this.multiPicker()}
+                <Loading visible={this.state.isLoading}/>
+            </View>
         )
     }
 }
