@@ -148,7 +148,11 @@ export default class QcCarPager extends Component {
                     actionArray={['创建']}
                     functionArray={[
                         () => this.props.nav.goBack(null),
-                        () => this.props.nav.navigate("qcCarCreate")
+                        () => this.props.nav.navigate("qcCarCreate",{
+                            finishFunc:()=>{
+                                this.getCar()
+                            }
+                        })
 
                     ]}/>
                 {this.getView()}

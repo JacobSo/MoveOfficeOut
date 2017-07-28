@@ -51,7 +51,9 @@ export default class QcCarCreatePager extends Component {
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
+
                     this.props.nav.goBack(null);
+                    this.props.finishFunc();
                     SnackBar.show("申请车牌成功，等待助理分配");
                 } else {
                     SnackBar.show(responseJson.ErrDesc);
@@ -116,12 +118,13 @@ export default class QcCarCreatePager extends Component {
                                 <View style={{
                                     backgroundColor: Color.line,
                                     justifyContent: 'center',
-                                    marginTop: 16
+                                    marginTop: 16,
+                                    width:width/3
                                 }}>
                                     <DatePicker
                                         customStyles={{
-                                            placeholderText: {color: 'black', textAlign: 'center'},
-                                            dateText: {color: 'black', textAlign: 'center'}
+                                            placeholderText: {color: 'black', textAlign: 'center',width:width/3},
+                                            dateText: {color: 'black', textAlign: 'center',width:width/3}
                                         }}
                                         date={this.state.useTime}
                                         mode="date"
@@ -162,7 +165,7 @@ export default class QcCarCreatePager extends Component {
                                 <View style={{backgroundColor: Color.line, width: 1, height: 25}}/>
 
                                 <TouchableOpacity onPress={() => {
-                                    this.setState({selection: 2, carType: "私车公用"})
+                                    this.setState({selection: 2, carType: "其他车辆"})
                                 }}>
                                     <Text>其他用车</Text>
                                     <View style={[styles.selection, {

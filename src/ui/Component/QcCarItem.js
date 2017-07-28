@@ -32,7 +32,6 @@ export default class QcCarItem extends Component {
                     justifyContent: 'center',
                     margin: 16,
                 }}>
-
                     {
                         (() => {
                             if (this.props.carInfo.IsAduit) {//pass
@@ -54,7 +53,7 @@ export default class QcCarItem extends Component {
                     <Text style={{color: Color.black_semi_transparent, fontSize: 18}}>
                         {this.props.carInfo.IsAduit ? "车辆申请已批" : "申请处理中"}
                     </Text>
-                    <Text>{this.props.carInfo ? "出发工作吧！" : "如需修改，可删除申请重新操作"}
+                    <Text>{this.props.carInfo.IsAduit ? "出发工作吧！" : "如需修改，可删除申请重新操作"}
                     </Text>
                 </View>
 
