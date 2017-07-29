@@ -227,7 +227,7 @@ export default class QcProductListPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={true}
-                    actionArray={this.state.isMulti ? ['开始质检(' + this.state.selectNum + ')'] : ['批量', '完成']}
+                    actionArray={this.state.isMulti ? ['全选', '开始质检(' + this.state.selectNum + ')'] : ['批量', '完成']}
                     functionArray={[
                         () => {
                             if (this.state.isMulti) {
@@ -241,31 +241,19 @@ export default class QcProductListPager extends Component {
                              this.getMultiData();
                              else
                              SnackBar.show("没有可以批量任务", {duration: 1000})*/
-                            let multiTaskTemp = [];
-                            this.state.items.map((data) => {
-                                if (data.check)
-                                    multiTaskTemp.push(data);
-                            });
-                            if (this.state.isMulti) {
-                                if (this.state.selectNum > 1) {
-                                    this.props.nav.navigate('qcSubmit',
-                                        {
-                                            product: multiTaskTemp,
-                                            task: this.props.task,
-                                            finishFuncMulti: (result) => {
-                                                result.map((data, index) => {
-                                                    this.state.items[index].IsGetIn = data.IsGetIn;
-                                                    this.state.items[index].state = 1;
-                                                });
-                                                this.setState({
-                                                    dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
-                                                })
-                                            },
-                                        });
-                                    this.initData();
-                                } else SnackBar.show("批量至少选择2个")
 
-                            } else {
+                            if (this.state.isMulti) {
+                                let temp = !this.state.items[0].check;
+                                this.state.items.map((data) => {
+                                    data.check = temp;
+                                });
+                                this.setState({
+                                    selectNum:temp?this.state.items.length:0,
+                                    isMulti:temp,
+                                    dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+                                })
+                            }
+                            else {
                                 if (this.state.items.length > 1)
                                     this.setState({isMulti: true});
                                 else
@@ -274,7 +262,42 @@ export default class QcProductListPager extends Component {
 
                         },
                         () => {
-                            this.finishDialog();
+                            if (this.state.isMulti) {
+                                if (this.state.selectNum > 1) {
+                                    let multiTaskTemp = [];
+                                    let typeTemp = null;
+                                    let allSame = true;
+                                    this.state.items.map((data) => {
+                                        if (data.check) {
+                                            if (typeTemp === null)
+                                                typeTemp = data.QualityType;
+                                            allSame = (typeTemp === data.QualityType);
+                                            multiTaskTemp.push(data);
+                                        }
+                                    });
+                                    if (allSame) {
+                                        this.props.nav.navigate('qcSubmit',
+                                            {
+                                                product: multiTaskTemp,
+                                                task: this.props.task,
+                                                finishFuncMulti: (result) => {
+                                                    result.map((data, index) => {
+                                                        this.state.items[index].IsGetIn = data.IsGetIn;
+                                                        this.state.items[index].state = 1;
+                                                    });
+                                                    this.setState({
+                                                        dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+                                                    })
+                                                },
+                                            });
+                                        this.initData();
+                                    } else SnackBar.show("批量类型必须相同");
+                                } else SnackBar.show("批量至少选择2个")
+
+                            } else {
+                                this.finishDialog();
+
+                            }
                         }
                     ]}/>
                 <ListView

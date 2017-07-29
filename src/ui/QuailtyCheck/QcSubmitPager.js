@@ -50,6 +50,8 @@ export default class QcSubmitPager extends Component {
             lng: '0.0',
 
             submitPic: [],
+
+            multiTotal:0
         }
     }
 
@@ -57,15 +59,24 @@ export default class QcSubmitPager extends Component {
         if (Platform.OS === "android")
             BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
 
+
+    }
+
+    componentDidMount() {
         //    console.log("componentWillMount:"+JSON.stringify(this.state.initFormItem))
         this.state.arrayNumber = this.getNumberArray(0);
+        let totalTemp = 0;
         this.props.product.map((data) => {
+            totalTemp  = totalTemp+data.Quantity;
             this.state.arraySeries.push({
                 title: data.QualityLot + "(" + data.ProductNo + ")",
                 IsGetIn: 1,
-                ProductNoGuid: data.ProductNoGuid
+                ProductNoGuid: data.ProductNoGuid,
             })
+
         });
+
+
 
         sqLite.fetchQcDraft(this.state.initFormItem, this.state.product.ProductNoGuid)
             .then((result) => {
@@ -73,11 +84,9 @@ export default class QcSubmitPager extends Component {
                 this.setState({
                     formItems: result,
                     editContent: this.props.product[0].state === 1 ? this.props.product[0].ImprovementMeasures : (result[0].submitContent ? result[0].submitContent.totalContent : ''),
+                    multiTotal:totalTemp
                 })
-            }).done()
-    }
-
-    componentDidMount() {
+            }).done();
         if (Platform.OS === 'ios') {
             this.watchID = navigator.geolocation.watchPosition((position) => {
                 this.state.lat = position.coords.latitude;
@@ -140,7 +149,11 @@ export default class QcSubmitPager extends Component {
                 '采购单号：' + this.state.product.JPNo + '\n' +
                 '类型：' + this.state.product.QualityType + '\n' +
                 this.state.product.StyleName + '\n' +
-                '备注：' + this.state.product.Remark + '\n')
+                '备注：' + this.state.product.Remark + '\n');
+     /*   else
+            Alert.alert(
+                '批量产品',
+               JSON.stringify(this.state.arraySeries));*/
     }
 
     numberPicker() {
@@ -356,7 +369,6 @@ export default class QcSubmitPager extends Component {
 
     render() {
         return (
-
             <View style={{
                 flex: 1,
                 backgroundColor: Color.background,
@@ -398,7 +410,7 @@ export default class QcSubmitPager extends Component {
                             <View style={styles.itemText}>
                                 <Text>总数</Text>
                                 <Text
-                                    style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? this.props.product.length : this.state.product.Quantity}</Text>
+                                    style={{color: Color.black_semi_transparent}}>{this.state.isMulti ? this.state.multiTotal : this.state.product.Quantity}</Text>
                             </View>
 
                             <Text style={{color: Color.colorIndigo, margin: 16}}>质检结果</Text>

@@ -67,6 +67,10 @@ export default class QcProductItem extends Component {
                             <Text style={{color: Color.black_semi_transparent}}>{this.props.product.QualityLot}</Text>
                         </View>
                         <View style={styles.itemText}>
+                            <Text>{'类型'}</Text>
+                            <Text style={{color: Color.black_semi_transparent}}>{this.props.product.QualityType}</Text>
+                        </View>
+                        <View style={styles.itemText}>
                             <Text>{'数量'}</Text>
                             <Text style={{color: Color.black_semi_transparent}}>{this.props.product.Quantity}</Text>
                         </View>

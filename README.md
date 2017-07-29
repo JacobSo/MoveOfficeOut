@@ -1,6 +1,7 @@
 # MoveOfficeOut
 #####
 #SIGN POINT
+
 ##CodePush Check
 ##Preference update,title,subtitle,content
 ##Url switch

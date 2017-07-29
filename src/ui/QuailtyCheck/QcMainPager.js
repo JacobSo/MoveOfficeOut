@@ -123,7 +123,7 @@ export default class QcMainPager extends Component {
                                 </View>
                                 <View style={styles.itemText}>
                                     <Text>{'供应商'}</Text>
-                                    <Text style={{color: Color.black_semi_transparent}}>{rowData.Supplier}</Text>
+                                    <Text style={{color: Color.black_semi_transparent,width:200,textAlign :'right'}}>{rowData.Supplier}</Text>
                                 </View>
 
                                 <View style={styles.itemText}>
