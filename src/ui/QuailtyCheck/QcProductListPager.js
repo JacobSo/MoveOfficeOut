@@ -328,11 +328,11 @@ export default class QcProductListPager extends Component {
                                             task: this.props.task,
                                             finishFunc: (isStore, qcNum, passNum, storeNum) => {
                                                 // console.log('--------------------');
-                                                this.state.items[sectionID].GetInQuantity = storeNum;
-                                                this.state.items[sectionID].IsGetIn = isStore;
-                                                this.state.items[sectionID].PassQty = passNum;
-                                                this.state.items[sectionID].QualityQty = qcNum;
-                                                this.state.items[sectionID].state = 1;
+                                                this.state.items[rowID].GetInQuantity = storeNum;
+                                                this.state.items[rowID].IsGetIn = isStore;
+                                                this.state.items[rowID].PassQty = passNum;
+                                                this.state.items[rowID].QualityQty = qcNum;
+                                                this.state.items[rowID].state = 1;
                                                 this.setState({
                                                     dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
                                                 })
