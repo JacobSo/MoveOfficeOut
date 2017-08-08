@@ -326,7 +326,7 @@ class CustomList extends Component {
                 //
                 temp.map((data) => {
                     console.log(data);
-                    SnackBar.show(data)
+                    SnackBar.show(data);
                     let latlng = data.split(",");
                     let process = Utility.distance(latlng[0], latlng[1], this.state.lat, this.state.lng);
                     plist.push(process);

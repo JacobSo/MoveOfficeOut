@@ -122,7 +122,7 @@ export default class PreferencesPager extends Component {
                             group="应用"
                             items={[
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v4'],
+                                ['此版本更新记录', 'v5'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -146,6 +146,8 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16,}}>
+                                v4:{'\n'}
+                                1.【板木/软体】:修复提交图片bug{'\n'}
                                 v4:{'\n'}
                                 1.【常规质检】:修复提交后bug{'\n'}
                                 v3:{'\n'}

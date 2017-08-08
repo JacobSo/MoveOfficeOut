@@ -164,7 +164,7 @@ class WdPostPager extends Component {
                 fileName: pic.fileName ? pic.fileName : pic.uri.substring(pic.uri.lastIndexOf('/'), pic.uri.length),
                 phaseCode: this.props.step,
                 paraGuid: this.props.product.ItemGuid,
-                uri: pic.uri//.replace('file://', '')
+                uri: pic.uri.replace('file://', '')
             });
         });
         this.state.submitContent = tempContent;
@@ -233,7 +233,6 @@ class WdPostPager extends Component {
                 IosModule.getImageBase64(data.uri, (callBackData) => {
                     this.postImageReq(data, index, callBackData);
                 });
-
             })
         }
     }
