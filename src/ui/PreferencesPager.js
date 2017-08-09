@@ -25,9 +25,9 @@ import SQLite from '../db/Sqlite';
 import {TABLE_W_D, TABLE_W_D_P} from "../db/DBConst";
 import SnackBar from 'react-native-snackbar-dialog'
 import UpdateService from "../network/UpdateService";
-import ImageCacheProvider from "react-native-fetch-blob/polyfill/Blob";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
+import {ImageCache,} from "react-native-img-cache";
 
 export default class PreferencesPager extends Component {
 
@@ -122,16 +122,15 @@ export default class PreferencesPager extends Component {
                         <PreferencesTextItem
                             group="应用"
                             items={[
-                                ['清理缓存', '清理图片缓存,所有图片将重新下载'],
+                                ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v5'],
+                                ['此版本更新记录', 'v6'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
                                 () => {
-                                    ImageCacheProvider.clearCache().then(() => {
-                                        SnackBar.show("清理成功")
-                                    }).done()
+                                    ImageCache.get().clear();
+                                    SnackBar.show("清理成功")
 
                                 },
                                 () => UpdateService.update(true),
@@ -149,12 +148,15 @@ export default class PreferencesPager extends Component {
                         this.popupDialog = popupDialog;
                     }}
                     width={width - 32}
-                    height={200}>
+                    height={height-200}>
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
-                            <Text style={{margin: 16,}}>
-                                v4:{'\n'}
+                            <View style={{justifyContent:"flex-end",width:width-32}}>
+                            <Text style={{margin: 16}}>
+                                v6:{'\n'}
+                                1.加入清理图片缓存{'\n'}
+                                v5:{'\n'}
                                 1.【板木/软体】:修复提交图片bug{'\n'}
                                 v4:{'\n'}
                                 1.【常规质检】:修复提交后bug{'\n'}
@@ -168,9 +170,9 @@ export default class PreferencesPager extends Component {
                                 2.板木/软体评审模块launch{'\n'}
                                 3.质检模块launch{'\n'}
                                 4.修复距离问题{'\n'}
-
                             </Text>
-
+                                <Text>确定</Text>
+                            </View>
                         </ScrollView>
                     </View>
                 </PopupDialog>
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     layoutContainer: {
         width: width - 32,
         flexDirection: 'column',
-        height: 200,
+        height: height-200,
         backgroundColor: 'white'
     },
 
