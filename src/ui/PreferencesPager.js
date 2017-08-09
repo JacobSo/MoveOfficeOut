@@ -23,8 +23,9 @@ import {NavigationActions} from "react-navigation";
 import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
 import SQLite from '../db/Sqlite';
 import {TABLE_W_D, TABLE_W_D_P} from "../db/DBConst";
-import ApiService from "../network/ApiService";
+import SnackBar from 'react-native-snackbar-dialog'
 import UpdateService from "../network/UpdateService";
+import ImageCacheProvider from "react-native-fetch-blob/polyfill/Blob";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
@@ -121,11 +122,18 @@ export default class PreferencesPager extends Component {
                         <PreferencesTextItem
                             group="应用"
                             items={[
+                                ['清理缓存', '清理图片缓存,所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
                                 ['此版本更新记录', 'v5'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
+                                () => {
+                                    ImageCacheProvider.clearCache().then(() => {
+                                        SnackBar.show("清理成功")
+                                    }).done()
+
+                                },
                                 () => UpdateService.update(true),
                                 () => {
                                     this.popupDialog.show();
