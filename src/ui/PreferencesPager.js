@@ -10,7 +10,7 @@ import {
     Platform,
     Text,
     StyleSheet,
-    Linking
+    Linking, TouchableOpacity
 
 } from 'react-native';
 import Color from '../constant/Color';
@@ -152,10 +152,9 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
-                            <View style={{justifyContent:"flex-end",width:width-32}}>
                             <Text style={{margin: 16}}>
                                 v6:{'\n'}
-                                1.加入清理图片缓存{'\n'}
+                                1.加入清理图片缓存{'\n'}{'\n'}
                                 v5:{'\n'}
                                 1.【板木/软体】:修复提交图片bug{'\n'}
                                 v4:{'\n'}
@@ -164,16 +163,19 @@ export default class PreferencesPager extends Component {
                                 1.【常规质检】:更改批量质检方式{'\n'}
                                 2.【常规质检】:新增车辆申请{'\n'}
                                 3.【板木/软体】:修复android端图片保存{'\n'}
-
                                 v1-v2:{'\n'}
                                 1.评审单模块launch{'\n'}
                                 2.板木/软体评审模块launch{'\n'}
                                 3.质检模块launch{'\n'}
                                 4.修复距离问题{'\n'}
                             </Text>
-                                <Text>确定</Text>
-                            </View>
+
                         </ScrollView>
+                        <View style={{width:width-64,flexDirection:"row-reverse",marginBottom:16}}>
+                            <TouchableOpacity onPress={()=>this.popupDialog.dismiss()}>
+                            <Text style={{color:Color.colorPrimary}}>确定</Text>
+                            </TouchableOpacity>
+                    </View>
                     </View>
                 </PopupDialog>
             </View>
