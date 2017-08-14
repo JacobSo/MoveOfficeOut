@@ -49,7 +49,7 @@ class WdProductListPager extends Component {
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
         this.countNumber();
-        console.log(JSON.stringify(this.props));
+   //     console.log(JSON.stringify(this.props));
     }
 
     componentWillReceiveProps(newProps) {

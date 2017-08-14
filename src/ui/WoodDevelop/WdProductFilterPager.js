@@ -43,7 +43,7 @@ const {width, height} = Dimensions.get('window');
     }
 
     componentDidMount() {
-        console.log(JSON.stringify(this.props));
+       // console.log(JSON.stringify(this.props));
         this.state.items.map((data) => {
             data.check = false;
         });
@@ -107,9 +107,9 @@ const {width, height} = Dimensions.get('window');
                                         }
                                         this.setState({isLoading: true});
                                         let tempSeries = this.props.task;
-                                        console.log(JSON.stringify(tempSeries))
+                                     //   console.log(JSON.stringify(tempSeries))
                                         tempSeries.Itemlist = this.state.items;
-                                        console.log(JSON.stringify(tempSeries));
+                                     //   console.log(JSON.stringify(tempSeries));
                                         if (Platform.OS === 'ios') {
                                             IosModule.outputReportAction(
                                                 JSON.stringify(tempSeries),

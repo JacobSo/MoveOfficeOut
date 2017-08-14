@@ -31,7 +31,7 @@ export default class WdReviewPager extends Component {
 
     componentDidMount() {
         if (this.props.step === 0) {
-            console.log(JSON.stringify(this.props.product.pStatusPicA))
+       //     console.log(JSON.stringify(this.props.product.pStatusPicA))
             this.setState({
                 content: this.props.product.pStatusResultA,
                 items: this.props.product.pStatusPicA,
@@ -51,7 +51,7 @@ export default class WdReviewPager extends Component {
             });
         }
 
-        console.log(JSON.stringify(this.state.items))
+      //  console.log(JSON.stringify(this.state.items))
         //   this.countNumber();
     }
 

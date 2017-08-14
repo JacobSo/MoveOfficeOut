@@ -39,12 +39,12 @@ class WdProductDetailPager extends Component {
     }
 
     componentDidMount() {
-        console.log(JSON.stringify(this.props));
+       // console.log(JSON.stringify(this.props));
         this.setStatus();
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(JSON.stringify(newProps) + '------------WdProductDetailPager-------------')
+     //   console.log(JSON.stringify(newProps) + '------------WdProductDetailPager-------------')
         this.setStatus();
     }
 
@@ -89,7 +89,6 @@ class WdProductDetailPager extends Component {
                             SnackBar.show("没有评审内容")
                         }
                         this.popupDialog.dismiss();
-
                     }}>
                         <Text style={{margin: 16}}>查看</Text>
                     </TouchableOpacity>
@@ -208,7 +207,6 @@ class WdProductDetailPager extends Component {
                         })()
                     }
 
-
                     {
                         (() => {
                             if (this.props.product.stage === 7 || this.props.product.stage === 5 || this.props.product.stage === 3 || this.props.product.stage === 1){
@@ -233,14 +231,11 @@ class WdProductDetailPager extends Component {
 
                                 )
                             }
-
                         })()
                     }
-
                 </View>
                 </ScrollView>
                 {this.selectDialog()}
-
             </View>
         )
     }
