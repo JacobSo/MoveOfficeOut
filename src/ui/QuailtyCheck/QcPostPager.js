@@ -113,7 +113,6 @@ export default class QcPostPager extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-
         })
             .then((response) => response.json())
             .then((responseBody) => {

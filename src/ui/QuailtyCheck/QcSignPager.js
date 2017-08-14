@@ -56,6 +56,7 @@ export default class QcSignPager extends Component {
             DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange)
         }
     }
+
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
         DeviceEventEmitter.removeListener('onRefreshMessage', this.onAndroidLocationChange)
@@ -65,9 +66,9 @@ export default class QcSignPager extends Component {
         // Toast.show(e.address + ":" + e.lat + ":" + e.lng)
         if (this.state.address !== e.address) {
             this.setState({
-                address:e.address,
-                lat:e.lat,
-                lng:e.lng,
+                address: e.address,
+                lat: e.lat,
+                lng: e.lng,
             })
         }
     };
@@ -84,9 +85,9 @@ export default class QcSignPager extends Component {
             .then((responseBody) => {
                 console.log(JSON.stringify(responseBody));
                 this.setState({
-                    address:responseBody.regeocode.formatted_address,
-                    lat:latitude,
-                    lng:longitude,
+                    address: responseBody.regeocode.formatted_address,
+                    lat: latitude,
+                    lng: longitude,
                 })
 
             }).catch((error) => {
@@ -109,7 +110,7 @@ export default class QcSignPager extends Component {
                     () => {
                         this.setState({editContent: ''});
                         this.popupDialog.dismiss();
-                        },
+                    },
                     () => {
                         this.popupDialog.dismiss();
                     }
@@ -290,14 +291,14 @@ export default class QcSignPager extends Component {
                 {
                     (() => {
                         if (this.state.items.length === 0) {
-                            return<View style={{flexDirection: 'row', paddingLeft: 16,}}>
+                            return <View style={{flexDirection: 'row', paddingLeft: 16,}}>
                                 <Text style={{marginTop: 25}}>{Utility.getHourMinute(new Date())}</Text>
                                 <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
                                     <View style={styles.timeLine}/>
                                     <View style={styles.timeLinePoint}/>
                                 </View>
                                 <View
-                                    style={[styles.signCard,{width:width/2+25}]}>
+                                    style={[styles.signCard, {width: width / 2 + 25}]}>
                                     <Text>今天还没签到</Text>
                                 </View>
                             </View>
@@ -310,13 +311,18 @@ export default class QcSignPager extends Component {
                                 enableEmptySections={true}
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <View style={{flexDirection: 'row', paddingLeft: 10,}}>
-                                        <Text style={{marginTop:25,width:40,flex:1,textAlign:'center'}}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "),rowData.SignTime.lastIndexOf(":"))}</Text>
+                                        <Text style={{
+                                            marginTop: 25,
+                                            width: 40,
+                                            flex: 1,
+                                            textAlign: 'center'
+                                        }}>{rowData.SignTime.substring(rowData.SignTime.lastIndexOf(" "), rowData.SignTime.lastIndexOf(":"))}</Text>
                                         <View style={{marginRight: 10, marginLeft: 16, alignItems: 'center',}}>
                                             <View style={styles.timeLine}/>
                                             <View style={styles.timeLinePoint}/>
                                         </View>
                                         <TouchableOpacity
-                                            style={[styles.signCard,{elevation: 2,}]}
+                                            style={[styles.signCard, {elevation: 2,}]}
                                             onPress={
                                                 () => this.props.nav.navigate('gallery', {
                                                     pics: [rowData.PicPath]
@@ -364,7 +370,7 @@ const styles = StyleSheet.create({
     topLayout: {
         backgroundColor: Color.colorIndigo,
         alignItems: 'center',
-        elevation:2
+        elevation: 2
     },
     timeLine: {
         backgroundColor: Color.line,
@@ -382,14 +388,14 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     signCard: {
-        flex:4,
+        flex: 4,
 
         padding: 16,
         backgroundColor: 'white',
         margin: 10
     },
     signCardText: {
-        width: width/2+25,
+        width: width / 2 + 25,
         color: Color.black_semi_transparent,
         marginTop: 10
     },

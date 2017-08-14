@@ -39,17 +39,17 @@ class WdProductDetailPager extends Component {
     }
 
     componentDidMount() {
+        console.log(JSON.stringify(this.props));
         this.setStatus();
     }
 
     componentWillReceiveProps(newProps) {
-        //console.log(JSON.stringify(newProps) + '------------WdProductDetailPager-------------')
+        console.log(JSON.stringify(newProps) + '------------WdProductDetailPager-------------')
         this.setStatus();
     }
 
     setStatus() {
         if (this.props.product.pResultList) {
-
             this.setState({
                 aFinish: (this.props.product.pResultList.indexOf("0-1") > -1) || (this.props.product.pResultList.indexOf("0-0") > -1),
                 bFinish: (this.props.product.pResultList.indexOf("1-1") > -1) || (this.props.product.pResultList.indexOf("1-0") > -1),

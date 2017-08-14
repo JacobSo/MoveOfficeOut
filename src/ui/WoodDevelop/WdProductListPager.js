@@ -49,6 +49,7 @@ class WdProductListPager extends Component {
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
         this.countNumber();
+        console.log(JSON.stringify(this.props));
     }
 
     componentWillReceiveProps(newProps) {
@@ -415,17 +416,17 @@ class WdProductListPager extends Component {
                     removeClippedSubviews={false}
                     enableEmptySections={true}
                     renderHeader={() => this.getHeaderView()}
-                    renderRow={(rowData, rowID, sectionID) =>
+                    renderRow={(rowData,  sectionID,rowID) =>
                         <WdProductItem
-                            key={sectionID}
+                            key={rowID}
                             product={rowData}
                             func={() => {
-                                this.props.actions.updateProduct(rowData, sectionID);
+                                this.props.actions.updateProduct(rowData, rowID);
                                 this.props.nav.navigate(
                                     'wdDetail',
                                     {
                                         product: rowData,
-                                        position: sectionID
+                                        position: rowID
                                     },
                                 );
                             }}

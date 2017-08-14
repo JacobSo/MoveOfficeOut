@@ -11,11 +11,13 @@ import {
     StyleSheet,
     Dimensions, Platform
 } from 'react-native';
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
-
+import {WdActions} from "../../actions/WdAction";
 import Loading from 'react-native-loading-spinner-overlay';
 import SnackBar from 'react-native-snackbar-dialog'
 import {WdFilterItem} from "../Component/WdFilterItem";
@@ -23,7 +25,7 @@ import SQLite from '../../db/Sqlite';
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
-export default class WdProductFilterPager extends Component {
+ class WdProductFilterPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,6 +43,7 @@ export default class WdProductFilterPager extends Component {
     }
 
     componentDidMount() {
+        console.log(JSON.stringify(this.props));
         this.state.items.map((data) => {
             data.check = false;
         });
@@ -110,7 +113,7 @@ export default class WdProductFilterPager extends Component {
                                         if (Platform.OS === 'ios') {
                                             IosModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
-                                                App.workType==="板木驻厂工程师"?1:0,
+                                                App.workType === "板木驻厂工程师" ? 1 : 0,
                                                 this.props.step - 1,
                                                 (result) => {
                                                     setTimeout(() => {
@@ -122,7 +125,7 @@ export default class WdProductFilterPager extends Component {
                                         } else {
                                             AndroidModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
-                                                App.workType==="板木驻厂工程师"?1:0,
+                                                App.workType === "板木驻厂工程师" ? 1 : 0,
                                                 this.props.step - 1,
                                                 (result) => {
                                                     setTimeout(() => {
@@ -161,7 +164,7 @@ export default class WdProductFilterPager extends Component {
                         <View
                             style={{backgroundColor: rowData.check ? Color.colorDeepOrangeDark : Color.trans}}>
                             <WdFilterItem
-                                key={sectionID}
+                                key={rowID}
                                 step={this.props.step}
                                 product={rowData}
                                 selectMode={this.props.selectMode}
@@ -172,11 +175,15 @@ export default class WdProductFilterPager extends Component {
                                             dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                         });
                                     } else {
+                                        console.log(JSON.stringify(rowData));
+                                        this.props.actions.updateProduct(rowData, rowID);
                                         this.props.nav.navigate(
                                             'wdDetail',
-                                            {product: rowData,},
+                                            {
+                                                product: rowData,
+                                                position: rowID
+                                            },
                                         );
-
                                     }
 
                                 }}
@@ -201,3 +208,15 @@ const styles = StyleSheet.create(
 
 
     });
+const mapStateToProps = (state) => {
+    return {
+        product: state.wdStore.product,
+        position: state.wdStore.position
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(WdActions, dispatch)
+    }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(WdProductFilterPager);
