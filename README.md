@@ -2,12 +2,12 @@
 #####
 #SIGN POINT
 
-##update service
-##CodePush Check
-##Push set
-##Database check
-##Preference update,title,subtitle,content
-##Url switch
-##Version file
-##remove login info/Application info
+##update service(LoginPager)
+##CodePush Check(SimpleStack)
+##Push set(LauncherPager)
+##Preference update,title,subtitle,content(PreferencePager)
+##Version file(PreferencePager)
+##Url switch(API)
+##Database check(-)
+##remove login info/Application info(Application)
 
