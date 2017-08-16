@@ -36,8 +36,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
-            pwd: '',
+            account: '李国镖',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            pwd: '123',
             isLoading: false,
             check: false,
         };

@@ -148,7 +148,7 @@ export default class PreferencesPager extends Component {
                         this.popupDialog = popupDialog;
                     }}
                     width={width - 32}
-                    height={height-200}>
+                    height={height - 200}>
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
@@ -173,11 +173,11 @@ export default class PreferencesPager extends Component {
                             </Text>
 
                         </ScrollView>
-                        <View style={{width:width-64,flexDirection:"row-reverse",marginBottom:16}}>
-                            <TouchableOpacity onPress={()=>this.popupDialog.dismiss()}>
-                            <Text style={{color:Color.colorPrimary}}>确定</Text>
+                        <View style={{width: width - 64, flexDirection: "row-reverse", marginBottom: 16}}>
+                            <TouchableOpacity onPress={() => this.popupDialog.dismiss()}>
+                                <Text style={{color: Color.colorPrimary}}>确定</Text>
                             </TouchableOpacity>
-                    </View>
+                        </View>
                     </View>
                 </PopupDialog>
             </View>
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     layoutContainer: {
         width: width - 32,
         flexDirection: 'column',
-        height: height-200,
+        height: height - 200,
         backgroundColor: 'white'
     },
 
