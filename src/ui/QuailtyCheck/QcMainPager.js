@@ -199,7 +199,6 @@ const styles = StyleSheet.create(
             backgroundColor: Color.trans,
             width: width,
             height: height - 25 - 55 ,
-            paddingBottom:25
         },
 
 
