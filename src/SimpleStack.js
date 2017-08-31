@@ -47,6 +47,7 @@ import QcCarPager from "./ui/QuailtyCheck/QcCarPager";
 import QcCarCreatePager from "./ui/QuailtyCheck/QcCarCreatePager";
 import AsMainPager from "./ui/AfterSales/AsMainPager";
 import AsAddOrderPager from "./ui/AfterSales/AsAddOrderPager";
+import AsSignOrder from "./ui/AfterSales/AsSignOrder";
 const {width, height} = Dimensions.get('window');
 
 
@@ -188,6 +189,9 @@ const AsMainScreen = ({navigation}) => _renderScreen(<View
 const AsAddScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsAddOrderPager {...navigation.state.params}
                                                                          nav={navigation}/></View>);
+const AsSignScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignOrder {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -297,9 +301,12 @@ const SimpleStack = StackNavigator({
         asAdd: {
             screen: AsAddScreen,
         },
+        asSign: {
+            screen: AsSignScreen,
+        },
     },
     {
-        initialRouteName: 'asAdd',
+        initialRouteName: 'asSign',
         headerMode: 'none',
     });
 

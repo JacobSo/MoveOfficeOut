@@ -55,7 +55,6 @@ export default class AsAddOrderPager extends Component {
                         <View style={{
                             flexDirection: "row",
                             justifyContent: "space-around",
-                            bottom: Platform.OS === 'android' ? 25 : 0,
                             height:55,
                             backgroundColor: 'white',
                             margin:16,
@@ -84,7 +83,6 @@ export default class AsAddOrderPager extends Component {
                         </View>
                         <View style={{
                             flexDirection: "row",
-                            bottom: Platform.OS === 'android' ? 25 : 0,
                             height:55,
                             backgroundColor: 'white',
                             alignItems: 'center',
@@ -97,7 +95,6 @@ export default class AsAddOrderPager extends Component {
                         <View style={{
                             flexDirection: "row",
                             justifyContent: "space-around",
-                            bottom: Platform.OS === 'android' ? 25 : 0,
                             height:100,
                             backgroundColor: 'white',
                             margin:16,
@@ -111,8 +108,6 @@ export default class AsAddOrderPager extends Component {
                                        underlineColorAndroid="transparent"
                                        blurOnSubmit={true}
                                        onChangeText={(text) => this.setState({WorkContent: text})}/>
-
-
                         </View>
                         <TouchableOpacity onPress={() => {}}>
                             <View style={styles.button}>
