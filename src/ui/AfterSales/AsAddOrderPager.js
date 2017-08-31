@@ -24,7 +24,7 @@ export default class AsAddOrderPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            select: [false, false, false],
+            select: [true, false, false],
             isLoading: false,
         }
     }
@@ -42,10 +42,9 @@ export default class AsAddOrderPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={['提交']}
+                         actionArray={[]}
                          functionArray={[
                              () => this.props.nav.goBack(null),
-                             () =>{}
                          ]}/>
 
                 <KeyboardAvoidingView behavior='position'>
@@ -55,68 +54,71 @@ export default class AsAddOrderPager extends Component {
                         }}>
                         <View style={{
                             flexDirection: "row",
-                            justifyContent: "space-between",
-                            position: 'absolute',
+                            justifyContent: "space-around",
                             bottom: Platform.OS === 'android' ? 25 : 0,
+                            height:55,
                             backgroundColor: 'white',
+                            margin:16,
                             elevation: 2
                         }}>
                             <TouchableOpacity
-                                style={[styles.stepButton, {backgroundColor: (this.state.select[0] ? Color.colorPurple : Color.line)},]}
-                                onPress={() => {
-                                    this.state.select[0] = !this.state.select[0];
-                                    this.setState({select: this.state.select})
-                                }}>
+                                style={[styles.stepButton, {backgroundColor: (this.state.select[0] ? Color.colorAmber : Color.trans)},]}
+                                onPress={() => this.setState({select: [true,false,false]})
+                                }>
                                 <Text style={{
-                                    color: "white",
-                                    textAlign: "center"
-                                }}>{this.props.isWood ? '白胚' : '木架'}</Text>
+                                    textAlign: "center",
+                                    color:this.state.select[0]?"white":"black"
+                                }}>成品</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorPurple : Color.line)},]}
-                                onPress={() => {
-                                    this.state.select[1] = !this.state.select[1];
-                                    this.setState({select: this.state.select})
-                                } }>
-                                <Text style={{color: "white", textAlign: "center"}}>成品</Text>
+                                style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorAmber : Color.trans)},]}
+                                onPress={() => this.setState({select: [false,true,false]})
+                                }>
+                                <Text style={{ textAlign: "center",color:this.state.select[1]?"white":"black"}}>材料</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorPurple : Color.line)},]}
-                                onPress={() => {
-                                    this.state.select[2] = !this.state.select[2];
-                                    this.setState({select: this.state.select})
-                                }}>
-                                <Text style={{color: "white", textAlign: "center"}}>包装</Text>
+                                style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorAmber : Color.trans)},]}
+                                onPress={() => this.setState({select: [false,false,true]})}>
+                                <Text style={{ textAlign: "center",color:this.state.select[2]?"white":"black"}}>其他</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{backgroundColor: Color.background, flexDirection: 'column', margin: 16}}>
-                            <Text style={{color: Color.colorPrimary, marginTop: 16}}>旧密码</Text>
-                                <TextInput style={styles.textInput}
-                                           placeholder="请输入密码"
-                                           secureTextEntry={true}
-                                           returnKeyType={'done'}
-                                           blurOnSubmit={true}
-                                           underlineColorAndroid="transparent"
-                                           onChangeText={(text) => this.setState({oldPwd: text})}/>
-                            <Text style={{color: Color.colorPrimary, marginTop: 16}}>新密码</Text>
+                        <View style={{
+                            flexDirection: "row",
+                            bottom: Platform.OS === 'android' ? 25 : 0,
+                            height:55,
+                            backgroundColor: 'white',
+                            alignItems: 'center',
+                            margin:16,
+                            elevation: 2,
+                        }}>
+                            <Text style={{marginLeft:16}}>客户与售后专员</Text>
+                        </View>
 
-                                <TextInput style={styles.textInput}
-                                           placeholder="请输入密码"
-                                           secureTextEntry={true}
-                                           returnKeyType={'done'}
-                                           blurOnSubmit={true}
-                                           underlineColorAndroid="transparent"
-                                           onChangeText={(text) => this.setState({newPwd: text})}/>
-                            <Text style={{color: Color.colorPrimary, marginTop: 16}}>确认密码</Text>
-                                <TextInput style={styles.textInput}
-                                           placeholder="请输入密码"
-                                           secureTextEntry={true}
-                                           returnKeyType={'done'}
-                                           blurOnSubmit={true}
-                                           underlineColorAndroid="transparent"
-                                           onChangeText={(text) => this.setState({confirmPwd: text})}/>
+                        <View style={{
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                            bottom: Platform.OS === 'android' ? 25 : 0,
+                            height:100,
+                            backgroundColor: 'white',
+                            margin:16,
+                            elevation: 2
+                        }}>
+                            <TextInput style={styles.textInput}
+                                       multiline={true}
+                                       defaultValue={this.state.WorkContent}
+                                       placeholder="异常描述"
+                                       returnKeyType={'done'}
+                                       underlineColorAndroid="transparent"
+                                       blurOnSubmit={true}
+                                       onChangeText={(text) => this.setState({WorkContent: text})}/>
+
 
                         </View>
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={styles.button}>
+                                <Text style={{color: 'white'}}>创建单据</Text>
+                            </View>
+                        </TouchableOpacity>
                     </ScrollView>
                 </KeyboardAvoidingView>
 
@@ -128,12 +130,23 @@ export default class AsAddOrderPager extends Component {
     }
 }
 const styles = StyleSheet.create({
+    button: {
+        width: width - 44,
+        height: 55,
+        backgroundColor: Color.colorAmber,
+        margin: 16,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     textInput: {
-        width: width-32,
+        width: width-64,
         height: 65,
         marginRight: 10,
-        borderColor: Color.line,
-        borderBottomWidth: 1,
+    },
+    stepButton: {
+        flex: 1,
+        justifyContent: "center",
+
     },
 
 });

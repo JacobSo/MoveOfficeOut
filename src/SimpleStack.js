@@ -299,7 +299,7 @@ const SimpleStack = StackNavigator({
         },
     },
     {
-        initialRouteName: 'login',
+        initialRouteName: 'asAdd',
         headerMode: 'none',
     });
 
