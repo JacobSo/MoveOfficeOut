@@ -36,8 +36,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
-            pwd: '',
+            account: '崔韵强',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            pwd: '123',
             isLoading: false,
             check: false,
         };
@@ -133,7 +133,6 @@ export default class LoginPager extends Component {
                         <Text style={styles.welcome}>供应链管理</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
                         <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
-
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
 
                             <Text style={styles.textTitle}>账号</Text>
@@ -144,7 +143,6 @@ export default class LoginPager extends Component {
                                            clearButtonMode={'always'}
                                            underlineColorAndroid="transparent"
                                            onChangeText={(text) => this.setState({account: text})}/>
-
                             <Text style={styles.textTitle}>密码</Text>
                                 <TextInput style={styles.textInput}
                                            placeholder="请输入密码"
@@ -154,7 +152,6 @@ export default class LoginPager extends Component {
                                            blurOnSubmit={true}
                                            clearButtonMode={'always'}
                                            onChangeText={(text) => this.setState({pwd: text})}/>
-
                             <CheckBox
                                 style={{padding: 10}}
                                 isChecked={this.state.check}
@@ -219,5 +216,4 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Color.line
     },
-
 });

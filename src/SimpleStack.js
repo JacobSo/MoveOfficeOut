@@ -45,12 +45,14 @@ import QcSignPager from "./ui/QuailtyCheck/QcSignPager";
 import UpdateService from "./network/UpdateService";
 import QcCarPager from "./ui/QuailtyCheck/QcCarPager";
 import QcCarCreatePager from "./ui/QuailtyCheck/QcCarCreatePager";
+import AsMainPager from "./ui/AfterSales/AsMainPager";
+import AsAddOrderPager from "./ui/AfterSales/AsAddOrderPager";
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
     //  console.log("screen1");
-     codePush.sync();
+    //  codePush.sync();
 
     return (
         <Provider store={store}>
@@ -81,7 +83,6 @@ _statusBar = (color) => {
 const LauncherScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<LauncherPager {...navigation.state.params}
                                                                                 nav={navigation}/></View>);
-
 const MainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorCyanDark)}<MainPager {...navigation.state.params}
                                                                          nav={navigation}/></View>);
@@ -115,7 +116,6 @@ const WorkSignScreen = ({navigation}) => _renderScreen(<View
 const LoginScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPrimaryDark)}<LoginPager {...navigation.state.params}
                                                                              nav={navigation}/></View>);
-
 const WdMainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorDeepOrangeDark)}<WdMainPager {...navigation.state.params}
                                                                                  nav={navigation}/></View>);
@@ -178,10 +178,16 @@ const QcSignScreen = ({navigation}) => _renderScreen(<View
                                                                              nav={navigation}/></View>);
 const QcCarScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcCarPager {...navigation.state.params}
-                                                                             nav={navigation}/></View>);
+                                                                            nav={navigation}/></View>);
 const QcCarCreateScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorIndigoDark)}<QcCarCreatePager {...navigation.state.params}
-                                                                             nav={navigation}/></View>);
+                                                                                  nav={navigation}/></View>);
+const AsMainScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsMainPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
+const AsAddScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsAddOrderPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -284,6 +290,12 @@ const SimpleStack = StackNavigator({
         },
         qcCarCreate: {
             screen: QcCarCreateScreen,
+        },
+        asMain: {
+            screen: AsMainScreen,
+        },
+        asAdd: {
+            screen: AsAddScreen,
         },
     },
     {

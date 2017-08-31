@@ -58,7 +58,6 @@ export default class LauncherPager extends Component {
                 backgroundColor: Color.background,
                 height: height,
             }}>
-
                 <Toolbar
                     elevation={2}
                     title={["供应链管理", App.account + "-" + App.workType]}
@@ -77,14 +76,14 @@ export default class LauncherPager extends Component {
                 <Text style={styles.group}>外协工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
-                        if ((App.PowerNum & 1) === 1)
-                            this.props.nav.navigate('main');
-                        else SnackBar.show("没有权限")
-                    }}>
-                        <Image style={{width: 55, height: 55}} resizeMode="contain"
-                               source={ require('../drawable/ic_launcher_cyan.png')}/>
-                        <Text>外出工作</Text>
-                    </TouchableOpacity>
+                    if ((App.PowerNum & 1) === 1)
+                        this.props.nav.navigate('main');
+                    else SnackBar.show("没有权限")
+                }}>
+                    <Image style={{width: 55, height: 55}} resizeMode="contain"
+                           source={ require('../drawable/ic_launcher_cyan.png')}/>
+                    <Text>外出工作</Text>
+                </TouchableOpacity>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
                         if ((App.PowerNum & 2 ) === 2)
                             this.props.nav.navigate('wpMain');
@@ -95,7 +94,18 @@ export default class LauncherPager extends Component {
                         <Text>评审单</Text>
                     </TouchableOpacity>
                 </View>
-
+                <View style={styles.iconContainer}>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                        if ((App.PowerNum & 1) === 1)
+                            this.props.nav.navigate('asMain');
+                        else SnackBar.show("没有权限")
+                    }}>
+                        <Image style={{width: 55, height: 55}} resizeMode="contain"
+                               source={ require('../drawable/ic_launcher_amber.png')}/>
+                        <Text>售后工作</Text>
+                    </TouchableOpacity>
+                    <View style={{alignItems: 'center',flex:1}}/>
+                </View>
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
@@ -116,10 +126,8 @@ export default class LauncherPager extends Component {
                                source={ require('../drawable/ic_launcher_orange_deep.png')}/>
                         <Text>板木/软体研发</Text>
                     </TouchableOpacity>
-
                 </View>
             </View>
-
         )
     }
 }
@@ -129,6 +137,7 @@ const styles = StyleSheet.create({
         color: Color.colorPrimary
     },
     iconContainer: {
+        elevation:2,
         padding: 16,
         backgroundColor: 'white',
         flexDirection: 'row',
