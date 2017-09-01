@@ -19,7 +19,6 @@ import {Provider} from 'react-redux';
 import store from './stores/Store'
 import {StackNavigator,} from 'react-navigation';
 import {Platform, Dimensions, View, StatusBar} from 'react-native';
-import codePush from 'react-native-code-push'
 import WdMainPager from "./ui/WoodDevelop/WdMainPager";
 import WdProductListPager from "./ui/WoodDevelop/WdProductListPager";
 import LauncherPager from "./ui/LauncherPager";
@@ -27,7 +26,6 @@ import WdProductDetailPager from "./ui/WoodDevelop/WdProductDetailPager";
 import WdProductFilterPager from "./ui/WoodDevelop/WdProductFilterPager";
 import WdPostPager from "./ui/WoodDevelop/WdPostPager";
 import WdReviewPager from "./ui/WoodDevelop/WdReviewPager";
-import App from "./constant/Application"
 import WdFileListPager from "./ui/WoodDevelop/WdFileListPager";
 import WpMainPager from "./ui/WoodProcess/WpMainPager";
 import WpWorkPager from "./ui/WoodProcess/WpWorkPager";
@@ -42,12 +40,13 @@ import QcFormPager from "./ui/QuailtyCheck/QcFormPager";
 import QcPostPager from "./ui/QuailtyCheck/QcPostPager";
 import QcSubmitPager from "./ui/QuailtyCheck/QcSubmitPager";
 import QcSignPager from "./ui/QuailtyCheck/QcSignPager";
-import UpdateService from "./network/UpdateService";
 import QcCarPager from "./ui/QuailtyCheck/QcCarPager";
 import QcCarCreatePager from "./ui/QuailtyCheck/QcCarCreatePager";
 import AsMainPager from "./ui/AfterSales/AsMainPager";
 import AsAddOrderPager from "./ui/AfterSales/AsAddOrderPager";
-import AsSignOrder from "./ui/AfterSales/AsSignOrder";
+import AsSignFormPager from "./ui/AfterSales/AsSignFormPager";
+import AsProductSearchPager from "./ui/AfterSales/AsProductSearchPager";
+import AsSignOrderPager from "./ui/AfterSales/AsSignOrderPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -190,7 +189,13 @@ const AsAddScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsAddOrderPager {...navigation.state.params}
                                                                          nav={navigation}/></View>);
 const AsSignScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignOrder {...navigation.state.params}
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignOrderPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
+const AsProductScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsProductSearchPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
+const AsFormScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignFormPager {...navigation.state.params}
                                                                          nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
@@ -303,6 +308,12 @@ const SimpleStack = StackNavigator({
         },
         asSign: {
             screen: AsSignScreen,
+        },
+        asProduct: {
+            screen: AsProductScreen,
+        },
+        asForm: {
+            screen: AsFormScreen,
         },
     },
     {
