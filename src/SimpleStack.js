@@ -47,6 +47,7 @@ import AsAddOrderPager from "./ui/AfterSales/AsAddOrderPager";
 import AsSignFormPager from "./ui/AfterSales/AsSignFormPager";
 import AsProductSearchPager from "./ui/AfterSales/AsProductSearchPager";
 import AsSignOrderPager from "./ui/AfterSales/AsSignOrderPager";
+import AsParamPager from "./ui/AfterSales/AsParamPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -197,6 +198,9 @@ const AsProductScreen = ({navigation}) => _renderScreen(<View
 const AsFormScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignFormPager {...navigation.state.params}
                                                                          nav={navigation}/></View>);
+const AsParamScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsParamPager {...navigation.state.params}
+                                                                         nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -315,9 +319,12 @@ const SimpleStack = StackNavigator({
         asForm: {
             screen: AsFormScreen,
         },
+        asParam: {
+            screen: AsParamScreen,
+        },
     },
     {
-        initialRouteName: 'asSign',
+        initialRouteName: 'login',
         headerMode: 'none',
     });
 

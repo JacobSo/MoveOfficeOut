@@ -40,7 +40,7 @@ export default class AsMainPager extends Component {
         ApiService.getOrderList()
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
-               if (responseJson.status===0) {
+                if (responseJson.status === 0) {
                     this.setState({
                         items: responseJson.data,
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.data),
@@ -48,7 +48,7 @@ export default class AsMainPager extends Component {
                     });
                 } else {
                     this.setState({isRefreshing: false,});
-                    SnackBar.show(responseJson.ErrDesc, {duration: 3000})
+                    SnackBar.show(responseJson.message, {duration: 3000})
                 }
             })
             .catch((error) => {
@@ -82,7 +82,7 @@ export default class AsMainPager extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
-                        <AsMainItem rowData={rowData} action={()=>{
+                        <AsMainItem rowData={rowData} action={() => {
 
                         }
                         }/>
@@ -90,10 +90,6 @@ export default class AsMainPager extends Component {
             )
         }
     }
-/*
-    async  _search(text) {
-        return this.state.items.filter((item) => (item.QualityNo.toLowerCase().indexOf(text.toLowerCase()) > -1));
-    }*/
 
     render() {
         return (
@@ -108,19 +104,9 @@ export default class AsMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../../drawable/search.png")]}
+                    actionArray={}
                     functionArray={[
-                        () => {
-                            if (this.state.isSearch) {
-                                this.setState({
-                                    isSearch: !this.state.isSearch,
-                                    isHeader: true
-                                })
-                            } else this.props.nav.goBack(null)
-                        },
-                        () => {
-                            this.setState({isSearch: !this.state.isSearch})
-                        }
+                        () => this.props.nav.goBack(null)
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {

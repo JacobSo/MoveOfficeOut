@@ -29,7 +29,8 @@ export default class AsMainItem extends Component {
                     width: width - 32,
                     padding: 5,
                     color: 'white',
-                    backgroundColor: this.props.rowData.ReviewType === 1 ? Color.colorTeal : Color.colorAmber
+                   /* backgroundColor: (this.props.rowData.type === "成品" ? Color.colorTeal :
+                        (this.props.rowData.type==="材料"?Color.colorDeepPurple:Color.colorBlueGrey))*/
                 }}>
                     {this.props.rowData.type}</Text>
                 <View style={styles.itemText}>
@@ -40,11 +41,11 @@ export default class AsMainItem extends Component {
                 <View style={styles.itemText}>
                     <Text>{'客户'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent}}>{this.props.rowData.customer}</Text>
+                        style={{color: Color.black_semi_transparent}}>{this.props.rowData.customer_name}</Text>
                 </View>
                 <View style={styles.itemText}>
-                    <Text>{'供应商'}</Text>
-                    <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.material_supplier}</Text>
+                    <Text>{'售后专员'}</Text>
+                    <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.saler}</Text>
                 </View>
                 <View style={styles.itemText}>
                     <Text>{'创建时间'}</Text>

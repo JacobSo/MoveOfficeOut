@@ -65,20 +65,27 @@ export  default  class ApiService {
     }
 
     static getOrderList() {
-        let method = 'orders';// + App.account;
+        let method = 'orders?creater_name=' + App.account;
         return this.getRequest(method);
     }
 
-    static getCustomerList() {
-        let method = 'orders';
+    static getExceptionList() {
+        let method = 'dutyreports/abnormalrank';
         return this.getRequest(method);
     }
-
-    static createOrder() {
+3
+    static getSupplierList() {
+        let method = 'supplier_user_matcher';
+        return this.getRequest(method);
+    }
+    static createOrder(type,supplierName,remark) {
         let method = 'orders';
         let param = JSON.stringify({
-            customer_name: App.account,
-
+            creater_name: App.account,
+            type:type,
+            customer_name:supplierName,
+            reason:remark,
+            remark:remark,
         });
         return this.postRequest(method, param);
     }
@@ -118,4 +125,6 @@ export  default  class ApiService {
         });
         return this.postRequest(method, param);
     }
+
+
 }

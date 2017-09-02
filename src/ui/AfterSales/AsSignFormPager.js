@@ -10,25 +10,31 @@ import {
     Alert,
     Image,
     KeyboardAvoidingView,
-    StyleSheet, TouchableOpacity
+    StyleSheet, TouchableOpacity, TextInput
 } from 'react-native';
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import SnackBar from 'react-native-snackbar-dialog'
 import {NavigationActions,} from 'react-navigation';
+import DatePicker from "../Component/DatePicker";
+import RadioForm from 'react-native-simple-radio-button';
+
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
+const carList = ["材料供应商", "成品供应商"];
+
 export default class AsSignFormPager extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            isDetail:false,
+            isDetail: false,
+            date: '',
+            editContent:''
         }
     }
-
 
 
     render() {
@@ -56,50 +62,118 @@ export default class AsSignFormPager extends Component {
                         style={{
                             backgroundColor: Color.background,
                         }}>
-                        <View style={{backgroundColor: Color.background, flexDirection: 'column', }}>
+                        <View style={{backgroundColor: Color.background, flexDirection: 'column', paddingBottom: 80}}>
+                            <View style={styles.card}>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <View style={{backgroundColor:this.state.date? Color.colorAmber:Color.line, width: 10, height: 55}}/>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>责任判定时间</Text>
+                                </View>
+                                <View style={{flexDirection: 'row', alignItems: "center"}}>
+                                    <DatePicker
+                                        customStyles={{
+                                            placeholderText: {
+                                                color: Color.content,
+                                                textAlign: 'center',
+                                                width: width / 4
+                                            },
+                                            dateText: {color: Color.content, textAlign: 'center', width: width / 4}
+                                        }}
+                                        date={this.state.date}
+                                        mode="date"
+                                        placeholder="请选择时间"
+                                        format="YYYY-MM-DD"
+                                        minDate={this.dateStr}
+                                        confirmBtnText="确认"
+                                        cancelBtnText="取消"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({date: date})
+                                        }}
+                                    />
+                                    <Image source={require("../../drawable/arrow.png")}
+                                           style={{width: 10, height: 20, marginRight: 10}}/>
+                                </View>
+                            </View>
+                            <TouchableOpacity style={styles.card}>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>异常类别</Text>
+                                </View>
+                                <Image source={require("../../drawable/arrow.png")}
+                                       style={{width: 10, height: 20, marginRight: 10}}/>
+                            </TouchableOpacity>
 
                             <TouchableOpacity style={styles.card}>
-                                <View style={{flexDirection:'row',        alignItems: "center",}}>
-                                <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
-                                <Text style={{marginLeft: 16}}>异常类别</Text>
-                                </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.card} onPress={()=>{}}>
-                                <View style={{flexDirection:'row',        alignItems: "center",}}>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
-                                    <Text style={{marginLeft: 16}}>责任判定日期</Text>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>责任单位</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
+                                <Image source={require("../../drawable/arrow.png")}
+                                       style={{width: 10, height: 20, marginRight: 10}}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.card}>
-                                <View style={{flexDirection:'row',        alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
-                                    <Text style={{marginLeft: 16}}>违约处罚</Text>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <View style={{backgroundColor: Color.colorAmber, width: 10, height: 55}}/>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>异常产生责任方</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
+
+                                {/*    <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>*/}
                             </TouchableOpacity>
+                            <RadioForm
+                                buttonColor={Color.colorAmber}
+                                labelStyle={{color: Color.content, margin: 16}}
+                                radio_props={ [
+                                    {label: carList[0], value: 0},
+                                    {label: carList[1], value: 1},
+                                ]}
+                                initial={0}
+                                formHorizontal={false}
+                                style={{marginLeft: 32, marginBottom: 16, height: 100, width: width - 64}}
+                                onPress={(value) => {
+
+                                }}
+                            />
                             <TouchableOpacity style={styles.card}>
-                                <View style={{flexDirection:'row',        alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
-                                    <Text style={{marginLeft: 16}}>异常原因</Text>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <View style={{backgroundColor: Color.colorAmber, width: 10, height: 55}}/>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>违约处罚</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
+                                {/*<Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>*/}
                             </TouchableOpacity>
+                            <RadioForm
+                                buttonColor={Color.colorAmber}
+                                labelStyle={{color: Color.content, margin: 16}}
+                                radio_props={ [
+                                    {label: carList[0], value: 0},
+                                    {label: carList[1], value: 1},
+                                ]}
+                                initial={0}
+                                formHorizontal={false}
+                                style={{marginLeft: 32, marginBottom: 16, height: 100, width: width - 64}}
+                                onPress={(value) => {
+
+                                }}
+                            />
                             <TouchableOpacity style={styles.card}>
-                                <View style={{flexDirection:'row',        alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
-                                    <Text style={{marginLeft: 16}}>责任单位</Text>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <View style={{backgroundColor:this.state.editContent?Color.colorAmber: Color.line, width: 10, height: 55}}/>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>异常原因</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
+                                {/*<Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>*/}
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.card}>
-                                <View style={{flexDirection:'row',        alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
-                                    <Text style={{marginLeft: 16}}>异常产生责任方</Text>
-                                </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
-                            </TouchableOpacity>
+
+
+                            <View style={{margin: 16,}}>
+                                <TextInput style={styles.textInput}
+                                           multiline={true}
+                                           defaultValue={this.state.editContent}
+                                           placeholder="在这里填写异常原因"
+                                           returnKeyType={'done'}
+                                           underlineColorAndroid="transparent"
+                                           blurOnSubmit={true}
+                                           onChangeText={(text) => this.setState({editContent: text})}/>
+
+                            </View>
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
@@ -114,7 +188,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         height: 55,
         alignItems: "center",
-        justifyContent:"space-between",
+        justifyContent: "space-between",
         backgroundColor: "white",
         marginLeft: 16,
         marginRight: 16,
