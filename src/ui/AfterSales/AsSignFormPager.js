@@ -67,7 +67,7 @@ export default class AsSignFormPager extends Component {
                              }
                          ]}/>
 
-                <KeyboardAvoidingView behavior='position'>
+                <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={-55}>
                     <ScrollView
                         style={{
                             backgroundColor: Color.background,
@@ -171,6 +171,7 @@ export default class AsSignFormPager extends Component {
                                 initial={0}
                                 formHorizontal={false}
                                 style={styles.radioStyle}
+                                onPress={()=>{}}
                             />
                             <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
@@ -187,7 +188,7 @@ export default class AsSignFormPager extends Component {
                                     }}
                                     onTintColor={Color.colorAmber}
                                     tintColor={Color.colorBlueGrey}
-                                    thumbTintColor={"white"}
+                                    thumbTintColor={Color.backgroundColor}
                                     value={this.state.isResponse}/>
                             </View>
 

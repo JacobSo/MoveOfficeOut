@@ -105,7 +105,6 @@ export default class AsSignOrderPager extends Component {
                             return <View style={{backgroundColor: Color.line, width: width - 32, height: 1}}/>
                     })()
                 }
-
                 <ListView
                     dataSource={this.state.dataSourceComment}
                     style={{marginLeft: 16, marginRight: 16, width: width - 32}}
@@ -114,7 +113,6 @@ export default class AsSignOrderPager extends Component {
                     renderRow={(rowData, sectionID, rowID) =>
                         this.getEditItem(rowData, rowID)
                     }/>
-
                 <View style={{margin: 16, paddingBottom: 80}}>
                     <TextInput style={styles.textInput}
                                multiline={true}
@@ -127,10 +125,10 @@ export default class AsSignOrderPager extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            style={{alignItems: "center", backgroundColor: 'white', flex: 1}}
+                            style={{alignItems: "center", backgroundColor: 'white', flex: 1,borderColor: Color.line,
+                                borderTopWidth: 1,}}
                             onPress={() => this.setState({isEdit: false})}>
-                            <View style={{backgroundColor: Color.line, height: 1, width: width - 32}}/>
-                            <Text style={{margin: 10,}}>收起</Text>
+                     <Text style={{margin: 10,}}>收起</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{alignItems: "center", backgroundColor: Color.colorAmber, flex: 1}}
@@ -300,7 +298,7 @@ export default class AsSignOrderPager extends Component {
                                     <Text style={{marginLeft: 16}}>原料供应商</Text>
                                 </View>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{width: 180, textAlign: "right"}}>{this.state.supplier}</Text>
+                                    <Text style={{width: 150, textAlign: "right"}}>{this.state.supplier}</Text>
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10, marginLeft: 5}}/>
                                 </View>
@@ -316,7 +314,7 @@ export default class AsSignOrderPager extends Component {
                                 <View style={{flexDirection: 'row'}}>
                                     <Text>{this.state.productList.length}</Text>
                                     <Image source={require("../../drawable/arrow.png")}
-                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 5}}/>
+                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                                 </View>
                             </TouchableOpacity>
                             {
