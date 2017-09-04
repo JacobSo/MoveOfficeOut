@@ -14,13 +14,13 @@ import FloatButton from "../Component/FloatButton";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SnackBar from 'react-native-snackbar-dialog'
 import AsMainItem from "../Component/AsMainItem";
-
+import App from '../../constant/Application';
 const {width, height} = Dimensions.get('window');
-
 export default class AsMainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            listFlag:App.workType==="售后专员"?"service_approving":"waitting",
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
@@ -37,7 +37,7 @@ export default class AsMainPager extends Component {
 
     onRefresh() {
         this.setState({isRefreshing: true,});
-        ApiService.getOrderList()
+        ApiService.getOrderList(this.state.listFlag)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 if (responseJson.status === 0) {
@@ -60,9 +60,10 @@ export default class AsMainPager extends Component {
 
     getView() {
         if (this.state.items && this.state.items.length === 0) {
-            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
-                this.onRefresh()
-            } }/>)
+            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing}
+                                      onRefreshFunc={() => {
+                                          this.onRefresh()
+                                      } }/>)
         } else {
             return (
                 <ListView
@@ -83,7 +84,23 @@ export default class AsMainPager extends Component {
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
                         <AsMainItem rowData={rowData} action={() => {
+                            if(App.workType==="售后专员"){
+                                this.props.nav.navigate("asSign", {
+                                    order: rowData,
+                                    refreshFunc: () => {
+                                        this.onRefresh()
+                                    },
 
+                                })
+                            }else{
+                                this.props.nav.navigate("asAdd", {
+                                    order: rowData,
+                                    refreshFunc: () => {
+                                        this.onRefresh()
+                                    },
+
+                                })
+                            }
                         }
                         }/>
                     }/>
@@ -104,7 +121,7 @@ export default class AsMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={}
+                    actionArray={[]}
                     functionArray={[
                         () => this.props.nav.goBack(null)
                     ]}
@@ -119,12 +136,25 @@ export default class AsMainPager extends Component {
                     }}
                 />
                 {this.getView()}
-                <FloatButton
-                    color={Color.colorAccent}
-                    drawable={require('../../drawable/add.png')}
-                    action={() => {
-                        this.props.nav.navigate("asAdd")
-                    }}/>
+                {
+                    (() => {
+                        console.log(App.workType);
+                        if (App.workType !== "售后专员") {
+                            return <FloatButton
+                                color={Color.colorAccent}
+                                drawable={require('../../drawable/add.png')}
+                                action={() => {
+
+                                    this.props.nav.navigate("asAdd", {
+                                        refreshFunc: () => {
+                                            this.onRefresh()
+                                        },
+
+                                    });
+                                }}/>
+                        }
+                    })()
+                }
             </View>
         )
     }

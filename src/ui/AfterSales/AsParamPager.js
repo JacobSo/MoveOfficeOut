@@ -77,6 +77,8 @@ export default class AsParamPager extends Component {
             </TouchableOpacity>
         } else {
             return <TouchableOpacity onPress={() => {
+                this.props.actionFunc(rowData);
+                this.props.nav.goBack(null);
             }}>
                 <Text style={{padding: 20}}>{rowData}</Text>
             </TouchableOpacity>

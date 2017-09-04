@@ -28,43 +28,63 @@ export default class AsSignOrderPager extends Component {
             isDetail: false,
             isEdit: false,
             isModify: false,
+            isProduct: false,
             modifyPosition: 0,
-            dataSource: new ListView.DataSource({
+            dataSourceComment: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => true,
+            }),
+            dataSourceProduct: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
             editList: [],
             editContent: '',
+
+            supplier: '',
+            productList: [],
+            submitForm: null,
         }
+    }
+
+    submitOrder() {
+        ApiService.submitOrder()
     }
 
     onDetail() {
         if (this.state.isDetail) {
             return (
-                <View style={[styles.card, {height: height / 2 - 45}]}>
+                <View style={styles.detailMain}>
                     <View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", margin: 10}}>
-                            <Text style={{color: Color.content}}>单据编号</Text>
-                            <Text>-</Text>
+                        <View style={styles.detailContainer}>
+                            <Text >单据编号</Text>
+                            <Text style={styles.detailText}>{this.props.order.serial_number}</Text>
                         </View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", margin: 10}}>
-                            <Text style={{color: Color.content}}>单据类型</Text>
-                            <Text>-</Text>
+                        <View style={styles.detailContainer}>
+                            <Text>单据类型</Text>
+                            <Text style={styles.detailText}>{this.props.order.type}</Text>
                         </View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", margin: 10}}>
-                            <Text style={{color: Color.content}}>建单日期</Text>
-                            <Text>-</Text>
+                        <View style={styles.detailContainer}>
+                            <Text>建单日期</Text>
+                            <Text style={styles.detailText}>{this.props.order.created_at}</Text>
                         </View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", margin: 10}}>
-                            <Text style={{color: Color.content}}>客户</Text>
-                            <Text>-</Text>
+                        <View style={styles.detailContainer}>
+                            <Text>建单人</Text>
+                            <Text style={styles.detailText}>{this.props.order.creater_name}</Text>
                         </View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", margin: 10}}>
-                            <Text style={{color: Color.content}}>物料编码</Text>
-                            <Text>-</Text>
+                        <View style={styles.detailContainer}>
+                            <Text>客户</Text>
+                            <Text style={styles.detailText}>{this.props.order.customer_name}</Text>
                         </View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", margin: 10}}>
-                            <Text style={{color: Color.content}}>售后专员</Text>
-                            <Text>-</Text>
+                        <View style={styles.detailContainer}>
+                            <Text>物料编码</Text>
+                            <Text style={styles.detailText}>{this.props.order.material_number}</Text>
+                        </View>
+                        <View style={styles.detailContainer}>
+                            <Text>售后专员</Text>
+                            <Text style={styles.detailText}>{this.props.order.saler}</Text>
+                        </View>
+                        <View style={styles.detailContainer}>
+                            <Text>异常描述</Text>
+                            <Text style={styles.detailText}>{this.props.order.remark}</Text>
                         </View>
                         <TouchableOpacity style={{width: width - 32, alignItems: "center"}}
                                           onPress={() => this.setState({isDetail: false})}>
@@ -87,51 +107,13 @@ export default class AsSignOrderPager extends Component {
                 }
 
                 <ListView
-                    dataSource={this.state.dataSource}
+                    dataSource={this.state.dataSourceComment}
                     style={{marginLeft: 16, marginRight: 16, width: width - 32}}
                     removeClippedSubviews={false}
                     enableEmptySections={true}
                     renderRow={(rowData, sectionID, rowID) =>
-                        <View style={{
-                            flexDirection: 'row',
-                            width: width - 32,
-                            backgroundColor: 'white',
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }}>
-                            <TouchableOpacity
-                                style={{
-                                    backgroundColor: this.state.isModify && this.state.modifyPosition === rowID ? Color.line : 'white',
-                                    padding: 10,
-                                    width: width - 64+8
-                                }}
-                                onPress={
-                                    () => {
-                                        this.setState({
-                                            modifyPosition: rowID,
-                                            isModify: !this.state.isModify,
-                                            editContent: this.state.isModify ? '' : rowData,//last status not update to date
-                                        })
-                                    }
-                                }>
-                                <Text style={{color: Color.colorAmber}}>{'第' + (Number(rowID) + 1) + '条跟进描述'}</Text>
-                                <Text>{rowData}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.state.editList.splice(rowID, 1);
-                                    this.setState({
-                                        dataSource: this.state.dataSource.cloneWithRows(this.state.editList)
-                                    })
-                                }}>
-                                <Image source={require('../../drawable/close_post_label.png')}
-                                       style={{width: 25, height: 25}}/>
-
-                                {/*<Text >删除</Text>*/}
-                            </TouchableOpacity>
-                        </View>
+                        this.getEditItem(rowData, rowID)
                     }/>
-
 
                 <View style={{margin: 16, paddingBottom: 80}}>
                     <TextInput style={styles.textInput}
@@ -142,9 +124,12 @@ export default class AsSignOrderPager extends Component {
                                underlineColorAndroid="transparent"
                                blurOnSubmit={true}
                                onChangeText={(text) => this.setState({editContent: text})}/>
-                    <View style={{width: width - 32, flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <TouchableOpacity style={{alignItems: "center", backgroundColor: 'white', flex: 1}}
-                                          onPress={() => this.setState({isEdit: false})}>
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={{alignItems: "center", backgroundColor: 'white', flex: 1}}
+                            onPress={() => this.setState({isEdit: false})}>
+                            <View style={{backgroundColor: Color.line, height: 1, width: width - 32}}/>
                             <Text style={{margin: 10,}}>收起</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -156,7 +141,7 @@ export default class AsSignOrderPager extends Component {
                                     else
                                         this.state.editList.push(this.state.editContent);
                                     this.setState({
-                                        dataSource: this.state.dataSource.cloneWithRows(this.state.editList),
+                                        dataSourceComment: this.state.dataSourceComment.cloneWithRows(this.state.editList),
                                         editContent: '',
                                         isModify: false,
                                     })
@@ -165,12 +150,95 @@ export default class AsSignOrderPager extends Component {
                             }}>
                             <Text style={{margin: 10, color: "white"}}>{this.state.isModify ? '修改' : '新增描述'}</Text>
                         </TouchableOpacity>
-
                     </View>
                 </View>
             </View>)
     }
 
+    getEditItem(rowData, rowID) {
+        return <View style={styles.editItemContainer}>
+            <TouchableOpacity
+                style={{
+                    backgroundColor: this.state.isModify && this.state.modifyPosition === rowID ? Color.line : 'white',
+                    padding: 10,
+                    width: width - 64 - 32
+                }}
+                onPress={
+                    () => {
+                        this.setState({
+                            modifyPosition: rowID,
+                            isModify: !this.state.isModify,
+                            editContent: this.state.isModify ? '' : rowData,//last status not update to date
+                        })
+                    }
+                }>
+                <Text style={{color: Color.colorAmber}}>{'第' + (Number(rowID) + 1) + '条跟进描述'}</Text>
+                <Text>{rowData}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={{padding: 16}}
+                onPress={() => {
+                    this.state.editList.splice(rowID, 1);
+                    this.setState({
+                        dataSourceComment: this.state.dataSourceComment.cloneWithRows(this.state.editList)
+                    })
+                }}>
+                <Image source={require('../../drawable/close_post_label.png')}
+                       style={{width: 25, height: 25}}/>
+            </TouchableOpacity>
+        </View>
+    }
+
+    onProduct() {
+        if (this.state.isProduct)
+            return <View style={[styles.detailMain, {marginTop: 0, elevation: 0}]}>
+                <View>
+                    {
+                        (() => {
+                            if (this.state.productList.length === 0) {
+                                return <Text style={{width: width - 64, textAlign: 'center', margin: 16}}>没有数据</Text>
+                            } else {
+                                return <ListView
+                                    dataSource={this.state.dataSourceProduct}
+                                    style={{marginLeft: 16, marginRight: 16, width: width - 32}}
+                                    removeClippedSubviews={false}
+                                    enableEmptySections={true}
+                                    renderRow={(rowData, sectionID, rowID) =>
+                                        <View style={sectionID.productItemContainer}>
+                                            <Text>{rowData.ItemName}</Text>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    this.state.productList.splice(rowID, 1);
+                                                    this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)})
+                                                }}>
+                                                <Image source={require('../../drawable/close_post_label.png')}
+                                                       style={{width: 25, height: 25}}/>
+                                            </TouchableOpacity>
+                                        </View>
+                                    }/>
+                            }
+
+                        })()
+                    }
+                    <View style={{width: width - 32, height: 1, backgroundColor: Color.line, marginTop: 16}}/>
+                    <View style={{width: width - 32, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <TouchableOpacity
+                            onPress={() => this.setState({isProduct: false})}>
+                            <Text style={{margin: 16, color: Color.content}}>收起</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.nav.navigate('asProduct', {
+                            selectFunc: (data) => {
+                                this.state.productList = data;
+                                this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(data)});
+                                //console.log(JSON.stringify(data))
+                            }
+                        })}>
+                            <Text style={{margin: 16, color: Color.colorAmber}}>添加</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+    }
 
     render() {
         return (
@@ -178,7 +246,6 @@ export default class AsSignOrderPager extends Component {
                 flex: 1,
                 backgroundColor: Color.background
             }}>
-
                 <Toolbar title={['单据跟踪']}
                          color={Color.colorAmber}
                          elevation={2}
@@ -198,14 +265,8 @@ export default class AsSignOrderPager extends Component {
                             backgroundColor: Color.background,
                         }}>
                         <View style={{backgroundColor: Color.background, flexDirection: 'column',}}>
-
                             <TouchableOpacity
-                                style={{
-                                    justifyContent: "space-between",
-                                    flexDirection: "row",
-                                    alignItems: 'center',
-                                    margin: 16
-                                }}
+                                style={styles.detailTouch}
                                 onPress={() => this.setState({isDetail: !this.state.isDetail})}>
                                 <Text>单据编号</Text>
                                 <View style={{flexDirection: "row", alignItems: 'center', height: 20}}>
@@ -221,34 +282,75 @@ export default class AsSignOrderPager extends Component {
                             {
                                 this.onDetail()
                             }
-
-                            <TouchableOpacity style={styles.card}>
+                            {/*原材料供应商*/}
+                            <TouchableOpacity style={styles.card} onPress={() => {
+                                this.props.nav.navigate('asParam', {
+                                    mode: 0,
+                                    actionFunc: (selectSupplier) => {
+                                        this.setState({supplier: selectSupplier})
+                                    }
+                                })
+                            }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.supplier ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16}}>原料供应商</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")}
-                                       style={{width: 10, height: 20, marginRight: 10}}/>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{width: 180, textAlign: "right"}}>{this.state.supplier}</Text>
+                                    <Image source={require("../../drawable/arrow.png")}
+                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 5}}/>
+                                </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.card}
-                                              onPress={() => this.props.nav.navigate('asProduct', {})}>
+                            {/*产品列表*/}
+                            <TouchableOpacity
+                                style={styles.card}
+                                onPress={() => this.setState({isProduct: !this.state.isProduct})}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
                                     <Text style={{marginLeft: 16}}>产品列表</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")}
-                                       style={{width: 10, height: 20, marginRight: 10}}/>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text>{this.state.productList.length}</Text>
+                                    <Image source={require("../../drawable/arrow.png")}
+                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 5}}/>
+                                </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.card} onPress={() => this.props.nav.navigate('asForm', {})}>
+                            {
+                                this.onProduct()
+                            }
+
+                            {/*责任单*/}
+                            <TouchableOpacity
+                                style={styles.card}
+                                onPress={() => this.props.nav.navigate('asForm', {
+                                    finishFunc: (data) => {
+                                        this.setState({submitForm: data});
+                                    }
+                                })}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.submitForm ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16}}>责任单</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")}
-                                       style={{width: 10, height: 20, marginRight: 10}}/>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text>{this.state.submitForm ? '已填写' : '未填写'}</Text>
+
+                                    <Image source={require("../../drawable/arrow.png")}
+                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
+                                </View>
+
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.card}
-                                              onPress={() => this.setState({isEdit: !this.state.isEdit})}>
+                            {/*跟进进度*/}
+                            <TouchableOpacity
+                                style={styles.card}
+                                onPress={() => this.setState({isEdit: !this.state.isEdit})}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
                                         backgroundColor: this.state.editList.length === 0 ? Color.line : Color.colorAmber,
@@ -266,8 +368,6 @@ export default class AsSignOrderPager extends Component {
                             {
                                 this.onEdit()
                             }
-
-
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
@@ -295,5 +395,51 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: "white",
     },
+    detailText: {
+        color: Color.drawerColor
+        , width: 200,
+        textAlign: 'right'
+    },
+    detailContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        margin: 10
+    },
+    detailTouch: {
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: 'center',
+        margin: 16
+    },
+    detailMain: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "white",
+        marginLeft: 16,
+        marginRight: 16,
+        marginTop: 16,
+        elevation: 2,
+    },
+    editItemContainer: {
+        flexDirection: 'row',
+        width: width - 32,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    productItemContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: width - 64,
+        marginTop: 16,
+    },
+    buttonContainer: {
+        width: width - 32,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        elevation: 2
+    }
+
 
 });

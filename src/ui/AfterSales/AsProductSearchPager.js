@@ -42,9 +42,7 @@ export default class AsProductSearchPager extends Component {
     }
 
     getData(keyword) {
-        this.setState({
-            isLoading: true
-        });
+        this.setState({isLoading: true});
         ApiService.getProduct(keyword, this.props.isWood ? 0 : 1, this.props.series)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
@@ -85,63 +83,55 @@ export default class AsProductSearchPager extends Component {
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
-                         actionArray={[this.props.isWood?"全选":null,"完成(" + this.state.selectItems + ")"]}
+                         actionArray={["全选", "完成(" + this.state.selectItems + ")"]}
                          functionArray={[
                              () => {
                                  this.props.nav.goBack(null)
                              },
-                             this.props.isWood?()=>{
+                             () => {
                                  let flag = this.state.items[0].check;
-
-                                 this.state.items.map((data)=>{
-                                    data.check = !flag ;
+                                 this.state.items.map((data) => {
+                                     data.check = !flag;
                                  });
-
                                  this.setState({
-                                     selectItems: flag?0: this.state.items.length,
+                                     selectItems: flag ? 0 : this.state.items.length,
                                      dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                  });
-                             }:null,
+                             },
                              () => {
                                  let temp = [];
                                  this.state.items.map((data) => {
                                      if (data.check) {
-                                         data.selectStep = this.state.select;
-                                         data.poldid =data.Id;
+                                         //data.selectStep = this.state.select;
+                                         data.poldid = data.Id;
                                          temp.push(data);
                                      }
                                      data.check = false;
                                  });
-                                 if (temp.length!==0) {
+                                 if (temp.length !== 0) {
                                      this.props.selectFunc(temp);
 
                                      this.setState({//set default
-                                         select: [false, false, false],
+                                        // select: [false, false, false],
                                          dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                          selectItems: 0
                                      })
-                                 } else   this.props.nav.goBack(null)
+                                 } else  this.props.nav.goBack(null)
 
 
                              }
                          ]}/>
                 <View style={{flexDirection: "row"}}>
-                        <TextInput style={styles.textInput}
-                                   placeholder="输入产品关键字"
-                                   returnKeyType={'done'}
-                                   blurOnSubmit={true}
-                                   underlineColorAndroid="transparent"
-                                   onChangeText={(text) => {
-                                       this.state.keyword = text
-                                   }}/>
+                    <TextInput style={styles.textInput}
+                               placeholder="输入产品关键字"
+                               returnKeyType={'done'}
+                               blurOnSubmit={true}
+                               underlineColorAndroid="transparent"
+                               onChangeText={(text) => {
+                                   this.state.keyword = text
+                               }}/>
                     <TouchableOpacity
-                        style={{
-                            backgroundColor: Color.colorAmber,
-                            margin: 8,
-                            justifyContent: "center",
-                            padding: 10,
-                            borderRadius: 10
-                        }}
+                        style={styles.searchStyle}
                         onPress={() => {
                             this.getData(this.state.keyword);
                         }}>
@@ -194,6 +184,13 @@ const styles = StyleSheet.create({
 
     stepButton: {
         flex: 1,
+        margin: 8,
+        justifyContent: "center",
+        padding: 10,
+        borderRadius: 10
+    },
+    searchStyle:{
+        backgroundColor: Color.colorAmber,
         margin: 8,
         justifyContent: "center",
         padding: 10,

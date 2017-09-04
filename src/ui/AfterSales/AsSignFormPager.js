@@ -10,7 +10,7 @@ import {
     Alert,
     Image,
     KeyboardAvoidingView,
-    StyleSheet, TouchableOpacity, TextInput
+    StyleSheet, TouchableOpacity, TextInput, Switch
 } from 'react-native';
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
@@ -31,8 +31,13 @@ export default class AsSignFormPager extends Component {
         this.state = {
             isLoading: false,
             isDetail: false,
-            date: '',
-            editContent:''
+            isResponse: false,
+            exDate: "",
+            exType: "",
+            exDepartment: "",
+            exCause: '',
+            exResponse: "",
+            exReason: ""
         }
     }
 
@@ -54,6 +59,11 @@ export default class AsSignFormPager extends Component {
                          functionArray={[
                              () => this.props.nav.goBack(null),
                              () => {
+                                 if (this.state.exDate && this.state.exType && this.state.exDepartment && this.state.exReason) {
+                                     this.props.finishFunc(this.state);
+                                     this.props.nav.goBack(null);
+                                 } else SnackBar.show('填写不完整');
+
                              }
                          ]}/>
 
@@ -65,7 +75,11 @@ export default class AsSignFormPager extends Component {
                         <View style={{backgroundColor: Color.background, flexDirection: 'column', paddingBottom: 80}}>
                             <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor:this.state.date? Color.colorAmber:Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.exDate ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>责任判定时间</Text>
                                 </View>
                                 <View style={{flexDirection: 'row', alignItems: "center"}}>
@@ -78,7 +92,7 @@ export default class AsSignFormPager extends Component {
                                             },
                                             dateText: {color: Color.content, textAlign: 'center', width: width / 4}
                                         }}
-                                        date={this.state.date}
+                                        date={this.state.exDate}
                                         mode="date"
                                         placeholder="请选择时间"
                                         format="YYYY-MM-DD"
@@ -87,29 +101,57 @@ export default class AsSignFormPager extends Component {
                                         cancelBtnText="取消"
                                         showIcon={false}
                                         onDateChange={(date) => {
-                                            this.setState({date: date})
+                                            this.setState({exDate: date})
                                         }}
                                     />
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10}}/>
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.card}>
+                            <TouchableOpacity style={styles.card} onPress={() => {
+                                this.props.nav.navigate('asParam', {
+                                    mode: 1,
+                                    actionFunc: (data) => {
+                                        this.setState({exType: data})
+                                    }
+                                })
+                            }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.exType ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>异常类别</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")}
-                                       style={{width: 10, height: 20, marginRight: 10}}/>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <Text>{this.state.exType}</Text>
+                                    <Image source={require("../../drawable/arrow.png")}
+                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
+                                </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.card}>
+                            <TouchableOpacity style={styles.card} onPress={() => {
+                                this.props.nav.navigate('asParam', {
+                                    mode: 0,
+                                    actionFunc: (data) => {
+                                        this.setState({exDepartment: data})
+                                    }
+                                })
+                            }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.exDepartment ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>责任单位</Text>
                                 </View>
-                                <Image source={require("../../drawable/arrow.png")}
-                                       style={{width: 10, height: 20, marginRight: 10}}/>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <Text>{this.state.exDepartment}</Text>
+                                    <Image source={require("../../drawable/arrow.png")}
+                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
+                                </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
@@ -128,56 +170,54 @@ export default class AsSignFormPager extends Component {
                                 ]}
                                 initial={0}
                                 formHorizontal={false}
-                                style={{marginLeft: 32, marginBottom: 16, height: 100, width: width - 64}}
-                                onPress={(value) => {
-
-                                }}
+                                style={styles.radioStyle}
                             />
-                            <TouchableOpacity style={styles.card}>
+                            <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{backgroundColor: Color.colorAmber, width: 10, height: 55}}/>
-                                    <Text style={{marginLeft: 16, color: Color.content}}>违约处罚</Text>
+                                    <Text style={{
+                                        marginLeft: 16,
+                                        color: Color.content
+                                    }}>{this.state.isResponse ? "需要处罚" : "不处罚"}</Text>
                                 </View>
-                                {/*<Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>*/}
-                            </TouchableOpacity>
-                            <RadioForm
-                                buttonColor={Color.colorAmber}
-                                labelStyle={{color: Color.content, margin: 16}}
-                                radio_props={ [
-                                    {label: carList[0], value: 0},
-                                    {label: carList[1], value: 1},
-                                ]}
-                                initial={0}
-                                formHorizontal={false}
-                                style={{marginLeft: 32, marginBottom: 16, height: 100, width: width - 64}}
-                                onPress={(value) => {
+                                <Switch
+                                    style={{marginRight: 16,}}
+                                    onValueChange={(value) => {
+                                        this.setState({isResponse: value})
+                                    }}
+                                    onTintColor={Color.colorAmber}
+                                    tintColor={Color.colorBlueGrey}
+                                    thumbTintColor={"white"}
+                                    value={this.state.isResponse}/>
+                            </View>
 
-                                }}
-                            />
-                            <TouchableOpacity style={styles.card}>
+                            <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor:this.state.editContent?Color.colorAmber: Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.exReason ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>异常原因</Text>
                                 </View>
                                 {/*<Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>*/}
-                            </TouchableOpacity>
+                            </View>
 
 
-                            <View style={{margin: 16,}}>
-                                <TextInput style={styles.textInput}
+                            <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white'}}>
+                                <TextInput style={[styles.textInput, {paddingLeft: 16}]}
                                            multiline={true}
-                                           defaultValue={this.state.editContent}
+                                           defaultValue={this.state.exReason}
                                            placeholder="在这里填写异常原因"
                                            returnKeyType={'done'}
                                            underlineColorAndroid="transparent"
                                            blurOnSubmit={true}
-                                           onChangeText={(text) => this.setState({editContent: text})}/>
+                                           onChangeText={(text) => this.setState({exReason: text})}/>
 
                             </View>
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-
                 <Loading visible={this.state.isLoading}/>
             </View>
         )
@@ -202,5 +242,13 @@ const styles = StyleSheet.create({
         borderColor: Color.line,
         borderBottomWidth: 1,
     },
+    radioStyle: {
+        marginLeft: 16,
+        marginBottom: 16,
+        width: width - 32,
+        backgroundColor: 'white',
+        paddingTop: 16,
+        paddingLeft: 16
+    }
 
 });

@@ -96,7 +96,7 @@ export default class LauncherPager extends Component {
                 </View>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
-                        if ((App.PowerNum & 1) === 1)
+                        if ((App.PowerNum & 16) === 16)
                             this.props.nav.navigate('asMain');
                         else SnackBar.show("没有权限")
                     }}>

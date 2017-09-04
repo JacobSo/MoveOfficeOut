@@ -30,7 +30,19 @@ export  default  class ApiService {
             })
             .then((response) => response.json())
     }
+    static deleteRequest(method) {
+        console.log('method:' + BASE_URL + method + '\nparam:' );
 
+        return fetch(BASE_URL + method, {
+            method: 'DELETE',
+
+        })
+            .then((response) => {
+                console.log(response);
+                return response;
+            })
+            .then((response) => response.json())
+    }
 
     static postRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
@@ -64,8 +76,8 @@ export  default  class ApiService {
             .then((response) => response.json())
     }
 
-    static getOrderList() {
-        let method = 'orders?creater_name=' + App.account;
+    static getOrderList(status) {
+        let method = 'orders?'+(status==='service_approving'?'saler_name':'creater_name')+'=' + App.account+'&status='+status;
         return this.getRequest(method);
     }
 
@@ -73,7 +85,7 @@ export  default  class ApiService {
         let method = 'dutyreports/abnormalrank';
         return this.getRequest(method);
     }
-3
+
     static getSupplierList() {
         let method = 'supplier_user_matcher';
         return this.getRequest(method);
@@ -90,41 +102,48 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-    static upadteOrder() {
-        let method = 'orders';
+    static updateOrder(id,type,supplierName,remark,operation) {
+        let method = 'orders/'+id;
+        if(operation){
+            let param = JSON.stringify({
+                creater_name: App.account,
+                operator_name: App.account,
+                type:type,
+                customer_name:supplierName,
+                reason:remark,
+                remark:remark,
+                operation:operation
+            });
+            return this.putRequest(method, param);
+        }else{
+            let param = JSON.stringify({
+                creater_name: App.account,
+                operator_name: App.account,
+                type:type,
+                customer_name:supplierName,
+                reason:remark,
+                remark:remark,
+            });
+            return this.putRequest(method, param);
+        }
+    }
+    static deleteOrder(id) {
+        let method = 'orders/'+id;
+
+        return this.deleteRequest(method);
+    }
+    static submitOrder(id,supplier,products,form,comment) {
+        let method = 'orders/'+id;
         let param = JSON.stringify({
-            customer_name: App.account,
+            material_supplier: supplier,
+            abnormal_products: products,
+            duty_report: form,
+         //   duty_report: comment,
 
         });
-        return this.postRequest(method, param);
+        return this.putRequest(method, param);
     }
 
-    static submitOrder() {
-        let method = 'orders';
-        let param = JSON.stringify({
-            customer_name: App.account,
-
-        });
-        return this.postRequest(method, param);
-    }
-
-    static commentOrder() {
-        let method = 'orders';
-        let param = JSON.stringify({
-            customer_name: App.account,
-
-        });
-        return this.postRequest(method, param);
-    }
-
-    static finishOrder() {
-        let method = 'orders';
-        let param = JSON.stringify({
-            customer_name: App.account,
-
-        });
-        return this.postRequest(method, param);
-    }
 
 
 }
