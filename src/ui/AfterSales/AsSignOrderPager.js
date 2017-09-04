@@ -202,7 +202,7 @@ export default class AsSignOrderPager extends Component {
                                     removeClippedSubviews={false}
                                     enableEmptySections={true}
                                     renderRow={(rowData, sectionID, rowID) =>
-                                        <View style={sectionID.productItemContainer}>
+                                        <View style={styles.productItemContainer}>
                                             <Text>{rowData.ItemName}</Text>
                                             <TouchableOpacity
                                                 onPress={() => {
@@ -215,11 +215,9 @@ export default class AsSignOrderPager extends Component {
                                         </View>
                                     }/>
                             }
-
                         })()
                     }
-                    <View style={{width: width - 32, height: 1, backgroundColor: Color.line, marginTop: 16}}/>
-                    <View style={{width: width - 32, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <View style={{width: width - 32, flexDirection: 'row', justifyContent: 'flex-end',borderTopWidth:1,borderColor:Color.line}}>
                         <TouchableOpacity
                             onPress={() => this.setState({isProduct: false})}>
                             <Text style={{margin: 16, color: Color.content}}>收起</Text>
@@ -264,7 +262,7 @@ export default class AsSignOrderPager extends Component {
                         }}>
                         <View style={{backgroundColor: Color.background, flexDirection: 'column',}}>
                             <TouchableOpacity
-                                style={styles.detailTouch}
+                                style={[styles.detailTouch,{borderBottomWidth:1,borderColor:Color.line,paddingBottom:16}]}
                                 onPress={() => this.setState({isDetail: !this.state.isDetail})}>
                                 <Text>单据编号</Text>
                                 <View style={{flexDirection: "row", alignItems: 'center', height: 20}}>
@@ -273,10 +271,6 @@ export default class AsSignOrderPager extends Component {
                                            style={{width: 15, height: 15, marginLeft: 10}}/>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{alignItems: "center", width: width}}>
-                                <View style={{backgroundColor: Color.line, width: width - 32, height: 1}}/>
-                            </View>
-
                             {
                                 this.onDetail()
                             }

@@ -98,7 +98,7 @@ export default class AsParamPager extends Component {
         return (
             <View style={{
                 flex: 1,
-                backgroundColor: 'white'
+                backgroundColor: Color.backgroundColor
             }}>
                 <Toolbar title={[this.props.mode === 0 ? '客户与售后专员' : '异常原因']}
                          color={Color.colorAmber}

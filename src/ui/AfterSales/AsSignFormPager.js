@@ -205,7 +205,7 @@ export default class AsSignFormPager extends Component {
                             </View>
 
 
-                            <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white'}}>
+                            <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',marginBottom:55}}>
                                 <TextInput style={[styles.textInput, {paddingLeft: 16}]}
                                            multiline={true}
                                            defaultValue={this.state.exReason}
