@@ -16,7 +16,8 @@ import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
-import {NavigationActions,} from 'react-navigation';
+import {CachedImage} from "react-native-img-cache";
+import {AsProductEditor} from "../Component/AsProductEditor";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class AsSignOrderPager extends Component {
@@ -36,17 +37,30 @@ export default class AsSignOrderPager extends Component {
             dataSourceProduct: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
-            editList: [],
+
             editContent: '',
 
             supplier: '',
             productList: [],
             submitForm: null,
+            editList: [],
+            productUpdateFlag: ''
+
         }
     }
 
     submitOrder() {
         ApiService.submitOrder()
+    }
+
+    checkProductComment() {
+        let flag = true;
+        this.state.productList.map((data) => {
+            if (!data.comment) {
+                flag = false
+            }
+        });
+        return flag;
     }
 
     onDetail() {
@@ -113,7 +127,7 @@ export default class AsSignOrderPager extends Component {
                     renderRow={(rowData, sectionID, rowID) =>
                         this.getEditItem(rowData, rowID)
                     }/>
-                <View style={{margin: 16, paddingBottom: 80}}>
+                <View style={{margin: 16, paddingBottom: 16}}>
                     <TextInput style={styles.textInput}
                                multiline={true}
                                defaultValue={this.state.editContent}
@@ -125,10 +139,15 @@ export default class AsSignOrderPager extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            style={{alignItems: "center", backgroundColor: 'white', flex: 1,borderColor: Color.line,
-                                borderTopWidth: 1,}}
+                            style={{
+                                alignItems: "center",
+                                backgroundColor: 'white',
+                                flex: 1,
+                                borderColor: Color.line,
+                                borderTopWidth: 1,
+                            }}
                             onPress={() => this.setState({isEdit: false})}>
-                     <Text style={{margin: 10,}}>收起</Text>
+                            <Text style={{margin: 10,}}>收起</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{alignItems: "center", backgroundColor: Color.colorAmber, flex: 1}}
@@ -144,7 +163,6 @@ export default class AsSignOrderPager extends Component {
                                         isModify: false,
                                     })
                                 }
-
                             }}>
                             <Text style={{margin: 10, color: "white"}}>{this.state.isModify ? '修改' : '新增描述'}</Text>
                         </TouchableOpacity>
@@ -202,22 +220,18 @@ export default class AsSignOrderPager extends Component {
                                     removeClippedSubviews={false}
                                     enableEmptySections={true}
                                     renderRow={(rowData, sectionID, rowID) =>
-                                        <View style={styles.productItemContainer}>
-                                            <Text>{rowData.ItemName}</Text>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    this.state.productList.splice(rowID, 1);
-                                                    this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)})
-                                                }}>
-                                                <Image source={require('../../drawable/close_post_label.png')}
-                                                       style={{width: 25, height: 25}}/>
-                                            </TouchableOpacity>
-                                        </View>
+                                        <AsProductEditor
+                                            product={rowData}
+                                            saveFunc={(editData) => {
+                                                rowData.comment = editData;
+                                                this.setState({productUpdateFlag: editData})
+                                            }
+                                            }/>
                                     }/>
                             }
                         })()
                     }
-                    <View style={{width: width - 32, flexDirection: 'row', justifyContent: 'flex-end',borderTopWidth:1,borderColor:Color.line}}>
+                    <View style={styles.productBottomButtonContainer}>
                         <TouchableOpacity
                             onPress={() => this.setState({isProduct: false})}>
                             <Text style={{margin: 16, color: Color.content}}>收起</Text>
@@ -238,31 +252,33 @@ export default class AsSignOrderPager extends Component {
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: Color.background
-            }}>
-                <Toolbar title={['单据跟踪']}
-                         color={Color.colorAmber}
-                         elevation={2}
-                         isHomeUp={true}
-                         isAction={true}
-                         isActionByText={true}
-                         actionArray={['提交']}
-                         functionArray={[
-                             () => this.props.nav.goBack(null),
-                             () => {
-                             }
-                         ]}/>
+            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-55}>
+                <View style={{backgroundColor: Color.background, height: height,}}>
+                    <Toolbar title={['单据跟踪']}
+                             color={Color.colorAmber}
+                             elevation={2}
+                             isHomeUp={true}
+                             isAction={true}
+                             isActionByText={true}
+                             actionArray={[]}
+                             functionArray={[
+                                 () => this.props.nav.goBack(null),
 
-                <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={-55}>
+                             ]}/>
+
                     <ScrollView
                         style={{
                             backgroundColor: Color.background,
                         }}>
-                        <View style={{backgroundColor: Color.background, flexDirection: 'column',}}>
+                        <View style={{
+                            backgroundColor: Color.background, flexDirection: 'column',
+                        }}>
                             <TouchableOpacity
-                                style={[styles.detailTouch,{borderBottomWidth:1,borderColor:Color.line,paddingBottom:16}]}
+                                style={[styles.detailTouch, {
+                                    borderBottomWidth: 1,
+                                    borderColor: Color.line,
+                                    paddingBottom: 16
+                                }]}
                                 onPress={() => this.setState({isDetail: !this.state.isDetail})}>
                                 <Text>单据编号</Text>
                                 <View style={{flexDirection: "row", alignItems: 'center', height: 20}}>
@@ -302,7 +318,11 @@ export default class AsSignOrderPager extends Component {
                                 style={styles.card}
                                 onPress={() => this.setState({isProduct: !this.state.isProduct})}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.line, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: this.state.productList.length === 0 || !this.checkProductComment() ? Color.line : Color.colorAmber,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
                                     <Text style={{marginLeft: 16}}>产品列表</Text>
                                 </View>
                                 <View style={{flexDirection: 'row'}}>
@@ -319,6 +339,7 @@ export default class AsSignOrderPager extends Component {
                             <TouchableOpacity
                                 style={styles.card}
                                 onPress={() => this.props.nav.navigate('asForm', {
+                                    formData: this.state.submitForm,
                                     finishFunc: (data) => {
                                         this.setState({submitForm: data});
                                     }
@@ -333,7 +354,6 @@ export default class AsSignOrderPager extends Component {
                                 </View>
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Text>{this.state.submitForm ? '已填写' : '未填写'}</Text>
-
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                                 </View>
@@ -360,12 +380,27 @@ export default class AsSignOrderPager extends Component {
                             {
                                 this.onEdit()
                             }
+                            <TouchableOpacity
+                                onPress={() => {
+
+                                }}
+                                disabled={!(this.state.supplier && this.state.productList && this.state.submitForm && this.state.editList)}
+                            >
+                                <View style={[styles.button,
+                                    {
+                                        backgroundColor: (this.state.supplier && this.state.productList && this.state.submitForm && this.state.editList && this.checkProductComment()) ?
+                                            Color.colorAmber : Color.line
+                                    }]}>
+                                    <Text style={{color: 'white'}}>{"提交"}</Text>
+                                </View>
+                            </TouchableOpacity>
+
                         </View>
                     </ScrollView>
-                </KeyboardAvoidingView>
 
-                <Loading visible={this.state.isLoading}/>
-            </View>
+                    <Loading visible={this.state.isLoading}/>
+                </View>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -380,6 +415,15 @@ const styles = StyleSheet.create({
         marginRight: 16,
         marginTop: 16,
         elevation: 2,
+    },
+    button: {
+        marginBottom: 55 + 25,
+        width: width - 32,
+        height: 55,
+        margin: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 2
     },
     textInput: {
         width: width - 32,
@@ -416,22 +460,26 @@ const styles = StyleSheet.create({
     editItemContainer: {
         flexDirection: 'row',
         width: width - 32,
+        height: 100,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    productItemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: width - 64,
-        marginTop: 16,
-    },
+
     buttonContainer: {
         width: width - 32,
         flexDirection: 'row',
         justifyContent: 'space-between',
         elevation: 2
-    }
+    },
 
+    productBottomButtonContainer: {
+        width: width - 32,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        borderTopWidth: 1,
+        marginTop: 16,
+        borderColor: Color.line
+    }
 
 });

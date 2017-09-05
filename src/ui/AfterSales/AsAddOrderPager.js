@@ -30,6 +30,7 @@ export default class AsAddOrderPager extends Component {
             selectType: this.props.order ? this.props.order.type : "成品",
             supplier: this.props.order ? this.props.order.customer_name : "",
             remark: this.props.order ? this.props.order.reason : "",
+            // causer:""
         }
     }
 
@@ -63,7 +64,6 @@ export default class AsAddOrderPager extends Component {
             </TouchableOpacity>
         </View>
     }
-
 
     confirmRequest(operation) {
         if ((operation !== "删除") && (!this.state.supplier || !this.state.remark)) {
@@ -112,7 +112,6 @@ export default class AsAddOrderPager extends Component {
         )
     }
 
-
     render() {
         return (
             <View style={{
@@ -136,6 +135,21 @@ export default class AsAddOrderPager extends Component {
                         {
                             this.getSelectionView()
                         }
+                        <TouchableOpacity
+                            style={styles.supplierTouch}
+                            onPress={() => {
+                                this.props.nav.navigate('asParam', {
+                                    mode: 0,
+                                    actionFunc: (selectSupplier) => {
+                                        this.setState({supplier: selectSupplier})
+                                    }
+                                })
+                            }}>
+                            <Text
+                                style={{marginLeft: 16}}>{this.state.supplier ? this.state.supplier : "发起方"}</Text>
+                            <Image source={require("../../drawable/arrow.png")}
+                                   style={{width: 10, height: 20, marginRight: 10}}/>
+                        </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.supplierTouch}
                             onPress={() => {
@@ -228,9 +242,7 @@ const styles = StyleSheet.create({
     stepButton: {
         flex: 1,
         justifyContent: "center",
-
     },
-
     selectContainer: {
         flexDirection: "row",
         justifyContent: "space-around",

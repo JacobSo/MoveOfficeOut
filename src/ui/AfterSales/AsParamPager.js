@@ -42,7 +42,7 @@ export default class AsParamPager extends Component {
     getData() {
         this.setState({isLoading: true});
         InteractionManager.runAfterInteractions(() => {
-            (this.props.mode === 0 ? ApiService.getSupplierList() : ApiService.getExceptionList())
+            (this.props.mode === 0 ? ApiService.getSupplierList() : ApiService.getExceptionList(this.props.mode - 1))
                 .then((responseJson) => {
                     console.log(responseJson);
                     if (responseJson.status === 0) {
@@ -71,16 +71,21 @@ export default class AsParamPager extends Component {
                 <Text style={{
                     paddingLeft: 20,
                     paddingRight: 20,
-                    paddingBottom: 20
+                    paddingBottom: 20,
+                    borderColor: Color.line,
+                    borderBottomWidth: 1
                 }}>{"售后专员：" + (rowData.afterservice_salername ? rowData.afterservice_salername : "无")}</Text>
-                <View style={{width: width, height: 1, backgroundColor: Color.line}}/>
             </TouchableOpacity>
         } else {
             return <TouchableOpacity onPress={() => {
                 this.props.actionFunc(rowData);
                 this.props.nav.goBack(null);
             }}>
-                <Text style={{padding: 20}}>{rowData}</Text>
+                <Text style={{
+                    padding: 20,
+                    borderColor: Color.line,
+                    borderBottomWidth: 1
+                }}>{rowData}</Text>
             </TouchableOpacity>
         }
     }
@@ -100,7 +105,7 @@ export default class AsParamPager extends Component {
                 flex: 1,
                 backgroundColor: Color.backgroundColor
             }}>
-                <Toolbar title={[this.props.mode === 0 ? '客户与售后专员' : '异常原因']}
+                <Toolbar title={[this.props.mode === 0 ? '供应商列表' : (this.props.mode === 1 ? '异常原因' :  (this.props.mode === 2?'异常类型':"处罚金额"))]}
                          color={Color.colorAmber}
                          elevation={2}
                          isHomeUp={true}

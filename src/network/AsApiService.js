@@ -81,8 +81,9 @@ export  default  class ApiService {
         return this.getRequest(method);
     }
 
-    static getExceptionList() {
-        let method = 'dutyreports/abnormalrank';
+    static getExceptionList(flag) {
+        let temp = (flag===0?"reasonrank":(flag===1?"typerank":"compensationrank"));
+        let method = 'dutyreports/'+temp;
         return this.getRequest(method);
     }
 
@@ -144,6 +145,9 @@ export  default  class ApiService {
         return this.putRequest(method, param);
     }
 
-
+    static getProductList(keyword) {
+        let method = 'all-products?key_word='+keyword;
+        return this.getRequest(method);
+    }
 
 }

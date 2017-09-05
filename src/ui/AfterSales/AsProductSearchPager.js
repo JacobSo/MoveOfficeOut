@@ -16,9 +16,9 @@ import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import SnackBar from 'react-native-snackbar-dialog'
-import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
-import ApiService from '../../network/WpApiService';
+import ApiService from '../../network/AsApiService';
 import {WpProductItem} from "../Component/WpProductItem";
+import {AsProductItem} from "../Component/AsProductItem";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class AsProductSearchPager extends Component {
@@ -43,21 +43,21 @@ export default class AsProductSearchPager extends Component {
 
     getData(keyword) {
         this.setState({isLoading: true});
-        ApiService.getProduct(keyword, this.props.isWood ? 0 : 1, this.props.series)
+        ApiService.getProductList(keyword)
             .then((responseJson) => {
                 console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
-                if (!responseJson.IsErr) {
-                    responseJson.list.map((data) => {
+                if (responseJson.status===0) {
+                    responseJson.data.map((data) => {
                         data.check = false
                     });
                     this.setState({
-                        items: responseJson.list,
-                        dataSource: this.state.dataSource.cloneWithRows(responseJson.list)
+                        items: responseJson.data,
+                        dataSource: this.state.dataSource.cloneWithRows(responseJson.data)
                     })
-                } else SnackBar.show(responseJson.ErrDesc)
+                } else SnackBar.show(responseJson.message)
             })
             .catch((error) => {
                 console.log(error);
@@ -89,6 +89,7 @@ export default class AsProductSearchPager extends Component {
                                  this.props.nav.goBack(null)
                              },
                              () => {
+                             if(this.state.items){
                                  let flag = this.state.items[0].check;
                                  this.state.items.map((data) => {
                                      data.check = !flag;
@@ -97,13 +98,13 @@ export default class AsProductSearchPager extends Component {
                                      selectItems: flag ? 0 : this.state.items.length,
                                      dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                  });
+                             }
                              },
                              () => {
                                  let temp = [];
                                  this.state.items.map((data) => {
                                      if (data.check) {
                                          //data.selectStep = this.state.select;
-                                         data.poldid = data.Id;
                                          temp.push(data);
                                      }
                                      data.check = false;
@@ -139,7 +140,6 @@ export default class AsProductSearchPager extends Component {
                     </TouchableOpacity>
                 </View>
 
-
                 <View style={{flexDirection: 'row'}}>
                     <ListView
                         style={{marginBottom: 10, flex: 1, height: height - 25 - 55 * 2}}
@@ -149,8 +149,7 @@ export default class AsProductSearchPager extends Component {
                         renderRow={ (rowData, sectionID, rowID) =>
                             <View
                                 style={{backgroundColor: rowData.check ? Color.colorPrimary : Color.trans,}}>
-                                <WpProductItem
-                                    isWood={this.props.isWood}
+                                <AsProductItem
                                     product={rowData}
                                     func={() => {
                                         let temp = this.state.selectItems;
@@ -165,7 +164,6 @@ export default class AsProductSearchPager extends Component {
                                     }}/></View>
                         }/>
                 </View>
-
                 <Loading visible={this.state.isLoading}/>
             </View>
         )
