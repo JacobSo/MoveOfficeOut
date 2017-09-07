@@ -4,9 +4,10 @@
 'use strict';
 import React, {Component, } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet,  Image,  TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet,  Dimensions,  TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import {CachedImage} from "react-native-img-cache";
+const {width, height} = Dimensions.get('window');
 export class AsProductItem extends Component {
     static propTypes = {
         product: PropTypes.any.isRequired,
@@ -41,10 +42,10 @@ export class AsProductItem extends Component {
                         source={{uri: this.props.product.img_path ? this.props.product.img_path : '-'}}/>
                 </View>
                 <View>
-                        <Text style={{margin: 5,width:170}}>{"名称："+this.props.product.item_name}</Text>
-                        <Text style={{margin: 5,width:170}}>{"编码："+this.props.product.item_code}</Text>
-                        <Text style={{margin: 5,width:170}}>{"sku编码："+this.props.product.sku_code}</Text>
-                        <Text style={{margin: 5,width:170}}>{this.props.product.SkuName}</Text>
+                        <Text style={{margin: 5,width:width/2}}>{"名称："+this.props.product.item_name}</Text>
+                        <Text style={{margin: 5,width:width/2}}>{"编码："+this.props.product.item_code}</Text>
+                        <Text style={{margin: 5,width:width/2}}>{"SKU："+this.props.product.skuCode}</Text>
+                        <Text style={{margin: 5,width:width/2}}>{this.props.product.SkuName}</Text>
                 </View>
             </TouchableOpacity>
         );

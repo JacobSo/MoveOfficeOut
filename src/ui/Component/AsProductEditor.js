@@ -54,14 +54,13 @@ export class AsProductEditor extends Component {
                             }}>
                                 <CachedImage
                                     resizeMode="contain"
-                                    style={{width: 100, height: 100,}}
+                                    style={{width: 100, height: 100,margin: 5}}
                                     source={{uri: this.props.product.img_path ? this.props.product.img_path : '-'}}/>
                                 <View>
-                                    <Text style={{
-                                        margin: 5,
-                                        width: 165
-                                    }}>{"编码：" + this.props.product.item_code}</Text>
-                                    <Text style={{margin: 5, width: 165}}>{this.props.product.SkuName}</Text>
+                                    <Text style={{margin: 5, width: width/2}}>{"编码：" + this.props.product.item_code}</Text>
+                                    <Text style={{margin: 5, width: width/2}}>{"SKU：" + this.props.product.skuCode}</Text>
+                                    <Text style={{margin: 5, width: width/2}}>{this.props.product.SkuName}</Text>
+
                                 </View>
                             </View>
                         }
