@@ -59,9 +59,9 @@ export class AsProductEditor extends Component {
                                 <View>
                                     <Text style={{
                                         margin: 5,
-                                        width: 200
+                                        width: 165
                                     }}>{"编码：" + this.props.product.item_code}</Text>
-                                    <Text style={{margin: 5, width: 200}}>{this.props.product.SkuName}</Text>
+                                    <Text style={{margin: 5, width: 165}}>{this.props.product.SkuName}</Text>
                                 </View>
                             </View>
                         }

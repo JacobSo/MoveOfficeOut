@@ -129,7 +129,7 @@ export default class AsAddOrderPager extends Component {
                              () => this.props.nav.goBack(null),
                          ]}/>
 
-                <KeyboardAvoidingView behavior='position'>
+                <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={-55}>
                     <ScrollView
                         style={{backgroundColor: Color.background,}}>
                         {
