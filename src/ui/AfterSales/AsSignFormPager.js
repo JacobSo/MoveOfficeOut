@@ -211,14 +211,14 @@ export default class AsSignFormPager extends Component {
                                 </View>
                             </TouchableOpacity>
                             {/*责任方*/}
-                            <TouchableOpacity style={styles.card}>
+                            <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{backgroundColor: Color.colorAmber, width: 10, height: 55}}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>异常产生责任方</Text>
                                 </View>
 
                                 {/*    <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>*/}
-                            </TouchableOpacity>
+                            </View>
                             <RadioForm
                                 buttonColor={Color.colorAmber}
                                 labelStyle={{color: Color.content, margin: 16}}
