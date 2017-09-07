@@ -43,6 +43,7 @@ export class AsProductItem extends Component {
                 <View>
                         <Text style={{margin: 5,width:200}}>{"名称："+this.props.product.item_name}</Text>
                         <Text style={{margin: 5,width:200}}>{"编码："+this.props.product.item_code}</Text>
+                        <Text style={{margin: 5,width:200}}>{"sku编码："+this.props.product.sku_code}</Text>
                         <Text style={{margin: 5,width:200}}>{this.props.product.SkuName}</Text>
                 </View>
             </TouchableOpacity>

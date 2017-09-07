@@ -13,6 +13,7 @@ import {
     StyleSheet, TouchableOpacity, TextInput, ListView
 } from 'react-native';
 import Color from '../../constant/Color';
+import SnackBar from 'react-native-snackbar-dialog'
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
@@ -40,7 +41,6 @@ export default class AsSignOrderPager extends Component {
 
             editContent: '',
 
-            supplier: '',
             productList: [],
             submitForm: null,
             editList: [],
@@ -50,13 +50,51 @@ export default class AsSignOrderPager extends Component {
     }
 
     submitOrder() {
-        ApiService.submitOrder()
+        Alert.alert(
+            '提交',
+            '确认填写无误，提交后不可更改',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.setState({isLoading: true});
+                    let temp = [];
+                    this.state.editList.map((data) => temp.push({remark: data}));
+                    ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp)
+                        .then((responseJson) => {
+                            console.log(JSON.stringify(responseJson));
+                            if (responseJson.status === 0) {
+                                SnackBar.show('操作成功');
+                                this.props.refreshFunc();
+                                this.props.nav.goBack(null);
+                            } else {
+                                SnackBar.show(responseJson.message);
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            SnackBar.show("出错了，请稍后再试");
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                        }).done();
+                }
+                },
+            ]
+        );
+
     }
 
     checkProductComment() {
         let flag = true;
         this.state.productList.map((data) => {
-            if (!data.comment) {
+            if (!data.remark) {
                 flag = false
             }
         });
@@ -83,6 +121,10 @@ export default class AsSignOrderPager extends Component {
                         <View style={styles.detailContainer}>
                             <Text>建单人</Text>
                             <Text style={styles.detailText}>{this.props.order.creater_name}</Text>
+                        </View>
+                        <View style={styles.detailContainer}>
+                            <Text>发起方</Text>
+                            <Text style={styles.detailText}>{this.props.order.accuser_name}</Text>
                         </View>
                         <View style={styles.detailContainer}>
                             <Text>客户</Text>
@@ -223,10 +265,15 @@ export default class AsSignOrderPager extends Component {
                                         <AsProductEditor
                                             product={rowData}
                                             saveFunc={(editData) => {
-                                                rowData.comment = editData;
+                                                rowData.remark = editData;
                                                 this.setState({productUpdateFlag: editData})
+                                            }}
+                                            deleteFunc={() => {
+                                                this.state.productList.splice(rowID, 1);
+                                                this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)})
                                             }
-                                            }/>
+                                            }
+                                        />
                                     }/>
                             }
                         })()
@@ -238,9 +285,22 @@ export default class AsSignOrderPager extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.props.nav.navigate('asProduct', {
                             selectFunc: (data) => {
-                                this.state.productList = data;
-                                this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(data)});
-                                //console.log(JSON.stringify(data))
+                                if (this.state.productList.length !== 0) {
+                                    let isExist = false;
+                                    let temp = null;
+                                    this.state.productList.map((existData) => {
+                                        data.map((newData) => {
+                                            temp = newData;
+                                            if (existData.id === newData.id) {
+                                                isExist = true;
+                                            }
+                                        })
+                                    });
+                                    if (!isExist) this.state.productList.push(temp)
+                                } else {
+                                    this.state.productList = JSON.parse(JSON.stringify(data));
+                                }
+                                this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)});
                             }
                         })}>
                             <Text style={{margin: 16, color: Color.colorAmber}}>添加</Text>
@@ -290,29 +350,7 @@ export default class AsSignOrderPager extends Component {
                             {
                                 this.onDetail()
                             }
-                            {/*原材料供应商*/}
-                            <TouchableOpacity style={styles.card} onPress={() => {
-                                this.props.nav.navigate('asParam', {
-                                    mode: 0,
-                                    actionFunc: (selectSupplier) => {
-                                        this.setState({supplier: selectSupplier})
-                                    }
-                                })
-                            }}>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{
-                                        backgroundColor: this.state.supplier ? Color.colorAmber : Color.line,
-                                        width: 10,
-                                        height: 55
-                                    }}/>
-                                    <Text style={{marginLeft: 16}}>原料供应商</Text>
-                                </View>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text style={{width: 150, textAlign: "right"}}>{this.state.supplier}</Text>
-                                    <Image source={require("../../drawable/arrow.png")}
-                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 5}}/>
-                                </View>
-                            </TouchableOpacity>
+
                             {/*产品列表*/}
                             <TouchableOpacity
                                 style={styles.card}
@@ -381,14 +419,11 @@ export default class AsSignOrderPager extends Component {
                                 this.onEdit()
                             }
                             <TouchableOpacity
-                                onPress={() => {
-
-                                }}
-                                disabled={!(this.state.supplier && this.state.productList && this.state.submitForm && this.state.editList)}
-                            >
+                                onPress={() => this.submitOrder()}
+                                disabled={!(this.state.productList && this.state.submitForm && this.state.editList)}>
                                 <View style={[styles.button,
                                     {
-                                        backgroundColor: (this.state.supplier && this.state.productList && this.state.submitForm && this.state.editList && this.checkProductComment()) ?
+                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList && this.checkProductComment()) ?
                                             Color.colorAmber : Color.line
                                     }]}>
                                     <Text style={{color: 'white'}}>{"提交"}</Text>

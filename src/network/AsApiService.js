@@ -91,19 +91,20 @@ export  default  class ApiService {
         let method = 'supplier_user_matcher';
         return this.getRequest(method);
     }
-    static createOrder(type,supplierName,remark) {
+    static createOrder(type,supplierName,remark,causer) {
         let method = 'orders';
         let param = JSON.stringify({
             creater_name: App.account,
             type:type,
             customer_name:supplierName,
+            accuser_name:causer,
             reason:remark,
             remark:remark,
         });
         return this.postRequest(method, param);
     }
 
-    static updateOrder(id,type,supplierName,remark,operation) {
+    static updateOrder(id,type,supplierName,remark,operation,causer) {
         let method = 'orders/'+id;
         if(operation){
             let param = JSON.stringify({
@@ -111,6 +112,7 @@ export  default  class ApiService {
                 operator_name: App.account,
                 type:type,
                 customer_name:supplierName,
+                accuser_name:causer,
                 reason:remark,
                 remark:remark,
                 operation:operation
@@ -122,6 +124,7 @@ export  default  class ApiService {
                 operator_name: App.account,
                 type:type,
                 customer_name:supplierName,
+                accuser_name:causer,
                 reason:remark,
                 remark:remark,
             });
@@ -133,13 +136,14 @@ export  default  class ApiService {
 
         return this.deleteRequest(method);
     }
-    static submitOrder(id,supplier,products,form,comment) {
+    static submitOrder(id,products,form,comment) {
         let method = 'orders/'+id;
         let param = JSON.stringify({
-            material_supplier: supplier,
             abnormal_products: products,
             duty_report: form,
-         //   duty_report: comment,
+            tracks: comment,
+            operator_name: App.account,
+            operation:"done"
 
         });
         return this.putRequest(method, param);

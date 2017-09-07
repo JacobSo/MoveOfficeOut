@@ -12,7 +12,8 @@ const {width, height} = Dimensions.get('window');
 export class AsProductEditor extends Component {
     static propTypes = {
         product: PropTypes.any.isRequired,
-        saveFunc: PropTypes.func.isRequired
+        saveFunc: PropTypes.func.isRequired,
+        deleteFunc: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -37,10 +38,8 @@ export class AsProductEditor extends Component {
                                    style={{width: 22, height: 22}}/>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => {
-                                this.state.productList.splice(rowID, 1);
-                                this.setState({dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)})
-                            }}>
+                            onPress={() => this.props.deleteFunc()
+                            }>
                             <Image source={require('../../drawable/close_post_label.png')}
                                    style={{width: 25, height: 25, marginLeft: 16}}/>
                         </TouchableOpacity>

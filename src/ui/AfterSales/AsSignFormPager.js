@@ -22,7 +22,7 @@ import RadioForm from 'react-native-simple-radio-button';
 
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-const carList = ["材料供应商", "成品供应商"];
+const exList = ["材料供应商", "成品供应商"];
 
 export default class AsSignFormPager extends Component {
 
@@ -31,14 +31,15 @@ export default class AsSignFormPager extends Component {
         this.state = {
             isLoading: false,
             isDetail: false,
-            isResponse: false,
-            exDate: this.props.formData ? this.props.formData.exDate : "",
-            exType: this.props.formData ? this.props.formData.exType : "",
-            exDepartment: this.props.formData ? this.props.formData.exDepartment : "",
-            exCause: this.props.formData ? this.props.formData.exCause : "",
-            exResponse: this.props.formData ? this.props.formData.exResponse : "",
-            exReason: this.props.formData ? this.props.formData.exReason : "",
-            exPrice: this.props.formData ? this.props.formData.exPrice : "",
+            isResponse: this.props.formData?this.props.formData.isResponse:false,
+            radioValue:this.props.formData?this.props.formData.radioValue:0,
+            DutyDate: this.props.formData ? this.props.formData.DutyDate : "",//责任判定时间
+            abnormal_type: this.props.formData ? this.props.formData.abnormal_type : "",//异常类型
+            duty_to: this.props.formData ? this.props.formData.duty_to : "",//责任单位
+            publishment: this.props.formData ? this.props.formData.publishment : "不处罚",//处罚
+            publish_to: this.props.formData ? this.props.formData.publish_to : "材料供应商",//产生责任方
+            abnormal_reason: this.props.formData ? this.props.formData.abnormal_reason : "",//异常原因
+            compensation: this.props.formData ? this.props.formData.compensation : "",//金额
         }
     }
 
@@ -65,7 +66,7 @@ export default class AsSignFormPager extends Component {
                             <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
-                                        backgroundColor: this.state.exDate ? Color.colorAmber : Color.line,
+                                        backgroundColor: this.state.DutyDate ? Color.colorAmber : Color.line,
                                         width: 10,
                                         height: 55
                                     }}/>
@@ -81,7 +82,7 @@ export default class AsSignFormPager extends Component {
                                             },
                                             dateText: {color: Color.content, textAlign: 'center', width: width / 4}
                                         }}
-                                        date={this.state.exDate}
+                                        date={this.state.DutyDate}
                                         mode="date"
                                         placeholder="请选择时间"
                                         format="YYYY-MM-DD"
@@ -90,7 +91,7 @@ export default class AsSignFormPager extends Component {
                                         cancelBtnText="取消"
                                         showIcon={false}
                                         onDateChange={(date) => {
-                                            this.setState({exDate: date})
+                                            this.setState({DutyDate: date})
                                         }}
                                     />
                                     <Image source={require("../../drawable/arrow.png")}
@@ -102,20 +103,20 @@ export default class AsSignFormPager extends Component {
                                 this.props.nav.navigate('asParam', {
                                     mode: 2,
                                     actionFunc: (data) => {
-                                        this.setState({exType: data})
+                                        this.setState({abnormal_type: data})
                                     }
                                 })
                             }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
-                                        backgroundColor: this.state.exType ? Color.colorAmber : Color.line,
+                                        backgroundColor: this.state.abnormal_type ? Color.colorAmber : Color.line,
                                         width: 10,
                                         height: 55
                                     }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>异常类型</Text>
                                 </View>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <Text>{this.state.exType}</Text>
+                                    <Text>{this.state.abnormal_type}</Text>
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                                 </View>
@@ -125,20 +126,20 @@ export default class AsSignFormPager extends Component {
                                 this.props.nav.navigate('asParam', {
                                     mode: 1,
                                     actionFunc: (data) => {
-                                        this.setState({exReason: data})
+                                        this.setState({abnormal_reason: data})
                                     }
                                 })
                             }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
-                                        backgroundColor: this.state.exReason ? Color.colorAmber : Color.line,
+                                        backgroundColor: this.state.abnormal_reason ? Color.colorAmber : Color.line,
                                         width: 10,
                                         height: 55
                                     }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>异常原因</Text>
                                 </View>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <Text>{this.state.exReason}</Text>
+                                    <Text>{this.state.abnormal_reason}</Text>
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                                 </View>
@@ -148,20 +149,20 @@ export default class AsSignFormPager extends Component {
                                 this.props.nav.navigate('asParam', {
                                     mode: 0,
                                     actionFunc: (data) => {
-                                        this.setState({exDepartment: data})
+                                        this.setState({duty_to: data})
                                     }
                                 })
                             }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
-                                        backgroundColor: this.state.exDepartment ? Color.colorAmber : Color.line,
+                                        backgroundColor: this.state.duty_to ? Color.colorAmber : Color.line,
                                         width: 10,
                                         height: 55
                                     }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>责任单位</Text>
                                 </View>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <Text>{this.state.exDepartment}</Text>
+                                    <Text>{this.state.duty_to}</Text>
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                                 </View>
@@ -173,12 +174,13 @@ export default class AsSignFormPager extends Component {
                                     <Text style={{
                                         marginLeft: 16,
                                         color: Color.content
-                                    }}>{this.state.isResponse ? "需要处罚" : "不处罚"}</Text>
+                                    }}>{this.state.publishment }</Text>
                                 </View>
                                 <Switch
                                     style={{marginRight: 16,}}
                                     onValueChange={(value) => {
-                                        this.setState({isResponse: value})
+                                        this.setState({isResponse:value,
+                                            publishment: value?"需要处罚" : "不处罚"})
                                     }}
                                     onTintColor={Color.colorAmber}
                                     tintColor={Color.colorBlueGrey}
@@ -190,20 +192,20 @@ export default class AsSignFormPager extends Component {
                                 this.props.nav.navigate('asParam', {
                                     mode: 3,
                                     actionFunc: (data) => {
-                                        this.setState({exPrice: data})
+                                        this.setState({compensation: data})
                                     }
                                 })
                             }}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
-                                        backgroundColor: this.state.exPrice ? Color.colorAmber : Color.line,
+                                        backgroundColor: this.state.compensation ? Color.colorAmber : Color.line,
                                         width: 10,
                                         height: 55
                                     }}/>
                                     <Text style={{marginLeft: 16, color: Color.content}}>处罚金额</Text>
                                 </View>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <Text>{this.state.exPrice}</Text>
+                                    <Text>{this.state.compensation}</Text>
                                     <Image source={require("../../drawable/arrow.png")}
                                            style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                                 </View>
@@ -221,25 +223,28 @@ export default class AsSignFormPager extends Component {
                                 buttonColor={Color.colorAmber}
                                 labelStyle={{color: Color.content, margin: 16}}
                                 radio_props={ [
-                                    {label: carList[0], value: 0},
-                                    {label: carList[1], value: 1},
+                                    {label: exList[0], value: 0},
+                                    {label: exList[1], value: 1},
                                 ]}
-                                initial={0}
+                                initial={this.state.radioValue}
                                 formHorizontal={false}
                                 style={styles.radioStyle}
-                                onPress={() => {
+                                onPress={(value) => {
+                                    this.setState({
+                                        radioValue:value,
+                                        publish_to:exList[value]})
                                 }}
                             />
 
 
                             <TouchableOpacity
-                                disabled={!(this.state.exDate && this.state.exType && this.state.exDepartment && this.state.exReason && this.state.exPrice)}
+                                disabled={!(this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason && this.state.compensation)}
                                 onPress={() => {
                                     this.props.finishFunc(this.state);
                                     this.props.nav.goBack(null);
                                 }}>
                                 <View style={[styles.button, {
-                                    backgroundColor: (this.state.exDate && this.state.exType && this.state.exDepartment && this.state.exReason && this.state.exPrice) ?
+                                    backgroundColor: (this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason && this.state.compensation) ?
                                         Color.colorAmber : Color.line
                                 }]}>
                                     <Text style={{color: 'white'}}>{"继续"}</Text>

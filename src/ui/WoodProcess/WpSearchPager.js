@@ -124,7 +124,8 @@ export default class PasswordPager extends Component {
                                          dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                          selectItems: 0
                                      })
-                                 } else   this.props.nav.goBack(null)
+                                 } else
+                                     this.props.nav.goBack(null)
 
 
                              }
