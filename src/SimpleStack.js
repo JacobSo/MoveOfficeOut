@@ -48,6 +48,7 @@ import AsSignFormPager from "./ui/AfterSales/AsSignFormPager";
 import AsProductSearchPager from "./ui/AfterSales/AsProductSearchPager";
 import AsSignOrderPager from "./ui/AfterSales/AsSignOrderPager";
 import AsParamPager from "./ui/AfterSales/AsParamPager";
+import codePush from 'react-native-code-push'
 const {width, height} = Dimensions.get('window');
 
 
