@@ -83,6 +83,7 @@ export  default  class ApiService {
         });
         return this.postRequest(method, param);
     }
+
     static modifyWork(guid,series, car, factory, date, member, type, products) {
         let method = 'ReviewBill/UpReviewBill';
         let param = JSON.stringify({
@@ -107,6 +108,7 @@ export  default  class ApiService {
         });
         return this.postRequest(method, param);
     }
+
     static submitWork(id) {
         let method = 'ReviewBill/Submit';
         let param = JSON.stringify({

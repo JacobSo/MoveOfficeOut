@@ -31,8 +31,8 @@ export default class AsSignFormPager extends Component {
         this.state = {
             isLoading: false,
             isDetail: false,
-            isResponse: this.props.formData?this.props.formData.isResponse:false,
-            radioValue:this.props.formData?this.props.formData.radioValue:0,
+            isResponse: this.props.formData ? this.props.formData.isResponse : false,
+            radioValue: this.props.formData ? this.props.formData.radioValue : 0,
             DutyDate: this.props.formData ? this.props.formData.DutyDate : "",//责任判定时间
             abnormal_type: this.props.formData ? this.props.formData.abnormal_type : "",//异常类型
             duty_to: this.props.formData ? this.props.formData.duty_to : "",//责任单位
@@ -179,8 +179,10 @@ export default class AsSignFormPager extends Component {
                                 <Switch
                                     style={{marginRight: 16,}}
                                     onValueChange={(value) => {
-                                        this.setState({isResponse:value,
-                                            publishment: value?"需要处罚" : "不处罚"})
+                                        this.setState({
+                                            isResponse: value,
+                                            publishment: value ? "需要处罚" : "不处罚"
+                                        })
                                     }}
                                     onTintColor={Color.colorAmber}
                                     tintColor={Color.colorBlueGrey}
@@ -188,28 +190,40 @@ export default class AsSignFormPager extends Component {
                                     value={this.state.isResponse}/>
                             </View>
                             {/*金额*/}
-                            <TouchableOpacity style={styles.card} onPress={() => {
-                                this.props.nav.navigate('asParam', {
-                                    mode: 3,
-                                    actionFunc: (data) => {
-                                        this.setState({compensation: data})
+                            {
+                                (() => {
+                                    if (this.state.isResponse) {
+                                        return <TouchableOpacity style={styles.card} onPress={() => {
+                                            this.props.nav.navigate('asParam', {
+                                                mode: 3,
+                                                actionFunc: (data) => {
+                                                    this.setState({compensation: data})
+                                                }
+                                            })
+                                        }}>
+                                            <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                <View style={{
+                                                    backgroundColor: this.state.compensation ? Color.colorAmber : Color.line,
+                                                    width: 10,
+                                                    height: 55
+                                                }}/>
+                                                <Text style={{marginLeft: 16, color: Color.content}}>处罚金额</Text>
+                                            </View>
+                                            <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                <Text>{this.state.compensation}</Text>
+                                                <Image source={require("../../drawable/arrow.png")}
+                                                       style={{
+                                                           width: 10,
+                                                           height: 20,
+                                                           marginRight: 10,
+                                                           marginLeft: 10
+                                                       }}/>
+                                            </View>
+                                        </TouchableOpacity>
                                     }
-                                })
-                            }}>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{
-                                        backgroundColor: this.state.compensation ? Color.colorAmber : Color.line,
-                                        width: 10,
-                                        height: 55
-                                    }}/>
-                                    <Text style={{marginLeft: 16, color: Color.content}}>处罚金额</Text>
-                                </View>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <Text>{this.state.compensation}</Text>
-                                    <Image source={require("../../drawable/arrow.png")}
-                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
-                                </View>
-                            </TouchableOpacity>
+                                })()
+                            }
+
                             {/*责任方*/}
                             <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
@@ -231,20 +245,23 @@ export default class AsSignFormPager extends Component {
                                 style={styles.radioStyle}
                                 onPress={(value) => {
                                     this.setState({
-                                        radioValue:value,
-                                        publish_to:exList[value]})
+                                        radioValue: value,
+                                        publish_to: exList[value]
+                                    })
                                 }}
                             />
 
 
                             <TouchableOpacity
-                                disabled={!(this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason && this.state.compensation)}
+                                disabled={!(this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason &&
+                                ((this.state.isResponse && this.state.compensation) || (!this.state.isResponse)))}
                                 onPress={() => {
                                     this.props.finishFunc(this.state);
                                     this.props.nav.goBack(null);
                                 }}>
                                 <View style={[styles.button, {
-                                    backgroundColor: (this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason && this.state.compensation) ?
+                                    backgroundColor: (this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason &&
+                                    ((this.state.isResponse && this.state.compensation) || (!this.state.isResponse))) ?
                                         Color.colorAmber : Color.line
                                 }]}>
                                     <Text style={{color: 'white'}}>{"继续"}</Text>
