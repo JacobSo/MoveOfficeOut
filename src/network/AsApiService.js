@@ -9,7 +9,7 @@ let BASE_URL = 'http://192.168.3.172:5050/api/v1/afterservice/';
 //let BASE_URL = 'http://192.168.1.190:8806/moveofficeTest/';
 export  default  class ApiService {
 
-    static getBaseUrl(){
+    static getBaseUrl() {
         return BASE_URL
     }
 
@@ -29,9 +29,15 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
     }
+
     static deleteRequest(method) {
-        console.log('method:' + BASE_URL + method + '\nparam:' );
+        console.log('method:' + BASE_URL + method + '\nparam:');
 
         return fetch(BASE_URL + method, {
             method: 'DELETE',
@@ -42,6 +48,11 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
     }
 
     static postRequest(method, param) {
@@ -60,6 +71,11 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
     }
 
     static getRequest(method, param) {
@@ -74,16 +90,22 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
+
     }
 
     static getOrderList(status) {
-        let method = 'orders?'+(status==='service_approving'?'saler_name':'creater_name')+'=' + App.account+'&status='+status;
+        let method = 'orders?' + (status === 'service_approving' ? 'saler_name' : 'creater_name') + '=' + App.account + '&status=' + status;
         return this.getRequest(method);
     }
 
     static getExceptionList(flag) {
-        let temp = (flag===0?"reasonrank":(flag===1?"typerank":"compensationrank"));
-        let method = 'dutyreports/'+temp;
+        let temp = (flag === 0 ? "reasonrank" : (flag === 1 ? "typerank" : "compensationrank"));
+        let method = 'dutyreports/' + temp;
         return this.getRequest(method);
     }
 
@@ -91,66 +113,70 @@ export  default  class ApiService {
         let method = 'supplier_user_matcher';
         return this.getRequest(method);
     }
-    static createOrder(type,supplierName,remark,causer) {
+
+
+    static createOrder(type, supplierName, remark, causer) {
         let method = 'orders';
         let param = JSON.stringify({
             creater_name: App.account,
-            type:type,
-            customer_name:supplierName,
-            accuser_name:causer,
-            reason:remark,
-            remark:remark,
+            type: type,
+            customer_name: supplierName,
+            accuser_name: causer,
+            reason: remark,
+            remark: remark,
         });
         return this.postRequest(method, param);
     }
 
-    static updateOrder(id,type,supplierName,remark,operation,causer) {
-        let method = 'orders/'+id;
-        if(operation){
+    static updateOrder(id, type, supplierName, remark, operation, causer) {
+        let method = 'orders/' + id;
+        if (operation) {
             let param = JSON.stringify({
                 creater_name: App.account,
                 operator_name: App.account,
-                type:type,
-                customer_name:supplierName,
-                accuser_name:causer,
-                reason:remark,
-                remark:remark,
-                operation:operation
+                type: type,
+                customer_name: supplierName,
+                accuser_name: causer,
+                reason: remark,
+                remark: remark,
+                operation: operation
             });
             return this.putRequest(method, param);
-        }else{
+        } else {
             let param = JSON.stringify({
                 creater_name: App.account,
                 operator_name: App.account,
-                type:type,
-                customer_name:supplierName,
-                accuser_name:causer,
-                reason:remark,
-                remark:remark,
+                type: type,
+                customer_name: supplierName,
+                accuser_name: causer,
+                reason: remark,
+                remark: remark,
             });
             return this.putRequest(method, param);
         }
     }
+
     static deleteOrder(id) {
-        let method = 'orders/'+id;
+        let method = 'orders/' + id;
 
         return this.deleteRequest(method);
     }
-    static submitOrder(id,products,form,comment) {
-        let method = 'orders/'+id;
+
+    static submitOrder(id, products, form, comment) {
+        let method = 'orders/' + id;
         let param = JSON.stringify({
             abnormal_products: products,
             duty_report: form,
             tracks: comment,
             operator_name: App.account,
-            operation:"done"
+            operation: "done"
 
         });
         return this.putRequest(method, param);
     }
 
     static getProductList(keyword) {
-        let method = 'all-products?key_word='+keyword;
+        let method = 'all-products?key_word=' + keyword;
         return this.getRequest(method);
     }
 

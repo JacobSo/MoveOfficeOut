@@ -40,9 +40,7 @@ export default class QcCarPager extends Component {
     getCar() {
         this.setState({isRefreshing: true});
         ApiService.getCarInfo().then((responseJson) => {
-            console.log(JSON.stringify(responseJson));
             this.setState({isRefreshing: false});
-
             if (!responseJson.IsErr) {
                 this.setState({
                     items: responseJson.list,
@@ -73,7 +71,6 @@ export default class QcCarPager extends Component {
                     this.setState({isLoading: true});
                     ApiService.deleteCar(guid)
                         .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
                                 this.props.nav.goBack(null);
                                 SnackBar.show("删除成功");

@@ -61,7 +61,6 @@ export default class QcMainPagerNext extends Component {
         this.setState({isRefreshing: true,});
         ApiService.getProductListOld()
             .then((responseJson) => {
-                console.log(responseJson);
                 sqLite.insertQcData(responseJson.data);//save in db
                 if (!responseJson.IsErr) {
                     this.setState({

@@ -61,7 +61,6 @@ class WdMainPager extends Component {
         sqLite.clearWdData();
         ApiService.getSeries()
             .then((responseJson) => {
-                console.log(responseJson);
                 if (!responseJson.IsErr) {
                     this.setState({
                         items: responseJson.Serieslist,

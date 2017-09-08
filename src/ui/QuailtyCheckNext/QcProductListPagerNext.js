@@ -174,7 +174,6 @@ export default class QcProductListPagerNext extends Component {
         this.setState({isLoading: true});
         ApiService.finishTaskOld(this.props.task.QualityNoGuid, '0.0', '0.0')
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);

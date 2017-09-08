@@ -55,7 +55,6 @@ export default class PasswordPager extends Component {
             if (this.props.type === 2) {
                 ApiService.getCarList()
                     .then((responseJson) => {
-                        console.log(responseJson);
                         if (!responseJson.IsErr) {
                             this.state.items = responseJson.list;
                             this.setState({
@@ -67,7 +66,6 @@ export default class PasswordPager extends Component {
             } else {
                 ApiService.searchParam(this.props.type, this.props.type === 0 ? this.props.searchKey : '', this.props.type === 0 ? '' : this.props.searchKey)
                     .then((responseJson) => {
-                        console.log(responseJson);
                         if (!responseJson.IsErr) {
                             this.state.items = responseJson.list;
                             this.setState({
@@ -143,7 +141,6 @@ export default class PasswordPager extends Component {
                                 this.setState({isLoading: true});
                                 ApiService.addLocation(this.state.editContent, this.state.editContentSub)
                                     .then((responseJson) => {
-                                        console.log(responseJson);
                                         if (!responseJson.IsErr) {
                                             this._setSelect(this.state.editContent);
                                             this.popupDialog.dismiss();

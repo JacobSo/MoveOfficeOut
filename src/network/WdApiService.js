@@ -3,7 +3,7 @@
  */
 'use strict';
 //let BASE_URL = "http://119.145.166.182:8806/MoveOffice/";
-let BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
+let BASE_URL = "http://113.105.237.98:8806/moveofficeTest/";
 //let BASE_URL = "http://192.168.1.190:8806/moveofficeTest/";
 import App from '../constant/Application';
 
@@ -25,7 +25,11 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
-    }
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            }) }
 
     static getRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
@@ -43,7 +47,11 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
-    }
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            }) }
 
 
     static getSeries() {

@@ -44,7 +44,6 @@ export default class AsParamPager extends Component {
         InteractionManager.runAfterInteractions(() => {
             (this.props.mode === 0 ? ApiService.getSupplierList() : ApiService.getExceptionList(this.props.mode - 1))
                 .then((responseJson) => {
-                    console.log(responseJson);
                     if (responseJson.status === 0) {
                         this.state.items = responseJson.data;
                         this.setState({
@@ -58,7 +57,7 @@ export default class AsParamPager extends Component {
                     this.setState({isLoading: false})
                 }, 100);
             }).done(this.setState({isLoading: false}))
-        });
+       });
     }
 
     getItemView(rowData) {
@@ -94,7 +93,7 @@ export default class AsParamPager extends Component {
     async  _search(text) {
         //console.log(JSON.stringify(this.state.items))
         return this.state.items.filter((item) => {
-            console.log(item);
+            //console.log(item);
             return item ? (JSON.stringify(item).toLowerCase().indexOf(text.toLowerCase()) > -1) : ("无");
         });
     }

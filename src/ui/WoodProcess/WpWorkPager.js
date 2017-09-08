@@ -227,7 +227,6 @@ export default class WpWorkPager extends Component {
     postText() {
         this.setState({isLoading: true});
         this.createOrModifyReq().then((responseJson) => {
-            console.log(JSON.stringify(responseJson));
             if (!responseJson.IsErr) {
                 if (this.state.submitPic.length !== 0)
                     this.postImage(responseJson.ReviewBillGuid);
@@ -300,7 +299,6 @@ export default class WpWorkPager extends Component {
             data.fileName,
             this.state.isModify ? this.props.task.Guid : mainId)
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
                         SnackBar.show("提交成功");
@@ -341,7 +339,6 @@ export default class WpWorkPager extends Component {
                     this.setState({isLoading: true});
                     ApiService.submitWork(this.props.task.Guid)
                         .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
                                 SnackBar.show("提交成功");
                                 this.props.refreshFunc();
@@ -381,7 +378,6 @@ export default class WpWorkPager extends Component {
                     this.setState({isLoading: true});
                     ApiService.deleteWork(this.props.task.Guid)
                         .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
                             if (!responseJson.IsErr) {
                                 SnackBar.show("删除成功");
                                 this.props.refreshFunc();

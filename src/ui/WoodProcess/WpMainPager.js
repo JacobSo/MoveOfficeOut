@@ -40,7 +40,6 @@ export default class WpMainPager extends Component {
         this.setState({isRefreshing: true,})
         ApiService.getList(0)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (!responseJson.IsErr) {
                     this.setState({
                         items: responseJson.list,

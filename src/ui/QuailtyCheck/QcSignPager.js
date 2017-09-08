@@ -173,7 +173,6 @@ export default class QcSignPager extends Component {
             this.state.lat,
             this.state.lng
         ).then((responseJson) => {
-            console.log(JSON.stringify(responseJson));
             if (!responseJson.IsErr) {
                 SnackBar.show("签到成功", {duration: 1500});
                 this.props.nav.goBack(null);
@@ -195,7 +194,6 @@ export default class QcSignPager extends Component {
 
     getSighToday() {
         ApiService.getSignHistory().then((responseJson) => {
-            console.log(JSON.stringify(responseJson));
             if (!responseJson.IsErr) {
                 this.setState({
                     items: responseJson.list,

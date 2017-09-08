@@ -17,7 +17,6 @@ export  default  class UpdateService {
             SnackBar.show("检查中...",{duration:3000});
         ApiService.pgyerApiCheck(Platform.OS === 'ios' ? iosKey : androidKey)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (responseJson.code === 0) {
                     if (Number(responseJson.data[responseJson.data.length - 1].appBuildVersion) <= (Platform.OS === "ios" ? iosCode : androidCode)) {
                         console.log('pgyerApiCheck:up to date');

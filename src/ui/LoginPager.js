@@ -83,7 +83,6 @@ export default class LoginPager extends Component {
         this.setState({isLoading: true});
         ApiService.loginFuc(this.state.account, this.state.pwd)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (!responseJson.IsErr) {
                     //  SnackBar.show('登录成功');
                     App.saveAccount(

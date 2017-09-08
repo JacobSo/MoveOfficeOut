@@ -174,7 +174,6 @@ class CustomList extends Component {
         this.state.page = 1;
         ApiService.getItems(this.state.page, this.props.type)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (!responseJson.IsErr) {
                     this.setState({
                         items: responseJson.list,
@@ -202,7 +201,6 @@ class CustomList extends Component {
         if (this.props.type === '5' || this.props.type === '0,1,2') {
             ApiService.getToday()
                 .then((responseJson) => {
-                    console.log(responseJson);
                     if (!responseJson.IsErr) {
                         this.setState({
                             isTodayTask: responseJson.list.length !== 0,
@@ -229,7 +227,6 @@ class CustomList extends Component {
         if (this.state.items.length >= 10 && !this.state.isEndUp) {
             this.state.page = this.state.page + 1;
             ApiService.getItems(this.state.page, this.props.type).then((responseJson) => {
-                // console.log(responseJson);
                 if (!responseJson.IsErr) {
                     this.state.items = this.state.items.concat(responseJson.list);
                     this.setState({
@@ -283,7 +280,6 @@ class CustomList extends Component {
             this.state.todayTask[0].DailyEndDate ? Utility.getTime(this.state.todayTask[0].DailyEndDate) : '',
             this.state.todayTask[0].Dptid)
             .then((responseJson) => {
-                console.log("--------" + JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     SnackBar.show("签到完成");
                     this._todayTask();

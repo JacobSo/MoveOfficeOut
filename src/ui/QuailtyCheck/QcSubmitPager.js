@@ -287,7 +287,6 @@ export default class QcSubmitPager extends Component {
             this.state.lat,
             this.state.lng)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (!responseJson.IsErr) {
                     if (this.state.submitPic.length !== 0) {
                         this.submitImage();
@@ -337,7 +336,6 @@ export default class QcSubmitPager extends Component {
     postImageReq(data, index, callBackData) {
         ApiService.uploadImageOld(JSON.stringify(this.state.arraySeries), data.fid, data.fileName, callBackData)
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
                         SnackBar.show("提交成功");

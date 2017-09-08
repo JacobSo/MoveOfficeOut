@@ -39,7 +39,6 @@ export default class AsMainPager extends Component {
         this.setState({isRefreshing: true,});
         ApiService.getOrderList(this.state.listFlag)
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 if (responseJson.status === 0) {
                     this.setState({
                         items: responseJson.data,
@@ -138,7 +137,7 @@ export default class AsMainPager extends Component {
                 {this.getView()}
                 {
                     (() => {
-                        console.log(App.workType);
+                     //   console.log(App.workType);
                         if (App.workType !== "售后专员") {
                             return <FloatButton
                                 color={Color.colorAccent}

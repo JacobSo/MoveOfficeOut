@@ -327,7 +327,6 @@ class WdProductListPager extends Component {
             this.setState({isLoading: true})
             ApiService.submitStatus(this.props.task.SeriesGuid)
                 .then((responseJson) => {
-                    console.log(JSON.stringify(responseJson));
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);

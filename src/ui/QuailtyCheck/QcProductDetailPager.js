@@ -219,8 +219,6 @@ export default  class QcProductDetailPager extends Component {
         this.setState({isLoading: true,});
         ApiService.getFormItems(this.props.product.fentityID,stage)
             .then((responseJson) => {
-                console.log(responseJson);
-
                 if (!responseJson.IsErr) {
                     this.props.nav.navigate('qcForm',
                         {

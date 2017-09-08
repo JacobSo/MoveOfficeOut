@@ -19,7 +19,6 @@ export class AsProductItem extends Component {
     }
 
     componentDidMount() {
-        console.log(JSON.stringify(this.state.product))
     }
 
     componentWillReceiveProps(newProps) {

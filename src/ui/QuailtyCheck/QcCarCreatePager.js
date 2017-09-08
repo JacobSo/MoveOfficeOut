@@ -49,9 +49,7 @@ export default class QcCarCreatePager extends Component {
         this.setState({isLoading: true});
         ApiService.requestCar(this.state.editContent, this.state.myCar, this.state.carType, this.state.useTime,this.state.carType==="其他用车"?0:1)
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
-
                     this.props.nav.goBack(null);
                     this.props.finishFunc();
                     SnackBar.show("申请车牌成功，等待助理分配");

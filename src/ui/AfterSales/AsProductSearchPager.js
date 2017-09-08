@@ -45,7 +45,6 @@ export default class AsProductSearchPager extends Component {
         this.setState({isLoading: true});
         ApiService.getProductList(keyword)
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);

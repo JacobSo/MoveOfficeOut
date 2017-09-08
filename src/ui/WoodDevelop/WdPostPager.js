@@ -243,7 +243,6 @@ class WdPostPager extends Component {
         imageData.push(data);
         ApiService.postImg(JSON.stringify(imageData))
             .then((responseJson) => {
-                console.log(JSON.stringify(responseJson));
                 if (!responseJson.IsErr) {
                     if (index === this.state.submitPic.length - 1) {
                         SnackBar.show("提交成功", {duration: 3000});

@@ -54,7 +54,6 @@ export default class PasswordPager extends Component {
                         this.setState({isLoading: true});
                         ApiService.setPassword(this.state.oldPwd, this.state.confirmPwd)
                             .then((responseJson) => {
-                                    //
                                     if (!responseJson.IsErr) {
                                         SnackBar.show('修改成功');
                                         const resetAction = NavigationActions.reset({

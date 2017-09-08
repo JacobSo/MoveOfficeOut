@@ -3,7 +3,7 @@
  */
 'use strict';
 //let BASE_URL = 'http://192.168.1.190:8806/outapply/';
-let BASE_URL = 'http://119.145.166.182:8806/outapply/';
+let BASE_URL = 'http://113.105.237.98:8806/outapply/';
 //let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
 
@@ -25,20 +25,16 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
-           /* .catch((error) => {
-                console.log(error);
-                NetInfo.fetch().done((status) => {
-                    //console.log('Status:' + status);
-                    if (status === 'NONE')
-                        Toast.show("没有网络");
-                    else
-                        Toast.show("出错了，请稍后再试");
-                });
-            });*/
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
+
     }
 
     static pgyerApiCheck(key){
-        console.log("pgyerApiCheck");
+     //   console.log("pgyerApiCheck");
         return fetch("http://www.pgyer.com/apiv1/app/viewGroup", {
             method: 'POST',
             headers: {
@@ -52,6 +48,11 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
     }
 
     static pgyerApiInstall(akey){
@@ -68,6 +69,11 @@ export  default  class ApiService {
                 return response;
             })
             .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson;
+
+            })
     }
 
     static loginFuc(name, pwd) {

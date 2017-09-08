@@ -65,7 +65,6 @@ export default class AsSignOrderPager extends Component {
                     this.state.editList.map((data) => temp.push({remark: data}));
                     ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp)
                         .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
                                 this.props.refreshFunc();
@@ -285,18 +284,22 @@ export default class AsSignOrderPager extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.props.nav.navigate('asProduct', {
                             selectFunc: (data) => {
+                               // console.log(data);
                                 if (this.state.productList.length !== 0) {
                                     let isExist = false;
-                                    let temp = null;
-                                    this.state.productList.map((existData) => {
-                                        data.map((newData) => {
-                                            temp = newData;
+                                    data.map((newData) => {
+                                        this.state.productList.map((existData) => {
+                                           // console.log(existData.id + "--" + newData.id)
                                             if (existData.id === newData.id) {
                                                 isExist = true;
                                             }
-                                        })
+                                        });
+                                        if (!isExist) {
+                                            this.state.productList.push(newData);
+                                          //  console.log("push : " + JSON.stringify(newData));
+                                        }
+
                                     });
-                                    if (!isExist) this.state.productList.push(temp)
                                 } else {
                                     this.state.productList = JSON.parse(JSON.stringify(data));
                                 }

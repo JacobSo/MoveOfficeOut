@@ -30,7 +30,7 @@ export default class AsAddOrderPager extends Component {
             selectType: this.props.order ? this.props.order.type : "成品",
             supplier: this.props.order ? this.props.order.customer_name : "",
             remark: this.props.order ? this.props.order.reason : "",
-            causer:this.props.order?this.props.order.accuser_name:""
+            causer: this.props.order ? this.props.order.accuser_name : ""
         }
     }
 
@@ -66,7 +66,7 @@ export default class AsAddOrderPager extends Component {
     }
 
     confirmRequest(operation) {
-        if ((operation !== "删除") && (!this.state.supplier || !this.state.remark||!this.state.causer)) {
+        if ((operation !== "删除") && (!this.state.supplier || !this.state.remark || !this.state.causer)) {
             SnackBar.show("信息不完整");
             return
         }
@@ -81,13 +81,12 @@ export default class AsAddOrderPager extends Component {
                 {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    operation === "创建" ?
-                        ApiService.createOrder(this.state.selectType, this.state.supplier, this.state.remark,this.state.causer)
+                    (operation === "创建" ?
+                        ApiService.createOrder(this.state.selectType, this.state.supplier, this.state.remark, this.state.causer)
                         : (operation === "删除" ?
-                        ApiService.deleteOrder(this.props.order.id) :
-                        ApiService.updateOrder(this.props.order.id, this.state.selectType, this.state.supplier, this.state.remark, operation === "修改" ? null : 'done',this.state.causer))
+                            ApiService.deleteOrder(this.props.order.id) :
+                            ApiService.updateOrder(this.props.order.id, this.state.selectType, this.state.supplier, this.state.remark, operation === "修改" ? null : 'done', this.state.causer)))
                         .then((responseJson) => {
-                            console.log(JSON.stringify(responseJson));
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
                                 this.props.refreshFunc();
@@ -209,7 +208,7 @@ export default class AsAddOrderPager extends Component {
                                         <Text style={{
                                             marginLeft: 16,
                                             width: width - 32,
-                                            paddingBottom:100
+                                            paddingBottom: 100
                                         }}>注意：如果修改过单据，需要先修改，再提交，提交后不可修改</Text>
                                     </View>
                             })()
@@ -237,7 +236,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: width - 64,
-        height: 65,
+        height: 100,
         marginRight: 10,
     },
     stepButton: {

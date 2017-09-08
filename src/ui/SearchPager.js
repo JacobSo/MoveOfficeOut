@@ -77,7 +77,6 @@ export default class SearchPager extends Component {
         });
         ApiService.searchItems(this.state.page, this.state.type, this.state.supply, this.state.series, this.state.beginTime, this.state.endTime)
             .then((responseJson) => {
-                // console.log(responseJson);
                 this.state.items = this.state.items.concat(responseJson.list);
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.state.items),
