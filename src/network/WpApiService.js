@@ -6,7 +6,7 @@
 //npmlet BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
 import App from '../constant/Application';
 //let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
-let BASE_URL = 'http://113.105.237.98:8806/outapply/';
+let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapply/';
 
 export  default  class ApiService {
 
