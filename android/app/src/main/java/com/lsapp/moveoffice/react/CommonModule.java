@@ -382,7 +382,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
     public void getAllPrint(Callback callback, Callback error) {
         String filePath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH;
         Gson gson = new Gson();
-        try {
+        try{
             ArrayList<String> paths = new ArrayList<>();
             File f = new File(filePath);
             File[] files = f.listFiles();// 列出所有文件
@@ -397,6 +397,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             error.invoke("出错了！");
         }
     }
+
 
     @ReactMethod
     public void openOfficeFile(String path) {
