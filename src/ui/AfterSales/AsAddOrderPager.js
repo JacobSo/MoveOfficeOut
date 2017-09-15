@@ -66,7 +66,7 @@ export default class AsAddOrderPager extends Component {
     }
 
     confirmRequest(operation) {
-        if ((operation !== "删除") && (!this.state.supplier || !this.state.remark || !this.state.causer)) {
+        if ((operation !== "删除") && (!this.state.remark || !this.state.causer)) {
             SnackBar.show("信息不完整");
             return
         }

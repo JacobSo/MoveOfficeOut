@@ -44,7 +44,8 @@ export default class AsSignOrderPager extends Component {
             productList: [],
             submitForm: null,
             editList: [],
-            productUpdateFlag: ''
+            productUpdateFlag: '',
+            remark: ''
 
         }
     }
@@ -63,7 +64,7 @@ export default class AsSignOrderPager extends Component {
                     this.setState({isLoading: true});
                     let temp = [];
                     this.state.editList.map((data) => temp.push({remark: data}));
-                    ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp)
+                    ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp, this.state.remark)
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
@@ -284,19 +285,19 @@ export default class AsSignOrderPager extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.props.nav.navigate('asProduct', {
                             selectFunc: (data) => {
-                               // console.log(data);
+                                // console.log(data);
                                 if (this.state.productList.length !== 0) {
                                     let isExist = false;
                                     data.map((newData) => {
                                         this.state.productList.map((existData) => {
-                                           // console.log(existData.id + "--" + newData.id)
+                                            // console.log(existData.id + "--" + newData.id)
                                             if (existData.id === newData.id) {
                                                 isExist = true;
                                             }
                                         });
                                         if (!isExist) {
                                             this.state.productList.push(newData);
-                                          //  console.log("push : " + JSON.stringify(newData));
+                                            //  console.log("push : " + JSON.stringify(newData));
                                         }
 
                                     });
@@ -400,6 +401,31 @@ export default class AsSignOrderPager extends Component {
                                 </View>
 
                             </TouchableOpacity>
+                            {/*异常原因*/}
+{/*
+                            <TouchableOpacity style={styles.card}>
+                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                    <View style={{
+                                        backgroundColor: this.state.editContent ? Color.colorAmber : Color.line,
+                                        width: 10,
+                                        height: 55
+                                    }}/>
+                                    <Text style={{marginLeft: 16, color: Color.content}}>异常原因</Text>
+                                </View>
+                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
+                            </TouchableOpacity>
+*/}
+                            <View style={{margin: 16,}}>
+                                <TextInput style={styles.textInput}
+                                           multiline={true}
+                                           defaultValue={this.state.editContent}
+                                           placeholder="在这里填写异常原因"
+                                           returnKeyType={'done'}
+                                           underlineColorAndroid="transparent"
+                                           blurOnSubmit={true}
+                                           onChangeText={(text) => this.setState({editContent: text})}/>
+                            </View>
+
                             {/*跟进进度*/}
                             <TouchableOpacity
                                 style={styles.card}
@@ -423,10 +449,10 @@ export default class AsSignOrderPager extends Component {
                             }
                             <TouchableOpacity
                                 onPress={() => this.submitOrder()}
-                                disabled={!(this.state.productList && this.state.submitForm && this.state.editList)}>
+                                disabled={!(this.state.productList && this.state.submitForm && this.state.editList && this.state.remark && this.checkProductComment())}>
                                 <View style={[styles.button,
                                     {
-                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList && this.checkProductComment()) ?
+                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList && this.state.remark && this.checkProductComment()) ?
                                             Color.colorAmber : Color.line
                                     }]}>
                                     <Text style={{color: 'white'}}>{"提交"}</Text>

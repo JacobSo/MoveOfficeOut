@@ -135,8 +135,8 @@ export  default  class ApiService {
                 creater_name: App.account,
                 operator_name: App.account,
                 type: type,
-                customer_name: supplierName,
-                accuser_name: causer,
+                customer_name: causer,//switch
+                accuser_name: supplierName,//switch
                 reason: remark,
                 remark: remark,
                 operation: operation
@@ -147,8 +147,8 @@ export  default  class ApiService {
                 creater_name: App.account,
                 operator_name: App.account,
                 type: type,
-                customer_name: supplierName,
-                accuser_name: causer,
+                customer_name: causer,//switch
+                accuser_name: supplierName,//switch
                 reason: remark,
                 remark: remark,
             });
@@ -162,12 +162,13 @@ export  default  class ApiService {
         return this.deleteRequest(method);
     }
 
-    static submitOrder(id, products, form, comment) {
+    static submitOrder(id, products, form, comment,remark) {
         let method = 'orders/' + id;
         let param = JSON.stringify({
             abnormal_products: products,
             duty_report: form,
             tracks: comment,
+            remark: remark,//add
             operator_name: App.account,
             operation: "done"
 
