@@ -40,6 +40,7 @@ export default class AsSignFormPager extends Component {
             publish_to: this.props.formData ? this.props.formData.publish_to : "材料供应商",//产生责任方
             abnormal_reason: this.props.formData ? this.props.formData.abnormal_reason : "",//异常原因
             compensation: this.props.formData ? this.props.formData.compensation : "",//金额
+            sale_compensation: this.props.formData ? this.props.formData.sale_compensation : "",//售后扣款
         }
     }
 
@@ -170,7 +171,10 @@ export default class AsSignFormPager extends Component {
                             {/*处罚*/}
                             <View style={styles.card}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{backgroundColor: Color.colorAmber, width: 10, height: 55}}/>
+                                    <View style={{
+                                        backgroundColor: ((this.state.isResponse && this.state.sale_compensation && this.state.compensation)||!this.state.isResponse) ?
+                                            Color.colorAmber:Color.line , width: 10, height: 55
+                                    }}/>
                                     <Text style={{
                                         marginLeft: 16,
                                         color: Color.content
@@ -193,33 +197,61 @@ export default class AsSignFormPager extends Component {
                             {
                                 (() => {
                                     if (this.state.isResponse) {
-                                        return <TouchableOpacity style={styles.card} onPress={() => {
-                                            this.props.nav.navigate('asParam', {
-                                                mode: 3,
-                                                actionFunc: (data) => {
-                                                    this.setState({compensation: data})
-                                                }
-                                            })
+                                        return <View style={{
+                                            backgroundColor: 'white',
+                                            marginLeft: 16,
+                                            marginRight: 16,
+                                            padding: 16
                                         }}>
-                                            <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                                <View style={{
-                                                    backgroundColor: this.state.compensation ? Color.colorAmber : Color.line,
-                                                    width: 10,
-                                                    height: 55
-                                                }}/>
-                                                <Text style={{marginLeft: 16, color: Color.content}}>处罚金额</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                                <Text>{this.state.compensation}</Text>
-                                                <Image source={require("../../drawable/arrow.png")}
-                                                       style={{
-                                                           width: 10,
-                                                           height: 20,
-                                                           marginRight: 10,
-                                                           marginLeft: 10
-                                                       }}/>
-                                            </View>
-                                        </TouchableOpacity>
+                                            <Text style={{color: Color.colorAmber}}>处罚金额</Text>
+                                            <TextInput style={styles.textInput}
+                                                       multiline={true}
+                                                       defaultValue={this.state.compensation}
+                                                       placeholder="处罚金额"
+                                                       returnKeyType={'done'}
+                                                       keyboardType="numeric"
+                                                       underlineColorAndroid="transparent"
+                                                       blurOnSubmit={true}
+                                                       onChangeText={(text) => this.setState({compensation: text})}/>
+                                            <Text style={{color: Color.colorAmber}}>售后扣款</Text>
+                                            <TextInput style={styles.textInput}
+                                                       multiline={true}
+                                                       defaultValue={this.state.sale_compensation}
+                                                       placeholder="售后扣款"
+                                                       returnKeyType={'done'}
+                                                       keyboardType="numeric"
+                                                       underlineColorAndroid="transparent"
+                                                       blurOnSubmit={true}
+                                                       onChangeText={(text) => this.setState({sale_compensation: text})}/>
+                                        </View>
+
+                                        /*<TouchableOpacity style={styles.card} onPress={() => {
+                                         this.props.nav.navigate('asParam', {
+                                         mode: 3,
+                                         actionFunc: (data) => {
+                                         this.setState({compensation: data})
+                                         }
+                                         })
+                                         }}>
+                                         <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                         <View style={{
+                                         backgroundColor: this.state.compensation ? Color.colorAmber : Color.line,
+                                         width: 10,
+                                         height: 55
+                                         }}/>
+                                         <Text style={{marginLeft: 16, color: Color.content}}>处罚金额</Text>
+                                         </View>
+                                         <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                         <Text>{this.state.compensation}</Text>
+                                         <Image source={require("../../drawable/arrow.png")}
+                                         style={{
+                                         width: 10,
+                                         height: 20,
+                                         marginRight: 10,
+                                         marginLeft: 10
+                                         }}/>
+                                         </View>
+                                         </TouchableOpacity>*/
                                     }
                                 })()
                             }
@@ -254,14 +286,14 @@ export default class AsSignFormPager extends Component {
 
                             <TouchableOpacity
                                 disabled={!(this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason &&
-                                ((this.state.isResponse && this.state.compensation) || (!this.state.isResponse)))}
+                                ((this.state.isResponse && this.state.compensation&&this.state.sale_compensation) || (!this.state.isResponse)))}
                                 onPress={() => {
                                     this.props.finishFunc(this.state);
                                     this.props.nav.goBack(null);
                                 }}>
                                 <View style={[styles.button, {
                                     backgroundColor: (this.state.DutyDate && this.state.abnormal_type && this.state.duty_to && this.state.abnormal_reason &&
-                                    ((this.state.isResponse && this.state.compensation) || (!this.state.isResponse))) ?
+                                    ((this.state.isResponse && this.state.compensation&&this.state.sale_compensation) || (!this.state.isResponse))) ?
                                         Color.colorAmber : Color.line
                                 }]}>
                                     <Text style={{color: 'white'}}>{"继续"}</Text>
@@ -288,9 +320,10 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     textInput: {
-        width: width - 32,
-        height: 65,
+        width: width - 64,
+        height: 45,
         marginRight: 10,
+        marginBottom: 10,
         borderColor: Color.line,
         borderBottomWidth: 1,
     },

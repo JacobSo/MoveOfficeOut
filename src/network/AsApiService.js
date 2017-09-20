@@ -6,6 +6,7 @@
 //npmlet BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
 import App from '../constant/Application';
 let BASE_URL = 'http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/';
+
 //let BASE_URL = 'http://192.168.1.190:8806/moveofficeTest/';
 export  default  class ApiService {
 
@@ -79,9 +80,10 @@ export  default  class ApiService {
     }
 
     static getRequest(method, param) {
-        console.log('method:' + BASE_URL + method + '\nparam:' + param);
+        let temp = method.indexOf("http://")>-1?method:(BASE_URL + method);
+        console.log('method:' + temp + '\nparam:' + param);
 
-        return fetch(BASE_URL + method, {
+        return fetch(temp, {
             method: 'GET',
             /// body: param
         })
@@ -177,7 +179,7 @@ export  default  class ApiService {
     }
 
     static getProductList(keyword) {
-        let method = 'all-products?key_word=' + keyword;
+        let method = 'http://lsprt.lsmuyprt.com:8806/shorder/ShMaterial/get_all_material?key_word=' + keyword;
         return this.getRequest(method);
     }
 

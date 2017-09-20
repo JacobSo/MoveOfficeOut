@@ -46,7 +46,7 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-        UpdateService.update(false);
+       // UpdateService.update(false);
         this._localLogin();
     }
 

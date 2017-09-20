@@ -414,7 +414,7 @@ export default class AsSignOrderPager extends Component {
                                 </View>
                                 <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
                             </TouchableOpacity>
-*/}
+
                             <View style={{margin: 16,}}>
                                 <TextInput style={styles.textInput}
                                            multiline={true}
@@ -425,7 +425,7 @@ export default class AsSignOrderPager extends Component {
                                            blurOnSubmit={true}
                                            onChangeText={(text) => this.setState({editContent: text})}/>
                             </View>
-
+ */}
                             {/*跟进进度*/}
                             <TouchableOpacity
                                 style={styles.card}
@@ -449,10 +449,10 @@ export default class AsSignOrderPager extends Component {
                             }
                             <TouchableOpacity
                                 onPress={() => this.submitOrder()}
-                                disabled={!(this.state.productList && this.state.submitForm && this.state.editList && this.state.remark && this.checkProductComment())}>
+                                disabled={!(this.state.productList && this.state.submitForm && this.state.editList.length>0 && this.checkProductComment())}>
                                 <View style={[styles.button,
                                     {
-                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList && this.state.remark && this.checkProductComment()) ?
+                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList>0  && this.checkProductComment()) ?
                                             Color.colorAmber : Color.line
                                     }]}>
                                     <Text style={{color: 'white'}}>{"提交"}</Text>
