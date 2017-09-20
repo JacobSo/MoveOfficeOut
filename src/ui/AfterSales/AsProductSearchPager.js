@@ -48,7 +48,7 @@ export default class AsProductSearchPager extends Component {
                 setTimeout(() => {
                     this.setState({isLoading: false})
                 }, 100);
-                if (responseJson.status===0) {
+                if (responseJson.status === 0) {
                     responseJson.data.map((data) => {
                         data.check = false
                     });
@@ -88,16 +88,16 @@ export default class AsProductSearchPager extends Component {
                                  this.props.nav.goBack(null)
                              },
                              () => {
-                             if(this.state.items){
-                                 let flag = this.state.items[0].check;
-                                 this.state.items.map((data) => {
-                                     data.check = !flag;
-                                 });
-                                 this.setState({
-                                     selectItems: flag ? 0 : this.state.items.length,
-                                     dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
-                                 });
-                             }
+                                 if (this.state.items) {
+                                     let flag = this.state.items[0].check;
+                                     this.state.items.map((data) => {
+                                         data.check = !flag;
+                                     });
+                                     this.setState({
+                                         selectItems: flag ? 0 : this.state.items.length,
+                                         dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                                     });
+                                 }
                              },
                              () => {
                                  let temp = [];
@@ -112,7 +112,7 @@ export default class AsProductSearchPager extends Component {
                                      this.props.selectFunc(temp);
 
                                      this.setState({//set default
-                                        // select: [false, false, false],
+                                         // select: [false, false, false],
                                          dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                          selectItems: 0
                                      })
@@ -133,7 +133,9 @@ export default class AsProductSearchPager extends Component {
                     <TouchableOpacity
                         style={styles.searchStyle}
                         onPress={() => {
-                            this.getData(this.state.keyword);
+                            if (this.state.keyword)
+                                this.getData(this.state.keyword);
+                            else SnackBar.show("请输入关键字")
                         }}>
                         <Text style={{color: "white"}}>搜索</Text>
                     </TouchableOpacity>
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10
     },
-    searchStyle:{
+    searchStyle: {
         backgroundColor: Color.colorAmber,
         margin: 8,
         justifyContent: "center",
