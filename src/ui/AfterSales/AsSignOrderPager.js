@@ -452,7 +452,7 @@ export default class AsSignOrderPager extends Component {
                                 disabled={!(this.state.productList && this.state.submitForm && this.state.editList.length>0 && this.checkProductComment())}>
                                 <View style={[styles.button,
                                     {
-                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList>0  && this.checkProductComment()) ?
+                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList.length>0  && this.checkProductComment()) ?
                                             Color.colorAmber : Color.line
                                     }]}>
                                     <Text style={{color: 'white'}}>{"提交"}</Text>

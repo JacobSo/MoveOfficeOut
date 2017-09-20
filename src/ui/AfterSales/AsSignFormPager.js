@@ -185,7 +185,9 @@ export default class AsSignFormPager extends Component {
                                     onValueChange={(value) => {
                                         this.setState({
                                             isResponse: value,
-                                            publishment: value ? "需要处罚" : "不处罚"
+                                            publishment: value ? "需要处罚" : "不处罚",
+                                            sale_compensation:"",
+                                            compensation: "",
                                         })
                                     }}
                                     onTintColor={Color.colorAmber}
