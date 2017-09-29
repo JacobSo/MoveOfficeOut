@@ -145,7 +145,7 @@ export default class AsAddOrderPager extends Component {
                                 })
                             }}>
                             <Text
-                                style={{marginLeft: 16}}>{this.state.causer ? this.state.causer : "发起方"}</Text>
+                                style={{marginLeft: 16}}>{this.state.causer ? this.state.causer : "投诉客户名称"}</Text>
                             <Image source={require("../../drawable/arrow.png")}
                                    style={{width: 10, height: 20, marginRight: 10}}/>
                         </TouchableOpacity>
@@ -160,7 +160,7 @@ export default class AsAddOrderPager extends Component {
                                 })
                             }}>
                             <Text
-                                style={{marginLeft: 16}}>{this.state.supplier ? this.state.supplier : "客户与售后专员"}</Text>
+                                style={{marginLeft: 16}}>{this.state.supplier ? this.state.supplier : "被投诉客户名称"}</Text>
                             <Image source={require("../../drawable/arrow.png")}
                                    style={{width: 10, height: 20, marginRight: 10}}/>
                         </TouchableOpacity>
