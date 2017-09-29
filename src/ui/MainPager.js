@@ -28,7 +28,6 @@ export default class MainPager extends Component {
         this.state = {
             floatButtonVisible: App.jobType !== '3' && App.jobType !== '4' && App.jobType !== '5',
         };
-
     }
 
     componentDidMount() {

@@ -42,9 +42,11 @@ export class AsProductItem extends Component {
                 </View>
                 <View>
                         <Text style={{margin: 5,width:width/2}}>{"名称："+this.props.product.item_name}</Text>
+{/*
                         <Text style={{margin: 5,width:width/2}}>{"编码："+this.props.product.item_code}</Text>
-                        <Text style={{margin: 5,width:width/2}}>{"SKU："+this.props.product.skuCode}</Text>
-                        <Text style={{margin: 5,width:width/2}}>{this.props.product.SkuName}</Text>
+*/}
+                        <Text style={{margin: 5,width:width/2}}>{"材料编码："+this.props.product.skuCode}</Text>
+                        <Text style={{margin: 5,width:width/2}}>{"材料描述："+this.props.product.SkuName}</Text>
                 </View>
             </TouchableOpacity>
         );
