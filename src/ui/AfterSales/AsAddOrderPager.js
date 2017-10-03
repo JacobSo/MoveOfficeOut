@@ -18,21 +18,29 @@ import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import SnackBar from 'react-native-snackbar-dialog'
 const Dimensions = require('Dimensions');
+import RadioForm from 'react-native-simple-radio-button';
+
 const {width, height} = Dimensions.get('window');
+const exList = ["皮布", "化工", "辅料", "板木", "五金"];
+
 export default class AsAddOrderPager extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            select: this.props.order && this.props.order.type !== "成品" ?
-                (this.props.order.type === "材料" ? [false, true, false] : [false, false, true]) : [true, false, false],
+            select: this.props.order && this.props.order.reason !== "成品" ?
+                (this.props.order.reason === "材料" ? [false, true, false] : [false, false, true]) : [true, false, false],
             isLoading: false,
             selectType: this.props.order ? this.props.order.type : "成品",
             supplier: this.props.order ? this.props.order.customer_name : "",
-            remark: this.props.order ? this.props.order.reason : "",
-            causer: this.props.order ? this.props.order.accuser_name : ""
+            remark: this.props.order ? this.props.order.remark : "",
+            causer: this.props.order ? this.props.order.accuser_name : "",
+            type: this.props.order ? this.props.order.type : "皮布",
+            radioValue: this.props.order ? exList.indexOf(this.props.order.type) : 0,
+            isShow: false,
         }
     }
+
 
     getSelectionView() {
         return <View style={styles.selectContainer}>
@@ -82,10 +90,10 @@ export default class AsAddOrderPager extends Component {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
                     (operation === "创建" ?
-                        ApiService.createOrder(this.state.selectType, this.state.supplier, this.state.remark, this.state.causer)
+                        ApiService.createOrder(this.state.selectType, this.state.supplier, this.state.remark, this.state.causer, this.state.type)
                         : (operation === "删除" ?
                             ApiService.deleteOrder(this.props.order.id) :
-                            ApiService.updateOrder(this.props.order.id, this.state.selectType, this.state.supplier, this.state.remark, operation === "修改" ? null : 'done', this.state.causer)))
+                            ApiService.updateOrder(this.props.order.id, this.state.selectType, this.state.supplier, this.state.remark, operation === "修改" ? null : 'done', this.state.causer, this.state.type)))
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
@@ -115,7 +123,8 @@ export default class AsAddOrderPager extends Component {
         return (
             <View style={{
                 flex: 1,
-                backgroundColor: Color.background
+                backgroundColor: Color.background,
+                paddingBottom: 75
             }}>
                 <Toolbar title={this.props.order ? ['修改售后单据'] : ['创建售后单据']}
                          color={Color.colorAmber}
@@ -145,9 +154,12 @@ export default class AsAddOrderPager extends Component {
                                 })
                             }}>
                             <Text
-                                style={{marginLeft: 16}}>{this.state.causer ? this.state.causer : "投诉客户名称"}</Text>
-                            <Image source={require("../../drawable/arrow.png")}
-                                   style={{width: 10, height: 20, marginRight: 10}}/>
+                                style={{marginLeft: 16}}>投诉方</Text>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text  style={{width:150}}>{this.state.causer}</Text>
+                                <Image source={require("../../drawable/arrow.png")}
+                                       style={{width: 10, height: 20, marginRight: 10,marginLeft: 10}}/>
+                            </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.supplierTouch}
@@ -160,10 +172,53 @@ export default class AsAddOrderPager extends Component {
                                 })
                             }}>
                             <Text
-                                style={{marginLeft: 16}}>{this.state.supplier ? this.state.supplier : "被投诉客户名称"}</Text>
-                            <Image source={require("../../drawable/arrow.png")}
-                                   style={{width: 10, height: 20, marginRight: 10}}/>
+                                style={{marginLeft: 16}}>被投诉方</Text>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{width:150}}>{this.state.supplier}</Text>
+                                <Image source={require("../../drawable/arrow.png")}
+                                       style={{width: 10, height: 20, marginRight: 10,marginLeft: 10}}/>
+                            </View>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.supplierTouch}
+                            onPress={() => {
+                                this.setState({isShow: !this.state.isShow})
+                            }}>
+                            <Text
+                                style={{marginLeft: 16}}>类型</Text>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text>{this.state.type}</Text>
+                                <Image source={require("../../drawable/arrow.png")}
+                                       style={{width: 10, height: 20, marginRight: 10,marginLeft: 10}}/>
+                            </View>
+                        </TouchableOpacity>
+                        {
+                            (() => {
+                                if (this.state.isShow) {
+                                    return <RadioForm
+                                        buttonColor={Color.colorAmber}
+                                        labelStyle={{color: Color.content, margin: 16}}
+                                        radio_props={ [
+                                            {label: exList[0], value: 0},
+                                            {label: exList[1], value: 1},
+                                            {label: exList[2], value: 2},
+                                            {label: exList[3], value: 3},
+                                            {label: exList[4], value: 4},
+                                        ]}
+                                        initial={this.state.radioValue}
+                                        formHorizontal={false}
+                                        style={styles.radioStyle}
+                                        onPress={(value) => {
+                                            this.setState({
+                                                radioValue: value,
+                                                type: exList[value],
+                                                isShow:false
+                                            })
+                                        }}
+                                    />
+                                }
+                            })()
+                        }
 
                         <View style={styles.editContainer}>
                             <TextInput style={styles.textInput}
@@ -216,8 +271,6 @@ export default class AsAddOrderPager extends Component {
 
                     </ScrollView>
                 </KeyboardAvoidingView>
-
-
                 <Loading visible={this.state.isLoading}/>
             </View>
 
@@ -267,6 +320,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         margin: 16,
         elevation: 2
-    }
-
+    },
+    radioStyle: {
+        marginLeft: 16,
+        marginBottom: 16,
+        width: width - 32,
+        backgroundColor: 'white',
+        paddingTop: 16,
+        paddingLeft: 16
+    },
 });

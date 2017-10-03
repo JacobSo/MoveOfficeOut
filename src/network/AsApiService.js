@@ -111,47 +111,47 @@ export  default  class ApiService {
         return this.getRequest(method);
     }
 
-    static getSupplierList() {
-        let method = 'supplier_user_matcher';
+    static getSupplierList(type) {
+        let method = 'supplier_user_matcher?role='+type;//成品商,材料商
         return this.getRequest(method);
     }
 
 
-    static createOrder(type, supplierName, remark, causer) {
+    static createOrder(reason, supplierName, remark, causer,addType) {
         let method = 'orders';
         let param = JSON.stringify({
             creater_name: App.account,
-            type: type,
+            reason: reason,
             customer_name: supplierName,
             accuser_name: causer,
-            reason: remark,
+            type: addType,
             remark: remark,
         });
         return this.postRequest(method, param);
     }
 
-    static updateOrder(id, type, supplierName, remark, operation, causer) {
+    static updateOrder(id, reason, supplierName, remark, operation, causer,addType) {
         let method = 'orders/' + id;
         if (operation) {
             let param = JSON.stringify({
                 creater_name: App.account,
                 operator_name: App.account,
-                type: type,
+                type: addType,
                 customer_name: causer,//switch
                 accuser_name: supplierName,//switch
-                reason: remark,
+                reason: reason,
                 remark: remark,
-                operation: operation
+                operation: operation,
             });
             return this.putRequest(method, param);
         } else {
             let param = JSON.stringify({
                 creater_name: App.account,
                 operator_name: App.account,
-                type: type,
+                type: addType,
                 customer_name: causer,//switch
                 accuser_name: supplierName,//switch
-                reason: remark,
+                reason: reason,
                 remark: remark,
             });
             return this.putRequest(method, param);

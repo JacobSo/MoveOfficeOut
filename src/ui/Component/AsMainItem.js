@@ -29,23 +29,28 @@ export default class AsMainItem extends Component {
                     width: width - 32,
                     padding: 5,
                     color: 'white',
-                    backgroundColor: (this.props.rowData.type === "成品" ? Color.colorGreen :
-                        (this.props.rowData.type==="材料"?Color.colorDeepPurple:Color.colorBlueGrey))
+                    backgroundColor: (this.props.rowData.reason === "成品" ? Color.colorGreen :
+                        (this.props.rowData.reason==="材料"?Color.colorDeepPurple:Color.colorBlueGrey))
                 }}>
-                    {this.props.rowData.type}</Text>
+                    {this.props.rowData.reason}</Text>
                 <View style={styles.itemText}>
                     <Text>{'单据编号'}</Text>
                     <Text
                         style={{color: Color.black_semi_transparent}}>{this.props.rowData.serial_number}</Text>
                 </View>
                 <View style={styles.itemText}>
-                    <Text>{'客户'}</Text>
+                    <Text>{'类型'}</Text>
+                    <Text
+                        style={{color: Color.black_semi_transparent}}>{this.props.rowData.type}</Text>
+                </View>
+                <View style={styles.itemText}>
+                    <Text>{'投诉方'}</Text>
                     <Text
                         style={{color: Color.black_semi_transparent,width:200,textAlign:'right'}} numberOfLines={2}>{this.props.rowData.customer_name}</Text>
                 </View>
                 <View style={styles.itemText}>
-                    <Text>{'售后专员'}</Text>
-                    <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.saler}</Text>
+                    <Text>{'被投诉方'}</Text>
+                    <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.accuser_name}</Text>
                 </View>
                 <View style={styles.itemText}>
                     <Text>{'创建时间'}</Text>
