@@ -76,7 +76,7 @@ export default class AsParamPager extends Component {
                 this.props.nav.goBack(null);
             }}
             >
-                <Text style={{padding: 20,}}>{"（" + rowData.role + "）" + rowData.supplier_name}</Text>
+                <Text style={{padding: 30,}}>{"（" + rowData.role + "）" + rowData.supplier_name}</Text>
 
             </TouchableOpacity>
         } else {
