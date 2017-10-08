@@ -117,7 +117,7 @@ export  default  class ApiService {
     }
 
 
-    static createOrder(reason, supplierName, remark, causer,addType) {
+    static createOrder(reason, supplierName, remark, causer,addType,person) {
         let method = 'orders';
         let param = JSON.stringify({
             creater_name: App.account,
@@ -126,11 +126,12 @@ export  default  class ApiService {
             accuser_name: causer,
             type: addType,
             remark: remark,
+            saler_name:person
         });
         return this.postRequest(method, param);
     }
 
-    static updateOrder(id, reason, supplierName, remark, operation, causer,addType) {
+    static updateOrder(id, reason, supplierName, remark, operation, causer,addType,person) {
         let method = 'orders/' + id;
         if (operation) {
             let param = JSON.stringify({
@@ -141,6 +142,7 @@ export  default  class ApiService {
                 accuser_name: supplierName,//switch
                 reason: reason,
                 remark: remark,
+                saler_name:person,
                 operation: operation,
             });
             return this.putRequest(method, param);
@@ -153,6 +155,7 @@ export  default  class ApiService {
                 accuser_name: supplierName,//switch
                 reason: reason,
                 remark: remark,
+                saler_name:person
             });
             return this.putRequest(method, param);
         }
@@ -160,7 +163,6 @@ export  default  class ApiService {
 
     static deleteOrder(id) {
         let method = 'orders/' + id;
-
         return this.deleteRequest(method);
     }
 
@@ -172,14 +174,19 @@ export  default  class ApiService {
             tracks: comment,
             remark: remark,//add
             operator_name: App.account,
-            operation: "done"
-
+            operation: "done",
+            saler_name:App.account
         });
         return this.putRequest(method, param);
     }
 
     static getProductList(keyword) {
         let method = 'http://lsprt.lsmuyprt.com:8806/shorder/ShMaterial/get_all_material?key_word=' + keyword;
+        return this.getRequest(method);
+    }
+
+    static getProblemType(){
+        let method = "http://lsprt.lsmuyprt.com:8806/shorder/ShMaterial/get_aftertypes"
         return this.getRequest(method);
     }
 

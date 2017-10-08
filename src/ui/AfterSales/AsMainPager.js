@@ -15,17 +15,21 @@ import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SnackBar from 'react-native-snackbar-dialog'
 import AsMainItem from "../Component/AsMainItem";
 import App from '../../constant/Application';
+import Loading from 'react-native-loading-spinner-overlay';
+
 const {width, height} = Dimensions.get('window');
 export default class AsMainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listFlag:App.workType==="售后专员"?"service_approving":"waitting",
+            exType: [],
+            listFlag: App.workType === "售后专员" ? "service_approving" : "waitting",
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
             isRefreshing: false,
+            isLoading: false,
         }
     }
 
@@ -57,6 +61,36 @@ export default class AsMainPager extends Component {
             }).done();
     }
 
+    getAddType(order) {
+        this.setState({isLoading: true,});
+        ApiService.getProblemType()
+            .then((responseJson) => {
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+                if (responseJson.status === 0) {
+                    this.state.exType = responseJson.data;
+                    this.props.nav.navigate("asAdd", {
+                        order: order,
+                        exType: responseJson.data,
+                        refreshFunc: () => {
+                            this.onRefresh()
+                        },
+                    });
+                } else {
+                    SnackBar.show(responseJson.message, {duration: 3000})
+                }
+            })
+            .catch((error) => {
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试", {duration: 3000})
+            }).done();
+
+    }
+
     getView() {
         if (this.state.items && this.state.items.length === 0) {
             return (<RefreshEmptyView isRefreshing={this.state.isRefreshing}
@@ -83,7 +117,7 @@ export default class AsMainPager extends Component {
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
                         <AsMainItem rowData={rowData} action={() => {
-                            if(App.workType==="售后专员"){
+                            if (App.workType === "售后专员") {
                                 this.props.nav.navigate("asSign", {
                                     order: rowData,
                                     refreshFunc: () => {
@@ -91,14 +125,17 @@ export default class AsMainPager extends Component {
                                     },
 
                                 })
-                            }else{
-                                this.props.nav.navigate("asAdd", {
-                                    order: rowData,
-                                    refreshFunc: () => {
-                                        this.onRefresh()
-                                    },
+                            } else {
+                                if (this.state.exType.length !== 0) {
+                                    this.props.nav.navigate("asAdd", {
+                                        exType: this.state.exType,
+                                        order: rowData,
+                                        refreshFunc: () => {
+                                            this.onRefresh()
+                                        },
 
-                                })
+                                    })
+                                } else this.getAddType(rowData)
                             }
                         }
                         }/>
@@ -137,23 +174,28 @@ export default class AsMainPager extends Component {
                 {this.getView()}
                 {
                     (() => {
-                     //   console.log(App.workType);
+                        //   console.log(App.workType);
                         if (App.workType !== "售后专员") {
                             return <FloatButton
                                 color={Color.colorAccent}
                                 drawable={require('../../drawable/add.png')}
                                 action={() => {
-
-                                    this.props.nav.navigate("asAdd", {
-                                        refreshFunc: () => {
-                                            this.onRefresh()
-                                        },
-
-                                    });
+                                    if (this.state.exType.length !== 0) {
+                                        this.props.nav.navigate("asAdd", {
+                                            exType: this.state.exType,
+                                            refreshFunc: () => {
+                                                this.onRefresh()
+                                            },
+                                        });
+                                    } else {
+                                        this.getAddType(null)
+                                    }
                                 }}/>
                         }
                     })()
                 }
+                <Loading visible={this.state.isLoading}/>
+
             </View>
         )
     }
