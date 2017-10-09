@@ -133,9 +133,9 @@ export default class AsProductSearchPager extends Component {
                     <TouchableOpacity
                         style={styles.searchStyle}
                         onPress={() => {
-                            if (this.state.keyword)
+                            if (this.state.keyword&&this.state.keyword.length>1)
                                 this.getData(this.state.keyword);
-                            else SnackBar.show("请输入关键字")
+                            else SnackBar.show("请输入至少2个关键字")
                         }}>
                         <Text style={{color: "white"}}>搜索</Text>
                     </TouchableOpacity>

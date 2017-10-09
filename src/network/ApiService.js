@@ -6,19 +6,23 @@
 let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapply/';
 //let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
-
+let newFetch = function (input, opts) {
+    return new Promise((resolve, reject) => {
+        setTimeout(reject, opts.timeout);
+        fetch(input, opts).then(resolve, reject);
+    });
+};
 export  default  class ApiService {
-
     static _request(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
-
-        return fetch(BASE_URL + method, {
+        return newFetch(BASE_URL + method, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: param
+            body: param,
+            timeout: 30000
         })
             .then((response) => {
                 console.log(response);
@@ -33,15 +37,15 @@ export  default  class ApiService {
 
     }
 
-    static pgyerApiCheck(key){
-     //   console.log("pgyerApiCheck");
+    static pgyerApiCheck(key) {
+        //   console.log("pgyerApiCheck");
         return fetch("http://www.pgyer.com/apiv1/app/viewGroup", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded;',
             },
-            body: "aId="+key+"&_api_key=6dadcbe3be5652aec70a3d56f153bfb4"
+            body: "aId=" + key + "&_api_key=6dadcbe3be5652aec70a3d56f153bfb4"
         })
             .then((response) => {
                 console.log(response);
@@ -55,9 +59,9 @@ export  default  class ApiService {
             })
     }
 
-    static pgyerApiInstall(akey){
+    static pgyerApiInstall(akey) {
         console.log("pgyerApiInstall");
-        return fetch("http://www.pgyer.com/apiv1/app/install?_api_key=6dadcbe3be5652aec70a3d56f153bfb4&aKey="+akey, {
+        return fetch("http://www.pgyer.com/apiv1/app/install?_api_key=6dadcbe3be5652aec70a3d56f153bfb4&aKey=" + akey, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -92,12 +96,12 @@ export  default  class ApiService {
             uniqueIdentifier: App.session,
             datatype: type,
             curpage: page,
-        //    worktype: App.workType,
+            //    worktype: App.workType,
             SupplierName: '',
             Series: '',
             applydate: '',
             endapplydate: '',
-            jobtype:App.jobType
+            jobtype: App.jobType
 
         });
         return this._request(method, param);
@@ -117,9 +121,7 @@ export  default  class ApiService {
             endapplydate: end,
 
         });
-
         return this._request(method, param);
-
     }
 
     static setPassword(old, pwd) {
@@ -130,12 +132,10 @@ export  default  class ApiService {
             newpwd: pwd,
             uniqueIdentifier: App.session
         });
-
         return this._request(method, param);
-
     }
 
-    static createWork(date, isCar, catSrc, member, remark, work,dpt,trip,tripBack) {
+    static createWork(date, isCar, catSrc, member, remark, work, dpt, trip, tripBack) {
         let method = 'DailyRecord/CreateDailyRecord';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
@@ -146,13 +146,11 @@ export  default  class ApiService {
             FollowPeson: member,
             Remark: remark,
             listWorkDetail: work,
-            Dptid:dpt,
-            DailyType:trip,
-            DailyEndDate:tripBack
+            Dptid: dpt,
+            DailyType: trip,
+            DailyEndDate: tripBack
         });
-
         return this._request(method, param);
-
     }
 
     static sighWork(guid, result) {
@@ -162,7 +160,6 @@ export  default  class ApiService {
             DetailGuid: guid,
             WorkResult: result
         });
-
         return this._request(method, param);
     }
 
@@ -175,7 +172,6 @@ export  default  class ApiService {
             UpdateUser: App.account,
             RejectMark: reject
         });
-
         return this._request(method, param);
     }
 
@@ -188,7 +184,6 @@ export  default  class ApiService {
             series: series,
             supplier: supplier
         });
-
         return this._request(method, param);
     }
 
@@ -199,7 +194,6 @@ export  default  class ApiService {
             recordguid: guid,
             carNumber: car,
         });
-
         return this._request(method, param);
     }
 
@@ -209,7 +203,6 @@ export  default  class ApiService {
             uniqueIdentifier: App.session,
             recordguid: guid,
         });
-
         return this._request(method, param);
     }
 
@@ -218,7 +211,6 @@ export  default  class ApiService {
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
         });
-
         return this._request(method, param);
     }
 
@@ -232,7 +224,6 @@ export  default  class ApiService {
             suggest: suggest,
             scoretype: type,
         });
-
         return this._request(method, param);
     }
 
@@ -240,55 +231,51 @@ export  default  class ApiService {
         let method = 'Sign/getTodayTask';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
-            username:App.account
+            username: App.account
         });
-
         return this._request(method, param);
     }
 
-    static taskSign(guid, lat, lng, address, type,remark) {
+    static taskSign(guid, lat, lng, address, type, remark) {
         let method = 'Sign/punchclock';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
-            username:App.account,
-            recordordetailguid:guid,
+            username: App.account,
+            recordordetailguid: guid,
             latitude: lat,
             longitude: lng,
             Address: address,
             remark: remark,
             signtype: type,
         });
-
         return this._request(method, param);
     }
 
-    static taskSignNew(guid, lat, lng, address, type,remark,tripType,finishTime,departmentId) {
+    static taskSignNew(guid, lat, lng, address, type, remark, tripType, finishTime, departmentId) {
         let method = 'Sign/punchclockn';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
-            username:App.account,
-            recordordetailguid:guid,
+            username: App.account,
+            recordordetailguid: guid,
             latitude: lat,
             longitude: lng,
             Address: address,
             remark: remark,
             signtype: type,
-            dailytype:tripType,
-            dailyenddate:finishTime,
-            punchclockn:departmentId,
+            dailytype: tripType,
+            dailyenddate: finishTime,
+            punchclockn: departmentId,
         });
-
         return this._request(method, param);
     }
 
-    static addLocation(shortName,address){
+    static addLocation(shortName, address) {
         let method = 'LogisticSupplier/CheckSupplier';
         let param = JSON.stringify({
             shortname: shortName,
-            adress:address,
-            username:App.account
+            adress: address,
+            username: App.account
         });
-
         return this._request(method, param);
     }
 

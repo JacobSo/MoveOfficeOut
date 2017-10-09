@@ -7,6 +7,12 @@
 import App from '../constant/Application';
 let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/moveofficeTest/';
 //let BASE_URL = 'http://192.168.1.190:8806/moveofficeTest/';
+let newFetch = function (input, opts) {
+    return new Promise((resolve, reject) => {
+        setTimeout(reject, opts.timeout);
+        fetch(input, opts).then(resolve, reject);
+    });
+};
 export  default  class ApiService {
 
     static getBaseUrl(){
@@ -16,13 +22,14 @@ export  default  class ApiService {
     static postRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
 
-        return fetch(BASE_URL + method, {
+        return newFetch(BASE_URL + method, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: param
+            body: param,
+            timeout: 30000
         })
             .then((response) => {
                 console.log(response);
@@ -38,12 +45,13 @@ export  default  class ApiService {
     static getRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
 
-        return fetch(BASE_URL + method, {
+        return newFetch(BASE_URL + method, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
+            timeout: 30000
             /// body: param
         })
             .then((response) => {

@@ -8,6 +8,12 @@ import App from '../constant/Application';
 let BASE_URL = 'http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/';
 
 //let BASE_URL = 'http://192.168.1.190:8806/moveofficeTest/';
+let newFetch = function (input, opts) {
+    return new Promise((resolve, reject) => {
+        setTimeout(reject, opts.timeout);
+        fetch(input, opts).then(resolve, reject);
+    });
+};
 export  default  class ApiService {
 
     static getBaseUrl() {
@@ -17,13 +23,14 @@ export  default  class ApiService {
     static putRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
 
-        return fetch(BASE_URL + method, {
+        return newFetch(BASE_URL + method, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: param
+            body: param,
+            timeout: 30000
         })
             .then((response) => {
                 console.log(response);
@@ -40,9 +47,9 @@ export  default  class ApiService {
     static deleteRequest(method) {
         console.log('method:' + BASE_URL + method + '\nparam:');
 
-        return fetch(BASE_URL + method, {
+        return newFetch(BASE_URL + method, {
             method: 'DELETE',
-
+            timeout: 30000
         })
             .then((response) => {
                 console.log(response);
@@ -59,13 +66,14 @@ export  default  class ApiService {
     static postRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
 
-        return fetch(BASE_URL + method, {
+        return newFetch(BASE_URL + method, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: param
+            body: param,
+            timeout: 30000
         })
             .then((response) => {
                 console.log(response);
@@ -75,7 +83,6 @@ export  default  class ApiService {
             .then((responseJson) => {
                 console.log(responseJson);
                 return responseJson;
-
             })
     }
 
@@ -83,8 +90,9 @@ export  default  class ApiService {
         let temp = method.indexOf("http://")>-1?method:(BASE_URL + method);
         console.log('method:' + temp + '\nparam:' + param);
 
-        return fetch(temp, {
+        return newFetch(temp, {
             method: 'GET',
+            timeout: 30000
             /// body: param
         })
             .then((response) => {
