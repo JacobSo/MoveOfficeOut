@@ -75,7 +75,6 @@ export default class AsProductSearchPager extends Component {
                 flex: 1,
                 backgroundColor: Color.background
             }}>
-
                 <Toolbar title={["搜索产品"]}
                          color={Color.colorAmber}
                          elevation={2}
@@ -110,15 +109,12 @@ export default class AsProductSearchPager extends Component {
                                  });
                                  if (temp.length !== 0) {
                                      this.props.selectFunc(temp);
-
                                      this.setState({//set default
                                          // select: [false, false, false],
                                          dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
                                          selectItems: 0
                                      })
                                  } else  this.props.nav.goBack(null)
-
-
                              }
                          ]}/>
                 <View style={{flexDirection: "row"}}>

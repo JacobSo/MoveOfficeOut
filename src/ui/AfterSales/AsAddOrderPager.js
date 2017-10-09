@@ -35,7 +35,7 @@ export default class AsAddOrderPager extends Component {
             remark: this.props.order ? this.props.order.remark : "",
             causer: this.props.order ? this.props.order.accuser_name : "",
             //type: this.props.order ? this.props.order.type :  this.props.exType[0].TypeName.trim(),
-            radioValue: this.props.order ? this.props.exType.findIndex(data=>data.TypeName.trim()==this.props.order.type.trim()) : 0,
+            radioValue: this.props.order ? this.props.exType.findIndex(data => data.TypeName.trim() == this.props.order.type.trim()) : 0,
             isShow: false,
             checkBox: [],
         }
@@ -45,7 +45,9 @@ export default class AsAddOrderPager extends Component {
         let temp = [];
         this.props.exType.map((data, index) => {
             temp.push({
-                label: data.TypeName + "\n售后专员：" + data.TypePersons[0].UserName + "\n电话：" + data.TypePersons[0].Phone,
+                label: data.TypeName + (data.TypePersons && data.TypePersons.length !== 0 ?
+                    ("\n售后专员：" + data.TypePersons[0].UserName + "\n电话：" + data.TypePersons[0].Phone) :
+                    "无售后专员"),
                 value: index
             })
         });
@@ -106,7 +108,7 @@ export default class AsAddOrderPager extends Component {
                             this.state.remark,
                             this.state.causer,
                             this.props.exType[this.state.radioValue].TypeName.trim(),
-                            this.props.exType[this.state.radioValue].TypePersons[0].UserName)
+                            this.props.exType[this.state.radioValue].TypePersons.length===0?"":this.props.exType[this.state.radioValue].TypePersons[0].UserName)
                         : (operation === "删除" ?
                             ApiService.deleteOrder(this.props.order.id) :
                             ApiService.updateOrder(this.props.order.id,
@@ -116,7 +118,7 @@ export default class AsAddOrderPager extends Component {
                                 operation === "修改" ? null : 'done',
                                 this.state.causer,
                                 this.props.exType[this.state.radioValue].TypeName.trim(),
-                                this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
+                                this.props.exType[this.state.radioValue].TypePersons.length===0?"":this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
