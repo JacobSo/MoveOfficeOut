@@ -109,7 +109,7 @@ export  default  class ApiService {
     }
 
     static getOrderList(status) {
-        let method = 'orders?' + (status === 'service_approving' ? 'saler_name' : 'creater_name') + '=' + App.account + '&status=' + status;
+        let method = 'orders?' + (status === 'service_approving' ? 'saler_name' : status === 'service_approved'?'leader_name':'creater_name') + '=' + App.account + '&status=' + status;
         return this.getRequest(method);
     }
 
@@ -174,13 +174,12 @@ export  default  class ApiService {
         return this.deleteRequest(method);
     }
 
-    static submitOrder(id, products, form, comment,remark) {
+    static submitOrder(id, products, form, comment) {
         let method = 'orders/' + id;
         let param = JSON.stringify({
             abnormal_products: products,
             duty_report: form,
             tracks: comment,
-            remark: remark,//add
             operator_name: App.account,
             operation: "done",
             saler_name:App.account
@@ -196,6 +195,15 @@ export  default  class ApiService {
     static getProblemType(){
         let method = "http://lsprt.lsmuyprt.com:8806/shorder/ShMaterial/get_aftertypes"
         return this.getRequest(method);
+    }
+
+    static submitOrderSimple(id,status) {
+        let method = 'orders/' + id;
+        let param = JSON.stringify({
+            operator_name: App.account,
+            operation: status,
+        });
+        return this.putRequest(method, param);
     }
 
 }

@@ -20,7 +20,7 @@ export class AsProductEditor extends Component {
         super(props);
         this.state = {
             isInfo: false,
-            editContent: this.props.product.comment,
+            editContent: this.props.product.remark,
         }
     }
 
@@ -57,9 +57,8 @@ export class AsProductEditor extends Component {
                                     style={{width: 100, height: 100,margin: 5}}
                                     source={{uri: this.props.product.img_path ? this.props.product.img_path : '-'}}/>
                                 <View>
-                                    <Text style={{margin: 5, width: width/2}}>{"编码：" + this.props.product.item_code}</Text>
-                                    <Text style={{margin: 5, width: width/2}}>{"SKU：" + this.props.product.skuCode}</Text>
-                                    <Text style={{margin: 5, width: width/2}}>{this.props.product.SkuName}</Text>
+                                    <Text style={{margin: 5, width: width/2}}>{"材料编码：" + this.props.product.skuCode}</Text>
+                                    <Text style={{margin: 5, width: width/2}}>{"材料描述："+this.props.product.SkuName}</Text>
 
                                 </View>
                             </View>
@@ -78,7 +77,6 @@ export class AsProductEditor extends Component {
                            onChangeText={(text) => {
                                this.setState({editContent: text});
                                this.props.saveFunc(text)
-
                            }}
                            onBlur={() => {
                            }}/>

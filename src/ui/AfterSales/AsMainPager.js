@@ -23,7 +23,7 @@ export default class AsMainPager extends Component {
         super(props);
         this.state = {
             exType: [],
-            listFlag: App.workType === "售后专员" ? "service_approving" : "waitting",
+            listFlag: App.workType === "售后专员" ? "service_approving" : ( App.workType === "售后负责人"?"service_approved":"waitting"),
             items: [],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
@@ -125,7 +125,14 @@ export default class AsMainPager extends Component {
                                     },
 
                                 })
-                            } else {
+                            } else  if (App.workType === "售后负责人") {
+                                this.props.nav.navigate("asDetail", {
+                                    order: rowData,
+                                    refreshFunc: () => {
+                                        this.onRefresh()
+                                    },
+                                })
+                            }else{
                                 if (this.state.exType.length !== 0) {
                                     this.props.nav.navigate("asAdd", {
                                         exType: this.state.exType,
@@ -175,7 +182,7 @@ export default class AsMainPager extends Component {
                 {
                     (() => {
                         //   console.log(App.workType);
-                        if (App.workType !== "售后专员") {
+                        if (App.workType === "开发专员") {
                             return <FloatButton
                                 color={Color.colorAccent}
                                 drawable={require('../../drawable/add.png')}

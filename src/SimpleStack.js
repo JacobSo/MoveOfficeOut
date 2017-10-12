@@ -49,12 +49,13 @@ import AsProductSearchPager from "./ui/AfterSales/AsProductSearchPager";
 import AsSignOrderPager from "./ui/AfterSales/AsSignOrderPager";
 import AsParamPager from "./ui/AfterSales/AsParamPager";
 import codePush from 'react-native-code-push'
+import AsOrderDetailPager from "./ui/AfterSales/AsOrderDetailPager";
 const {width, height} = Dimensions.get('window');
 
 
 _renderScreen = (pager) => {
     //  console.log("screen1");
-      codePush.sync();
+    //  codePush.sync();
 
     return (
         <Provider store={store}>
@@ -202,6 +203,9 @@ const AsFormScreen = ({navigation}) => _renderScreen(<View
 const AsParamScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsParamPager {...navigation.state.params}
                                                                          nav={navigation}/></View>);
+const AsOrderDetailScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorOrange)}<AsOrderDetailPager {...navigation.state.params}
+                                                                          nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -322,6 +326,9 @@ const SimpleStack = StackNavigator({
         },
         asParam: {
             screen: AsParamScreen,
+        },
+        asDetail: {
+            screen: AsOrderDetailScreen,
         },
     },
     {

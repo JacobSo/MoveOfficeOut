@@ -64,7 +64,7 @@ export default class AsSignOrderPager extends Component {
                     this.setState({isLoading: true});
                     let temp = [];
                     this.state.editList.map((data) => temp.push({remark: data}));
-                    ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp, this.state.remark)
+                    ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp)
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
