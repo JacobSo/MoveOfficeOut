@@ -62,7 +62,7 @@ export default class AsMainItem extends Component {
                         if (this.props.rowData.reject_reason) {
                             return <View style={[styles.itemText, {backgroundColor: Color.black_semi_transparent,paddingBottom:10}]}>
                                 <Text style={{color: 'white'}}>{'单据驳回'}</Text>
-                                <Text style={{color: 'white'}}>{this.props.rowData.reject_reason}</Text>
+                                <Text style={{color: 'white',width: 200,}}>{this.props.rowData.reject_reason}</Text>
                             </View>
                         }
 
