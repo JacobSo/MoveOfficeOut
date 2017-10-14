@@ -548,7 +548,7 @@ export default class AsSignOrderPager extends Component {
                                         onPress={() => this.acceptOrder()}>
                                         <View style={[styles.button,
                                             {backgroundColor: Color.colorAmber}]}>
-                                            <Text style={{color: 'white'}}>{"我来处理"}</Text>
+                                            <Text style={{color: 'white'}}>{"锁定"}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 })()

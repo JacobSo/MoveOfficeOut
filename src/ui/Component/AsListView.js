@@ -144,7 +144,7 @@ export default class AsListView extends Component {
                                                 })
                                             } else this.getAddType(rowData)
                                         } else {
-                                            this.props.nav.navigate(this.props.type === "service_approving" ? "asSign" : "asDetail", {
+                                            this.props.nav.navigate(this.props.type === "service_approving" ||this.props.type === "waitting"? "asSign" : "asDetail", {
                                                 order: rowData,
                                                 refreshFunc: () => {
                                                     this.onRefresh()
