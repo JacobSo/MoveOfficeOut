@@ -19,6 +19,7 @@ import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import {CachedImage} from "react-native-img-cache";
 import {AsProductEditor} from "../Component/AsProductEditor";
+import InputDialog from "../Component/InputDialog";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class AsSignOrderPager extends Component {
@@ -40,6 +41,7 @@ export default class AsSignOrderPager extends Component {
             }),
 
             editContent: '',
+            rejectContent: '',
 
             productList: [],
             submitForm: null,
@@ -88,7 +90,54 @@ export default class AsSignOrderPager extends Component {
                 },
             ]
         );
+    }
 
+    rejectOrder() {
+        if (!this.state.rejectContent) {
+            SnackBar.show("一定要填写驳回原因");
+            return
+        }
+        ApiService.rejectOrder(this.props.order.id, this.state.rejectContent)
+            .then((responseJson) => {
+                if (responseJson.status === 0) {
+                    SnackBar.show('操作成功');
+                    this.props.refreshFunc();
+                    this.props.nav.goBack(null);
+                } else {
+                    SnackBar.show(responseJson.message);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
+    }
+
+    rejectDialog() {
+        return <InputDialog
+            isMulti={false}
+            action={[
+                (popupDialog) => {
+                    this.popupDialog = popupDialog;
+                },
+                (text) => {
+                    this.setState({rejectContent: text})
+                },
+                () => {//dismiss
+                    this.setState({rejectContent: ''});
+                    this.popupDialog.dismiss();
+                },
+                () => {
+                    this.rejectOrder();
+                    this.popupDialog.dismiss();
+                }
+            ]} str={['驳回原因', '备注驳回原因，必填']}/>
     }
 
     checkProductComment() {
@@ -317,7 +366,7 @@ export default class AsSignOrderPager extends Component {
     render() {
         return (
             <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-55}>
-                <View style={{backgroundColor: Color.background, height: height,}}>
+                <View style={{backgroundColor: Color.background, height: height, paddingBottom: 25}}>
                     <Toolbar title={['单据跟踪']}
                              color={Color.colorAmber}
                              elevation={2}
@@ -327,7 +376,6 @@ export default class AsSignOrderPager extends Component {
                              actionArray={[]}
                              functionArray={[
                                  () => this.props.nav.goBack(null),
-
                              ]}/>
 
                     <ScrollView
@@ -361,7 +409,7 @@ export default class AsSignOrderPager extends Component {
                                 onPress={() => this.setState({isProduct: !this.state.isProduct})}>
                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                     <View style={{
-                                        backgroundColor: this.state.productList.length === 0 || !this.checkProductComment() ? Color.line : Color.colorAmber,
+                                        backgroundColor: this.state.productList.length === 0  ? Color.line : Color.colorAmber,
                                         width: 10,
                                         height: 55
                                     }}/>
@@ -401,31 +449,6 @@ export default class AsSignOrderPager extends Component {
                                 </View>
 
                             </TouchableOpacity>
-                            {/*异常原因*/}
-{/*
-                            <TouchableOpacity style={styles.card}>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{
-                                        backgroundColor: this.state.editContent ? Color.colorAmber : Color.line,
-                                        width: 10,
-                                        height: 55
-                                    }}/>
-                                    <Text style={{marginLeft: 16, color: Color.content}}>异常原因</Text>
-                                </View>
-                                <Image source={require("../../drawable/arrow.png")} style={{width:10,height:20,marginRight:10}}/>
-                            </TouchableOpacity>
-
-                            <View style={{margin: 16,}}>
-                                <TextInput style={styles.textInput}
-                                           multiline={true}
-                                           defaultValue={this.state.editContent}
-                                           placeholder="在这里填写异常原因"
-                                           returnKeyType={'done'}
-                                           underlineColorAndroid="transparent"
-                                           blurOnSubmit={true}
-                                           onChangeText={(text) => this.setState({editContent: text})}/>
-                            </View>
- */}
                             {/*跟进进度*/}
                             <TouchableOpacity
                                 style={styles.card}
@@ -449,20 +472,27 @@ export default class AsSignOrderPager extends Component {
                             }
                             <TouchableOpacity
                                 onPress={() => this.submitOrder()}
-                                disabled={!(this.state.productList && this.state.submitForm && this.state.editList.length>0 && this.checkProductComment())}>
+                                disabled={!(this.state.submitForm )}>
                                 <View style={[styles.button,
                                     {
-                                        backgroundColor: ( this.state.productList && this.state.submitForm && this.state.editList.length>0  && this.checkProductComment()) ?
+                                        backgroundColor: ( this.state.submitForm ) ?
                                             Color.colorAmber : Color.line
                                     }]}>
                                     <Text style={{color: 'white'}}>{"提交"}</Text>
                                 </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]}
+                                              onPress={() => {
+                                                  this.popupDialog.show()
+                                              }}>
+                                <Text>{"驳回"}</Text>
                             </TouchableOpacity>
 
                         </View>
                     </ScrollView>
 
                     <Loading visible={this.state.isLoading}/>
+                    {this.rejectDialog()}
                 </View>
             </KeyboardAvoidingView>
         )
@@ -481,7 +511,6 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     button: {
-        marginBottom: 55 + 25,
         width: width - 32,
         height: 55,
         margin: 16,

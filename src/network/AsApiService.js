@@ -109,7 +109,7 @@ export  default  class ApiService {
     }
 
     static getOrderList(status) {
-        let method = 'orders?' + (status === 'service_approving' ? 'saler_name' : status === 'service_approved'?'leader_name':'creater_name') + '=' + App.account + '&status=' + status;
+        let method = 'orders?' + (status === 'waitting' ? 'saler_name' : status === 'service_approved'?'leader_name':'creater_name') + '=' + App.account + '&status=' + status;
         return this.getRequest(method);
     }
 
@@ -181,8 +181,18 @@ export  default  class ApiService {
             duty_report: form,
             tracks: comment,
             operator_name: App.account,
-            operation: "done",
+            operation: "double_done",
             saler_name:App.account
+        });
+        return this.putRequest(method, param);
+    }
+
+    static rejectOrder(id, content) {
+        let method = 'orders/' + id;
+        let param = JSON.stringify({
+            operator_name: App.account,
+            operation: "reject",
+            reject_reason: content,
         });
         return this.putRequest(method, param);
     }

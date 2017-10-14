@@ -50,7 +50,7 @@ export class WdProductItem extends Component {
             && (this.state.product.pResultList.indexOf("2-1") > -1));
             if (this.state.product.pStatus === 0) {
                 color = Color.colorOrange;
-                text =(App.workType === "板木驻厂工程师"?'白胚':'木架') +((this.state.product.pResultList.indexOf("0-1") > -1) ? "-通过" : "-不通过");
+                text =(App.workType.indexOf("板木驻厂工程师")>-1?'白胚':'木架') +((this.state.product.pResultList.indexOf("0-1") > -1) ? "-通过" : "-不通过");
             }
             else if (this.state.product.pStatus === 1) {
                 color = Color.colorBlue;

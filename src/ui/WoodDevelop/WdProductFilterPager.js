@@ -113,7 +113,7 @@ const {width, height} = Dimensions.get('window');
                                         if (Platform.OS === 'ios') {
                                             IosModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
-                                                App.workType === "板木驻厂工程师" ? 1 : 0,
+                                                App.workType.indexOf("板木驻厂工程师")>-1 ? 1 : 0,
                                                 this.props.step - 1,
                                                 (result) => {
                                                     setTimeout(() => {
@@ -125,7 +125,7 @@ const {width, height} = Dimensions.get('window');
                                         } else {
                                             AndroidModule.outputReportAction(
                                                 JSON.stringify(tempSeries),
-                                                App.workType === "板木驻厂工程师" ? 1 : 0,
+                                                App.workType.indexOf("板木驻厂工程师")>-1 ? 1 : 0,
                                                 this.props.step - 1,
                                                 (result) => {
                                                     setTimeout(() => {

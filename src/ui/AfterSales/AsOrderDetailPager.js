@@ -18,6 +18,7 @@ import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import SnackBar from 'react-native-snackbar-dialog'
 import {AsProductEditor} from "../Component/AsProductEditor";
+import InputDialog from "../Component/InputDialog";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -26,7 +27,8 @@ export default class AsOrderDetailPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading:false
+            isLoading: false,
+            rejectContent: '',
         }
     }
 
@@ -40,10 +42,59 @@ export default class AsOrderDetailPager extends Component {
 
     }
 
-    submit(status) {
+    rejectOrder() {
+        if (!this.state.rejectContent) {
+            SnackBar.show("一定要填写驳回原因");
+            return
+        }
+        ApiService.rejectOrder(this.props.order.id, this.state.rejectContent)
+            .then((responseJson) => {
+                if (responseJson.status === 0) {
+                    SnackBar.show('操作成功');
+                    this.props.refreshFunc();
+                    this.props.nav.goBack(null);
+                } else {
+                    SnackBar.show(responseJson.message);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
+    }
+
+    rejectDialog() {
+        return <InputDialog
+            isMulti={false}
+            action={[
+                (popupDialog) => {
+                    this.popupDialog = popupDialog;
+                },
+                (text) => {
+                    this.setState({rejectContent: text})
+                },
+                () => {
+                    this.setState({rejectContent: ''});
+                    this.popupDialog.dismiss();
+                },
+                () => {
+                    this.rejectOrder();
+                    this.popupDialog.dismiss();
+
+                }
+            ]} str={['驳回原因', '备注驳回原因，必填']}/>
+    }
+
+    submit() {
         Alert.alert(
-            (status==="end"?"通过":"驳回") + "单据",
-            "确认" +   (status==="end"?"通过":"驳回") + "售后单据",
+            "通过单据",
+            "确认通过售后单据",
             [
                 {
                     text: '取消', onPress: () => {
@@ -51,8 +102,8 @@ export default class AsOrderDetailPager extends Component {
                 },
                 {
                     text: '确定', onPress: () => {
-                    this.setState({isLoading:true});
-                    ApiService.submitOrderSimple(this.props.order.id, status)
+                    this.setState({isLoading: true});
+                    ApiService.submitOrderSimple(this.props.order.id, "end")
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
@@ -78,11 +129,10 @@ export default class AsOrderDetailPager extends Component {
         )
     }
 
-
     render() {
         return (
             <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-55}>
-                <View style={{backgroundColor: Color.background, height: height,paddingBottom: 25}}>
+                <View style={{backgroundColor: Color.background, height: height, paddingBottom: 25}}>
 
                     <Toolbar title={["审核单据"]}
                              color={Color.colorAmber}
@@ -210,7 +260,6 @@ export default class AsOrderDetailPager extends Component {
                                         </View>
                                     }/>
 
-
                                 <Text style={{
                                     borderLeftColor: Color.colorAmber,
                                     borderLeftWidth: 5,
@@ -231,7 +280,6 @@ export default class AsOrderDetailPager extends Component {
                                             backgroundColor: Color.line,
                                         }}>
                                             <Text>{rowID + "：" + rowData.remark}</Text>
-
                                         </View>
                                     }/>
 
@@ -240,7 +288,7 @@ export default class AsOrderDetailPager extends Component {
                                     borderLeftWidth: 5,
                                     paddingLeft: 16,
                                     margin: 16
-                                }}>{'异常报告'}</Text>
+                                }}>{'责任报告'}</Text>
                                 <ListView
                                     dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.props.order.duty_report)}
                                     style={{marginLeft: 16, marginRight: 16, width: width - 32}}
@@ -267,9 +315,8 @@ export default class AsOrderDetailPager extends Component {
                                     }/>
                             </View>
 
-
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                <TouchableOpacity onPress={() => this.submit("reject")}>
+                                <TouchableOpacity onPress={() => this.rejectDialog()}>
                                     <View style={[styles.button, {
                                         backgroundColor: 'white',
                                         width: width / 2 - 32
@@ -277,7 +324,7 @@ export default class AsOrderDetailPager extends Component {
                                         <Text>驳回</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.submit("end")}>
+                                <TouchableOpacity onPress={() => this.submit()}>
                                     <View style={[styles.button, {
                                         backgroundColor: Color.colorAmber,
                                         width: width / 2 - 32,

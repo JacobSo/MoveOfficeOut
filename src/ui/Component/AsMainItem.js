@@ -5,7 +5,7 @@
  * Created by Administrator on 2017/3/15.
  */
 'use strict';
-import React, {Component, } from 'react';
+import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
 import {View, StyleSheet, Dimensions, TouchableOpacity, Text} from 'react-native';
 import Color from "../../constant/Color"
@@ -30,7 +30,7 @@ export default class AsMainItem extends Component {
                     padding: 5,
                     color: 'white',
                     backgroundColor: (this.props.rowData.reason === "成品" ? Color.colorGreen :
-                        (this.props.rowData.reason==="材料"?Color.colorDeepPurple:Color.colorBlueGrey))
+                        (this.props.rowData.reason === "材料" ? Color.colorDeepPurple : Color.colorBlueGrey))
                 }}>
                     {this.props.rowData.reason}</Text>
                 <View style={styles.itemText}>
@@ -46,16 +46,30 @@ export default class AsMainItem extends Component {
                 <View style={styles.itemText}>
                     <Text>{'投诉方'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent,width:200,textAlign:'right'}} numberOfLines={2}>{this.props.rowData.customer_name}</Text>
+                        style={{color: Color.black_semi_transparent, width: 200, textAlign: 'right'}}
+                        numberOfLines={2}>{this.props.rowData.customer_name}</Text>
                 </View>
                 <View style={styles.itemText}>
                     <Text>{'被投诉方'}</Text>
                     <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.accuser_name}</Text>
                 </View>
-                <View style={styles.itemText}>
+                <View style={[styles.itemText,{ paddingBottom: 10}]}>
                     <Text>{'创建时间'}</Text>
                     <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.created_at}</Text>
                 </View>
+                {
+                    (() => {
+                        if (this.props.rowData.reject_reason) {
+                            return <View style={[styles.itemText, {backgroundColor: Color.black_semi_transparent,paddingBottom:10}]}>
+                                <Text style={{color: 'white'}}>{'单据驳回'}</Text>
+                                <Text style={{color: 'white'}}>{this.props.rowData.reject_reason}</Text>
+                            </View>
+                        }
+
+                    })()
+
+                }
+
             </TouchableOpacity>
         )
     }
@@ -79,6 +93,6 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
         marginTop: 10,
-        paddingBottom: 10
+
     },
 });

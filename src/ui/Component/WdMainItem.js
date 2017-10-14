@@ -76,7 +76,7 @@ export class WdMainItem extends Component {
                             style={{alignItems: 'center'}}>
                             <View style={styles.iconCircle}>
                                 <Text>{this.state.aNum}</Text></View>
-                            <Text>{App.workType === "板木驻厂工程师"?'白胚':'木架'}</Text>
+                            <Text>{App.workType.indexOf("板木驻厂工程师")>-1?'白胚':'木架'}</Text>
                         </View>
                         <View style={{alignItems: 'center'}}>
                             <View style={styles.iconCircle}>
@@ -92,7 +92,7 @@ export class WdMainItem extends Component {
                     <View style={styles.line}/>
                     {
                         (() => {
-                            if (App.workType === "板木驻厂工程师") {
+                            if (App.workType.indexOf("板木驻厂工程师")>-1) {
                                 return <View style={styles.textStyle}>
                                     <Text >系列</Text>
                                     <Text style={{

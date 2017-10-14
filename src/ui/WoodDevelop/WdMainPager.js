@@ -173,7 +173,7 @@ class WdMainPager extends Component {
             }}>
                 <Toolbar
                     elevation={2}
-                    title={[App.workType === "板木驻厂工程师" ? "板木研发" : "软体研发"]}
+                    title={[App.workType.indexOf("板木驻厂工程师")>-1 ? "板木研发" : "软体研发"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
                     isAction={true}

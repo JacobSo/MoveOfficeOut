@@ -163,10 +163,10 @@ class WdProductDetailPager extends Component {
                                         style={[styles.mainButton, {borderColor: this.state.aFinish ? Color.colorRed : Color.content}]}
                                         onPress={() => {
                                             this.state.intentStep = 0;
-                                            this.state.intentTitle = App.workType === "板木驻厂工程师" ? '白胚评审' : '木架评审';
+                                            this.state.intentTitle = App.workType.indexOf("板木驻厂工程师")>-1 ? '白胚评审' : '木架评审';
                                             this.popupDialog.show();
                                         }}>
-                                        <Text> {App.workType === "板木驻厂工程师" ? '白胚评审' : '木架评审'}</Text>
+                                        <Text> {App.workType.indexOf("板木驻厂工程师")>-1 ? '白胚评审' : '木架评审'}</Text>
                                         <View style={{
                                             backgroundColor: Color.line,
                                             width: 1,
