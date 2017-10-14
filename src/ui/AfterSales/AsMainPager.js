@@ -58,11 +58,24 @@ export default class AsMainPager extends Component {
                                 tabBarInactiveTextColor={Color.background}
                                 tabBarUnderlineStyle={{backgroundColor: 'white'}}
                                 onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)})}>
-                                <AsListView tabLabel='我的单据' type="waitting" nav={this.props.nav}/>
+                                <AsListView tabLabel='待处理' type="waitting" nav={this.props.nav}/>
+                                <AsListView tabLabel='我的单据' type="service_approving" nav={this.props.nav}/>
                                 <AsListView tabLabel='售后审核' type="service_approved" nav={this.props.nav}/>
                             </ScrollableTabView>
-                        }else{
-                            return <AsListView  type= {App.workType.indexOf("售后专员")>-1?"waitting":"created"} nav={this.props.nav}/>
+                        }else if(App.workType.indexOf("售后专员")>-1){
+                            return  <ScrollableTabView
+                                initialPage={0}
+                                tabBarBackgroundColor={Color.colorAmber}
+                                tabBarActiveTextColor='white'
+                                tabBarInactiveTextColor={Color.background}
+                                tabBarUnderlineStyle={{backgroundColor: 'white'}}
+                                onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)})}>
+                                <AsListView tabLabel='待处理' type="waitting" nav={this.props.nav}/>
+                                <AsListView tabLabel='我的单据' type="service_approving" nav={this.props.nav}/>
+                            </ScrollableTabView>
+                        }
+                        else{
+                            return <AsListView  type= {"created"} nav={this.props.nav}/>
                         }
                     })()
                 }

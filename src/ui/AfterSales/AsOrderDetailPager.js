@@ -316,7 +316,7 @@ export default class AsOrderDetailPager extends Component {
                             </View>
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                <TouchableOpacity onPress={() => this.rejectDialog()}>
+                                <TouchableOpacity onPress={() => this.popupDialog.show()}>
                                     <View style={[styles.button, {
                                         backgroundColor: 'white',
                                         width: width / 2 - 32
@@ -336,6 +336,8 @@ export default class AsOrderDetailPager extends Component {
                         </View>
                     </ScrollView>
                     <Loading visible={this.state.isLoading}/>
+                    {this.rejectDialog()}
+
                 </View>
             </KeyboardAvoidingView>
         )

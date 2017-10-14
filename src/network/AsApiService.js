@@ -109,7 +109,7 @@ export  default  class ApiService {
     }
 
     static getOrderList(status) {
-        let method = 'orders?' + (status === 'waitting' ? 'saler_name' : status === 'service_approved'?'leader_name':'creater_name') + '=' + App.account + '&status=' + status;
+        let method = 'orders?' + (status === 'waitting'|| status === 'service_approving'? 'saler_name' : status === 'service_approved'?'leader_name':'creater_name') + '=' + App.account + '&status=' + status;
         return this.getRequest(method);
     }
 

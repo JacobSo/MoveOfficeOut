@@ -52,6 +52,44 @@ export default class AsSignOrderPager extends Component {
         }
     }
 
+    acceptOrder(){
+            Alert.alert(
+                '接受单据',
+                '确认接受处理该单据？',
+                [
+                    {
+                        text: '取消', onPress: () => {
+                    }
+                    },
+                    {
+                        text: '确定', onPress: () => {
+                        this.setState({isLoading: true});
+                        ApiService.submitOrderSimple(this.props.order.id, "done")
+                            .then((responseJson) => {
+                                if (responseJson.status === 0) {
+                                    SnackBar.show('操作成功');
+                                    this.props.refreshFunc();
+                                    this.props.nav.goBack(null);
+                                } else {
+                                    SnackBar.show(responseJson.message);
+                                    setTimeout(() => {
+                                        this.setState({isLoading: false})
+                                    }, 100);
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                SnackBar.show("出错了，请稍后再试");
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }).done();
+                    }
+                    },
+                ]
+            );
+    }
+
     submitOrder() {
         Alert.alert(
             '提交',
@@ -151,7 +189,7 @@ export default class AsSignOrderPager extends Component {
     }
 
     onDetail() {
-        if (this.state.isDetail) {
+        if (this.state.isDetail||this.props.order.status==="waitting") {
             return (
                 <View style={styles.detailMain}>
                     <View>
@@ -403,90 +441,119 @@ export default class AsSignOrderPager extends Component {
                                 this.onDetail()
                             }
 
-                            {/*产品列表*/}
-                            <TouchableOpacity
-                                style={styles.card}
-                                onPress={() => this.setState({isProduct: !this.state.isProduct})}>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{
-                                        backgroundColor: this.state.productList.length === 0  ? Color.line : Color.colorAmber,
-                                        width: 10,
-                                        height: 55
-                                    }}/>
-                                    <Text style={{marginLeft: 16}}>产品列表</Text>
-                                </View>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text>{this.state.productList.length}</Text>
-                                    <Image source={require("../../drawable/arrow.png")}
-                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
-                                </View>
-                            </TouchableOpacity>
                             {
-                                this.onProduct()
+                                (() => {
+                                    if (this.props.order.status !== 'waitting') {
+                                        return <View>
+                                            {/*产品列表*/}
+                                            <TouchableOpacity
+                                                style={styles.card}
+                                                onPress={() => this.setState({isProduct: !this.state.isProduct})}>
+                                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                    <View style={{
+                                                        backgroundColor: this.state.productList.length === 0 ? Color.line : Color.colorAmber,
+                                                        width: 10,
+                                                        height: 55
+                                                    }}/>
+                                                    <Text style={{marginLeft: 16}}>产品列表</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <Text>{this.state.productList.length}</Text>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={{
+                                                               width: 10,
+                                                               height: 20,
+                                                               marginRight: 10,
+                                                               marginLeft: 10
+                                                           }}/>
+                                                </View>
+                                            </TouchableOpacity>
+                                            {
+                                                this.onProduct()
+                                            }
+
+                                            {/*责任单*/}
+                                            <TouchableOpacity
+                                                style={styles.card}
+                                                onPress={() => this.props.nav.navigate('asForm', {
+                                                    formData: this.state.submitForm,
+                                                    finishFunc: (data) => {
+                                                        this.setState({submitForm: data});
+                                                    }
+                                                })}>
+                                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                    <View style={{
+                                                        backgroundColor: this.state.submitForm ? Color.colorAmber : Color.line,
+                                                        width: 10,
+                                                        height: 55
+                                                    }}/>
+                                                    <Text style={{marginLeft: 16}}>责任单</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    <Text>{this.state.submitForm ? '已填写' : '未填写'}</Text>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={{
+                                                               width: 10,
+                                                               height: 20,
+                                                               marginRight: 10,
+                                                               marginLeft: 10
+                                                           }}/>
+                                                </View>
+
+                                            </TouchableOpacity>
+                                            {/*跟进进度*/}
+                                            <TouchableOpacity
+                                                style={styles.card}
+                                                onPress={() => this.setState({isEdit: !this.state.isEdit})}>
+                                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                    <View style={{
+                                                        backgroundColor: this.state.editList.length === 0 ? Color.line : Color.colorAmber,
+                                                        width: 10,
+                                                        height: 55
+                                                    }}/>
+                                                    <Text style={{marginLeft: 16}}>跟进进度</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    <Text>{this.state.editList.length}</Text>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={{
+                                                               width: 10,
+                                                               height: 20,
+                                                               marginRight: 10,
+                                                               marginLeft: 10
+                                                           }}/>
+                                                </View>
+                                            </TouchableOpacity>
+                                            {
+                                                this.onEdit()
+                                            }
+                                            <TouchableOpacity
+                                                onPress={() => this.submitOrder()}
+                                                disabled={!(this.state.submitForm )}>
+                                                <View style={[styles.button,
+                                                    {
+                                                        backgroundColor: ( this.state.submitForm ) ?
+                                                            Color.colorAmber : Color.line
+                                                    }]}>
+                                                    <Text style={{color: 'white'}}>{"提交"}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]}
+                                                              onPress={() => {
+                                                                  this.popupDialog.show()
+                                                              }}>
+                                                <Text>{"驳回"}</Text>
+                                            </TouchableOpacity></View>
+                                    } else return <TouchableOpacity
+                                        onPress={() => this.acceptOrder()}>
+                                        <View style={[styles.button,
+                                            {backgroundColor: Color.colorAmber}]}>
+                                            <Text style={{color: 'white'}}>{"我来处理"}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                })()
                             }
 
-                            {/*责任单*/}
-                            <TouchableOpacity
-                                style={styles.card}
-                                onPress={() => this.props.nav.navigate('asForm', {
-                                    formData: this.state.submitForm,
-                                    finishFunc: (data) => {
-                                        this.setState({submitForm: data});
-                                    }
-                                })}>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{
-                                        backgroundColor: this.state.submitForm ? Color.colorAmber : Color.line,
-                                        width: 10,
-                                        height: 55
-                                    }}/>
-                                    <Text style={{marginLeft: 16}}>责任单</Text>
-                                </View>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <Text>{this.state.submitForm ? '已填写' : '未填写'}</Text>
-                                    <Image source={require("../../drawable/arrow.png")}
-                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
-                                </View>
-
-                            </TouchableOpacity>
-                            {/*跟进进度*/}
-                            <TouchableOpacity
-                                style={styles.card}
-                                onPress={() => this.setState({isEdit: !this.state.isEdit})}>
-                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                    <View style={{
-                                        backgroundColor: this.state.editList.length === 0 ? Color.line : Color.colorAmber,
-                                        width: 10,
-                                        height: 55
-                                    }}/>
-                                    <Text style={{marginLeft: 16}}>跟进进度</Text>
-                                </View>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <Text>{this.state.editList.length}</Text>
-                                    <Image source={require("../../drawable/arrow.png")}
-                                           style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
-                                </View>
-                            </TouchableOpacity>
-                            {
-                                this.onEdit()
-                            }
-                            <TouchableOpacity
-                                onPress={() => this.submitOrder()}
-                                disabled={!(this.state.submitForm )}>
-                                <View style={[styles.button,
-                                    {
-                                        backgroundColor: ( this.state.submitForm ) ?
-                                            Color.colorAmber : Color.line
-                                    }]}>
-                                    <Text style={{color: 'white'}}>{"提交"}</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]}
-                                              onPress={() => {
-                                                  this.popupDialog.show()
-                                              }}>
-                                <Text>{"驳回"}</Text>
-                            </TouchableOpacity>
 
                         </View>
                     </ScrollView>
