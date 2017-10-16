@@ -10,18 +10,32 @@ import {
     Alert,
     Image,
     KeyboardAvoidingView,
-    StyleSheet, TouchableOpacity, TextInput, ListView
+    StyleSheet, TouchableOpacity, TextInput, ListView, Platform
 } from 'react-native';
+import AndroidModule from '../../module/AndoridCommontModule'
+import IosModule from '../../module/IosCommontModule'
 import Color from '../../constant/Color';
 import SnackBar from 'react-native-snackbar-dialog'
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
-import {CachedImage} from "react-native-img-cache";
 import {AsProductEditor} from "../Component/AsProductEditor";
 import InputDialog from "../Component/InputDialog";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
+const ImagePicker = require('react-native-image-picker');
+const options = {
+    quality: 0.2,
+    noData: true,
+    cancelButtonTitle:"取消",
+    title:"图片来源",
+    takePhotoButtonTitle:"相机",
+    chooseFromLibraryButtonTitle:"本地图片",
+    storageOptions: {
+        skipBackup: true,//not icloud
+        path: 'images'
+    }
+};
 export default class AsSignOrderPager extends Component {
 
     constructor(props) {
@@ -33,6 +47,10 @@ export default class AsSignOrderPager extends Component {
             isModify: false,
             isProduct: false,
             modifyPosition: 0,
+            pics: [],
+            dataSourcePic: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => true,
+            }),
             dataSourceComment: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
@@ -48,52 +66,13 @@ export default class AsSignOrderPager extends Component {
             editList: [],
             productUpdateFlag: '',
             remark: ''
-
         }
     }
 
-    acceptOrder(){
-            Alert.alert(
-                '接受单据',
-                '确认接受处理该单据？',
-                [
-                    {
-                        text: '取消', onPress: () => {
-                    }
-                    },
-                    {
-                        text: '确定', onPress: () => {
-                        this.setState({isLoading: true});
-                        ApiService.submitOrderSimple(this.props.order.id, "done")
-                            .then((responseJson) => {
-                                if (responseJson.status === 0) {
-                                    SnackBar.show('操作成功');
-                                    this.props.refreshFunc();
-                                    this.props.nav.goBack(null);
-                                } else {
-                                    SnackBar.show(responseJson.message);
-                                    setTimeout(() => {
-                                        this.setState({isLoading: false})
-                                    }, 100);
-                                }
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                SnackBar.show("出错了，请稍后再试");
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                            }).done();
-                    }
-                    },
-                ]
-            );
-    }
-
-    submitOrder() {
+    acceptOrder() {
         Alert.alert(
-            '提交',
-            '确认填写无误，提交后不可更改',
+            '接受单据',
+            '确认接受处理该单据？',
             [
                 {
                     text: '取消', onPress: () => {
@@ -102,9 +81,7 @@ export default class AsSignOrderPager extends Component {
                 {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    let temp = [];
-                    this.state.editList.map((data) => temp.push({remark: data}));
-                    ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp)
+                    ApiService.submitOrderSimple(this.props.order.id, "done")
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
@@ -128,6 +105,55 @@ export default class AsSignOrderPager extends Component {
                 },
             ]
         );
+    }
+
+    submitOrder() {
+        Alert.alert(
+            '提交',
+            '确认填写无误，提交后不可更改',
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.setState({isLoading: true});
+                    if (this.state.pics.length !== 0) {
+                        SnackBar.show('开始上传图片');
+                        this.postImage();
+                    } else {
+                        this.submitContent();
+                    }
+                }
+                },
+            ]
+        );
+    }
+
+    submitContent() {
+        let temp = [];
+        this.state.editList.map((data) => temp.push({remark: data}));
+        ApiService.submitOrder(this.props.order.id, this.state.productList, this.state.submitForm, temp)
+            .then((responseJson) => {
+                if (responseJson.status === 0) {
+                    SnackBar.show('操作成功');
+                    this.props.refreshFunc();
+                    this.props.nav.goBack(null);
+                } else {
+                    SnackBar.show(responseJson.message);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
     }
 
     rejectOrder() {
@@ -178,6 +204,49 @@ export default class AsSignOrderPager extends Component {
             ]} str={['驳回原因', '备注驳回原因，必填']}/>
     }
 
+    postImage() {
+        if (Platform.OS === 'android') {
+            this.state.pics.map((data, index) => {
+                AndroidModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
+                    console.log(data.uri + "," + callBackData);
+                    this.postImageReq(data, index, callBackData);
+                });
+            })
+        } else {
+            this.state.pics.map((data, index) => {
+                IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
+                    this.postImageReq(data, index, callBackData);
+                });
+            })
+        }
+    }
+
+    postImageReq(data, index, callBackData) {
+        ApiService.uploadImage(this.props.order.id, data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length), callBackData)
+            .then((responseJson) => {
+                if (responseJson.status === 0) {
+                    if (index === this.state.pics.length - 1)
+                        this.submitContent();
+                } else {
+                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                    if (index === this.state.pics.length - 1) {
+                        setTimeout(() => {
+                            this.setState({isLoading: false})
+                        }, 100);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试", {duration: 3000});
+                if (index === this.state.pics.length - 1) {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            }).done();
+    }
+
     checkProductComment() {
         let flag = true;
         this.state.productList.map((data) => {
@@ -189,7 +258,7 @@ export default class AsSignOrderPager extends Component {
     }
 
     onDetail() {
-        if (this.state.isDetail||this.props.order.status==="waitting") {
+        if (this.state.isDetail || this.props.order.status === "waitting") {
             return (
                 <View style={styles.detailMain}>
                     <View>
@@ -351,8 +420,9 @@ export default class AsSignOrderPager extends Component {
                                     renderRow={(rowData, sectionID, rowID) =>
                                         <AsProductEditor
                                             product={rowData}
-                                            saveFunc={(editData) => {
+                                            saveFunc={(editData, pic) => {
                                                 rowData.remark = editData;
+                                                rowData.pic = pic;
                                                 this.setState({productUpdateFlag: editData})
                                             }}
                                             deleteFunc={() => {
@@ -528,29 +598,90 @@ export default class AsSignOrderPager extends Component {
                                                 this.onEdit()
                                             }
                                             <TouchableOpacity
+                                                style={styles.card}
+                                                onPress={() => {
+                                                    ImagePicker.showImagePicker(options, (response) => {
+                                                        if (!response.didCancel) {
+                                                            this.state.pics.push(response);
+                                                            this.setState({dataSourcePic: this.state.dataSourcePic.cloneWithRows(this.state.pics),});
+                                                        }
+                                                    });
+                                                }}>
+                                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                    <View style={{
+                                                        backgroundColor: this.state.pics.length === 0 ? Color.line : Color.colorAmber,
+                                                        width: 10,
+                                                        height: 55
+                                                    }}/>
+                                                    <Text style={{marginLeft: 16}}>添加图片</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    <Text>{this.state.pics.length}</Text>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={{
+                                                               width: 10,
+                                                               height: 20,
+                                                               marginRight: 10,
+                                                               marginLeft: 10
+                                                           }}/>
+                                                </View>
+                                            </TouchableOpacity>
+
+                                            <ListView
+                                                dataSource={this.state.dataSourcePic}
+                                                style={{marginTop: 16}}
+                                                removeClippedSubviews={false}
+                                                enableEmptySections={true}
+                                                renderRow={(rowData, rowID, sectionID) =>
+                                                    <View >
+                                                        <Image
+                                                            resizeMode="contain"
+                                                            style={{height: 200, margin: 16, width: width - 32}}
+                                                            source={{uri: rowData.uri}}/>
+                                                        <TouchableOpacity
+                                                            style={{position: 'absolute', right: 24,}}
+                                                            onPress={() => {
+                                                                //  console.log(rowID + ":" + sectionID);
+                                                                this.state.pics.splice(sectionID, 1);
+                                                                // console.log("delete:" + JSON.stringify(this.state.pics));
+                                                                this.setState({
+                                                                    dataSourcePic: this.state.dataSourcePic.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
+                                                                });
+                                                                //   console.log(JSON.stringify(this.state.dataSource))
+                                                            }}>
+                                                            <Image
+                                                                resizeMode="contain"
+                                                                style={{height: 30, width: 30,}}
+                                                                source={require('../../drawable/close_post_label.png')}/>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                }/>
+
+                                            <TouchableOpacity
                                                 onPress={() => this.submitOrder()}
                                                 disabled={!(this.state.submitForm )}>
-                                                <View style={[styles.button,
-                                                    {
-                                                        backgroundColor: ( this.state.submitForm ) ?
-                                                            Color.colorAmber : Color.line
-                                                    }]}>
+                                                <View style={[styles.button, {
+                                                    backgroundColor: ( this.state.submitForm ) ?
+                                                        Color.colorAmber : Color.line
+                                                }]}>
                                                     <Text style={{color: 'white'}}>{"提交"}</Text>
                                                 </View>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]}
-                                                              onPress={() => {
-                                                                  this.popupDialog.show()
-                                                              }}>
-                                                <Text>{"驳回"}</Text>
-                                            </TouchableOpacity></View>
-                                    } else return <TouchableOpacity
+                                        </View>
+                                    } else return <View><TouchableOpacity
                                         onPress={() => this.acceptOrder()}>
                                         <View style={[styles.button,
                                             {backgroundColor: Color.colorAmber}]}>
                                             <Text style={{color: 'white'}}>{"锁定"}</Text>
                                         </View>
                                     </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]}
+                                                          onPress={() => {
+                                                              this.popupDialog.show()
+                                                          }}>
+                                            <Text>{"驳回"}</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 })()
                             }
 

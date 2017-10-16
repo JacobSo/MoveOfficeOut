@@ -58,7 +58,6 @@ export default class AsSignFormPager extends Component {
                              functionArray={[
                                  () => this.props.nav.goBack(null),
                              ]}/>
-
                     <ScrollView
                         style={{
                             backgroundColor: Color.background,

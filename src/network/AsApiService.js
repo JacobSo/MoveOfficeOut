@@ -64,9 +64,10 @@ export  default  class ApiService {
     }
 
     static postRequest(method, param) {
-        console.log('method:' + BASE_URL + method + '\nparam:' + param);
+        let temp = method.indexOf("http://") > -1 ? method : (BASE_URL + method);
+        console.log('method:' +temp + '\nparam:' + param);
 
-        return newFetch(BASE_URL + method, {
+        return newFetch(temp, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -87,7 +88,7 @@ export  default  class ApiService {
     }
 
     static getRequest(method, param) {
-        let temp = method.indexOf("http://")>-1?method:(BASE_URL + method);
+        let temp = method.indexOf("http://") > -1 ? method : (BASE_URL + method);
         console.log('method:' + temp + '\nparam:' + param);
 
         return newFetch(temp, {
@@ -109,7 +110,9 @@ export  default  class ApiService {
     }
 
     static getOrderList(status) {
-        let method = 'orders?' + (status === 'waitting'|| status === 'service_approving'? 'saler_name' : status === 'service_approved'?'leader_name':'creater_name') + '=' + App.account + '&status=' + status;
+        let method = 'orders?' +
+            (status === 'waitting' || status === 'service_approving' ? 'saler_name' : status === 'service_approved' ? 'leader_name' : 'creater_name') +
+            '=' + App.account + (status === "" ? "&workflow_status=in_progress" : ( '&status=' + status));
         return this.getRequest(method);
     }
 
@@ -120,12 +123,12 @@ export  default  class ApiService {
     }
 
     static getSupplierList(type) {
-        let method = 'supplier_user_matcher?role='+type;//成品商,材料商
+        let method = 'supplier_user_matcher?role=' + type;//成品商,材料商
         return this.getRequest(method);
     }
 
 
-    static createOrder(reason, supplierName, remark, causer,addType,person) {
+    static createOrder(reason, supplierName, remark, causer, addType, person) {
         let method = 'orders';
         let param = JSON.stringify({
             creater_name: App.account,
@@ -134,12 +137,12 @@ export  default  class ApiService {
             accuser_name: causer,
             type: addType,
             remark: remark,
-            saler_name:person
+            saler_name: person
         });
         return this.postRequest(method, param);
     }
 
-    static updateOrder(id, reason, supplierName, remark, operation, causer,addType,person) {
+    static updateOrder(id, reason, supplierName, remark, operation, causer, addType, person) {
         let method = 'orders/' + id;
         if (operation) {
             let param = JSON.stringify({
@@ -150,7 +153,7 @@ export  default  class ApiService {
                 accuser_name: supplierName,//switch
                 reason: reason,
                 remark: remark,
-                saler_name:person,
+                saler_name: person,
                 operation: operation,
             });
             return this.putRequest(method, param);
@@ -163,7 +166,7 @@ export  default  class ApiService {
                 accuser_name: supplierName,//switch
                 reason: reason,
                 remark: remark,
-                saler_name:person
+                saler_name: person
             });
             return this.putRequest(method, param);
         }
@@ -181,8 +184,8 @@ export  default  class ApiService {
             duty_report: form,
             tracks: comment,
             operator_name: App.account,
-            operation: "double_done",
-            saler_name:App.account
+            operation: "done",
+            saler_name: App.account
         });
         return this.putRequest(method, param);
     }
@@ -202,18 +205,32 @@ export  default  class ApiService {
         return this.getRequest(method);
     }
 
-    static getProblemType(){
-        let method = "http://lsprt.lsmuyprt.com:8806/shorder/ShMaterial/get_aftertypes"
+    static getProblemType() {
+        let method = "http://lsprt.lsmuyprt.com:8806/shorder/ShMaterial/get_aftertypes";
         return this.getRequest(method);
     }
 
-    static submitOrderSimple(id,status) {
+    static submitOrderSimple(id, status, data) {
         let method = 'orders/' + id;
-        let param = JSON.stringify({
+        let temp = {
             operator_name: App.account,
             operation: status,
-        });
+        };
+        if (data !== null) {
+            temp.comment = data;
+        }
+        let param = JSON.stringify(temp);
         return this.putRequest(method, param);
+    }
+
+    static uploadImage(id,  fileName,imgCode) {
+        let method = "http://lsprt.lsmuyprt.com:8806/shorder/ShImgUpload/UpImg";
+        let param = JSON.stringify({
+            id: id,
+            imgCode: imgCode,
+            fileName: fileName
+        });
+        return this.postRequest(method, param);
     }
 
 }

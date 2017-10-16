@@ -3,6 +3,7 @@
  */
 /**
  * Created by Administrator on 2017/3/15.
+ * 'created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing'
  */
 'use strict';
 import React, {Component,} from 'react';
@@ -11,13 +12,24 @@ import {View, StyleSheet, Dimensions, TouchableOpacity, Text} from 'react-native
 import Color from "../../constant/Color"
 import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
-
+let typeGroup=['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing',"manager_reviewed"];
+let transGroup=['已创建', '等待处理', '处理中', '提交审核', '已审核','完结'];
+let colorGroup=[Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen,'black'];
 export default class AsMainItem extends Component {
     static propTypes = {
         rowData: PropTypes.any.isRequired,
         action: PropTypes.func.isRequired
     };
 
+    getTypeIndex(){
+        let temp = 0;
+        typeGroup.map((data,index)=>{
+            if(data === this.props.rowData.status){
+                temp = index;
+            }
+        });
+        return temp;
+    }
 
     render() {
         return (
@@ -29,14 +41,18 @@ export default class AsMainItem extends Component {
                     width: width - 32,
                     padding: 5,
                     color: 'white',
-                    backgroundColor: (this.props.rowData.reason === "成品" ? Color.colorGreen :
-                        (this.props.rowData.reason === "材料" ? Color.colorDeepPurple : Color.colorBlueGrey))
+                    backgroundColor:colorGroup[this.getTypeIndex()]
                 }}>
-                    {this.props.rowData.reason}</Text>
+                    {transGroup[this.getTypeIndex()]}</Text>
+
                 <View style={styles.itemText}>
                     <Text>{'单据编号'}</Text>
                     <Text
                         style={{color: Color.black_semi_transparent}}>{this.props.rowData.serial_number}</Text>
+                </View>
+                <View style={styles.itemText}>
+                    <Text>{'售后原因'}</Text>
+                    <Text style={{color: Color.black_semi_transparent}}>{this.props.rowData.reason}</Text>
                 </View>
                 <View style={styles.itemText}>
                     <Text>{'类型'}</Text>

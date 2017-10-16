@@ -18,6 +18,8 @@ export default class AsMainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isClass: false,
+            className: "全部"
         }
     }
 
@@ -33,10 +35,13 @@ export default class AsMainPager extends Component {
                     color={Color.colorAmber}
                     isHomeUp={true}
                     isAction={true}
-                    isActionByText={false}
-                    actionArray={[]}
+                    isActionByText={true}
+                    actionArray={[App.workType.indexOf('开发专员')>-1?this.state.className:""]}
                     functionArray={[
-                        () => this.props.nav.goBack(null)
+                        () => this.props.nav.goBack(null),
+                        () => {
+                            this.setState({isClass: !this.state.isClass})
+                        }
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {
@@ -50,7 +55,7 @@ export default class AsMainPager extends Component {
                 />
                 {
                     (() => {
-                        if (App.workType.indexOf("售后负责人")>-1) {
+                        if (App.workType.indexOf("售后负责人") > -1) {
                             return <ScrollableTabView
                                 initialPage={0}
                                 tabBarBackgroundColor={Color.colorAmber}
@@ -62,8 +67,8 @@ export default class AsMainPager extends Component {
                                 <AsListView tabLabel='我的单据' type="service_approving" nav={this.props.nav}/>
                                 <AsListView tabLabel='售后审核' type="service_approved" nav={this.props.nav}/>
                             </ScrollableTabView>
-                        }else if(App.workType.indexOf("售后专员")>-1){
-                            return  <ScrollableTabView
+                        } else if (App.workType.indexOf("售后专员") > -1) {
+                            return <ScrollableTabView
                                 initialPage={0}
                                 tabBarBackgroundColor={Color.colorAmber}
                                 tabBarActiveTextColor='white'
@@ -74,8 +79,17 @@ export default class AsMainPager extends Component {
                                 <AsListView tabLabel='我的单据' type="service_approving" nav={this.props.nav}/>
                             </ScrollableTabView>
                         }
-                        else{
-                            return <AsListView  type= {"created"} nav={this.props.nav}/>
+                        else {
+                            return <AsListView
+                                type={""}
+                                nav={this.props.nav}
+                                classFunc={() => this.state.isClass}
+                                changeClass={(text) => {
+                                    this.setState({
+                                        isClass: !this.state.isClass,
+                                        className: text
+                                    })
+                                }}/>
                         }
                     })()
                 }

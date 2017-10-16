@@ -168,8 +168,6 @@ const styles = StyleSheet.create({
         color: Color.colorPrimary,
         margin: 16,
     },
-
-
     textInput: {
         width: width - 32,
         height: 55,

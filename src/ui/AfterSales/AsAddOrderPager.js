@@ -57,6 +57,7 @@ export default class AsAddOrderPager extends Component {
     getSelectionView() {
         return <View style={styles.selectContainer}>
             <TouchableOpacity
+                disabled={this.props.order&&this.props.order.status !== 'created'}
                 style={[styles.stepButton, {backgroundColor: (this.state.select[0] ? Color.colorAmber : Color.trans)},]}
                 onPress={() => this.setState({select: [true, false, false], selectType: "成品"})
                 }>
@@ -66,6 +67,7 @@ export default class AsAddOrderPager extends Component {
                 }}>成品</Text>
             </TouchableOpacity>
             <TouchableOpacity
+                disabled={this.props.order&&this.props.order.status !== 'created'}
                 style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorAmber : Color.trans)},]}
                 onPress={() => this.setState({select: [false, true, false], selectType: "材料"})
                 }>
@@ -75,6 +77,7 @@ export default class AsAddOrderPager extends Component {
                 }}>材料</Text>
             </TouchableOpacity>
             <TouchableOpacity
+                disabled={this.props.order&&this.props.order.status !== 'created'}
                 style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorAmber : Color.trans)},]}
                 onPress={() => this.setState({select: [false, false, true], selectType: "其他"})}>
                 <Text style={{
@@ -108,7 +111,7 @@ export default class AsAddOrderPager extends Component {
                             this.state.remark,
                             this.state.causer,
                             this.props.exType[this.state.radioValue].TypeName.trim(),
-                            this.props.exType[this.state.radioValue].TypePersons.length===0?"":this.props.exType[this.state.radioValue].TypePersons[0].UserName)
+                            this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)
                         : (operation === "删除" ?
                             ApiService.deleteOrder(this.props.order.id) :
                             ApiService.updateOrder(this.props.order.id,
@@ -118,7 +121,7 @@ export default class AsAddOrderPager extends Component {
                                 operation === "修改" ? null : 'done',
                                 this.state.causer,
                                 this.props.exType[this.state.radioValue].TypeName.trim(),
-                                this.props.exType[this.state.radioValue].TypePersons.length===0?"":this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
+                                this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
@@ -151,7 +154,7 @@ export default class AsAddOrderPager extends Component {
                 backgroundColor: Color.background,
                 paddingBottom: 75
             }}>
-                <Toolbar title={this.props.order ? ['修改售后单据'] : ['创建售后单据']}
+                <Toolbar title={this.props.order ? ['我的单据'] : ['创建售后单据']}
                          color={Color.colorAmber}
                          elevation={2}
                          isHomeUp={true}
@@ -169,6 +172,7 @@ export default class AsAddOrderPager extends Component {
                             this.getSelectionView()
                         }
                         <TouchableOpacity
+                            disabled={this.props.order&&this.props.order.status !== 'created'}
                             style={styles.supplierTouch}
                             onPress={() => {
                                 this.props.nav.navigate('asParam', {
@@ -180,13 +184,14 @@ export default class AsAddOrderPager extends Component {
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>投诉方</Text>
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{flexDirection: 'row',alignItems:'center'}}>
                                 <Text style={{width: 150}}>{this.state.causer}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
+                            disabled={this.props.order&&this.props.order.status !== 'created'}
                             style={styles.supplierTouch}
                             onPress={() => {
                                 this.props.nav.navigate('asParam', {
@@ -198,20 +203,21 @@ export default class AsAddOrderPager extends Component {
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>被投诉方</Text>
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{flexDirection: 'row',alignItems:'center'}}>
                                 <Text style={{width: 150}}>{this.state.supplier}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
+                            disabled={this.props.order&&this.props.order.status !== 'created'}
                             style={styles.supplierTouch}
                             onPress={() => {
                                 this.setState({isShow: !this.state.isShow})
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>类型</Text>
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{flexDirection: 'row',alignItems:'center'}}>
                                 <Text>{this.props.exType[this.state.radioValue].TypeName.trim()}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
@@ -239,25 +245,33 @@ export default class AsAddOrderPager extends Component {
                         }
 
                         <View style={styles.editContainer}>
-                            <TextInput style={styles.textInput}
-                                       multiline={true}
-                                       defaultValue={this.state.remark}
-                                       placeholder="异常描述"
-                                       returnKeyType={'done'}
-                                       underlineColorAndroid="transparent"
-                                       blurOnSubmit={true}
-                                       onChangeText={(text) => this.setState({remark: text})}/>
+                            <TextInput
+                                editable={!this.props.order||(this.props.order&&this.props.order.status === 'created')}
+                                style={styles.textInput}
+                                multiline={true}
+                                defaultValue={this.state.remark}
+                                placeholder="异常描述"
+                                returnKeyType={'done'}
+                                underlineColorAndroid="transparent"
+                                blurOnSubmit={true}
+                                onChangeText={(text) => this.setState({remark: text})}/>
                         </View>
-                        <TouchableOpacity
-                            onPress={() => this.confirmRequest(this.props.order ? '修改' : '创建')}>
-                            <View style={styles.button}>
-                                <Text style={{color: 'white'}}>{this.props.order ? '修改' : '创建'}</Text>
-                            </View>
-                        </TouchableOpacity>
 
                         {
                             (() => {
-                                if (this.props.order)
+                                if (!this.props.order||(this.props.order && this.props.order.status === 'created'))
+                                    return <TouchableOpacity
+                                        onPress={() => this.confirmRequest(this.props.order ? '修改' : '创建')}>
+                                        <View style={styles.button}>
+                                            <Text style={{color: 'white'}}>{this.props.order ? '修改' : '创建'}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                            })()
+                        }
+
+                        {
+                            (() => {
+                                if (this.props.order && this.props.order.status === 'created')
                                     return <View>
                                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <TouchableOpacity onPress={() => this.confirmRequest("删除")}>
@@ -286,7 +300,6 @@ export default class AsAddOrderPager extends Component {
                                     </View>
                             })()
                         }
-
                     </ScrollView>
                 </KeyboardAvoidingView>
                 <Loading visible={this.state.isLoading}/>

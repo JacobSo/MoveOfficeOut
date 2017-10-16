@@ -5,6 +5,7 @@
  * Created by Administrator on 2017/3/15.
  */
 'use strict';
+import RadioForm from 'react-native-simple-radio-button';
 import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -27,6 +28,8 @@ import Loading from 'react-native-loading-spinner-overlay';
 import AsMainItem from "./AsMainItem";
 import FloatButton from "../Component/FloatButton";
 const {width, height} = Dimensions.get('window');
+const exList = ["全部", "已创建", "等待处理", "处理中", "提交审核", "已审核",];
+const exListValue = ["", "created", "waitting", "service_approving", "service_approved", "manager_reviewing",];
 
 export default class AsListView extends Component {
     static propTypes = {
@@ -44,6 +47,7 @@ export default class AsListView extends Component {
             }),
             isRefreshing: false,
             isLoading: false,
+            radioValue: 0
         }
     }
 
@@ -104,8 +108,49 @@ export default class AsListView extends Component {
             }).done();
     }
 
+    async  _search(value) {
+        return this.state.items.filter((item) => (item.status.toLowerCase().indexOf(exListValue[value].toLowerCase()) > -1));
+    }
+
     render() {
         return <View style={{flex: 1,}}>
+            {
+                (() => {
+                    if (App.workType==='开发专员'&&this.props.classFunc()) {
+                        return <RadioForm
+                            buttonColor={Color.colorAmber}
+                            labelStyle={{color: Color.content, margin: 16}}
+                            radio_props={ [
+                                {label: exList[0], value: 0},
+                                {label: exList[1], value: 1},
+                                {label: exList[2], value: 2},
+                                {label: exList[3], value: 3},
+                                {label: exList[4], value: 4},
+                                {label: exList[5], value: 5},
+                            ]}
+                            initial={this.state.radioValue}
+                            formHorizontal={false}
+                            style={styles.radioStyle}
+                            onPress={(value) => {
+                                this._search(value).then((array) => {
+                                    //       console.log(array);
+                                    this.setState({
+                                        dataSource: this.state.dataSource.cloneWithRows(array),
+                                    });
+                                });
+                                this.setState({
+                                    radioValue: value,
+                                });
+                                this.props.changeClass(exList[value])
+                            }}
+                        />
+                    } else {
+                        return null;
+                    }
+
+                })()
+            }
+
             {
                 (() => {
                     if (this.state.items && this.state.items.length === 0) {
@@ -134,17 +179,28 @@ export default class AsListView extends Component {
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <AsMainItem rowData={rowData} action={() => {
                                         if (App.workType.indexOf("开发专员") > -1) {
-                                            if (this.state.exType.length !== 0) {
-                                                this.props.nav.navigate("asAdd", {
-                                                    exType: this.state.exType,
+
+                                            if (rowData.status === 'manager_reviewing' || rowData.status === 'manager_reviewed') {
+                                                this.props.nav.navigate("asDetail", {
                                                     order: rowData,
                                                     refreshFunc: () => {
                                                         this.onRefresh()
                                                     },
                                                 })
-                                            } else this.getAddType(rowData)
+                                            } else {
+                                                if (this.state.exType.length !== 0) {
+                                                    this.props.nav.navigate("asAdd", {
+                                                        exType: this.state.exType,
+                                                        order: rowData,
+                                                        refreshFunc: () => {
+                                                            this.onRefresh()
+                                                        },
+                                                    })
+                                                } else this.getAddType(rowData)
+
+                                            }
                                         } else {
-                                            this.props.nav.navigate(this.props.type === "service_approving" ||this.props.type === "waitting"? "asSign" : "asDetail", {
+                                            this.props.nav.navigate(this.props.type === "service_approving" || this.props.type === "waitting" ? "asSign" : "asDetail", {
                                                 order: rowData,
                                                 refreshFunc: () => {
                                                     this.onRefresh()
@@ -213,5 +269,14 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10
-    }
+    },
+    radioStyle: {
+        marginLeft: 16,
+        marginBottom: 16,
+        width: width - 32,
+        backgroundColor: 'white',
+        paddingTop: 16,
+        paddingLeft: 16,
+        elevation: 2
+    },
 });

@@ -19,6 +19,8 @@ import ApiService from '../../network/AsApiService';
 import SnackBar from 'react-native-snackbar-dialog'
 import {AsProductEditor} from "../Component/AsProductEditor";
 import InputDialog from "../Component/InputDialog";
+import StarSeek from "../Component/StarSeek";
+import {CachedImage} from "react-native-img-cache";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
@@ -29,6 +31,10 @@ export default class AsOrderDetailPager extends Component {
         this.state = {
             isLoading: false,
             rejectContent: '',
+            starA: 0,
+            starB: 0,
+            starC: 0,
+            comment: '',
         }
     }
 
@@ -40,6 +46,49 @@ export default class AsOrderDetailPager extends Component {
         //   this.state.dataSourceProduct.cloneWithRows(this.props.order.abnormal_products);
         //  this.state.dataSourceComment.cloneWithRows(this.props.order.tracks);
 
+    }
+
+    doneOrder() {
+
+        Alert.alert(
+            "完结单据",
+            "确认完结售后单据",
+            [
+                {
+                    text: '取消', onPress: () => {
+                }
+                },
+                {
+                    text: '确定', onPress: () => {
+                    this.setState({isLoading: true});
+                    ApiService.submitOrderSimple(this.props.order.id, 'done', {
+                        'effect': this.state.starA,
+                        'detail': this.state.starB,
+                        'efficient': this.state.starC,
+                        'remark': this.state.comment
+                    }).then((responseJson) => {
+                        if (responseJson.status === 0) {
+                            SnackBar.show('操作成功');
+                            this.props.refreshFunc();
+                            this.props.nav.goBack(null);
+                        } else {
+                            SnackBar.show(responseJson.message);
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                        }
+                    })
+                        .catch((error) => {
+                            console.log(error);
+                            SnackBar.show("出错了，请稍后再试");
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                        }).done();
+                }
+                },
+            ]
+        )
     }
 
     rejectOrder() {
@@ -153,14 +202,10 @@ export default class AsOrderDetailPager extends Component {
                             backgroundColor: Color.background, flexDirection: 'column',
                         }}>
                             <View style={styles.itemCard}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    width: width - 32,
-                                    padding: 5,
-                                    color: 'white',
+                                <Text style={[styles.titleStyle, {
                                     backgroundColor: (this.props.order.reason === "成品" ? Color.colorGreen :
                                         (this.props.order.reason === "材料" ? Color.colorDeepPurple : Color.colorBlueGrey))
-                                }}>
+                                }]}>
                                     {this.props.order.reason}</Text>
                                 <View style={styles.itemText}>
                                     <Text>{'单据编号'}</Text>
@@ -205,13 +250,7 @@ export default class AsOrderDetailPager extends Component {
                             </View>
 
                             <View style={styles.itemCard}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    width: width - 32,
-                                    padding: 5,
-                                    color: 'white',
-                                    backgroundColor: Color.colorGrey
-                                }}>
+                                <Text style={styles.titleStyle}>
                                     跟进情况</Text>
                                 <View style={styles.itemText}>
                                     <Text>{'售后专员'}</Text>
@@ -233,12 +272,7 @@ export default class AsOrderDetailPager extends Component {
                                         style={{color: Color.black_semi_transparent}}>{this.props.order.updated_at}</Text>
                                 </View>
 
-                                <Text style={{
-                                    borderLeftColor: Color.colorAmber,
-                                    borderLeftWidth: 5,
-                                    paddingLeft: 16,
-                                    margin: 16
-                                }}>{'异常产品'}</Text>
+                                <Text style={styles.subTitleStyle}>{'异常产品'}</Text>
 
 
                                 <ListView
@@ -260,12 +294,7 @@ export default class AsOrderDetailPager extends Component {
                                         </View>
                                     }/>
 
-                                <Text style={{
-                                    borderLeftColor: Color.colorAmber,
-                                    borderLeftWidth: 5,
-                                    paddingLeft: 16,
-                                    margin: 16
-                                }}>{'跟进进度'}</Text>
+                                <Text style={styles.subTitleStyle}>{'跟进进度'}</Text>
                                 <ListView
                                     dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.props.order.tracks)}
                                     style={{marginLeft: 16, marginRight: 16, width: width - 32}}
@@ -283,12 +312,7 @@ export default class AsOrderDetailPager extends Component {
                                         </View>
                                     }/>
 
-                                <Text style={{
-                                    borderLeftColor: Color.colorAmber,
-                                    borderLeftWidth: 5,
-                                    paddingLeft: 16,
-                                    margin: 16
-                                }}>{'责任报告'}</Text>
+                                <Text style={styles.subTitleStyle}>{'责任报告'}</Text>
                                 <ListView
                                     dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.props.order.duty_report)}
                                     style={{marginLeft: 16, marginRight: 16, width: width - 32}}
@@ -313,26 +337,83 @@ export default class AsOrderDetailPager extends Component {
 
                                         </View>
                                     }/>
-                            </View>
+                                <Text style={styles.subTitleStyle}>{'售后图片'}</Text>
+                                <ListView
+                                    ref="scrollView"
+                                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.props.order.pic_attachment)}
+                                    removeClippedSubviews={false}
+                                    enableEmptySections={true}
+                                    contentContainerStyle={styles.listStyle}
+                                    renderRow={(rowData, sectionID, rowID) =>
+                                        <TouchableOpacity
+                                        onPress={()=>{
+                                            this.props.nav.navigate("gallery",{
+                                                pics:this.props.order.pic_attachment
+                                            })
+                                        }}>
+                                            <CachedImage
+                                                resizeMode="contain"
+                                                style={{width: 80, height: 80,margin:5}}
+                                                source={{uri: rowData}}/>
+                                        </TouchableOpacity>
+                                    }/>
 
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                <TouchableOpacity onPress={() => this.popupDialog.show()}>
-                                    <View style={[styles.button, {
-                                        backgroundColor: 'white',
-                                        width: width / 2 - 32
-                                    }]}>
-                                        <Text>驳回</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.submit()}>
-                                    <View style={[styles.button, {
-                                        backgroundColor: Color.colorAmber,
-                                        width: width / 2 - 32,
-                                    }]}>
-                                        <Text style={{color: 'white'}}>通过</Text>
-                                    </View>
-                                </TouchableOpacity>
                             </View>
+                            {
+                                (() => {
+                                    if (this.props.order.status === "manager_reviewing") {
+                                        {/*评分*/}
+                                        return<View style={styles.itemCard}>
+                                            <Text style={styles.titleStyle}>跟进情况</Text>
+                                            <Text style={styles.subTitleStyle}>工作效率</Text>
+                                            <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starA: select})}/>
+                                            <Text style={styles.subTitleStyle}>结果质量</Text>
+                                            <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starB: select})}/>
+                                            <Text style={styles.subTitleStyle}>进度反馈{"\n"}详细程度</Text>
+                                            <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starC: select})}/>
+                                            <Text style={styles.subTitleStyle}>评价建议</Text>
+                                            <TextInput style={styles.textInput}
+                                                       placeholder="在此输入"
+                                                       multiline={true}
+                                                       returnKeyType={'done'}
+                                                       blurOnSubmit={true}
+                                                       underlineColorAndroid="transparent"
+                                                       onChangeText={(text) => {
+                                                           this.setState({comment: text})
+                                                       }}/>
+                                            <TouchableOpacity
+                                                onPress={() => this.doneOrder()}>
+                                                <View style={styles.button}>
+                                                    <Text style={{color: 'white'}}>完结单据</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    } else if (this.props.order.status === "manager_reviewed") {
+                                        return null
+                                    } else {
+                                        return <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <TouchableOpacity onPress={() => this.popupDialog.show()}>
+                                                <View style={[styles.button, {
+                                                    backgroundColor: 'white',
+                                                    width: width / 2 - 32
+                                                }]}>
+                                                    <Text>驳回</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => this.submit()}>
+                                                <View style={[styles.button, {
+                                                    backgroundColor: Color.colorAmber,
+                                                    width: width / 2 - 32,
+                                                }]}>
+                                                    <Text style={{color: 'white'}}>通过</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    }
+                                })()
+                            }
+
+
                         </View>
                     </ScrollView>
                     <Loading visible={this.state.isLoading}/>
@@ -373,4 +454,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         elevation: 2
     },
+    textInput: {
+        width: width - 32,
+        height: 55,
+        marginLeft: 16,
+        marginRight: 16,
+        borderColor: Color.line,
+        borderBottomWidth: 1,
+        textAlign: 'center'
+    },
+    titleStyle: {
+        textAlign: 'center',
+        width: width - 32,
+        padding: 5,
+        color: 'white',
+        backgroundColor: Color.colorGrey
+    },
+    subTitleStyle: {
+        borderLeftColor: Color.colorAmber,
+        borderLeftWidth: 5,
+        paddingLeft: 16,
+        margin: 16
+    },
+    listStyle: {
+        flexDirection: 'row', //改变ListView的主轴方向
+        flexWrap: 'wrap', //换行
+    },
+
 });
