@@ -36,8 +36,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: 'cs',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
-            pwd: '123',
+            account: '',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            pwd: '',
             isLoading: false,
             check: false,
         };
@@ -46,7 +46,7 @@ export default class LoginPager extends Component {
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
-    //    UpdateService.update(false);
+        UpdateService.update(false);
         this._localLogin();
     }
 
