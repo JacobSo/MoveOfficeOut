@@ -120,10 +120,10 @@ export default class QcCarCreatePager extends Component {
                                 }}>
                                     <DatePicker
                                         customStyles={{
-                                            placeholderText: {color: 'black', textAlign: 'center',width:width/3},
-                                            dateText: {color: 'black', textAlign: 'center',width:width/3}
+                                            placeholderText: {color: 'black', textAlign: 'center',width:width/3,},
+                                            dateText: {color: 'black',textAlign: 'center', width:width/3,}
                                         }}
-                                        date={this.state.useTime}
+                                       // date={this.state.useTime}
                                         mode="date"
                                         placeholder="用车日期"
                                         format="YYYY-MM-DD"
@@ -132,11 +132,12 @@ export default class QcCarCreatePager extends Component {
                                         showIcon={true}
                                         onDateChange={(date) => {
                                             this.setState({useTime: date});
+                                          //SnackBar.show(date)
                                         }}
                                     /></View>
 
                             </View>
-
+                            <Text style={{textAlign:'center',width:width,color:Color.colorAccent}}>{this.state.useTime}</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: "space-around",
