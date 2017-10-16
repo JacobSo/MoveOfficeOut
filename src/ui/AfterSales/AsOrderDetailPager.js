@@ -23,9 +23,10 @@ import StarSeek from "../Component/StarSeek";
 import {CachedImage} from "react-native-img-cache";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-
+let typeGroup = ['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing', "manager_reviewed"];
+let transGroup = ['已创建', '等待处理', '处理中', '提交审核', '已审核', '完结'];
+let colorGroup = [Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen, 'black'];
 export default class AsOrderDetailPager extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -38,14 +39,14 @@ export default class AsOrderDetailPager extends Component {
         }
     }
 
-    componentWillMount() {
-
-    }
-
-    componentDidMount() {
-        //   this.state.dataSourceProduct.cloneWithRows(this.props.order.abnormal_products);
-        //  this.state.dataSourceComment.cloneWithRows(this.props.order.tracks);
-
+    getTypeIndex() {
+        let temp = 0;
+        typeGroup.map((data, index) => {
+            if (data === this.props.order.status) {
+                temp = index;
+            }
+        });
+        return temp;
     }
 
     doneOrder() {
@@ -190,32 +191,22 @@ export default class AsOrderDetailPager extends Component {
                              isAction={true}
                              isActionByText={true}
                              actionArray={[]}
-                             functionArray={[
-                                 () => this.props.nav.goBack(null),
-                             ]}/>
+                             functionArray={[() => this.props.nav.goBack(null),]}/>
 
-                    <ScrollView
-                        style={{
-                            backgroundColor: Color.background,
-                        }}>
-                        <View style={{
-                            backgroundColor: Color.background, flexDirection: 'column',
-                        }}>
+                    <ScrollView style={{backgroundColor: Color.background,}}>
+                        <View style={{backgroundColor: Color.background, flexDirection: 'column',}}>
                             <View style={styles.itemCard}>
-                                <Text style={[styles.titleStyle, {
-                                    backgroundColor: (this.props.order.reason === "成品" ? Color.colorGreen :
-                                        (this.props.order.reason === "材料" ? Color.colorDeepPurple : Color.colorBlueGrey))
-                                }]}>
-                                    {this.props.order.reason}</Text>
+                                <Text style={[styles.titleStyle, {backgroundColor: colorGroup[this.getTypeIndex()]}]}>
+                                    {transGroup[this.getTypeIndex()]}</Text>
                                 <View style={styles.itemText}>
                                     <Text>{'单据编号'}</Text>
                                     <Text
                                         style={{color: Color.black_semi_transparent}}>{this.props.order.serial_number}</Text>
                                 </View>
                                 <View style={styles.itemText}>
-                                    <Text>{'财务单号'}</Text>
+                                    <Text>{'售后原因'}</Text>
                                     <Text
-                                        style={{color: Color.black_semi_transparent}}>{this.props.order.charge_number}</Text>
+                                        style={{color: Color.black_semi_transparent}}>{this.props.order.reason}</Text>
                                 </View>
                                 <View style={styles.itemText}>
                                     <Text>{'类型'}</Text>
@@ -346,14 +337,14 @@ export default class AsOrderDetailPager extends Component {
                                     contentContainerStyle={styles.listStyle}
                                     renderRow={(rowData, sectionID, rowID) =>
                                         <TouchableOpacity
-                                        onPress={()=>{
-                                            this.props.nav.navigate("gallery",{
-                                                pics:this.props.order.pic_attachment
-                                            })
-                                        }}>
+                                            onPress={() => {
+                                                this.props.nav.navigate("gallery", {
+                                                    pics: this.props.order.pic_attachment
+                                                })
+                                            }}>
                                             <CachedImage
                                                 resizeMode="contain"
-                                                style={{width: 80, height: 80,margin:5}}
+                                                style={{width: 80, height: 80, margin: 5}}
                                                 source={{uri: rowData}}/>
                                         </TouchableOpacity>
                                     }/>
@@ -362,32 +353,38 @@ export default class AsOrderDetailPager extends Component {
                             {
                                 (() => {
                                     if (this.props.order.status === "manager_reviewing") {
-                                        {/*评分*/}
-                                        return<View style={styles.itemCard}>
-                                            <Text style={styles.titleStyle}>跟进情况</Text>
-                                            <Text style={styles.subTitleStyle}>工作效率</Text>
-                                            <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starA: select})}/>
-                                            <Text style={styles.subTitleStyle}>结果质量</Text>
-                                            <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starB: select})}/>
-                                            <Text style={styles.subTitleStyle}>进度反馈{"\n"}详细程度</Text>
-                                            <StarSeek style={{margin: 16}} onSelect={(select) => this.setState({starC: select})}/>
-                                            <Text style={styles.subTitleStyle}>评价建议</Text>
-                                            <TextInput style={styles.textInput}
-                                                       placeholder="在此输入"
-                                                       multiline={true}
-                                                       returnKeyType={'done'}
-                                                       blurOnSubmit={true}
-                                                       underlineColorAndroid="transparent"
-                                                       onChangeText={(text) => {
-                                                           this.setState({comment: text})
-                                                       }}/>
+                                        {/*评分*/
+                                        }
+                                        return <View>
+                                            <View style={styles.itemCard}>
+                                                <Text style={styles.titleStyle}>工作评分</Text>
+                                                <Text style={styles.subTitleStyle}>工作效率</Text>
+                                                <StarSeek style={{margin: 16}}
+                                                          onSelect={(select) => this.setState({starA: select})}/>
+                                                <Text style={styles.subTitleStyle}>结果质量</Text>
+                                                <StarSeek style={{margin: 16}}
+                                                          onSelect={(select) => this.setState({starB: select})}/>
+                                                <Text style={styles.subTitleStyle}>进度反馈{"\n"}详细程度</Text>
+                                                <StarSeek style={{margin: 16}}
+                                                          onSelect={(select) => this.setState({starC: select})}/>
+                                                <Text style={styles.subTitleStyle}>评价建议</Text>
+                                                <TextInput style={styles.textInput}
+                                                           placeholder="在此输入"
+                                                           multiline={true}
+                                                           returnKeyType={'done'}
+                                                           blurOnSubmit={true}
+                                                           underlineColorAndroid="transparent"
+                                                           onChangeText={(text) => {
+                                                               this.setState({comment: text})
+                                                           }}/>
+
+                                            </View>
                                             <TouchableOpacity
                                                 onPress={() => this.doneOrder()}>
                                                 <View style={styles.button}>
                                                     <Text style={{color: 'white'}}>完结单据</Text>
                                                 </View>
-                                            </TouchableOpacity>
-                                        </View>
+                                            </TouchableOpacity></View>
                                     } else if (this.props.order.status === "manager_reviewed") {
                                         return null
                                     } else {

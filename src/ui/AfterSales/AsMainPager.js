@@ -31,12 +31,12 @@ export default class AsMainPager extends Component {
             }}>
                 <Toolbar
                     elevation={2}
-                    title={["售后工作"]}
+                    title={["售后工作"+(App.workType.indexOf('开发专员')>-1?"("+this.state.className+")":"")]}
                     color={Color.colorAmber}
                     isHomeUp={true}
                     isAction={true}
-                    isActionByText={true}
-                    actionArray={[App.workType.indexOf('开发专员')>-1?this.state.className:""]}
+                    isActionByText={false}
+                    actionArray={[App.workType.indexOf('开发专员')>-1?require("../../drawable/filter.png"):""]}
                     functionArray={[
                         () => this.props.nav.goBack(null),
                         () => {
