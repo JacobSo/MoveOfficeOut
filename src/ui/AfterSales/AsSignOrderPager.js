@@ -21,16 +21,17 @@ import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import {AsProductEditor} from "../Component/AsProductEditor";
 import InputDialog from "../Component/InputDialog";
+const RNFS = require('react-native-fs');
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
 const options = {
     quality: 0.2,
     noData: true,
-    cancelButtonTitle:"取消",
-    title:"图片来源",
-    takePhotoButtonTitle:"相机",
-    chooseFromLibraryButtonTitle:"本地图片",
+    cancelButtonTitle: "取消",
+    title: "图片来源",
+    takePhotoButtonTitle: "相机",
+    chooseFromLibraryButtonTitle: "本地图片",
     storageOptions: {
         skipBackup: true,//not icloud
         path: 'images'
@@ -69,10 +70,10 @@ export default class AsSignOrderPager extends Component {
         }
     }
 
-    acceptOrder() {
+    acceptOrder(status) {
         Alert.alert(
-            '接受单据',
-            '确认接受处理该单据？',
+            status + "单据",
+            "确认" + status + "处理该单据？",
             [
                 {
                     text: '取消', onPress: () => {
@@ -81,7 +82,7 @@ export default class AsSignOrderPager extends Component {
                 {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    ApiService.submitOrderSimple(this.props.order.id, "done")
+                    ApiService.submitOrderSimple(this.props.order.id, status === "锁定" ? "done" : "reject")
                         .then((responseJson) => {
                             if (responseJson.status === 0) {
                                 SnackBar.show('操作成功');
@@ -529,13 +530,7 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row'}}>
                                                     <Text>{this.state.productList.length}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")}
-                                                           style={{
-                                                               width: 10,
-                                                               height: 20,
-                                                               marginRight: 10,
-                                                               marginLeft: 10
-                                                           }}/>
+                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
                                                 </View>
                                             </TouchableOpacity>
                                             {
@@ -561,13 +556,7 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text>{this.state.submitForm ? '已填写' : '未填写'}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")}
-                                                           style={{
-                                                               width: 10,
-                                                               height: 20,
-                                                               marginRight: 10,
-                                                               marginLeft: 10
-                                                           }}/>
+                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
                                                 </View>
 
                                             </TouchableOpacity>
@@ -585,18 +574,51 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text>{this.state.editList.length}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")}
-                                                           style={{
-                                                               width: 10,
-                                                               height: 20,
-                                                               marginRight: 10,
-                                                               marginLeft: 10
-                                                           }}/>
+                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
                                                 </View>
                                             </TouchableOpacity>
                                             {
                                                 this.onEdit()
                                             }
+                                            <TouchableOpacity
+                                                style={styles.card}
+                                                onPress={() => {
+                                                    RNFS.readDir(RNFS.ExternalStorageDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+                                                        .then((result) => {
+                                                            console.log('GOT RESULT', result);
+
+                                                            // stat the first file
+                                                            return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+                                                        })
+                                                        .then((statResult) => {
+                                                            if (statResult[0].isFile()) {
+                                                                // if we have a file, read it
+                                                                return RNFS.readFile(statResult[1], 'utf8');
+                                                            }
+
+                                                            return 'no file';
+                                                        })
+                                                        .then((contents) => {
+                                                            // log the file contents
+                                                            console.log(contents);
+                                                        })
+                                                        .catch((err) => {
+                                                            console.log(err.message, err.code);
+                                                        });
+                                                }}>
+                                                <View style={{flexDirection: 'row', alignItems: "center",}}>
+                                                    <View style={{
+                                                        backgroundColor: this.state.pics.length === 0 ? Color.line : Color.colorAmber,
+                                                        width: 10,
+                                                        height: 55
+                                                    }}/>
+                                                    <Text style={{marginLeft: 16}}>添加附件</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    <Text>{"0"}</Text>
+                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
+                                                </View>
+                                            </TouchableOpacity>
                                             <TouchableOpacity
                                                 style={styles.card}
                                                 onPress={() => {
@@ -617,13 +639,7 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text>{this.state.pics.length}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")}
-                                                           style={{
-                                                               width: 10,
-                                                               height: 20,
-                                                               marginRight: 10,
-                                                               marginLeft: 10
-                                                           }}/>
+                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
                                                 </View>
                                             </TouchableOpacity>
 
@@ -667,9 +683,15 @@ export default class AsSignOrderPager extends Component {
                                                     <Text style={{color: 'white'}}>{"提交"}</Text>
                                                 </View>
                                             </TouchableOpacity>
+                                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]}
+                                                              onPress={() => {
+                                                                  this.acceptOrder("解锁")
+                                                              }}>
+                                                <Text>{"解锁"}</Text>
+                                            </TouchableOpacity>
                                         </View>
                                     } else return <View><TouchableOpacity
-                                        onPress={() => this.acceptOrder()}>
+                                        onPress={() => this.acceptOrder("锁定")}>
                                         <View style={[styles.button,
                                             {backgroundColor: Color.colorAmber}]}>
                                             <Text style={{color: 'white'}}>{"锁定"}</Text>
@@ -771,6 +793,12 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         marginTop: 16,
         borderColor: Color.line
+    },
+    arrowStyle: {
+        width: 10,
+        height: 20,
+        marginRight: 10,
+        marginLeft: 10
     }
 
 });

@@ -11,15 +11,15 @@ export  default  class UpdateService {
     static update(isNotice) {
         let iosKey = "662cbac6fcc48aca832a63511afdc0bc";
         let androidKey = "37afc1bd768906cf61bc6cd873fdf09a";
-        let iosCode = 9;//20170708
-        let androidCode = 10;//20170708
+        let iosCode = 10;//20171016
+        let androidCode = 11;//20171016
         if(isNotice)
             SnackBar.show("检查中...",{duration:3000});
         ApiService.pgyerApiCheck(Platform.OS === 'ios' ? iosKey : androidKey)
             .then((responseJson) => {
                 if (responseJson.code === 0) {
-                    if (Number(responseJson.data[responseJson.data.length - 1].appBuildVersion) <= (Platform.OS === "ios" ? iosCode : androidCode)) {
-                        console.log('pgyerApiCheck:up to date');
+                    if (Number(responseJson.data[responseJson.data.length-1].appBuildVersion) <= (Platform.OS === "ios" ? iosCode : androidCode)) {
+                        console.log('pgyerApiCheck:up to date:'+responseJson.data[responseJson.data.length-1].appBuildVersion);
                         if (isNotice)
                             SnackBar.show("已经是最新版本",{duration:1500})
                     } else {

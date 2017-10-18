@@ -21,10 +21,12 @@ import {AsProductEditor} from "../Component/AsProductEditor";
 import InputDialog from "../Component/InputDialog";
 import StarSeek from "../Component/StarSeek";
 import {CachedImage} from "react-native-img-cache";
+import RadioForm from 'react-native-simple-radio-button';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 let typeGroup = ['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing', "manager_reviewed"];
 let transGroup = ['已创建', '等待处理', '处理中', '提交审核', '已审核', '完结'];
+const exList = ["优", "良","差"];
 let colorGroup = [Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen, 'black'];
 export default class AsOrderDetailPager extends Component {
     constructor(props) {
@@ -32,10 +34,9 @@ export default class AsOrderDetailPager extends Component {
         this.state = {
             isLoading: false,
             rejectContent: '',
-            starA: 0,
-            starB: 0,
-            starC: 0,
+            radioValue: 0,
             comment: '',
+
         }
     }
 
@@ -63,9 +64,7 @@ export default class AsOrderDetailPager extends Component {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
                     ApiService.submitOrderSimple(this.props.order.id, 'done', {
-                        'effect': this.state.starA,
-                        'detail': this.state.starB,
-                        'efficient': this.state.starC,
+                        'resume': exList[this.state.radioValue],
                         'remark': this.state.comment
                     }).then((responseJson) => {
                         if (responseJson.status === 0) {
@@ -141,7 +140,7 @@ export default class AsOrderDetailPager extends Component {
             ]} str={['驳回原因', '备注驳回原因，必填']}/>
     }
 
-    submit() {
+    submit(ststus) {
         Alert.alert(
             "通过单据",
             "确认通过售后单据",
@@ -357,19 +356,26 @@ export default class AsOrderDetailPager extends Component {
                                         }
                                         return <View>
                                             <View style={styles.itemCard}>
-                                                <Text style={styles.titleStyle}>工作评分</Text>
-                                                <Text style={styles.subTitleStyle}>工作效率</Text>
-                                                <StarSeek style={{margin: 16}}
-                                                          onSelect={(select) => this.setState({starA: select})}/>
-                                                <Text style={styles.subTitleStyle}>结果质量</Text>
-                                                <StarSeek style={{margin: 16}}
-                                                          onSelect={(select) => this.setState({starB: select})}/>
-                                                <Text style={styles.subTitleStyle}>进度反馈{"\n"}详细程度</Text>
-                                                <StarSeek style={{margin: 16}}
-                                                          onSelect={(select) => this.setState({starC: select})}/>
-                                                <Text style={styles.subTitleStyle}>评价建议</Text>
+                                                <Text style={styles.titleStyle}>售后评分</Text>
+                                                <RadioForm
+                                                    buttonColor={Color.colorAmber}
+                                                    labelStyle={{color: Color.content, margin: 16}}
+                                                    radio_props={ [
+                                                        {label: exList[0], value: 0},
+                                                        {label: exList[1], value: 1},
+                                                        {label: exList[2], value: 2},
+                                                    ]}
+                                                    initial={this.state.radioValue}
+                                                    formHorizontal={false}
+                                                    style={styles.radioStyle}
+                                                    onPress={(value) => {
+                                                        this.setState({
+                                                            radioValue: value,
+                                                        })
+                                                    }}
+                                                />
                                                 <TextInput style={styles.textInput}
-                                                           placeholder="在此输入"
+                                                           placeholder="在此输入建议和评价"
                                                            multiline={true}
                                                            returnKeyType={'done'}
                                                            blurOnSubmit={true}
@@ -415,7 +421,6 @@ export default class AsOrderDetailPager extends Component {
                     </ScrollView>
                     <Loading visible={this.state.isLoading}/>
                     {this.rejectDialog()}
-
                 </View>
             </KeyboardAvoidingView>
         )
@@ -458,7 +463,8 @@ const styles = StyleSheet.create({
         marginRight: 16,
         borderColor: Color.line,
         borderBottomWidth: 1,
-        textAlign: 'center'
+       padding:16
+       // textAlign: 'center'
     },
     titleStyle: {
         textAlign: 'center',
@@ -477,5 +483,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row', //改变ListView的主轴方向
         flexWrap: 'wrap', //换行
     },
-
+    radioStyle: {
+        marginLeft: 16,
+        marginBottom: 16,
+        width: width - 32,
+        backgroundColor: 'white',
+        paddingTop: 16,
+        paddingLeft: 16
+    },
 });

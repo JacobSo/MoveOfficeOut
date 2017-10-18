@@ -30,14 +30,13 @@ import UpdateService from "../network/UpdateService";
 import SnackBar from 'react-native-snackbar-dialog'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-
 export default class LoginPager extends Component {
     //构造方法
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
-            pwd: '',
+            account: 'sh',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            pwd: '123',
             isLoading: false,
             check: false,
         };

@@ -36,7 +36,7 @@ export default class AsMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[App.workType.indexOf('开发专员')>-1?require("../../drawable/filter.png"):""]}
+                    actionArray={[App.workType.indexOf('开发专员')>-1?require("../../drawable/filter.png"):null]}
                     functionArray={[
                         () => this.props.nav.goBack(null),
                         () => {
