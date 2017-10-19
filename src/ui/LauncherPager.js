@@ -17,8 +17,9 @@ import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import App from '../constant/Application';
 import SQLite from '../db/Sqlite';
-import UpdateService from "../network/UpdateService";
+import codePush from 'react-native-code-push'
 import SnackBar from 'react-native-snackbar-dialog'
+import UpdateService from "../network/UpdateService";
 let sqLite = new SQLite();
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -31,6 +32,18 @@ export default class LauncherPager extends Component {
 
     componentDidMount() {
         this._bindPush();
+        UpdateService.update(false);
+        codePush.sync({
+            updateDialog: {
+                appendReleaseDescription: true,
+                descriptionPrefix:'\n\n更新内容：\n',
+                title:'更新',
+                mandatoryUpdateMessage:'',
+                mandatoryContinueButtonLabel:'执行更新',
+            },
+            mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
+            deploymentKey: "VH6W4Po8k0pLVBKFTd3t5QCmhjj34ksvOXqog",
+        });
       //    sqLite.drop(TABLE_Q_S_DRAFT);
         // sqLite.drop(TABLE_Q_S_DRAFT);
         //  sqLite.drop(TABLE_Q_S_PRODUCT);
