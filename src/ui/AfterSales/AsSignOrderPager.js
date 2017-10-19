@@ -21,7 +21,6 @@ import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import {AsProductEditor} from "../Component/AsProductEditor";
 import InputDialog from "../Component/InputDialog";
-const RNFS = require('react-native-fs');
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
@@ -580,45 +579,7 @@ export default class AsSignOrderPager extends Component {
                                             {
                                                 this.onEdit()
                                             }
-                                            <TouchableOpacity
-                                                style={styles.card}
-                                                onPress={() => {
-                                                    RNFS.readDir(RNFS.ExternalStorageDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-                                                        .then((result) => {
-                                                            console.log('GOT RESULT', result);
 
-                                                            // stat the first file
-                                                            return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-                                                        })
-                                                        .then((statResult) => {
-                                                            if (statResult[0].isFile()) {
-                                                                // if we have a file, read it
-                                                                return RNFS.readFile(statResult[1], 'utf8');
-                                                            }
-
-                                                            return 'no file';
-                                                        })
-                                                        .then((contents) => {
-                                                            // log the file contents
-                                                            console.log(contents);
-                                                        })
-                                                        .catch((err) => {
-                                                            console.log(err.message, err.code);
-                                                        });
-                                                }}>
-                                                <View style={{flexDirection: 'row', alignItems: "center",}}>
-                                                    <View style={{
-                                                        backgroundColor: this.state.pics.length === 0 ? Color.line : Color.colorAmber,
-                                                        width: 10,
-                                                        height: 55
-                                                    }}/>
-                                                    <Text style={{marginLeft: 16}}>添加附件</Text>
-                                                </View>
-                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                    <Text>{"0"}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
-                                                </View>
-                                            </TouchableOpacity>
                                             <TouchableOpacity
                                                 style={styles.card}
                                                 onPress={() => {

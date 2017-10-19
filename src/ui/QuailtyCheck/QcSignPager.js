@@ -89,7 +89,6 @@ export default class QcSignPager extends Component {
                     lat: latitude,
                     lng: longitude,
                 })
-
             }).catch((error) => {
             console.log(error);
         })

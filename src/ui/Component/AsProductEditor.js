@@ -36,7 +36,7 @@ export class AsProductEditor extends Component {
         }
     }
     componentDidMount(){
-        this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
+        //this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.pics),});
 
     }
 
