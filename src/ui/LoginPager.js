@@ -131,7 +131,7 @@ export default class LoginPager extends Component {
                                    resizeMode="contain"
                                    source={require('../drawable/logo_white.png')}/>
                         </View>
-                        <Text style={styles.welcome}>供应链管理</Text>
+                        <Text style={styles.welcome}>供应链管理1111111</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
                         <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>

@@ -23,6 +23,8 @@ import UpdateService from "../network/UpdateService";
 let sqLite = new SQLite();
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
+const code_push_production_key_android = "VH6W4Po8k0pLVBKFTd3t5QCmhjj34ksvOXqog";
+const code_push_production_key_ios = "aPV6JAJYhGxfIZmLmA50quNeOMc94ksvOXqog";
 export default class LauncherPager extends Component {
 
     constructor(props) {
@@ -42,7 +44,7 @@ export default class LauncherPager extends Component {
                 mandatoryContinueButtonLabel:'执行更新',
             },
             mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
-            deploymentKey: "VH6W4Po8k0pLVBKFTd3t5QCmhjj34ksvOXqog",
+            deploymentKey: Platform.OS === 'ios'?code_push_production_key_ios:code_push_production_key_android,
         });
       //    sqLite.drop(TABLE_Q_S_DRAFT);
         // sqLite.drop(TABLE_Q_S_DRAFT);
