@@ -6,7 +6,7 @@
 //npmlet BASE_URL = "http://119.145.166.182:8806/moveofficeTest/";
 import App from '../constant/Application';
 //let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
-let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapply/';
+let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapplytest/';
 let newFetch = function (input, opts) {
     return new Promise((resolve, reject) => {
         setTimeout(reject, opts.timeout);
@@ -75,7 +75,7 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-    static createWork(series, car, factory, date, member, type, products) {
+    static createWork(series, car, factory, date, member, type, products,factoryMember) {
         let method = 'ReviewBill/CreateReviewBill';
         let param = JSON.stringify({
             username: App.account,
@@ -86,12 +86,13 @@ export  default  class ApiService {
             followpeson: member,
             reviewtype: type,
             products: products,
+            facuser:factoryMember,
             uniqueIdentifier: App.session
         });
         return this.postRequest(method, param);
     }
 
-    static modifyWork(guid,series, car, factory, date, member, type, products) {
+    static modifyWork(guid,series, car, factory, date, member, type, products,factoryMember) {
         let method = 'ReviewBill/UpReviewBill';
         let param = JSON.stringify({
             guid: guid,
@@ -103,6 +104,7 @@ export  default  class ApiService {
             followpeson: member,
             reviewtype: type,
             products: products,
+            facuser:factoryMember,
             uniqueIdentifier: App.session
         });
         return this.postRequest(method, param);
@@ -140,5 +142,10 @@ export  default  class ApiService {
             uniqueIdentifier: App.session
         });
         return this.postRequest(method, param);
+    }
+
+    static getFactoryMember() {
+        let method = 'FacUser/getfacuesr';
+        return this.getRequest(method);
     }
 }

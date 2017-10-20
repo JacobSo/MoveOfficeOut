@@ -521,7 +521,7 @@ export default class AsSignOrderPager extends Component {
                                                 onPress={() => this.setState({isProduct: !this.state.isProduct})}>
                                                 <View style={{flexDirection: 'row', alignItems: "center",}}>
                                                     <View style={{
-                                                        backgroundColor: this.state.productList.length === 0 ? Color.line : Color.colorAmber,
+                                                        backgroundColor: this.state.productList.length === 0 || !this.checkProductComment() ? Color.line : Color.colorAmber,
                                                         width: 10,
                                                         height: 55
                                                     }}/>
@@ -529,7 +529,8 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row'}}>
                                                     <Text>{this.state.productList.length}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={styles.arrowStyle}/>
                                                 </View>
                                             </TouchableOpacity>
                                             {
@@ -555,7 +556,8 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text>{this.state.submitForm ? '已填写' : '未填写'}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={styles.arrowStyle}/>
                                                 </View>
 
                                             </TouchableOpacity>
@@ -573,7 +575,8 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text>{this.state.editList.length}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={styles.arrowStyle}/>
                                                 </View>
                                             </TouchableOpacity>
                                             {
@@ -600,7 +603,8 @@ export default class AsSignOrderPager extends Component {
                                                 </View>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text>{this.state.pics.length}</Text>
-                                                    <Image source={require("../../drawable/arrow.png")} style={styles.arrowStyle}/>
+                                                    <Image source={require("../../drawable/arrow.png")}
+                                                           style={styles.arrowStyle}/>
                                                 </View>
                                             </TouchableOpacity>
 
@@ -636,9 +640,9 @@ export default class AsSignOrderPager extends Component {
 
                                             <TouchableOpacity
                                                 onPress={() => this.submitOrder()}
-                                                disabled={!(this.state.submitForm )}>
+                                                disabled={!(this.state.submitForm && this.checkProductComment())}>
                                                 <View style={[styles.button, {
-                                                    backgroundColor: ( this.state.submitForm ) ?
+                                                    backgroundColor: (this.state.submitForm && this.checkProductComment()) ?
                                                         Color.colorAmber : Color.line
                                                 }]}>
                                                     <Text style={{color: 'white'}}>{"提交"}</Text>

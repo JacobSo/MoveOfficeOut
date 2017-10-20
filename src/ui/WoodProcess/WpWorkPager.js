@@ -30,6 +30,7 @@ import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 import Utility from "../../utils/Utility";
 import SnackBar from 'react-native-snackbar-dialog'
+import RadioForm from 'react-native-simple-radio-button';
 const {width, height} = Dimensions.get('window');
 
 export default class WpWorkPager extends Component {
@@ -53,6 +54,11 @@ export default class WpWorkPager extends Component {
 
             submitPic: [],
             submitProduct: [],
+            //check box data
+            factoryMember: [],
+            selectMember: '',
+            isShowMember: false,
+            selectValue:0
         }
     }
 
@@ -251,6 +257,46 @@ export default class WpWorkPager extends Component {
             })
             .done()
     }
+
+    getMember() {
+        if (this.state.factoryMember.length !== 0) {
+            this.setState({isShowMember: !this.state.isShowMember});
+        } else {
+            this.setState({isLoading: true});
+            ApiService.getFactoryMember().then((responseJson) => {
+                if (!responseJson.IsErr) {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                    let temp = [];
+                    responseJson.list.map((data, index) => {
+                        temp.push({
+                            label: data,
+                            value: index
+                        })
+                    });
+                    this.state.factoryMember = temp;
+                    this.setState({isShowMember: !this.state.isShowMember});
+
+                } else {
+                    SnackBar.show(responseJson.ErrDesc);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            })
+                .catch((error) => {
+                    console.log(error);
+                    SnackBar.show("出错了，请稍后再试");
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                })
+                .done()
+        }
+
+    }
+
 
     createOrModifyReq() {
         if (this.state.isModify) {
@@ -472,7 +518,7 @@ export default class WpWorkPager extends Component {
                                 flexDirection: 'column',
                                 backgroundColor: Color.colorPurpleDark,
                                 alignItems: 'center',
-                                elevation:2
+                                elevation: 2
                             }}>
                                 <View style={[styles.control, {justifyContent: 'space-between'}]}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -580,34 +626,72 @@ export default class WpWorkPager extends Component {
                                     (() => {
                                         if (this.state.isWood) {
                                             return (
-                                                <TouchableOpacity style={styles.control} onPress={() => {
-                                                    this.props.nav.navigate(
-                                                        'param',
-                                                        {
-                                                            title: '选择系列',
-                                                            type: 1,//Series
-                                                            searchKey: this.state.SupplierName,//if key
-                                                            setSelect: (select) => {
-                                                                this.setState({Series: select})
+                                                <View>
+                                                    <TouchableOpacity style={styles.control} onPress={() => {
+                                                        this.props.nav.navigate(
+                                                            'param',
+                                                            {
+                                                                title: '选择系列',
+                                                                type: 1,//Series
+                                                                searchKey: this.state.SupplierName,//if key
+                                                                setSelect: (select) => {
+                                                                    this.setState({Series: select})
+                                                                },
+                                                                isMulti: true,
+                                                                existData: this.state.Series ? this.state.Series.split(',') : []
                                                             },
-                                                            isMulti: true,
-                                                            existData: this.state.Series ? this.state.Series.split(',') : []
-                                                        },
-                                                    );
-                                                }}>
-                                                    <Image style={styles.ctrlIcon}
-                                                           source={require('../../drawable/remark.png')}/>
-                                                    <Text numberOfLines={1}
-                                                          style={{
-                                                              color: 'white',
-                                                              width: 200,
-                                                          }}>{this.state.Series === '' ? '系列' : this.state.Series}</Text>
-                                                    <TouchableOpacity style={styles.closeStyle}
-                                                                      onPress={() => this.setState({Series: ''})}>
-                                                        <Image source={require('../../drawable/close_white.png')}
-                                                               style={{width: 15, height: 15,}}/>
+                                                        );
+                                                    }}>
+                                                        <Image style={styles.ctrlIcon}
+                                                               source={require('../../drawable/remark.png')}/>
+                                                        <Text numberOfLines={1}
+                                                              style={{
+                                                                  color: 'white',
+                                                                  width: 200,
+                                                              }}>{this.state.Series === '' ? '系列' : this.state.Series}</Text>
+                                                        <TouchableOpacity style={styles.closeStyle}
+                                                                          onPress={() => this.setState({Series: ''})}>
+                                                            <Image source={require('../../drawable/close_white.png')}
+                                                                   style={{width: 15, height: 15,}}/>
+                                                        </TouchableOpacity>
                                                     </TouchableOpacity>
-                                                </TouchableOpacity>)
+
+                                                    <TouchableOpacity style={styles.control} onPress={() => {
+                                                        this.getMember()
+                                                    }}>
+                                                        <Image style={styles.ctrlIcon}
+                                                               source={require('../../drawable/remark.png')}/>
+                                                        <Text numberOfLines={1}
+                                                              style={{
+                                                                  color: 'white',
+                                                                  width: 200,
+                                                              }}>{this.state.selectMember === '' ? '评审人' : this.state.selectMember}</Text>
+
+                                                    </TouchableOpacity>
+                                                    {
+                                                        (() => {
+                                                            if (this.state.isShowMember) {
+                                                                return <RadioForm
+                                                                    buttonColor={Color.colorAccent}
+                                                                    labelStyle={{color: "white", margin: 10}}
+                                                                    radio_props={this.state.factoryMember}
+                                                                    initial={this.state.selectValue}
+                                                                    formHorizontal={false}
+                                                                    style={styles.radioStyle}
+                                                                    onPress={(value) => {
+                                                                        this.setState({
+                                                                            selectMember: this.state.factoryMember[value].label,
+                                                                            isShowMember: !this.state.isShowMember,
+                                                                            selectValue:value
+                                                                        })
+                                                                    }}
+                                                                />
+                                                            }
+                                                        })()
+
+                                                    }
+
+                                                </View>)
                                         }
                                     })()
                                 }
@@ -745,5 +829,11 @@ const styles = StyleSheet.create(
             height: 55,
             alignItems: 'center',
             justifyContent: 'center'
-        }
+        },
+        radioStyle: {
+            marginBottom: 16,
+            width: width - 32,
+            paddingTop: 16,
+            paddingLeft: 16
+        },
     });
