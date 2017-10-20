@@ -58,7 +58,7 @@ export default class WpWorkPager extends Component {
             factoryMember: [],
             selectMember: '',
             isShowMember: false,
-            selectValue:0
+            selectValue: 0
         }
     }
 
@@ -111,7 +111,9 @@ export default class WpWorkPager extends Component {
                 memberText: this.props.task.FollowPeson,
                 Series: this.props.task.Series,
                 SupplierName: this.props.task.FacName,
-                dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items)))
+                dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
+                selectMember: this.props.task.Executor,
+                selectValue: 0,
             })
         }
     }
@@ -199,6 +201,11 @@ export default class WpWorkPager extends Component {
 
         if (!this.state.isWood && !this.state.SupplierName) {
             SnackBar.show("请选择供应商");
+            return
+        }
+
+        if (this.state.isWood && !this.state.selectMember) {
+            SnackBar.show("请选择评审人");
             return
         }
         if (this.state.isWood && (!this.state.Series || !this.state.SupplierName)) {
@@ -308,7 +315,8 @@ export default class WpWorkPager extends Component {
                 this.state.date,
                 this.state.memberText,
                 this.state.isWood ? 0 : 1,
-                JSON.stringify(this.state.submitProduct))
+                JSON.stringify(this.state.submitProduct),
+                this.state.selectMember)
         } else {
             return ApiService.createWork(this.state.Series,
                 this.state.isNeedCar ? 1 : 0,
@@ -316,7 +324,8 @@ export default class WpWorkPager extends Component {
                 this.state.date,
                 this.state.memberText,
                 this.state.isWood ? 0 : 1,
-                JSON.stringify(this.state.submitProduct))
+                JSON.stringify(this.state.submitProduct),
+                this.state.selectMember)
         }
     }
 
@@ -665,7 +674,7 @@ export default class WpWorkPager extends Component {
                                                               style={{
                                                                   color: 'white',
                                                                   width: 200,
-                                                              }}>{this.state.selectMember === '' ? '评审人' : this.state.selectMember}</Text>
+                                                              }}>{this.state.selectMember ?  this.state.selectMember:'评审人' }</Text>
 
                                                     </TouchableOpacity>
                                                     {
@@ -682,7 +691,7 @@ export default class WpWorkPager extends Component {
                                                                         this.setState({
                                                                             selectMember: this.state.factoryMember[value].label,
                                                                             isShowMember: !this.state.isShowMember,
-                                                                            selectValue:value
+                                                                            selectValue: value
                                                                         })
                                                                     }}
                                                                 />

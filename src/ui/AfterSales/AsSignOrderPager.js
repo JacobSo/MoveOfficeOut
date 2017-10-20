@@ -61,12 +61,29 @@ export default class AsSignOrderPager extends Component {
             editContent: '',
             rejectContent: '',
 
-            productList: [],
+            productList: this.props.order ? this.props.order.abnormal_porducts : [],
             submitForm: null,
-            editList: [],
+            editList:this.props.order?this.pureEditData(): [],
             productUpdateFlag: '',
             remark: ''
         }
+    }
+
+    componentDidMount() {
+
+        this.setState({
+            dataSourceComment: this.state.dataSourceComment.cloneWithRows(this.state.editList),
+            dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)
+        })
+
+    }
+
+    pureEditData(){
+        let temp =[];
+        this.props.order.tracks.map((data)=>{
+            temp.push(data.remark)
+        });
+        return temp;
     }
 
     acceptOrder(status) {
@@ -481,9 +498,17 @@ export default class AsSignOrderPager extends Component {
                              isHomeUp={true}
                              isAction={true}
                              isActionByText={true}
-                             actionArray={[]}
+                             actionArray={[this.props.order.reject_reason ? "驳回内容" : null]}
                              functionArray={[
                                  () => this.props.nav.goBack(null),
+                                 () => {
+                                     this.props.nav.navigate("asDetail", {
+                                         isReject: true,
+                                         order: this.props.order,
+                                         refreshFunc: () => {
+                                         },
+                                     })
+                                 }
                              ]}/>
 
                     <ScrollView

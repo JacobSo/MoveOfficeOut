@@ -3,7 +3,7 @@
 ## SIGN POINT（act->locate）
 
 + update service->LoginPager
-+ CodePush Check->SimpleStack
++ CodePush Check->LauncherPager
 + Push set->LauncherPager
 + Preference update,title,subtitle,content->PreferencePager
 + Version file->PreferencePager

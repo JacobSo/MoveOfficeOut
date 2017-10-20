@@ -36,7 +36,6 @@ export default class AsOrderDetailPager extends Component {
             rejectContent: '',
             radioValue: 0,
             comment: '',
-
         }
     }
 
@@ -51,7 +50,6 @@ export default class AsOrderDetailPager extends Component {
     }
 
     doneOrder() {
-
         Alert.alert(
             "完结单据",
             "确认完结售后单据",
@@ -235,7 +233,7 @@ export default class AsOrderDetailPager extends Component {
                                 </View>
                                 <View style={styles.itemText}>
                                     <Text>{'问题描述'}</Text>
-                                    <Text style={{color: Color.black_semi_transparent}}>{this.props.order.remark}</Text>
+                                    <Text style={{color: Color.black_semi_transparent,width:200,textAlign:'right'}}>{this.props.order.remark}</Text>
                                 </View>
                             </View>
 
@@ -391,7 +389,7 @@ export default class AsOrderDetailPager extends Component {
                                                     <Text style={{color: 'white'}}>完结单据</Text>
                                                 </View>
                                             </TouchableOpacity></View>
-                                    } else if (this.props.order.status === "manager_reviewed") {
+                                    } else if (this.props.order.status === "manager_reviewed"||this.props.isReject) {
                                         return null
                                     } else {
                                         return <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
