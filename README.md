@@ -9,7 +9,7 @@
 + Version file->PreferencePager
 + Url switch->API
 + Database check->
-+ remove login info/Application info->Application>
++ remove login info/Application info->Application
 
 
 
