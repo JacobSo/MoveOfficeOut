@@ -1,6 +1,21 @@
 /**
  * Created by Administrator on 2017/3/13.
  *
+ *  ┌────────────┬───────────────────────────────────────┐
+ │Android       │ Deployment Key                        │http://lsprt.lsmuyprt.com:3000/
+ ├────────────┼───────────────────────────────────────┤
+ │ Production │ aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog │
+ ├────────────┼───────────────────────────────────────┤
+ │ Staging    │ SR2gZyeSVx40Hz1mqqmNXavBWi3t4ksvOXqog │
+ └────────────┴───────────────────────────────────────┘
+ ┌────────────┬───────────────────────────────────────┐
+ │ ios       │ Deployment Key                        │
+ ├────────────┼───────────────────────────────────────┤
+ │ Production │ rUSnlAlD495AqyWnBLYII84EgW1E4ksvOXqog │
+ ├────────────┼───────────────────────────────────────┤
+ │ Staging    │ pR2gglUY1v54U6zgJnjM7ADBbHVl4ksvOXqog │
+ └────────────┴───────────────────────────────────────┘
+
  */
 'use strict';
 import React, {Component} from 'react';
@@ -23,8 +38,8 @@ import UpdateService from "../network/UpdateService";
 let sqLite = new SQLite();
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-const code_push_production_key_android = "VH6W4Po8k0pLVBKFTd3t5QCmhjj34ksvOXqog";
-const code_push_production_key_ios = "aPV6JAJYhGxfIZmLmA50quNeOMc94ksvOXqog";
+const code_push_production_key_android = "aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog";
+const code_push_production_key_ios = "rUSnlAlD495AqyWnBLYII84EgW1E4ksvOXqog";
 export default class LauncherPager extends Component {
 
     constructor(props) {

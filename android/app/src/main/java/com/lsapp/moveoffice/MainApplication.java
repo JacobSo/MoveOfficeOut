@@ -60,18 +60,24 @@ public class MainApplication extends Application implements ReactApplication {
                     new SQLitePluginPackage(),
                     //new CodePush("aPV6JAJYhGxfIZmLmA50quNeOMc94ksvOXqog", getApplicationContext(), BuildConfig.DEBUG),
                     new CodePush(
-                            "VH6W4Po8k0pLVBKFTd3t5QCmhjj34ksvOXqog",
+                            "aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog",
                             getApplicationContext(),
                             BuildConfig.DEBUG,
-                            "http://192.168.1.110:3000/"
+                            "http://lsprt.lsmuyprt.com:3000/"
                     ),
                     reactModulePackage
             );
         }
         //product: 4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M
         //stage:h6osdCgokeQ3JHV73bVaP222Cbk-NJYO7qa3M
-        //product new: VH6W4Po8k0pLVBKFTd3t5QCmhjj34ksvOXqog
-        //stage new :wIKRdEXhjraxkmR9L2jzZEUFA2OR4ksvOXqog
+/*     ┌────────────┬───────────────────────────────────────┐
+             │ Name       │ Deployment Key                        │http://lsprt.lsmuyprt.com:3000/
+                ├────────────┼───────────────────────────────────────┤
+                │ Production │ aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog │
+                ├────────────┼───────────────────────────────────────┤
+                │ Staging    │ SR2gZyeSVx40Hz1mqqmNXavBWi3t4ksvOXqog │
+                └────────────┴───────────────────────────────────────┘*/
+
     };
 
     public static ReactModulePackage getReactPackage() {
