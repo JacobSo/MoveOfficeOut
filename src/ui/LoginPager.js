@@ -27,11 +27,8 @@ import CheckBox from "../ui/Component/CheckBox";
 import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
 import SnackBar from 'react-native-snackbar-dialog'
-import codePush from 'react-native-code-push'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
-const code_push_production_key_android = "aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog";
-const code_push_production_key_ios = "rUSnlAlD495AqyWnBLYII84EgW1E4ksvOXqog";
 export default class LoginPager extends Component {
     //构造方法
     constructor(props) {
@@ -50,18 +47,6 @@ export default class LoginPager extends Component {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
         this._localLogin();
         //codePush.sync();
-        codePush.sync({
-            updateDialog: {
-                appendReleaseDescription: true,
-                descriptionPrefix:'\n\n更新内容：\n',
-                title:'更新',
-                mandatoryUpdateMessage:'',
-                mandatoryContinueButtonLabel:'执行更新',
-            },
-            mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
-            deploymentKey: Platform.OS === 'ios'?code_push_production_key_ios:code_push_production_key_android,
-        });
-
 
     }
 
@@ -144,7 +129,7 @@ export default class LoginPager extends Component {
                                    resizeMode="contain"
                                    source={require('../drawable/logo_white.png')}/>
                         </View>
-                        <Text style={styles.welcome}>供应链管理</Text>
+                        <Text style={styles.welcome}>供应链管理123</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
                         <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>
