@@ -50,8 +50,11 @@ export default class QcSignPager extends Component {
         this.getSighToday();
         if (Platform.OS === 'ios') {
             this.watchID = navigator.geolocation.watchPosition((position) => {
-                this.fetchData(position.coords.longitude, position.coords.latitude);
-            });
+                    this.fetchData(position.coords.longitude, position.coords.latitude);
+                },//success
+                () => console.log("ios location failed"),//error
+                {enableHighAccuracy: true, timeout: 20000, maximumAge: 3000}
+            );
         } else {
             DeviceEventEmitter.addListener('callLocationChange', this.onAndroidLocationChange)
         }
