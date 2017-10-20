@@ -1,24 +1,24 @@
 # MoveOfficeOut
-#####
-#SIGN POINT
 
-##update service(LoginPager)
-##CodePush Check(SimpleStack)
-##Push set(LauncherPager)
-##Preference update,title,subtitle,content(PreferencePager)
-##Version file(PreferencePager)
-##Url switch(API)
-##Database check(-)
-##remove login info/Application info(Application)
+## SIGN POINT（act->locate）
+
++ update service->LoginPager
++ CodePush Check->SimpleStack
++ Push set->LauncherPager
++ Preference update,title,subtitle,content->PreferencePager
++ Version file->PreferencePager
++ Url switch->API
++ Database check->
++ remove login info/Application info->Application>
 
 
 
-#版本说明
-##当前(7.4)
-###In app
-##历史
-###android(2.x),ios(7.x)
-v15:{'\n'}
+## 版本说明
+### 当前(7.4)
+#### In app
+## 历史
+### android(2.x),ios(7.x)
+#### v15:{'\n'}
 1.【全局】更换职位功能判断{'\n'}
 2.【售后工作】新增售后负责人功能{'\n'}
 3.【售后工作】加入单据驳回功能{'\n'}
