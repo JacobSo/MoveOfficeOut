@@ -31,7 +31,7 @@ public class MainActivity extends ReactActivity {
                 Log.d(TAG, ":address " + aMapLocation.getAddress());
                 Log.d(TAG, ":lat " + aMapLocation.getLatitude());
                 Log.d(TAG, ":lng " + aMapLocation.getLongitude());
-                MainApplication.getReactPackage().commonModule.callLocationChange(aMapLocation.getAddress(),aMapLocation.getLatitude()+"",aMapLocation.getLongitude()+"");
+                MainApplication.getReactPackage().commonModule.callLocationChange(aMapLocation.getAddress(), aMapLocation.getLatitude() + "", aMapLocation.getLongitude() + "");
 
            /*     Log.d(TAG, ": " + aMapLocation.getCountry());//中国
                 Log.d(TAG, ": " + aMapLocation.getProvince());//省
@@ -66,14 +66,15 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
-
         initGaodeLocation();
+     //   initLocation();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        initLocation();
+        if (!mLocationClient.isStarted())
+            initLocation();
 
     }
 
@@ -95,7 +96,6 @@ public class MainActivity extends ReactActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 zContextUtil.LocationSetting(MainActivity.this);
-
             }
         });
         builder.setNegativeButton("取 消", null);
@@ -107,8 +107,8 @@ public class MainActivity extends ReactActivity {
         mLocationClient.setLocationListener(mLocationListener);
         mLocationOption = new AMapLocationClientOption();
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//模式
-        mLocationOption.setOnceLocation(false);//连续定位
-        mLocationOption.setOnceLocationLatest(true);//3s内最优结果
+       // mLocationOption.setOnceLocation(true);//连续定位
+      //  mLocationOption.setOnceLocationLatest(true);//3s内最优结果
         mLocationOption.setInterval(3000);//间隔
         mLocationOption.setNeedAddress(true);//地址
         mLocationOption.setLocationCacheEnable(false);//缓存

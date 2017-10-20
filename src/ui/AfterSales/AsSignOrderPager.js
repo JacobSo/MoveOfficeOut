@@ -70,12 +70,10 @@ export default class AsSignOrderPager extends Component {
     }
 
     componentDidMount() {
-
         this.setState({
             dataSourceComment: this.state.dataSourceComment.cloneWithRows(this.state.editList),
             dataSourceProduct: this.state.dataSourceProduct.cloneWithRows(this.state.productList)
         })
-
     }
 
     pureEditData(){
