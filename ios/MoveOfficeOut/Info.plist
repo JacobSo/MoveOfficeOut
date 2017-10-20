@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CodePushServerURL</key>
-	<string>http://192.168.1.110:3000/</string>
+	<string>http://lsprt.lsmuyprt.com:3000/</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -36,7 +36,7 @@
 	<key>CFBundleVersion</key>
 	<string>10</string>
 	<key>CodePushDeploymentKey</key>
-	<string>aPV6JAJYhGxfIZmLmA50quNeOMc94ksvOXqog</string>
+	<string>rUSnlAlD495AqyWnBLYII84EgW1E4ksvOXqog</string>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
