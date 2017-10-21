@@ -124,7 +124,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v15'],
+                                ['此版本更新记录', 'v1'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -159,6 +159,7 @@ export default class PreferencesPager extends Component {
                                 3.【评审单】板木新增选择评审人{'\n'}
                                 4.【全局】优化定位获取,android端开启循环定位，3s循环,ios端开启高功耗定位，20s超时，3s循环{'\n'}
                                 5.【售后工作】一大堆更新{'\n'}
+                                6.【全局】更新Android端蒲公英更新方式{'\n'}
                             </Text>
 
                         </ScrollView>
