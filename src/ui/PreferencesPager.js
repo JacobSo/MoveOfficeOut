@@ -124,7 +124,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v1'],
+                                ['此版本更新记录', 'v2'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -153,6 +153,8 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16}}>
+                                v2:{'\n'}
+                                1.【全局】更新测试{'\n'}{'\n'}
                                 v1:{'\n'}
                                 1.【全局】更换更新服务器，新增对话框提示更新{'\n'}
                                 2.【全局】android同步ios版本号（2.x->7.x）{'\n'}
