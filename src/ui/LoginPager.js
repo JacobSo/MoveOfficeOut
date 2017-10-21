@@ -34,7 +34,7 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: 'sh',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            account: 'cs',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
             pwd: '123',
             isLoading: false,
             check: false,
@@ -129,7 +129,7 @@ export default class LoginPager extends Component {
                                    resizeMode="contain"
                                    source={require('../drawable/logo_white.png')}/>
                         </View>
-                        <Text style={styles.welcome}>供应链管理123</Text>
+                        <Text style={styles.welcome}>供应链管理</Text>
                         <View style={{backgroundColor: 'white', width: width / 4, height: 2,}}/>
                         <Text style={{color: 'white', fontSize: 18, margin: 16}}>登录</Text>
                         <View style={{marginLeft: 16, marginRight: 16, backgroundColor: 'white',}}>

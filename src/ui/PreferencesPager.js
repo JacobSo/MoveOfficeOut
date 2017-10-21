@@ -157,7 +157,7 @@ export default class PreferencesPager extends Component {
                                 1.【全局】更换更新服务器，新增对话框提示更新{'\n'}
                                 2.【全局】android同步ios版本号（2.x->7.x）{'\n'}
                                 3.【评审单】板木新增选择评审人{'\n'}
-                                4.【全局】优化android端定位获取{'\n'}
+                                4.【全局】优化定位获取,android端开启循环定位，3s循环,ios端开启高功耗定位，20s超时，3s循环{'\n'}
                                 5.【售后工作】一大堆更新{'\n'}
                             </Text>
 
