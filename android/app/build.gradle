@@ -18,9 +18,9 @@ android {
     defaultConfig {
         applicationId "com.lsapp.moveoffice.out"
         minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 12//2017/10/21//update js version code
-        versionName "7.4.0"
+        targetSdkVersion 23//2017/10/23//update js version code
+        versionCode 13//2017/10/21//update js version code
+        versionName "7.4.1"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"

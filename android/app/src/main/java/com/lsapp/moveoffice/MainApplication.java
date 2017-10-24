@@ -32,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     private Double geoLat = 0.0;
     private Double geoLng = 0.0;
     private String address = null;
+
     private static final ReactModulePackage reactModulePackage = new ReactModulePackage();
 
     public static MainApplication get(Context context) {

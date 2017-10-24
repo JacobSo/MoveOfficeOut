@@ -76,6 +76,7 @@ export default class QcSignPager extends Component {
             })
         }
     };
+
     fetchData = (longitude, latitude) => {
         fetch('http://restapi.amap.com/v3/geocode/regeo?output=json&location=' + longitude + ',' + latitude + '&key=129f4ccb1a1709b2a4be5e3d0716b426', {
             method: 'GET',

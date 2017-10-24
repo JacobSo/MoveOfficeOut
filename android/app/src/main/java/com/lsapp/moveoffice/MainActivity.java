@@ -73,7 +73,8 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!mLocationClient.isStarted())
+        Log.d(TAG, "onResume: ");
+      //  if (!mLocationClient.isStarted())
             initLocation();
 
     }
@@ -116,14 +117,22 @@ public class MainActivity extends ReactActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+        mLocationClient.stopLocation();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        mLocationClient.stopLocation();
+        Log.d(TAG, "onPause: ");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
         mLocationClient.onDestroy();
     }
 

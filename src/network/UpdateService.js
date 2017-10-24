@@ -12,7 +12,7 @@ export  default  class UpdateService {
         let iosKey = "662cbac6fcc48aca832a63511afdc0bc";
         let androidKey = "37afc1bd768906cf61bc6cd873fdf09a";
         let iosCode = 11;//20171021
-        let androidCode = 12;//20171021
+        let androidCode = 13;//20171023
         if(isNotice)
             SnackBar.show("检查中...",{duration:3000});
         ApiService.pgyerApiCheck(Platform.OS === 'ios' ? iosKey : androidKey)
@@ -24,8 +24,8 @@ export  default  class UpdateService {
                             SnackBar.show("已经是最新版本",{duration:1500})
                     } else {
                         Alert.alert(
-                            '发现新版本',
-                            "新版本：" + responseJson.data[responseJson.data.length - 1].appVersion,
+                            '发现新版本-' + responseJson.data[responseJson.data.length - 1].appVersion,
+                            "新版本：" + responseJson.data[responseJson.data.length - 1].appUpdateDescription,
                             [
                                 {
                                     text: '取消', onPress: () => {
