@@ -116,7 +116,7 @@ export default class AsListView extends Component {
         return <View style={{flex: 1,}}>
             {
                 (() => {
-                    if (App.workType==='开发专员'&&this.props.classFunc()) {
+                    if (App.workType === '开发专员' && this.props.classFunc()) {
                         return <RadioForm
                             buttonColor={Color.colorAmber}
                             labelStyle={{color: Color.content, margin: 16}}

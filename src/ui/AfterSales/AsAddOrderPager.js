@@ -31,9 +31,9 @@ export default class AsAddOrderPager extends Component {
                 (this.props.order.reason === "材料" ? [false, true, false] : [false, false, true]) : [true, false, false],
             isLoading: false,
             selectType: this.props.order ? this.props.order.reason : "成品",
-            supplier: this.props.order ? this.props.order.customer_name : "",
+            customer_name: this.props.order ? this.props.order.customer_name : "",
             remark: this.props.order ? this.props.order.remark : "",
-            causer: this.props.order ? this.props.order.accuser_name : "",
+            accuser_name: this.props.order ? this.props.order.accuser_name : "",
             //type: this.props.order ? this.props.order.type :  this.props.exType[0].TypeName.trim(),
             radioValue: this.props.order ? this.props.exType.findIndex(data => data.TypeName.trim() == this.props.order.type.trim()) : 0,
             isShow: false,
@@ -89,7 +89,7 @@ export default class AsAddOrderPager extends Component {
     }
 
     confirmRequest(operation) {
-        if ((operation !== "删除") && (!this.state.remark || !this.state.causer)) {
+        if ((operation !== "删除") && (!this.state.remark || !this.state.customer_name)) {
             SnackBar.show("信息不完整");
             return
         }
@@ -107,19 +107,20 @@ export default class AsAddOrderPager extends Component {
                     (operation === "创建" ?
                         ApiService.createOrder(
                             this.state.selectType,
-                            this.state.supplier,
+                            this.state.customer_name,
                             this.state.remark,
-                            this.state.causer,
+                            this.state.accuser_name,
                             this.props.exType[this.state.radioValue].TypeName.trim(),
                             this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)
                         : (operation === "删除" ?
                             ApiService.deleteOrder(this.props.order.id) :
-                            ApiService.updateOrder(this.props.order.id,
+                            ApiService.updateOrder(
+                                this.props.order.id,
                                 this.state.selectType,
-                                this.state.supplier,
+                                this.state.customer_name,
                                 this.state.remark,
                                 operation === "修改" ? null : 'done',
-                                this.state.causer,
+                                this.state.accuser_name,
                                 this.props.exType[this.state.radioValue].TypeName.trim(),
                                 this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
                         .then((responseJson) => {
@@ -178,14 +179,14 @@ export default class AsAddOrderPager extends Component {
                                 this.props.nav.navigate('asParam', {
                                     mode: 0,
                                     actionFunc: (selectSupplier) => {
-                                        this.setState({causer: selectSupplier})
+                                        this.setState({customer_name: selectSupplier})
                                     }
                                 })
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>投诉方</Text>
                             <View style={{flexDirection: 'row',alignItems:'center'}}>
-                                <Text style={{width: 150}}>{this.state.causer}</Text>
+                                <Text style={{width: 150}}>{this.state.customer_name}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
@@ -197,14 +198,14 @@ export default class AsAddOrderPager extends Component {
                                 this.props.nav.navigate('asParam', {
                                     mode: 0,
                                     actionFunc: (selectSupplier) => {
-                                        this.setState({supplier: selectSupplier})
+                                        this.setState({accuser_name: selectSupplier})
                                     }
                                 })
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>被投诉方</Text>
                             <View style={{flexDirection: 'row',alignItems:'center'}}>
-                                <Text style={{width: 150}}>{this.state.supplier}</Text>
+                                <Text style={{width: 150}}>{this.state.accuser_name}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>

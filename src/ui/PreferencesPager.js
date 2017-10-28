@@ -154,7 +154,9 @@ export default class PreferencesPager extends Component {
                         <ScrollView>
                             <Text style={{margin: 16}}>
                                 v3:{'\n'}
-                                1.【售后】新增最终驳回{'\n'}{'\n'}
+                                1.【售后】新增最终驳回{'\n'}
+                                2.【售后】新增厂商简称{'\n'}{'\n'}
+                                3.【售后】修复创建单bug{'\n'}{'\n'}
                                 v2:{'\n'}
                                 1.【全局】更新测试{'\n'}
                                 v1:{'\n'}

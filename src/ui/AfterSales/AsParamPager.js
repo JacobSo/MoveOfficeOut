@@ -120,10 +120,7 @@ export default class AsParamPager extends Component {
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: Color.backgroundColor
-            }}>
+            <View style={{flex: 1, backgroundColor: Color.backgroundColor}}>
                 <Toolbar
                     title={[this.props.mode === 0 ? '供应商列表' : (this.props.mode === 1 ? '异常原因' : (this.props.mode === 2 ? '异常类型' : "处罚金额"))]}
                     color={Color.colorAmber}

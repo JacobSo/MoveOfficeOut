@@ -128,13 +128,13 @@ export  default  class ApiService {
     }
 
 
-    static createOrder(reason, supplierName, remark, causer, addType, person) {
+    static createOrder(reason, customer_name, remark, accuser_name, addType, person) {
         let method = 'orders';
         let param = JSON.stringify({
             creater_name: App.account,
             reason: reason,
-            customer_name: supplierName,
-            accuser_name: causer,
+            customer_name: customer_name,
+            accuser_name: accuser_name,
             type: addType,
             remark: remark,
             saler_name: person
@@ -142,15 +142,15 @@ export  default  class ApiService {
         return this.postRequest(method, param);
     }
 
-    static updateOrder(id, reason, supplierName, remark, operation, causer, addType, person) {
+    static updateOrder(id, reason, customer_name, remark, operation, accuser_name, addType, person) {
         let method = 'orders/' + id;
         if (operation) {
             let param = JSON.stringify({
                 creater_name: App.account,
                 operator_name: App.account,
                 type: addType,
-                customer_name: causer,//switch
-                accuser_name: supplierName,//switch
+                customer_name: customer_name,//switch
+                accuser_name: accuser_name,//switch
                 reason: reason,
                 remark: remark,
                 saler_name: person,
@@ -162,8 +162,8 @@ export  default  class ApiService {
                 creater_name: App.account,
                 operator_name: App.account,
                 type: addType,
-                customer_name: causer,//switch
-                accuser_name: supplierName,//switch
+                customer_name: customer_name,//switch
+                accuser_name: accuser_name,//switch
                 reason: reason,
                 remark: remark,
                 saler_name: person
