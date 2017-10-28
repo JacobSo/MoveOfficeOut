@@ -44,29 +44,29 @@ export default class AsParamPager extends Component {
 
     getData() {
         this.setState({isLoading: true});
-         InteractionManager.runAfterInteractions(() => {
-        (this.props.mode === 0 ? ApiService.getSupplierList(this.state.switchType ? '材料商' : '成品商') : ApiService.getExceptionList(this.props.mode - 1))
-            .then((responseJson) => {
-                if (responseJson.status === 0) {
-                    if (this.state.switchType)
-                        this.state.itemsA = responseJson.data;
-                    else
-                        this.state.itemsB = responseJson.data;
-                    this.state.items = responseJson.data;
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-                    });
-                } else SnackBar.show(responseJson.message)
-            }).catch((error) => {
-            console.log(error);
-            SnackBar.show("出错了，请稍后再试");
-            setTimeout(() => {
+        InteractionManager.runAfterInteractions(() => {
+            (this.props.mode === 0 ? ApiService.getSupplierList(this.state.switchType ? '材料商' : '成品商') : ApiService.getExceptionList(this.props.mode - 1))
+                .then((responseJson) => {
+                    if (responseJson.status === 0) {
+                        if (this.state.switchType)
+                            this.state.itemsA = responseJson.data;
+                        else
+                            this.state.itemsB = responseJson.data;
+                        this.state.items = responseJson.data;
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+                        });
+                    } else SnackBar.show(responseJson.message)
+                }).catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done(setTimeout(() => {
                 this.setState({isLoading: false})
-            }, 100);
-        }).done(setTimeout(() => {
-            this.setState({isLoading: false})
-        }, 100))
-          });
+            }, 100))
+        });
     }
 
     getItemView(rowData) {
@@ -76,7 +76,8 @@ export default class AsParamPager extends Component {
                 this.props.nav.goBack(null);
             }}
             >
-                <Text style={{padding: 30,}}>{"（" + rowData.role + "）" + rowData.supplier_name}</Text>
+                <Text style={{padding: 30,}}>{rowData.short_name === rowData.supplier_name ?
+                    rowData.supplier_name : (rowData.short_name + "\n" + rowData.supplier_name)}</Text>
 
             </TouchableOpacity>
         } else {

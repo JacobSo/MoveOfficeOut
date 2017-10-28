@@ -388,6 +388,12 @@ export default class AsOrderDetailPager extends Component {
                                                 <View style={styles.button}>
                                                     <Text style={{color: 'white'}}>完结单据</Text>
                                                 </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => this.popupDialog.show()}>
+                                                <View style={[styles.button,{backgroundColor:'white'}]}>
+                                                    <Text>退审</Text>
+                                                </View>
                                             </TouchableOpacity></View>
                                     } else if (this.props.order.status === "manager_reviewed"||this.props.isReject) {
                                         return null
