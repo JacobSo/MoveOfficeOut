@@ -10,8 +10,11 @@ import {
     Alert,
     TextInput,
     KeyboardAvoidingView,
-    StyleSheet, TouchableOpacity, Image
+    StyleSheet, TouchableOpacity, Image, ListView, Platform
 } from 'react-native';
+import {CachedImage} from "react-native-img-cache";
+import AndroidModule from '../../module/AndoridCommontModule'
+import IosModule from '../../module/IosCommontModule'
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
@@ -21,7 +24,19 @@ const Dimensions = require('Dimensions');
 import RadioForm from 'react-native-simple-radio-button';
 //const  exList= ["皮布\n姓名：aaa\n电话：12321341321", "化工", "辅料", "板木", "五金"];
 const {width, height} = Dimensions.get('window');
-
+const ImagePicker = require('react-native-image-picker');
+const options = {
+    quality: 0.2,
+    noData: true,
+    cancelButtonTitle: "取消",
+    title: "图片来源",
+    takePhotoButtonTitle: "相机",
+    chooseFromLibraryButtonTitle: "本地图片",
+    storageOptions: {
+        skipBackup: true,//not icloud
+        path: 'images'
+    }
+};
 export default class AsAddOrderPager extends Component {
 
     constructor(props) {
@@ -38,6 +53,11 @@ export default class AsAddOrderPager extends Component {
             radioValue: this.props.order ? this.props.exType.findIndex(data => data.TypeName.trim() == this.props.order.type.trim()) : 0,
             isShow: false,
             checkBox: [],
+            pics: [],
+            dataSourcePic: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => true,
+            }),
+            image: []
         }
     }
 
@@ -52,12 +72,26 @@ export default class AsAddOrderPager extends Component {
             })
         });
         this.state.checkBox = temp;
+//constant pic merge
+        let tempPic=[];
+        if (this.props.order && this.props.order.pic_attachment.length !== 0) {
+            tempPic = this.props.order.pic_attachment;
+        }
+        if (this.props.order && this.props.order.attachment ) {
+            let tempAtt = this.props.order.attachment.split(',');
+            tempAtt.map((data)=>{
+               if(['jpg','gif','png'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
+                   tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
+            })
+        }
+        this.state.image = tempPic
+
     }
 
     getSelectionView() {
         return <View style={styles.selectContainer}>
             <TouchableOpacity
-                disabled={this.props.order&&this.props.order.status !== 'created'}
+                disabled={this.props.order && this.props.order.status !== 'created'}
                 style={[styles.stepButton, {backgroundColor: (this.state.select[0] ? Color.colorAmber : Color.trans)},]}
                 onPress={() => this.setState({select: [true, false, false], selectType: "成品"})
                 }>
@@ -67,7 +101,7 @@ export default class AsAddOrderPager extends Component {
                 }}>成品</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                disabled={this.props.order&&this.props.order.status !== 'created'}
+                disabled={this.props.order && this.props.order.status !== 'created'}
                 style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorAmber : Color.trans)},]}
                 onPress={() => this.setState({select: [false, true, false], selectType: "材料"})
                 }>
@@ -77,7 +111,7 @@ export default class AsAddOrderPager extends Component {
                 }}>材料</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                disabled={this.props.order&&this.props.order.status !== 'created'}
+                disabled={this.props.order && this.props.order.status !== 'created'}
                 style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorAmber : Color.trans)},]}
                 onPress={() => this.setState({select: [false, false, true], selectType: "其他"})}>
                 <Text style={{
@@ -104,48 +138,193 @@ export default class AsAddOrderPager extends Component {
                 {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    (operation === "创建" ?
-                        ApiService.createOrder(
-                            this.state.selectType,
-                            this.state.customer_name,
-                            this.state.remark,
-                            this.state.accuser_name,
-                            this.props.exType[this.state.radioValue].TypeName.trim(),
-                            this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)
-                        : (operation === "删除" ?
-                            ApiService.deleteOrder(this.props.order.id) :
-                            ApiService.updateOrder(
-                                this.props.order.id,
-                                this.state.selectType,
-                                this.state.customer_name,
-                                this.state.remark,
-                                operation === "修改" ? null : 'done',
-                                this.state.accuser_name,
-                                this.props.exType[this.state.radioValue].TypeName.trim(),
-                                this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
-                        .then((responseJson) => {
-                            if (responseJson.status === 0) {
-                                SnackBar.show('操作成功');
-                                this.props.refreshFunc();
-                                this.props.nav.goBack(null);
-                            } else {
-                                SnackBar.show(responseJson.message);
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            SnackBar.show("出错了，请稍后再试");
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                        }).done();
+                    if (this.state.pics.length !== 0)
+                        this.postImage(operation);
+                    else {
+                        this.postOrder(operation)
+                    }
+
                 }
                 },
             ]
         )
+    }
+
+    postOrder(operation) {
+        (operation === "创建" ?
+            ApiService.createOrder(
+                this.state.selectType,
+                this.state.customer_name,
+                this.state.remark,
+                this.state.accuser_name,
+                this.props.exType[this.state.radioValue].TypeName.trim(),
+                this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)
+            : (operation === "删除" ?
+                ApiService.deleteOrder(this.props.order.id) :
+                ApiService.updateOrder(
+                    this.props.order.id,
+                    this.state.selectType,
+                    this.state.customer_name,
+                    this.state.remark,
+                    operation === "修改" ? null : 'done',
+                    this.state.accuser_name,
+                    this.props.exType[this.state.radioValue].TypeName.trim(),
+                    this.props.exType[this.state.radioValue].TypePersons.length === 0 ? "" : this.props.exType[this.state.radioValue].TypePersons[0].UserName)))
+            .then((responseJson) => {
+                if (responseJson.status === 0) {
+                    SnackBar.show('操作成功');
+                    this.props.refreshFunc();
+                    this.props.nav.goBack(null);
+                } else {
+                    SnackBar.show(responseJson.message);
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
+    }
+
+    postImage(operation) {
+        if (Platform.OS === 'android') {
+            this.state.pics.map((data, index) => {
+                AndroidModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
+                    console.log(data.uri + "," + callBackData);
+                    this.postImageReq(data, index, callBackData, operation);
+                });
+            })
+        } else {
+            this.state.pics.map((data, index) => {
+                IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
+                    this.postImageReq(data, index, callBackData, operation);
+                });
+            })
+        }
+    }
+
+    postImageReq(data, index, callBackData, operation) {
+        ApiService.uploadImage(this.props.order.id, data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length), callBackData)
+            .then((responseJson) => {
+                if (responseJson.status === 0) {
+                    if (index === this.state.pics.length - 1)
+                        this.postOrder(operation);
+                } else {
+                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                    if (index === this.state.pics.length - 1) {
+                        setTimeout(() => {
+                            this.setState({isLoading: false})
+                        }, 100);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试", {duration: 3000});
+                if (index === this.state.pics.length - 1) {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            }).done();
+    }
+
+    imageView() {
+        if (this.state.image.length !== 0)
+            return <View>
+                <Text style={{
+                    marginLeft: 16,
+                    marginRight: 16,
+                    paddingTop: 16,
+                    borderTopWidth: 1,
+                    borderTopColor: Color.line
+                }}>已提交图片</Text>
+                <ListView
+                    ref="scrollView"
+                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.state.image)}
+                    removeClippedSubviews={false}
+                    enableEmptySections={true}
+                    contentContainerStyle={{
+                        flexDirection: 'row', flexWrap: 'wrap',
+                    }}
+                    renderRow={(rowData, sectionID, rowID) =>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.nav.navigate("gallery", {
+                                    pics: this.props.order.pic_attachment
+                                })
+                            }}>
+                            <CachedImage
+                                resizeMode="contain"
+                                style={{width: 80, height: 80, margin: 16}}
+                                source={{uri: rowData}}/>
+                        </TouchableOpacity>
+                    }/>
+            </View>
+
+    }
+
+    pickerView() {
+        if (this.props.order && this.props.order.status === 'created') {
+            return <View>
+                <TouchableOpacity
+                    disabled={this.props.order && this.props.order.status !== 'created'}
+                    style={styles.supplierTouch}
+                    onPress={() => {
+                        ImagePicker.showImagePicker(options, (response) => {
+                            if (!response.didCancel) {
+                                this.state.pics.push(response);
+                                this.setState({dataSourcePic: this.state.dataSourcePic.cloneWithRows(this.state.pics),});
+                            }
+                        });
+                    }}>
+                    <View style={{flexDirection: 'row', alignItems: "center",}}>
+
+                        <Text style={{marginLeft: 16}}>添加图片</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text>{this.state.pics.length}</Text>
+                        <Image source={require("../../drawable/arrow.png")}
+                               style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
+                    </View>
+                </TouchableOpacity>
+                <ListView
+                    dataSource={this.state.dataSourcePic}
+                    style={{marginTop: 16}}
+                    removeClippedSubviews={false}
+                    enableEmptySections={true}
+                    renderRow={(rowData, rowID, sectionID) =>
+                        <View >
+                            <Image
+                                resizeMode="contain"
+                                style={{height: 200, margin: 16, width: width - 32}}
+                                source={{uri: rowData.uri}}/>
+                            <TouchableOpacity
+                                style={{position: 'absolute', right: 24,}}
+                                onPress={() => {
+                                    //  console.log(rowID + ":" + sectionID);
+                                    this.state.pics.splice(sectionID, 1);
+                                    // console.log("delete:" + JSON.stringify(this.state.pics));
+                                    this.setState({
+                                        dataSourcePic: this.state.dataSourcePic.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
+                                    });
+                                    //   console.log(JSON.stringify(this.state.dataSource))
+                                }}>
+                                <Image
+                                    resizeMode="contain"
+                                    style={{height: 30, width: 30,}}
+                                    source={require('../../drawable/close_post_label.png')}/>
+                            </TouchableOpacity>
+                        </View>
+                    }/>
+            </View>
+        } else return null
+
     }
 
     render() {
@@ -173,7 +352,7 @@ export default class AsAddOrderPager extends Component {
                             this.getSelectionView()
                         }
                         <TouchableOpacity
-                            disabled={this.props.order&&this.props.order.status !== 'created'}
+                            disabled={this.props.order && this.props.order.status !== 'created'}
                             style={styles.supplierTouch}
                             onPress={() => {
                                 this.props.nav.navigate('asParam', {
@@ -185,14 +364,14 @@ export default class AsAddOrderPager extends Component {
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>投诉方</Text>
-                            <View style={{flexDirection: 'row',alignItems:'center'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{width: 150}}>{this.state.customer_name}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            disabled={this.props.order&&this.props.order.status !== 'created'}
+                            disabled={this.props.order && this.props.order.status !== 'created'}
                             style={styles.supplierTouch}
                             onPress={() => {
                                 this.props.nav.navigate('asParam', {
@@ -204,26 +383,27 @@ export default class AsAddOrderPager extends Component {
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>被投诉方</Text>
-                            <View style={{flexDirection: 'row',alignItems:'center'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{width: 150}}>{this.state.accuser_name}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            disabled={this.props.order&&this.props.order.status !== 'created'}
+                            disabled={this.props.order && this.props.order.status !== 'created'}
                             style={styles.supplierTouch}
                             onPress={() => {
                                 this.setState({isShow: !this.state.isShow})
                             }}>
                             <Text
                                 style={{marginLeft: 16}}>类型</Text>
-                            <View style={{flexDirection: 'row',alignItems:'center'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text>{this.props.exType[this.state.radioValue].TypeName.trim()}</Text>
                                 <Image source={require("../../drawable/arrow.png")}
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
                         </TouchableOpacity>
+
                         {
                             (() => {
                                 if (this.state.isShow) {
@@ -247,7 +427,7 @@ export default class AsAddOrderPager extends Component {
 
                         <View style={styles.editContainer}>
                             <TextInput
-                                editable={!this.props.order||(this.props.order&&this.props.order.status === 'created')}
+                                editable={!this.props.order || (this.props.order && this.props.order.status === 'created')}
                                 style={styles.textInput}
                                 multiline={true}
                                 defaultValue={this.state.remark}
@@ -259,8 +439,16 @@ export default class AsAddOrderPager extends Component {
                         </View>
 
                         {
+                            this.pickerView()
+                        }
+                        {
+                            this.imageView()
+                        }
+
+
+                        {
                             (() => {
-                                if (!this.props.order||(this.props.order && this.props.order.status === 'created'))
+                                if (!this.props.order || (this.props.order && this.props.order.status === 'created'))
                                     return <TouchableOpacity
                                         onPress={() => this.confirmRequest(this.props.order ? '修改' : '创建')}>
                                         <View style={styles.button}>
@@ -291,6 +479,7 @@ export default class AsAddOrderPager extends Component {
                                                     <Text>提交</Text>
                                                 </View>
                                             </TouchableOpacity>
+
                                         </View>
 
                                         <Text style={{
@@ -361,4 +550,5 @@ const styles = StyleSheet.create({
         paddingTop: 16,
         paddingLeft: 16
     },
+
 });

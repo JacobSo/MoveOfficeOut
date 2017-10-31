@@ -20,9 +20,11 @@ import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import {AsProductEditor} from "../Component/AsProductEditor";
+import {CachedImage} from "react-native-img-cache";
 import InputDialog from "../Component/InputDialog";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
+
 const ImagePicker = require('react-native-image-picker');
 const options = {
     quality: 0.2,
@@ -63,12 +65,29 @@ export default class AsSignOrderPager extends Component {
 
             productList: this.props.order ? this.props.order.abnormal_porducts : [],
             submitForm: null,
-            editList:this.props.order?this.pureEditData(): [],
+            editList: this.props.order ? this.pureEditData() : [],
             productUpdateFlag: '',
-            remark: ''
+            remark: '',
+
+            image: []
         }
     }
+    //constant pic merge
+    componentWillMount() {
+        let tempPic=[];
+        if (this.props.order && this.props.order.pic_attachment.length !== 0) {
+            tempPic = this.props.order.pic_attachment;
+        }
+        if (this.props.order && this.props.order.attachment ) {
+            let tempAtt = this.props.order.attachment.split(',');
+            tempAtt.map((data)=>{
+                if(['jpg','gif','png'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
+                    tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
+            })
+        }
+        this.state.image = tempPic
 
+    }
     componentDidMount() {
         this.setState({
             dataSourceComment: this.state.dataSourceComment.cloneWithRows(this.state.editList),
@@ -76,9 +95,9 @@ export default class AsSignOrderPager extends Component {
         })
     }
 
-    pureEditData(){
-        let temp =[];
-        this.props.order.tracks.map((data)=>{
+    pureEditData() {
+        let temp = [];
+        this.props.order.tracks.map((data) => {
             temp.push(data.remark)
         });
         return temp;
@@ -313,10 +332,33 @@ export default class AsSignOrderPager extends Component {
                             <Text>异常描述</Text>
                             <Text style={styles.detailText}>{this.props.order.remark}</Text>
                         </View>
+
+                        <ListView
+                            ref="scrollView"
+                            dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows( this.state.image)}
+                            removeClippedSubviews={false}
+                            enableEmptySections={true}
+                            contentContainerStyle={{
+                                flexDirection: 'row', flexWrap: 'wrap',
+                            }}
+                            renderRow={(rowData, sectionID, rowID) =>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.props.nav.navigate("gallery", {
+                                            pics:  this.state.image
+                                        })
+                                    }}>
+                                    <CachedImage
+                                        resizeMode="contain"
+                                        style={{width: 80, height: 80, margin: 16}}
+                                        source={{uri: rowData}}/>
+                                </TouchableOpacity>
+                            }/>
                         <TouchableOpacity style={{width: width - 32, alignItems: "center"}}
                                           onPress={() => this.setState({isDetail: false})}>
                             <Text style={{margin: 10, color: Color.colorAmber}}>收起</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
             )

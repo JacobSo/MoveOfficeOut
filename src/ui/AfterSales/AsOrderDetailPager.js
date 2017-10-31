@@ -17,9 +17,7 @@ import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import SnackBar from 'react-native-snackbar-dialog'
-import {AsProductEditor} from "../Component/AsProductEditor";
 import InputDialog from "../Component/InputDialog";
-import StarSeek from "../Component/StarSeek";
 import {CachedImage} from "react-native-img-cache";
 import RadioForm from 'react-native-simple-radio-button';
 const Dimensions = require('Dimensions');
@@ -36,9 +34,26 @@ export default class AsOrderDetailPager extends Component {
             rejectContent: '',
             radioValue: 0,
             comment: '',
+            image:[],
         }
     }
 
+    //constant pic merge
+    componentWillMount() {
+        let tempPic=[];
+        if (this.props.order && this.props.order.pic_attachment.length !== 0) {
+            tempPic = this.props.order.pic_attachment;
+        }
+        if (this.props.order && this.props.order.attachment ) {
+            let tempAtt = this.props.order.attachment.split(',');
+            tempAtt.map((data)=>{
+                if(['jpg','gif','png'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
+                    tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
+            })
+        }
+        this.state.image = tempPic
+
+    }
     getTypeIndex() {
         let temp = 0;
         typeGroup.map((data, index) => {
@@ -325,10 +340,10 @@ export default class AsOrderDetailPager extends Component {
 
                                         </View>
                                     }/>
-                                <Text style={styles.subTitleStyle}>{'售后图片'}</Text>
+                                <Text style={styles.subTitleStyle}>{'已提交图片'}</Text>
                                 <ListView
                                     ref="scrollView"
-                                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.props.order.pic_attachment)}
+                                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows( this.state.image)}
                                     removeClippedSubviews={false}
                                     enableEmptySections={true}
                                     contentContainerStyle={styles.listStyle}
@@ -336,7 +351,7 @@ export default class AsOrderDetailPager extends Component {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 this.props.nav.navigate("gallery", {
-                                                    pics: this.props.order.pic_attachment
+                                                    pics: this.state.image
                                                 })
                                             }}>
                                             <CachedImage
