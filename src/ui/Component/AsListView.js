@@ -28,7 +28,7 @@ import Loading from 'react-native-loading-spinner-overlay';
 import AsMainItem from "./AsMainItem";
 import FloatButton from "../Component/FloatButton";
 const {width, height} = Dimensions.get('window');
-const exList = ["全部", "已创建", "等待处理", "处理中", "提交审核", "已审核",];
+const exList = ["全部", "已创建", "等待处理", "处理中", "提交审核", "已审核"];
 const exListValue = ["", "created", "waitting", "service_approving", "service_approved", "manager_reviewing",];
 
 export default class AsListView extends Component {
@@ -179,15 +179,7 @@ export default class AsListView extends Component {
                                 renderRow={(rowData, rowID, sectionID) =>
                                     <AsMainItem rowData={rowData} action={() => {
                                         if (App.workType.indexOf("开发专员") > -1) {
-
-                                            if (rowData.status === 'manager_reviewing' || rowData.status === 'manager_reviewed') {
-                                                this.props.nav.navigate("asDetail", {
-                                                    order: rowData,
-                                                    refreshFunc: () => {
-                                                        this.onRefresh()
-                                                    },
-                                                })
-                                            } else {
+                                            if (rowData.status === 'created') {
                                                 if (this.state.exType.length !== 0) {
                                                     this.props.nav.navigate("asAdd", {
                                                         exType: this.state.exType,
@@ -197,7 +189,13 @@ export default class AsListView extends Component {
                                                         },
                                                     })
                                                 } else this.getAddType(rowData)
-
+                                            } else {
+                                                this.props.nav.navigate("asDetail", {
+                                                    order: rowData,
+                                                    refreshFunc: () => {
+                                                        this.onRefresh()
+                                                    },
+                                                })
                                             }
                                         } else {
                                             this.props.nav.navigate(this.props.type === "service_approving" || this.props.type === "waitting" ? "asSign" : "asDetail", {

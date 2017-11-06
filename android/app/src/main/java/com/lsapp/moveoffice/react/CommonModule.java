@@ -185,6 +185,7 @@ public class CommonModule extends ReactContextBaseJavaModule {
             //product builder
             StringBuilder productBuilder = new StringBuilder();
             int i = 1;
+            int length = 0;
             for (WDProduct p : selectList) {
                 //problems get
                 WDProblem content = p.getProblem();
@@ -260,11 +261,11 @@ public class CommonModule extends ReactContextBaseJavaModule {
                     else
                         productBuilder.append("<tr><td><span style=\"font-size:12px;\">" + contentList[j] + "</span></td></tr>");
                 }
-
+                Log.d(TAG, "outputReportAction: length:"+(productBuilder.length()-length));
+                length = productBuilder.length();
                 i++;
             }
             product.html(productBuilder.toString());
-
             String outputPath = Environment.getExternalStorageDirectory() + "/" + Const.DOWNLOAD_FILE_PATH + (woodOrSoft == 1 ? series.getSeriesName() : series.getFacName()) + "_" + step + ".html";
             File outputFile = new File(outputPath);
             BufferedWriter htmlWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));

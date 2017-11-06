@@ -20,6 +20,8 @@ import SnackBar from 'react-native-snackbar-dialog'
 import InputDialog from "../Component/InputDialog";
 import {CachedImage} from "react-native-img-cache";
 import RadioForm from 'react-native-simple-radio-button';
+import App from '../../constant/Application';
+
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 let typeGroup = ['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing', "manager_reviewed"];
@@ -47,7 +49,7 @@ export default class AsOrderDetailPager extends Component {
         if (this.props.order && this.props.order.attachment ) {
             let tempAtt = this.props.order.attachment.split(',');
             tempAtt.map((data)=>{
-                if(['jpg','gif','png'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
+                if(['jpg','gif','png','jpeg','bmp'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
                     tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
             })
         }
@@ -277,7 +279,6 @@ export default class AsOrderDetailPager extends Component {
 
                                 <Text style={styles.subTitleStyle}>{'异常产品'}</Text>
 
-
                                 <ListView
                                     dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.props.order.abnormal_porducts)}
                                     style={{marginLeft: 16, marginRight: 16, width: width - 32}}
@@ -365,8 +366,7 @@ export default class AsOrderDetailPager extends Component {
                             {
                                 (() => {
                                     if (this.props.order.status === "manager_reviewing") {
-                                        {/*评分*/
-                                        }
+                                        {/*评分*/}
                                         return <View>
                                             <View style={styles.itemCard}>
                                                 <Text style={styles.titleStyle}>售后评分</Text>
@@ -396,7 +396,6 @@ export default class AsOrderDetailPager extends Component {
                                                            onChangeText={(text) => {
                                                                this.setState({comment: text})
                                                            }}/>
-
                                             </View>
                                             <TouchableOpacity
                                                 onPress={() => this.doneOrder()}>
@@ -410,7 +409,7 @@ export default class AsOrderDetailPager extends Component {
                                                     <Text>退审</Text>
                                                 </View>
                                             </TouchableOpacity></View>
-                                    } else if (this.props.order.status === "manager_reviewed"||this.props.isReject) {
+                                    } else if (this.props.order.status === "manager_reviewed"||this.props.isReject||App.workType==="开发专员") {
                                         return null
                                     } else {
                                         return <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

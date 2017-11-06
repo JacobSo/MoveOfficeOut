@@ -53,12 +53,12 @@ export default class Toolbar extends Component {
     _getTitle() {
         if (!this.props.isSearch) {
             if (this.props.title.length === 1) {
-                return (<Text style={styles.title}>{this.props.title[0]}</Text>)
+                return (<Text style={styles.title} numberOfLines={1}>{this.props.title[0]}</Text>)
             } else {
                 return (
                     <View style={styles.multiTitle}>
-                        <Text style={styles.title}>{this.props.title[0]}</Text>
-                        <Text style={styles.subtitle}>{this.props.title[1]}</Text>
+                        <Text style={styles.title} numberOfLines={1}>{this.props.title[0]}</Text>
+                        <Text style={styles.subtitle} numberOfLines={1}>{this.props.title[1]}</Text>
 
                     </View>
 
@@ -145,10 +145,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     title: {
+
+        width:200,
         color: 'white',
         fontSize: 18,
     },
     subtitle: {
+        width:200,
         color: Color.background,
         fontSize: 15,
     },

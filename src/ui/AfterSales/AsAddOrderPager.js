@@ -80,7 +80,7 @@ export default class AsAddOrderPager extends Component {
         if (this.props.order && this.props.order.attachment ) {
             let tempAtt = this.props.order.attachment.split(',');
             tempAtt.map((data)=>{
-               if(['jpg','gif','png'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
+               if(['jpg','gif','png','jpeg','bmp'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
                    tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
             })
         }

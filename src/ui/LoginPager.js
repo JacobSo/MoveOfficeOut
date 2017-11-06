@@ -41,12 +41,10 @@ export default class LoginPager extends Component {
         };
     }
 
-
 //组件挂载完成（生命周期）
     componentDidMount() {
         //    console.log(JSON.stringify(newProps) + '-------------------------')
         this._localLogin();
-
     }
 
 //导航器-页面跳转

@@ -32,10 +32,6 @@ export default class WdFileListPager extends Component {
         };
     }
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         if (Platform.OS === 'android') {
             AndroidModule.getAllPrint((result) => {
@@ -61,8 +57,6 @@ export default class WdFileListPager extends Component {
                 (err) => {
                 })
         }
-
-
     }
 
     async  _search(text) {
@@ -190,8 +184,6 @@ export default class WdFileListPager extends Component {
                                                     },
                                                 ]
                                             );
-
-
                                         })
                                         .catch((err) => {
                                             console.log(err.message);
@@ -207,6 +199,7 @@ export default class WdFileListPager extends Component {
         )
     }
 }
+
 const styles = StyleSheet.create(
     {
         tabView: {
