@@ -23,7 +23,7 @@ import {
     View,
     StyleSheet,
     Text, Platform,
-    TouchableOpacity, Image,
+    TouchableOpacity, Image,ScrollView
 } from 'react-native';
 import {TABLE_PIC, TABLE_Q_S, TABLE_Q_S_PRODUCT, TABLE_Q_S_DRAFT, TABLE_W_D_P, TABLE_W_D_Q} from "./../db/DBConst";
 import AndroidModule from '../module/AndoridCommontModule'
@@ -104,7 +104,7 @@ export default class LauncherPager extends Component {
                         }]}
                 />
                 <ScrollView>
-                <View>
+                <View style={{marginBottom:55}}>
                 <Text style={styles.group}>外协工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
