@@ -103,6 +103,8 @@ export default class LauncherPager extends Component {
                             this.props.nav.navigate('preferences')
                         }]}
                 />
+                <ScrollView>
+                <View>
                 <Text style={styles.group}>外协工作</Text>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
@@ -169,6 +171,8 @@ export default class LauncherPager extends Component {
                     </TouchableOpacity>
                     <View style={{alignItems: 'center',flex:1}}/>
                 </View>
+                </View>
+                </ScrollView>
             </View>
         )
     }
