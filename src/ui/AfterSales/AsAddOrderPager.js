@@ -215,7 +215,7 @@ export default class AsAddOrderPager extends Component {
                     if (index === this.state.pics.length - 1)
                         this.postOrder(operation);
                 } else {
-                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                    SnackBar.show(responseJson.message, {duration: 3000});
                     if (index === this.state.pics.length - 1) {
                         setTimeout(() => {
                             this.setState({isLoading: false})

@@ -262,7 +262,7 @@ export default class AsSignOrderPager extends Component {
                     if (index === this.state.pics.length - 1)
                         this.submitContent();
                 } else {
-                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                    SnackBar.show(responseJson.message, {duration: 3000});
                     if (index === this.state.pics.length - 1) {
                         setTimeout(() => {
                             this.setState({isLoading: false})

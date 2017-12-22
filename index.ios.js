@@ -3,4 +3,4 @@ import {AppRegistry} from 'react-native';
 import SimpleStack from './src/SimpleStack';
 
 
-AppRegistry.registerComponent('MoveOfficeOut', () => SimpleStack);//312321313
+AppRegistry.registerComponent('MoveOfficeOut', () => SimpleStack);
