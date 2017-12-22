@@ -41,6 +41,8 @@ export default class AsMainItem extends Component {
                     width: width - 32,
                     padding: 5,
                     color: 'white',
+                    borderTopRightRadius:10,
+                    borderTopLeftRadius:10,
                     backgroundColor:colorGroup[this.getTypeIndex()]
                 }}>
                     {transGroup[this.getTypeIndex()]}</Text>
@@ -109,6 +111,6 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
         marginTop: 10,
-
+        borderRadius:10
     },
 });

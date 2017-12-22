@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     },
     actionText: {
         color: 'white',
-        padding: 10
+        padding: 16
     },
     actionIcon: {
         width: 25,

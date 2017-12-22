@@ -32,6 +32,7 @@ export  default  class  extends Component {
     static colorTeal = "#009688";//
 
     static colorGreen = "#4CAF50";//
+    static colorGreenDark = "#388E3C";//
     static colorLightGreen = "#8BC34A";
     static colorLime = "#CDDC39";
     static colorYellow = "#FFEB3B";

@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3,
         alignItems: 'center',
-        elevation: 2
+        elevation: 2,
+        borderRadius:10
     },
 });

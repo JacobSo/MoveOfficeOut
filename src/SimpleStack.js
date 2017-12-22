@@ -49,6 +49,9 @@ import AsProductSearchPager from "./ui/AfterSales/AsProductSearchPager";
 import AsSignOrderPager from "./ui/AfterSales/AsSignOrderPager";
 import AsParamPager from "./ui/AfterSales/AsParamPager";
 import AsOrderDetailPager from "./ui/AfterSales/AsOrderDetailPager";
+import SwMainPager from "./ui/ScheduleWork/SwMainPager";
+import SwAddPager from "./ui/ScheduleWork/SwAddPager";
+import SwDetailPager from "./ui/ScheduleWork/SwDetailPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -204,6 +207,15 @@ const AsParamScreen = ({navigation}) => _renderScreen(<View
 const AsOrderDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsOrderDetailPager {...navigation.state.params}
                                                                           nav={navigation}/></View>);
+const SwMainScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwMainPager {...navigation.state.params}
+                                                                                nav={navigation}/></View>);
+const SwAddScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwAddPager {...navigation.state.params}
+                                                                                nav={navigation}/></View>);
+const SwDetailScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwDetailPager {...navigation.state.params}
+                                                                           nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -327,6 +339,15 @@ const SimpleStack = StackNavigator({
         },
         asDetail: {
             screen: AsOrderDetailScreen,
+        },
+        swMain: {
+            screen: SwMainScreen,
+        },
+        swAdd: {
+            screen: SwAddScreen,
+        },
+        swDetail: {
+            screen: SwDetailScreen,
         },
     },
     {
