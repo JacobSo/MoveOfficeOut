@@ -149,6 +149,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         margin: 16,
         elevation: 2,
+        overflow:'hidden',
+
     },
     itemText: {
         justifyContent: 'space-between',
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
         width: width - 32,
         paddingBottom: 10,
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+
     },
 });

@@ -72,7 +72,7 @@ export default class SwAddPager extends Component<{}> {
                            //     style={{height:55,alignItems:'center'}}
                                 date={this.state.date}
                                 mode="date"
-                                placeholder="选择工作日期"
+                                placeholder="工作日期"
                                 format="YYYY-MM-DD"
                                 minDate={this.dateStr}
                                 confirmBtnText="确认"

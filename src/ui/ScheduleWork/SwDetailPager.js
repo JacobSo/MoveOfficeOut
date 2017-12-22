@@ -117,7 +117,7 @@ export default class SwDetailPager extends Component<{}> {
                                     </View>
                                 </View>
                             </View>
-                            <Text style={styles.titleContainer}>协同工作</Text>
+                            <View style={styles.titleContainer}><Text style={{fontSize: 18,   fontWeight: 'bold',}}>协同工作</Text></View>
                             <View style={{
                                 width: width - 32,
                                 height: 55 + 16 + 16 + 16,
@@ -177,7 +177,7 @@ export default class SwDetailPager extends Component<{}> {
                             </View>
 
 
-                            <Text style={styles.titleContainer}>处理工作流</Text>
+                            <View style={styles.titleContainer}><Text style={{fontSize: 18,   fontWeight: 'bold',}}>处理工作流</Text></View>
                             <View style={styles.iconContainer}>
                                 <Text style={{
                                     color: 'white',
@@ -233,10 +233,7 @@ export default class SwDetailPager extends Component<{}> {
                                 </View>
                             </View>
 
-                            {/*                      <TouchableOpacity style={[styles.iconContainer,{height:55,alignItems:'center',justifyContent:'center'}]}>
-                             <Text>申请协助</Text>
-                             </TouchableOpacity>*/}
-                            <Text style={[styles.titleContainer]}>新增处理</Text>
+                            <View style={styles.titleContainer}><Text style={{fontSize: 18,   fontWeight: 'bold',}}>新增处理</Text></View>
                             <View style={[styles.iconContainer, {
                                 alignItems: 'center',
                                 justifyContent: 'center'
@@ -261,7 +258,7 @@ export default class SwDetailPager extends Component<{}> {
                             </View>
                             <View style={[styles.iconContainer, {
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
                             }]}>
                                 <Text style={{margin: 16, color: 'black',}}>附加照片</Text>
                                 <TouchableOpacity
@@ -273,11 +270,12 @@ export default class SwDetailPager extends Component<{}> {
                                         justifyContent: 'center',
                                         borderRadius: 10
                                     }}>
+                                    <View style={{  padding: 16, width: width - 64, borderTopWidth: 1,
+                                        borderTopColor: Color.line,}}>
                                     <Text style={{
-                                        color: Color.colorGreen, padding: 16, width: width - 64, borderTopWidth: 1,
-                                        borderTopColor: Color.line,
+                                        color: Color.colorGreen,
                                         textAlign: 'center'
-                                    }}>拍照</Text>
+                                    }}>拍照</Text></View>
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity style={[styles.iconContainer, {
@@ -311,13 +309,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         margin: 16,
         elevation: 2,
+        overflow:'hidden'
 
     },
     titleContainer: {
-        fontWeight: 'bold',
-        fontSize: 18,
+
         borderBottomWidth: 3,
         borderBottomColor: Color.colorGreen,
-        margin: 16
+        margin: 16,
     }
 });
