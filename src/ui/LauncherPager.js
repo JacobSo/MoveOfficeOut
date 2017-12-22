@@ -53,15 +53,15 @@ export default class LauncherPager extends Component {
         codePush.sync({
             updateDialog: {
                 appendReleaseDescription: true,
-                descriptionPrefix: '\n\n更新内容：\n',
-                title: '更新',
-                mandatoryUpdateMessage: '',
-                mandatoryContinueButtonLabel: '执行更新',
+                descriptionPrefix:'\n\n更新内容：\n',
+                title:'更新',
+                mandatoryUpdateMessage:'',
+                mandatoryContinueButtonLabel:'执行更新',
             },
-            mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
-            deploymentKey: Platform.OS === 'ios' ? code_push_production_key_ios : code_push_production_key_android,
+            mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
+            deploymentKey: Platform.OS === 'ios'?code_push_production_key_ios:code_push_production_key_android,
         });
-        //    sqLite.drop(TABLE_Q_S_DRAFT);
+      //    sqLite.drop(TABLE_Q_S_DRAFT);
         // sqLite.drop(TABLE_Q_S_DRAFT);
         //  sqLite.drop(TABLE_Q_S_PRODUCT);
         //    sqLite.drop(TABLE_W_D);
@@ -87,7 +87,6 @@ export default class LauncherPager extends Component {
             <View style={{
                 backgroundColor: Color.background,
                 height: height,
-
             }}>
                 <Toolbar
                     elevation={2}
@@ -104,68 +103,71 @@ export default class LauncherPager extends Component {
                             this.props.nav.navigate('preferences')
                         }]}
                 />
-
-
+                <Text style={styles.group}>外协工作</Text>
                 <View style={styles.iconContainer}>
-                    <Text style={styles.group}>外协工作</Text>
-
-                    <View style={styles.contentContainer}>
-                        <TouchableOpacity style={{alignItems: 'center', flex: 1}} onPress={() => {
-                            if ((App.PowerNum & 1) === 1)
-                                this.props.nav.navigate('main');
-                            else SnackBar.show("没有权限")
-                        }}>
-                            <Image style={{width: 55, height: 55}} resizeMode="contain"
-                                   source={ require('../drawable/ic_launcher_cyan.png')}/>
-                            <Text>外出工作</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{alignItems: 'center', flex: 1}} onPress={() => {
-                            if ((App.PowerNum & 2 ) === 2)
-                                this.props.nav.navigate('wpMain');
-                            else SnackBar.show("没有权限")
-                        }}>
-                            <Image style={{width: 55, height: 55}} resizeMode="contain"
-                                   source={ require('../drawable/ic_launcher_purple.png')}/>
-                            <Text>评审单</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{alignItems: 'center', flex: 1}} onPress={() => {
-                            if ((App.PowerNum & 16) === 16)
-                                this.props.nav.navigate('asMain');
-                            else SnackBar.show("没有权限")
-                        }}>
-                            <Image style={{width: 55, height: 55}} resizeMode="contain"
-                                   source={ require('../drawable/ic_launcher_amber.png')}/>
-                            <Text>售后工作</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.contentContainer}>
-
-                        <View style={{alignItems: 'center', flex: 1}}/>
-                    </View>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                    if ((App.PowerNum & 1) === 1)
+                        this.props.nav.navigate('main');
+                    else SnackBar.show("没有权限")
+                }}>
+                    <Image style={{width: 55, height: 55}} resizeMode="contain"
+                           source={ require('../drawable/ic_launcher_cyan.png')}/>
+                    <Text>外出工作</Text>
+                </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                        if ((App.PowerNum & 2 ) === 2)
+                            this.props.nav.navigate('wpMain');
+                        else SnackBar.show("没有权限")
+                    }}>
+                        <Image style={{width: 55, height: 55}} resizeMode="contain"
+                               source={ require('../drawable/ic_launcher_purple.png')}/>
+                        <Text>评审单</Text>
+                    </TouchableOpacity>
                 </View>
-
+                <View style={styles.iconContainer}>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                        if ((App.PowerNum & 16) === 16)
+                            this.props.nav.navigate('asMain');
+                        else SnackBar.show("没有权限")
+                    }}>
+                        <Image style={{width: 55, height: 55}} resizeMode="contain"
+                               source={ require('../drawable/ic_launcher_amber.png')}/>
+                        <Text>售后工作</Text>
+                    </TouchableOpacity>
+                    <View style={{alignItems: 'center',flex:1}}/>
+                </View>
                 <Text style={styles.group}>其他部门工作</Text>
                 <View style={styles.iconContainer}>
-                    <View style={styles.contentContainer}>
-                        <TouchableOpacity style={{alignItems: 'center', flex: 1}} onPress={() => {
-                            if ((App.PowerNum & 4) === 4)
-                                this.props.nav.navigate('qcMain');
-                            else SnackBar.show("没有权限")
-                        }}>
-                            <Image style={{width: 55, height: 55}} resizeMode="contain"
-                                   source={ require('../drawable/ic_launcher_indigo.png')}/>
-                            <Text>常规质检</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{alignItems: 'center', flex: 1}} onPress={() => {
-                            if ((App.PowerNum & 8) === 8)
-                                this.props.nav.navigate('wdMain');
-                            else SnackBar.show("没有权限")
-                        }}>
-                            <Image style={{width: 55, height: 55}} resizeMode="contain"
-                                   source={ require('../drawable/ic_launcher_orange_deep.png')}/>
-                            <Text>板木/软体研发</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                        if ((App.PowerNum & 4) === 4)
+                            this.props.nav.navigate('qcMain');
+                        else SnackBar.show("没有权限")
+                    }}>
+                        <Image style={{width: 55, height: 55}} resizeMode="contain"
+                               source={ require('../drawable/ic_launcher_indigo.png')}/>
+                        <Text>常规质检</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                        if ((App.PowerNum & 8) === 8)
+                            this.props.nav.navigate('wdMain');
+                        else SnackBar.show("没有权限")
+                    }}>
+                        <Image style={{width: 55, height: 55}} resizeMode="contain"
+                               source={ require('../drawable/ic_launcher_orange_deep.png')}/>
+                        <Text>板木/软体研发</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.iconContainer}>
+                    <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
+                        if ((App.PowerNum & 16) === 16)
+                            this.props.nav.navigate('asMain');
+                        else SnackBar.show("没有权限")
+                    }}>
+                        <Image style={{width: 55, height: 55}} resizeMode="contain"
+                               source={ require('../drawable/ic_launcher_green.png')}/>
+                        <Text>项目日程工作</Text>
+                    </TouchableOpacity>
+                    <View style={{alignItems: 'center',flex:1}}/>
                 </View>
             </View>
         )
@@ -177,17 +179,13 @@ const styles = StyleSheet.create({
         color: Color.colorPrimary
     },
     iconContainer: {
-        elevation: 2,
-        margin: 16,
+        elevation:2,
+        padding: 16,
         backgroundColor: 'white',
-        width: width - 32,
-        borderRadius: 10
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: width,
     },
 
-    contentContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 16,
-    }
 });
