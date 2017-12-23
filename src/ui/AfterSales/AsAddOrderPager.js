@@ -20,23 +20,14 @@ import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../../network/AsApiService';
 import SnackBar from 'react-native-snackbar-dialog'
-const Dimensions = require('Dimensions');
+import * as ImageOptions from "../../constant/ImagePickerOptions"
+
 import RadioForm from 'react-native-simple-radio-button';
 //const  exList= ["皮布\n姓名：aaa\n电话：12321341321", "化工", "辅料", "板木", "五金"];
+const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
-const options = {
-    quality: 0.2,
-    noData: true,
-    cancelButtonTitle: "取消",
-    title: "图片来源",
-    takePhotoButtonTitle: "相机",
-    chooseFromLibraryButtonTitle: "本地图片",
-    storageOptions: {
-        skipBackup: true,//not icloud
-        path: 'images'
-    }
-};
+
 export default class AsAddOrderPager extends Component {
 
     constructor(props) {
@@ -276,7 +267,7 @@ export default class AsAddOrderPager extends Component {
                     disabled={this.props.order && this.props.order.status !== 'created'}
                     style={styles.supplierTouch}
                     onPress={() => {
-                        ImagePicker.showImagePicker(options, (response) => {
+                        ImagePicker.showImagePicker(ImageOptions.options, (response) => {
                             if (!response.didCancel) {
                                 this.state.pics.push(response);
                                 this.setState({dataSourcePic: this.state.dataSourcePic.cloneWithRows(this.state.pics),});
@@ -403,7 +394,6 @@ export default class AsAddOrderPager extends Component {
                                        style={{width: 10, height: 20, marginRight: 10, marginLeft: 10}}/>
                             </View>
                         </TouchableOpacity>
-
                         {
                             (() => {
                                 if (this.state.isShow) {
@@ -437,15 +427,12 @@ export default class AsAddOrderPager extends Component {
                                 blurOnSubmit={true}
                                 onChangeText={(text) => this.setState({remark: text})}/>
                         </View>
-
                         {
                             this.pickerView()
                         }
                         {
                             this.imageView()
                         }
-
-
                         {
                             (() => {
                                 if (!this.props.order || (this.props.order && this.props.order.status === 'created'))
@@ -457,7 +444,6 @@ export default class AsAddOrderPager extends Component {
                                     </TouchableOpacity>
                             })()
                         }
-
                         {
                             (() => {
                                 if (this.props.order && this.props.order.status === 'created')
@@ -479,9 +465,7 @@ export default class AsAddOrderPager extends Component {
                                                     <Text>提交</Text>
                                                 </View>
                                             </TouchableOpacity>
-
                                         </View>
-
                                         <Text style={{
                                             marginLeft: 16,
                                             width: width - 32,

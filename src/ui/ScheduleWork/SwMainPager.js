@@ -17,14 +17,16 @@ import SnackBar from 'react-native-snackbar-dialog'
 import Utility from "../../utils/Utility";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import WpMainItem from "../Component/WpMainItem";
+import RadioForm from 'react-native-simple-radio-button';
 
 const {width, height} = Dimensions.get('window');
-
+const exList = ["全部", "待审核","处理中", "", "已审核"];
 export default class SwMainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isRefreshing: false,
+            isFilter:false,
             items: [{key: "a"}, {key: "b"}],
         }
     }
@@ -120,13 +122,44 @@ export default class SwMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[]}
+                    actionArray={[require("../../drawable/filter.png")]}
                     functionArray={[
                         () => {
                             this.props.nav.goBack(null)
                         },
+                        ()=>{
+                            this.setState({isFilter:!this.state.isFilter})
+                        }
 
                     ]}/>
+                {
+                    (()=>{
+                        if(this.state.isFilter){
+                            return         <RadioForm
+                                buttonColor={Color.colorGreen}
+                                labelStyle={{color: Color.content, margin: 16}}
+                                radio_props={ [
+                                    {label: exList[0], value: 0},
+                                    {label: exList[1], value: 1},
+                                    {label: exList[2], value: 2},
+                                    {label: exList[3], value: 3},
+                                    {label: exList[4], value: 4},
+                                    {label: exList[5], value: 5},
+                                ]}
+                                initial={this.state.radioValue}
+                                formHorizontal={false}
+                                style={styles.radioContainer}
+                                onPress={(value) => {
+
+                                }}
+                            />
+                        }else{
+                            return null
+                        }
+
+                    })()
+                }
+
                 {this._getView()}
                 <FloatButton
                     color={Color.colorOrange}
@@ -161,4 +194,16 @@ const styles = StyleSheet.create({
         paddingRight: 10,
 
     },
+    radioContainer:{
+        marginLeft: 16,
+        marginBottom: 16,
+        width: width - 32,
+        backgroundColor: 'white',
+        paddingTop: 16,
+        paddingLeft: 16,
+        elevation: 2,
+        borderBottomLeftRadius:10,
+        borderBottomRightRadius:10
+    }
+
 });

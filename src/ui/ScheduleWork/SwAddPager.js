@@ -16,7 +16,10 @@ import Sae from "react-native-textinput-effects/lib/Sae";
 import {Akira, Hoshi, Jiro, Kaede, Madoka} from "react-native-textinput-effects";
 import Moment from 'moment';
 import DatePicker from "../Component/DatePicker";
+import * as ImageOptions from "../../constant/ImagePickerOptions"
+import ImageList from "../Component/ImageList";
 const {width, height} = Dimensions.get('window');
+const ImagePicker = require('react-native-image-picker');
 
 
 export default class SwAddPager extends Component<{}> {
@@ -28,7 +31,13 @@ export default class SwAddPager extends Component<{}> {
         this.state = {
             isLoading: false,
             date: "",
-            remark: ''
+            remark: '',
+
+            pics: [],
+            dataSourcePic: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => true,
+            }),
+            image: []
         };
     }
 
@@ -69,7 +78,6 @@ export default class SwAddPager extends Component<{}> {
                                         color: Color.content, textAlign: 'center', width: width / 4,
                                     }
                                 }}
-                           //     style={{height:55,alignItems:'center'}}
                                 date={this.state.date}
                                 mode="date"
                                 placeholder="工作日期"
@@ -86,35 +94,33 @@ export default class SwAddPager extends Component<{}> {
                         <View style={styles.cardContainer}>
                             <Text style={{margin: 16, color: 'black'}}>日程工作描述</Text>
                             <TextInput
-                                style={{
-                                    width: width - 64,
-                                    height: 100,
-                                    marginRight: 10,
-                                    textAlign: 'center',
-                                    borderTopWidth: 1,
-                                    borderTopColor: Color.line
-                                }}
+                                style={styles.inputStyle}
                                 multiline={true}
                                 placeholder="在这里填写"
                                 returnKeyType={'done'}
                                 underlineColorAndroid="transparent"
-
                                 blurOnSubmit={true}
                                 onChangeText={(text) => this.setState({remark: text})}/>
                         </View>
 
                         <View style={styles.cardContainer}>
                             <Text style={{margin: 16, color: 'black'}}>附加照片</Text>
+                            <ImageList dataSourcePic={this.state.dataSourcePic} action={(sectionID) => {
+                                this.state.pics.splice(sectionID, 1);
+                                this.setState({
+                                    dataSourcePic: this.state.dataSourcePic.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
+                                });
+                            }}/>
                             <TouchableOpacity onPress={() => {
+                                ImagePicker.showImagePicker(ImageOptions.options, (response) => {
+                                    if (!response.didCancel) {
+                                        this.state.pics.push(response);
+                                        this.setState({dataSourcePic: this.state.dataSourcePic.cloneWithRows(this.state.pics),});
+                                    }
+                                });
                             }}
-                                              style={{
-                                                  backgroundColor: Color.colorGreen,
-                                                  alignItems: 'center',
-                                                  justifyContent: 'center',
-                                                  borderBottomRightRadius: 10,
-                                                  borderBottomLeftRadius: 10,
-                                                  width: width - 32
-                                              }}>
+                                              style={styles.buttonStyle}>
+
                                 <Text style={{color: 'white', margin: 16}}>拍照</Text>
                             </TouchableOpacity>
                         </View>
@@ -122,14 +128,7 @@ export default class SwAddPager extends Component<{}> {
                             <Text style={{margin: 16, color: 'black'}}>协助人员</Text>
                             <TouchableOpacity onPress={() => {
                             }}
-                                              style={{
-                                                  backgroundColor: Color.colorGreen,
-                                                  alignItems: 'center',
-                                                  justifyContent: 'center',
-                                                  borderBottomRightRadius: 10,
-                                                  borderBottomLeftRadius: 10,
-                                                  width: width - 32
-                                              }}>
+                                              style={styles.buttonStyle}>
                                 <Text style={{color: 'white', margin: 16}}>添加</Text>
                             </TouchableOpacity>
                         </View>
@@ -157,6 +156,22 @@ const styles = StyleSheet.create({
         width: width - 32,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    inputStyle:{
+        width: width - 64,
+        height: 100,
+        marginRight: 10,
+        textAlign: 'center',
+        borderTopWidth: 1,
+        borderTopColor: Color.line
+    },
+    buttonStyle:{
+        backgroundColor: Color.colorGreen,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        width: width - 32
     }
 
 });
