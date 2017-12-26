@@ -6,55 +6,61 @@
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions, FlatList, RefreshControl, ListView, Text, TouchableOpacity,
-
+    StyleSheet, Dimensions, FlatList, RefreshControl,
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
-import ApiService from '../../network/WpApiService';
+import ApiService from '../../network/SwApiService';
 import Color from '../../constant/Color';
 import FloatButton from "../Component/FloatButton";
 import SnackBar from 'react-native-snackbar-dialog'
-import Utility from "../../utils/Utility";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import WpMainItem from "../Component/WpMainItem";
 import RadioForm from 'react-native-simple-radio-button';
+import SwMainItem from "../Component/SwMainItem";
 
 const {width, height} = Dimensions.get('window');
-const exList = ["全部", "待审核","处理中", "", "已审核"];
+const exList = ["全部", "待提交", "待审核", "处理中", "已审核", "待评分", "已完结"];
+const dataList = ["待提交", "待审核", "处理中", "已驳回", "待评分", "已完结"];
 export default class SwMainPager extends Component {
+    //this.props.memberType
+    //监督:12345
+    //审核:123
+    //普通:6
     constructor(props) {
         super(props);
         this.state = {
             isRefreshing: false,
-            isFilter:false,
-            items: [{key: "a"}, {key: "b"}],
+            isFilter: false,
+            items: [],
+            itemsBackup: [],
+            radioValue: 0,
         }
     }
 
     componentDidMount() {
-        // this._onRefresh();
+        this._onRefresh();
     }
 
     _onRefresh() {
         this.setState({isRefreshing: true,});
-        /* ApiService.getList(0)
-         .then((responseJson) => {
-         if (!responseJson.IsErr) {
-         this.setState({
-         items: responseJson.list,
-         dataSource: this.state.dataSource.cloneWithRows(responseJson.list),
-         isRefreshing: false,
-         });
-         } else{
-         this.setState({  isRefreshing: false,});
-         SnackBar.show(responseJson.ErrDesc);
-         }
-         })
-         .catch((error) => {
-         this.setState({  isRefreshing: false,});
-         console.log(error);
-         SnackBar.show("出错了，请稍后再试");
-         }).done();*/
+        ApiService.getList(this.props.memberType.indexOf("2")>-1?"1,2.3,4,5":this.props.memberType.indexOf("1")>-1?"123":"6", "")
+            .then((responseJson) => {
+                if (!responseJson.IsErr) {
+                    this.setState({
+                        items: responseJson.list,
+                        itemsBackup: responseJson.list,
+                        isRefreshing: false,
+                    });
+                } else {
+                    this.setState({isRefreshing: false,});
+                    SnackBar.show(responseJson.ErrDesc);
+                }
+            })
+            .catch((error) => {
+                this.setState({isRefreshing: false,});
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+            }).done();
     }
 
     _getView() {
@@ -66,58 +72,49 @@ export default class SwMainPager extends Component {
             return (
                 <FlatList
                     data={this.state.items}
-                    renderItem={({item}) =>
-                        <TouchableOpacity
-                            style={styles.iconContainer}
-                            onPress={() => {
-                                this.props.nav.navigate("swDetail")
-                            }}>
-                            <Text style={{
-                                color: 'white',
-                                backgroundColor: Color.colorBlueGrey,
-                                textAlign: 'center',
-                                borderTopRightRadius: 10,
-                                borderTopLeftRadius: 10,
-                                padding: 5,
-                            }}>审核中</Text>
-
-                            <Text style={{margin:16,fontWeight :'bold'}}>{'我们协会是以存在主义为核心的协会，当你们慢慢扩宽你们的哲学视野之后，你会对所有事物都会有更深层次的理解'}</Text>
-                            <View style={[styles.itemText,{borderTopWidth:1,borderColor:Color.line,paddingTop:10}]}>
-                                <Text>{'工作日期'}</Text>
-                                <Text
-                                    style={{color: Color.black_semi_transparent}}>2017-1-1</Text>
-                            </View>
-                            <View style={styles.itemText}>
-                                <Text>{'更新时间'}</Text>
-                                <Text
-                                    style={{color: Color.black_semi_transparent}}>2017-1-1</Text>
-                            </View>
-                            <View style={styles.itemText}>
-                                <Text>{'创建人'}</Text>
-                                <Text
-                                    style={{color: Color.black_semi_transparent}}>孙仔</Text>
-                            </View>
-                            <View style={styles.itemText}>
-                                <Text>{'协助人员'}</Text>
-                                <Text
-                                    style={{color: Color.black_semi_transparent}}>孙中山</Text>
-                            </View>
-                        </TouchableOpacity>}
+                    ListFooterComponent={<View style={{height: 75}}/>}
+                    keyExtractor={(item, index) => item.scGuid}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={() => this._onRefresh()}
+                            tintColor={Color.colorBlueGrey}//ios
+                            title="刷新中..."//ios
+                            titleColor='white'
+                            colors={[Color.colorPrimary]}
+                            progressBackgroundColor="white"
+                        />}
+                    renderItem={({item}) => <SwMainItem item={item} action={() => {
+                        if (item.scStatus === 0)
+                            this.props.nav.navigate("swAdd", {
+                                item: item,
+                                refreshFunc: () => {
+                                    this._onRefresh()
+                                }
+                            });
+                        else
+                            this.props.nav.navigate("swDetail")
+                    }}/>
+                    }
                 />
             )
         }
+    }
+
+    async  _search(value) {
+        return this.state.itemsBackup.filter((item) => (dataList[item.scStatus].toLowerCase().indexOf(exList[value].toLowerCase()) > -1));
     }
 
     render() {
         return (
             <View style={{
                 flex: 1,
-                backgroundColor: Color.background
+                backgroundColor: Color.background,
             }}>
 
                 <Toolbar
                     elevation={2}
-                    title={["我的日程工作"]}
+                    title={[this.props.memberType.indexOf("2") > -1 ? "工作监督" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作", exList[this.state.radioValue]]}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
@@ -127,15 +124,15 @@ export default class SwMainPager extends Component {
                         () => {
                             this.props.nav.goBack(null)
                         },
-                        ()=>{
-                            this.setState({isFilter:!this.state.isFilter})
+                        () => {
+                            this.setState({isFilter: !this.state.isFilter})
                         }
 
                     ]}/>
                 {
-                    (()=>{
-                        if(this.state.isFilter){
-                            return         <RadioForm
+                    (() => {
+                        if (this.state.isFilter) {
+                            return <RadioForm
                                 buttonColor={Color.colorGreen}
                                 labelStyle={{color: Color.content, margin: 16}}
                                 radio_props={ [
@@ -150,10 +147,25 @@ export default class SwMainPager extends Component {
                                 formHorizontal={false}
                                 style={styles.radioContainer}
                                 onPress={(value) => {
+                                    if (value === 0) {
+                                        this.setState({
+                                            items: this.state.itemsBackup
+                                        });
+                                    } else {
+                                        this._search(value).then((array) => {
+                                            this.setState({
+                                                items: array
+                                            });
+                                        });
+                                    }
 
+                                    this.setState({
+                                        radioValue: value,
+                                        isFilter: false,
+                                    });
                                 }}
                             />
-                        }else{
+                        } else {
                             return null
                         }
 
@@ -161,40 +173,29 @@ export default class SwMainPager extends Component {
                 }
 
                 {this._getView()}
-                <FloatButton
-                    color={Color.colorOrange}
-                    drawable={require('../../drawable/add.png')}
-                    action={() => {
-                        this.props.nav.navigate('swAdd', {
-                            refreshFunc: () => {
-                                this._onRefresh()
-                            }
-                        });
-                    }}/>
+                {
+                    (() => {
+                        if (this.props.memberType.indexOf("0") > -1) {
+                            return <FloatButton
+                                color={Color.colorOrange}
+                                drawable={require('../../drawable/add.png')}
+                                action={() => {
+                                    this.props.nav.navigate('swAdd', {
+                                        refreshFunc: () => {
+                                            this._onRefresh()
+                                        }
+                                    });
+                                }}/>
+                        }
+                    })()
+                }
+
             </View>
         )
     }
 }
 const styles = StyleSheet.create({
-    iconContainer: {
-        width: width - 32,
-        borderRadius: 10,
-        backgroundColor: 'white',
-        margin: 16,
-        elevation: 2,
-        overflow:'hidden',
-
-    },
-    itemText: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        width: width - 32,
-        paddingBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-
-    },
-    radioContainer:{
+    radioContainer: {
         marginLeft: 16,
         marginBottom: 16,
         width: width - 32,
@@ -202,8 +203,7 @@ const styles = StyleSheet.create({
         paddingTop: 16,
         paddingLeft: 16,
         elevation: 2,
-        borderBottomLeftRadius:10,
-        borderBottomRightRadius:10
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10
     }
-
 });

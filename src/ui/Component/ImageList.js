@@ -25,6 +25,7 @@ export default class ImageList extends Component {
                 enableEmptySections={true}
                 renderRow={(rowData, rowID, sectionID) =>
                     <View>
+
                         <Image
                             resizeMode="contain"
                             style={{

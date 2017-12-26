@@ -52,6 +52,7 @@ import AsOrderDetailPager from "./ui/AfterSales/AsOrderDetailPager";
 import SwMainPager from "./ui/ScheduleWork/SwMainPager";
 import SwAddPager from "./ui/ScheduleWork/SwAddPager";
 import SwDetailPager from "./ui/ScheduleWork/SwDetailPager";
+import SwParamPager from "./ui/ScheduleWork/SwParamPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -216,6 +217,9 @@ const SwAddScreen = ({navigation}) => _renderScreen(<View
 const SwDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwDetailPager {...navigation.state.params}
                                                                            nav={navigation}/></View>);
+const SwParamScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwParamPager {...navigation.state.params}
+                                                                           nav={navigation}/></View>);
 const SimpleStack = StackNavigator({
         launcher: {
             screen: LauncherScreen,
@@ -346,8 +350,8 @@ const SimpleStack = StackNavigator({
         swAdd: {
             screen: SwAddScreen,
         },
-        swDetail: {
-            screen: SwDetailScreen,
+        swParam: {
+            screen: SwParamScreen,
         },
     },
     {

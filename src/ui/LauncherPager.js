@@ -31,10 +31,12 @@ import IosModule from '../module/IosCommontModule'
 import Color from '../constant/Color';
 import Toolbar from './Component/Toolbar'
 import App from '../constant/Application';
+import ApiService from '../network/SwApiService';
 import SQLite from '../db/Sqlite';
 import codePush from 'react-native-code-push'
 import SnackBar from 'react-native-snackbar-dialog'
 import UpdateService from "../network/UpdateService";
+import Loading from 'react-native-loading-spinner-overlay';
 let sqLite = new SQLite();
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
@@ -44,7 +46,9 @@ export default class LauncherPager extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isLoading:false
+        }
     }
 
     componentDidMount() {
@@ -80,6 +84,33 @@ export default class LauncherPager extends Component {
 
     componentWillUnmount() {
         // sqLite.close();
+    }
+
+    initScheduleType(){
+        this.setState({isLoading: true});
+        ApiService.initWorkType()
+            .then((responseJson) => {
+                if (!responseJson.IsErr) {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                    this.props.nav.navigate('swMain',{
+                        memberType:responseJson.worktypes
+                    });//0normal/1audit/2check
+                } else {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                    SnackBar.show(responseJson.ErrDesc);
+                }
+            })
+            .catch((error) => {
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+            }).done();
     }
 
     render() {
@@ -161,8 +192,8 @@ export default class LauncherPager extends Component {
                 </View>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={{alignItems: 'center',flex:1}} onPress={() => {
-                        if ((App.PowerNum & 16) === 16)
-                            this.props.nav.navigate('swMain');
+                        if ((App.PowerNum & 32) === 32)
+                           this.initScheduleType()
                         else SnackBar.show("没有权限")
                     }}>
                         <Image style={{width: 55, height: 55}} resizeMode="contain"
@@ -171,8 +202,11 @@ export default class LauncherPager extends Component {
                     </TouchableOpacity>
                     <View style={{alignItems: 'center',flex:1}}/>
                 </View>
+                    <Loading visible={this.state.isLoading}/>
+
                 </View>
                 </ScrollView>
+
             </View>
         )
     }

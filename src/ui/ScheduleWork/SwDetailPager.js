@@ -44,7 +44,6 @@ export default class SwDetailPager extends Component<{}> {
             }),
             image: [],
             items: [{key: "a"}, {key: "b"}],
-
         };
     }
 
@@ -155,7 +154,6 @@ export default class SwDetailPager extends Component<{}> {
                                 data={this.state.items}
                                 renderItem={({item}) => <SwFeedbackItem/>}
                             />
-
                             <View style={styles.titleContainer}>
                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>新增处理</Text>
                             </View>
