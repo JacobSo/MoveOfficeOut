@@ -101,6 +101,62 @@ export default class SwAddPager extends Component<{}> {
         );
     }
 
+
+    submit() {
+
+
+        if (!this.state.date || !this.state.remark) {
+            SnackBar.show("请填写日期和工作");
+            return
+        }
+        Alert.alert(
+            this.props.item ? '修改工作' : "创建工作",
+            '创建或修改工作后需要提交，提交前你还可以修改工作，提交后不可更改',
+            [
+                {
+                    text: '取消', onPress: () => null
+                },
+                {
+                    text: this.props.item ? '仅修改' : '仅创建', onPress: () => this.submitFunc(false)
+                },
+                {
+                    text: this.props.item ? '修改并提交' : '创建并提交', onPress: () => this.submitFunc(true)
+                },
+            ]
+        );
+    }
+
+    submitFunc(isBoth) {
+        let membersStr = '';
+        this.state.members.map((data) => {
+            membersStr = data.name + "," + membersStr
+        });
+        this.setState({isLoading: true,});
+        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null,isBoth)
+            .then((responseJson) => {
+                if (!responseJson.IsErr) {
+                    if (this.state.pics.length !== 0) {
+                        this.postImage(responseJson.uploadId)
+                    } else {
+                        this.props.refreshFunc();
+                        this.props.nav.goBack(null)
+                    }
+                } else {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                    SnackBar.show(responseJson.ErrDesc);
+                }
+            })
+            .catch((error) => {
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+            }).done();
+    }
+
     confirmFunc(flag) {
         this.setState({isLoading: true,});
         ApiService.auditWork(this.props.item.scId, flag, this.state.confirmRemark)
@@ -124,80 +180,24 @@ export default class SwAddPager extends Component<{}> {
             }).done();
     }
 
-
-    submit() {
-        let membersStr = '';
-        this.state.members.map((data) => {
-            membersStr = data.name + "," + membersStr
-        });
-
-        if (!this.state.date || !this.state.remark) {
-            SnackBar.show("请填写日期和工作");
-            return
-        }
-        Alert.alert(
-            this.props.item ? '修改工作' : "创建工作",
-            '创建或修改工作后需要提交，提交前你还可以修改工作，提交后不可更改',
-            [
-                {
-                    text: '取消', onPress: () => {
-                }
-                },
-                {
-                    text:  this.props.item?'仅修改':'仅创建', onPress: () => {
-                }
-                },
-                {
-                    text:  this.props.item?'修改并提交':'创建并提交', onPress: () => {
-                    this.setState({isLoading: true,});
-                    ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null)
-                        .then((responseJson) => {
-                            if (!responseJson.IsErr) {
-                                if (this.state.pics.length !== 0) {
-                                    this.postImage(responseJson.uploadId)
-                                } else {
-                                    this.props.refreshFunc();
-                                    this.props.nav.goBack(null)
-                                }
-                            } else {
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                                SnackBar.show(responseJson.ErrDesc);
-                            }
-                        })
-                        .catch((error) => {
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                            console.log(error);
-                            SnackBar.show("出错了，请稍后再试");
-                        }).done();
-                }
-                },
-            ]
-        );
-
-    }
-
-    postImage(mainId) {
+    postImage(mainId, isBoth) {
         if (Platform.OS === 'android') {
             this.state.pics.map((data, index) => {
                 AndroidModule.getImageBase64(data.path, (callBackData) => {
-                    this.postImgReq(data, index, callBackData, mainId);
+                    this.postImgReq(data, index, callBackData, mainId, isBoth);
                 });
             })
         } else {
             this.state.pics.map((data, index) => {
                 IosModule.getImageBase64(data.path, (callBackData) => {
                     //SnackBar.show(mainId+','+index+','+JSON.stringify(data));
-                    this.postImgReq(data, index, callBackData, mainId);
+                    this.postImgReq(data, index, callBackData, mainId, isBoth);
                 })
             });
         }
     }
 
-    postImgReq(data, index, callBackData, mainId) {
+    postImgReq(data, index, callBackData, mainId, isBoth) {
         ApiService.uploadImage(
             mainId,
             data.fileName,
@@ -262,7 +262,7 @@ export default class SwAddPager extends Component<{}> {
 
                 <Toolbar
                     elevation={2}
-                    title={["新创建日程", this.props.memberType.indexOf('0') > -1 ? (this.props.item && this.props.item.scCreator === App.account ? "主理" : '协助') : '-']}
+                    title={["新创建日程", this.props.memberType.indexOf('0') > -1 ? (this.props.item ? ( this.props.item.scCreator === App.account ? "主理" : '协助') : '主理') : '-']}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}

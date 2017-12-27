@@ -73,7 +73,7 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static createWork(time,content, helper, scheduleId, ) {
+    static createWork(time,content, helper, scheduleId,isSubmit ) {
         let method = 'ScheduleWork/CreateSchedule';
         let param = JSON.stringify({
             account: App.account,
@@ -81,6 +81,7 @@ export  default  class SwApiService {
             helper: helper,
             scheduleId: scheduleId,
             worktime: time,
+            issubmit:isSubmit?1:0
         });
         return this.postRequest(method, param);
     }

@@ -17,10 +17,10 @@ import RefreshEmptyView from "../Component/RefreshEmptyView";
 import WpMainItem from "../Component/WpMainItem";
 import RadioForm from 'react-native-simple-radio-button';
 import SwMainItem from "../Component/SwMainItem";
+import * as StatusGroup from "../../constant/StatusGroup";
 
 const {width, height} = Dimensions.get('window');
 const exList = ["全部", "待提交", "待审核", "处理中", "已审核", "待评分", "已完结"];
-const dataList = ["待提交", "待审核", "处理中", "已驳回", "待评分", "已完结"];
 export default class SwMainPager extends Component {
     //this.props.memberType
     //监督:12345
@@ -43,7 +43,7 @@ export default class SwMainPager extends Component {
 
     _onRefresh() {
         this.setState({isRefreshing: true,});
-        ApiService.getList(this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" :  "1,2,3,4,5","")
+        ApiService.getList(this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" : "1,2,3,4,5", "")
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.setState({
@@ -113,7 +113,7 @@ export default class SwMainPager extends Component {
     }
 
     async  _search(value) {
-        return this.state.itemsBackup.filter((item) => (dataList[item.scStatus].toLowerCase().indexOf(exList[value].toLowerCase()) > -1));
+        return this.state.itemsBackup.filter((item) => (StatusGroup.swItemStatus[item.scStatus].toLowerCase().indexOf(exList[value].toLowerCase()) > -1));
     }
 
     render() {
@@ -130,14 +130,13 @@ export default class SwMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../../drawable/filter.png")]}
+                    actionArray={[require("../../drawable/filter.png"), require("../../drawable/search.png")]}
                     functionArray={[
                         () => {
                             this.props.nav.goBack(null)
                         },
-                        () => {
-                            this.setState({isFilter: !this.state.isFilter})
-                        }
+                        () => this.setState({isFilter: !this.state.isFilter}),
+                        () => this.props.nav.navigate('swSearch')
 
                     ]}/>
                 {
@@ -181,7 +180,6 @@ export default class SwMainPager extends Component {
                         }
                     })()
                 }
-
                 {this._getView()}
                 {
                     (() => {
