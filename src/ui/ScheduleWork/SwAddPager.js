@@ -131,13 +131,12 @@ export default class SwAddPager extends Component<{}> {
             membersStr = data.name + "," + membersStr
         });
 
-
         if (!this.state.date || !this.state.remark) {
             SnackBar.show("请填写日期和工作");
             return
         }
         Alert.alert(
-            '创建或修改工作？',
+            this.props.item ? '修改工作' : "创建工作",
             '创建或修改工作后需要提交，提交前你还可以修改工作，提交后不可更改',
             [
                 {
@@ -145,7 +144,11 @@ export default class SwAddPager extends Component<{}> {
                 }
                 },
                 {
-                    text: '确定', onPress: () => {
+                    text:  this.props.item?'仅修改':'仅创建', onPress: () => {
+                }
+                },
+                {
+                    text:  this.props.item?'修改并提交':'创建并提交', onPress: () => {
                     this.setState({isLoading: true,});
                     ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null)
                         .then((responseJson) => {
@@ -229,7 +232,7 @@ export default class SwAddPager extends Component<{}> {
     getMenu() {
         if (this.props.item) {//已创建
             if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
-                return ["修改", "最终提交"]
+                return ["修改"]
             } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
                 return ["驳回", "通过"]
             } else return []
@@ -239,17 +242,17 @@ export default class SwAddPager extends Component<{}> {
     getMenuFunc() {
         if (this.props.item) {//已创建
             if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
-                return  [
+                return [
                     () => this.props.nav.goBack(null),
                     () => this.submit(),//修改
-                    () => this.confirm(0)//最终提交
+                    //    () => this.confirm(0)//最终提交
                 ]
             } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
                 return [() => this.props.nav.goBack(null),
                     () => this.popupDialog.show(),//驳回
                     () => this.confirm(1)]//通过
-            } else return[() => this.props.nav.goBack(null),]//noting
-        } else return  [() => this.props.nav.goBack(null), () => this.submit(),]//新增
+            } else return [() => this.props.nav.goBack(null),]//noting
+        } else return [() => this.props.nav.goBack(null), () => this.submit(),]//新增
 
     }
 
@@ -259,7 +262,7 @@ export default class SwAddPager extends Component<{}> {
 
                 <Toolbar
                     elevation={2}
-                    title={["新创建日程",this.props.memberType.indexOf('0')>-1?(this.props.item&&this.props.item.scCreator===App.account ?"主理":'协助'):'-']}
+                    title={["新创建日程", this.props.memberType.indexOf('0') > -1 ? (this.props.item && this.props.item.scCreator === App.account ? "主理" : '协助') : '-']}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
