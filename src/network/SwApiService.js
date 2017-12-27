@@ -85,12 +85,13 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static auditWork(scheduleId, status) {//0submit 1audit 2reject
+    static auditWork(scheduleId, status,remark) {//0submit 1audit 2reject 3finish
         let method = 'ScheduleWork/AuditSchedule';
         let param = JSON.stringify({
             account: App.account,
             scheduleId: scheduleId,
             status: status,
+            rejectremark:remark
         });
         return this.postRequest(method, param);
     }
@@ -115,14 +116,7 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static finishWork(scheduleId) {
-        let method = 'ScheduleWork/FinishSchedule';
-        let param = JSON.stringify({
-            account: App.account,
-            scheduleId: scheduleId,
-        });
-        return this.postRequest(method, param);
-    }
+
 
     static uploadImage(uploadId, fileName, imageStr) {
         let method = 'ImgUpload/UpImg';

@@ -10,9 +10,9 @@ import PropTypes from 'prop-types';
 import {View, StyleSheet, TouchableOpacity, Text, Dimensions} from 'react-native';
 
 import Color from "../../constant/Color";
+import * as ColorGroup from "../../constant/ColorGroup";
+import * as StatusGroup from "../../constant/StatusGroup";
 const {width, height} = Dimensions.get('window');
-const exList = [ "待提交", "待审核", "处理中", "已驳回", "待评分", "已完结"];
-let colorGroup=[Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen,'black'];
 
 export default class SwMainItem extends Component {
     static propTypes = {
@@ -28,12 +28,12 @@ export default class SwMainItem extends Component {
                 onPress={this.props.action}>
                 <Text style={{
                     color: 'white',
-                    backgroundColor:colorGroup[this.props.item.scStatus],
+                    backgroundColor: ColorGroup.swColor[this.props.item.scStatus],
                     textAlign: 'center',
                     borderTopRightRadius: 10,
                     borderTopLeftRadius: 10,
                     padding: 5,
-                }}>{exList[this.props.item.scStatus]}</Text>
+                }}>{StatusGroup.swItemStatus[this.props.item.scStatus]}</Text>
 
                 <Text style={{
                     margin: 16,
@@ -43,19 +43,44 @@ export default class SwMainItem extends Component {
                     style={[styles.itemText, {borderTopWidth: 1, borderColor: Color.line, paddingTop: 10}]}>
                     <Text>{'工作日期'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent}}>{this.props.item.scWorkTime}</Text>
+                        style={styles.textContent}>{this.props.item.scWorkTime}</Text>
                 </View>
 
                 <View style={styles.itemText}>
                     <Text>{'创建人'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent}}>{this.props.item.scCreator}</Text>
+                        style={styles.textContent}>{this.props.item.scCreator}</Text>
                 </View>
                 <View style={styles.itemText}>
                     <Text>{'协助人员'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent}}>{this.props.item.scMembers?this.props.item.scMembers:'无'}</Text>
+                        style={styles.textContent}>{this.props.item.scMembers ? this.props.item.scMembers : '无'}</Text>
                 </View>
+                {
+                    (() => {
+                        if (this.props.item.rejectRemark) {
+                            return <View>
+                                <View style={[styles.itemText, {
+                                    backgroundColor: Color.black_semi_transparent,
+                                    paddingTop: 10
+                                }]}>
+                                    <Text style={{color: 'white'}}>{'驳回人'}</Text>
+                                    <Text
+                                        style={[styles.textContent,{color:'white'}]}>{ this.props.item.rejectUser}</Text>
+                                </View>
+                                <View style={[styles.itemText, {
+                                    backgroundColor: Color.black_semi_transparent,
+                                    paddingTop: 10
+                                }]}>
+                                    <Text style={{color: 'white'}}>{'驳回信息'}</Text>
+                                    <Text
+                                        style={[styles.textContent,{color:'white'}]}>{this.props.item.rejectRemark}</Text>
+                                </View>
+                            </View>
+                        }
+                    })()
+                }
+
             </TouchableOpacity>
 
         )
@@ -80,5 +105,5 @@ const styles = StyleSheet.create({
         paddingRight: 10,
 
     },
-
+textContent:{color: Color.black_semi_transparent, width: 200,textAlign:'right'}
 });

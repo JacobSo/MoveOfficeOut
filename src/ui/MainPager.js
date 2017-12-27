@@ -104,7 +104,6 @@ export default class MainPager extends Component {
                     () => {
                         PubSub.publish('finish', this.state.editContent);
                         this.popupDialog.dismiss();
-
                     }
                 ]} str={['完成签到', '备注，如无特殊情况，可忽略']}/>)
     }

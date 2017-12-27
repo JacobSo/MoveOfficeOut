@@ -11,7 +11,7 @@ import {
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/SwApiService';
 import Color from '../../constant/Color';
-import FloatButton from "../Component/FloatButton";
+import App from '../../constant/Application';
 import SnackBar from 'react-native-snackbar-dialog'
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import WpMainItem from "../Component/WpMainItem";
@@ -74,6 +74,7 @@ export default class SwParamPager extends Component {
                     extraData={this.state}
                     ListFooterComponent={<View style={{height: 75}}/>}
                     renderItem={({item}) => <TouchableOpacity
+                        disabled={App.account===item.name}
                         style={{padding: 16, backgroundColor: item.isSelect ? Color.line : 'white'}}
                         onPress={() => {
                             console.log(item);

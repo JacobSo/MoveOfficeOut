@@ -17,6 +17,7 @@ export default class SwMemberList extends Component {
         isHasBackground: PropTypes.bool.isRequired,
         addFunc: PropTypes.func.isRequired,
         editFunc: PropTypes.func.isRequired,
+        disable: PropTypes.bool.isRequired,
     };
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -34,6 +35,16 @@ export default class SwMemberList extends Component {
 
     render() {
         return (
+            this.props.disable&&this.props.items.length===0?<View style={ this.props.isHasBackground ? {
+                backgroundColor: 'white',
+                width:width-32,
+                height:55,
+                alignItems:'center',
+                justifyContent:'center',
+                elevation: 2,
+                borderRadius: 10,
+                margin:16
+            } : {margin:16}}><Text>没有协助人员</Text></View>:
             <FlatList
                 horizontal={true}
                 data={this.props.items}
@@ -48,12 +59,16 @@ export default class SwMemberList extends Component {
                     } : {}
                 ]}
                 ListHeaderComponent={
-                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <TouchableOpacity onPress={() => this.props.addFunc()} style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginBottom: 16,
-                        }}>
+                    this.props.disable?null:
+                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity
+                            disabled={this.props.disable}
+                            onPress={() => this.props.addFunc()}
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 16,
+                            }}>
                             <View style={{
                                 borderRadius: 50,
                                 width: 45,
@@ -71,7 +86,9 @@ export default class SwMemberList extends Component {
                     </View>}
 
                 renderItem={({item, index}) =>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity
+                        disabled={this.props.disable}
+                        onPress={() => {
                         this.props.editFunc(item, index);
                     }}>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginBottom: 16}}>

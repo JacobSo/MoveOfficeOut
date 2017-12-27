@@ -353,6 +353,9 @@ const SimpleStack = StackNavigator({
         swParam: {
             screen: SwParamScreen,
         },
+        swDetail: {
+            screen: SwDetailScreen,
+        },
     },
     {
         initialRouteName: 'login',

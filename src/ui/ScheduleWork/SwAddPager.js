@@ -12,10 +12,8 @@ import {
     ListView, FlatList, Platform, TextInput, ScrollView
 } from 'react-native';
 import Toolbar from "../Component/Toolbar";
-import Sae from "react-native-textinput-effects/lib/Sae";
-import {Akira, Hoshi, Jiro, Kaede, Madoka} from "react-native-textinput-effects";
+import InputDialog from "../Component/InputDialog";
 import Loading from 'react-native-loading-spinner-overlay';
-import Moment from 'moment';
 import ApiService from '../../network/SwApiService';
 import DatePicker from "../Component/DatePicker";
 import * as ImageOptions from "../../constant/ImagePickerOptions"
@@ -25,6 +23,7 @@ import IosModule from '../../module/IosCommontModule'
 import SnackBar from 'react-native-snackbar-dialog'
 import SwMemberList from "../Component/SwMemberList";
 import {CachedImage} from "react-native-img-cache";
+import App from '../../constant/Application';
 
 const {width, height} = Dimensions.get('window');
 const ImagePicker = require('react-native-image-picker');
@@ -47,6 +46,7 @@ export default class SwAddPager extends Component<{}> {
             dataSourcePic: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
+            confirmRemark: ''
 
         };
 
@@ -64,41 +64,64 @@ export default class SwAddPager extends Component<{}> {
         return list
     }
 
-    confirm() {
+    confirmDialog() {
+        return (
+            <InputDialog
+                isMulti={false}
+                action={[
+                    (popupDialog) => this.popupDialog = popupDialog,
+                    (text) => {
+                        this.setState({confirmRemark: text});
+                    },
+                    () => {
+                        this.setState({confirmRemark: ''});
+                        this.popupDialog.dismiss();
+                    },
+                    () => {
+                        if (this.state.confirmRemark) {
+                            this.confirmFunc(2);
+
+                        } else {
+                            SnackBar.show("必须填写驳回理由");
+
+                        }
+
+                    }
+                ]} str={["驳回工作", "必须填写驳回理由"]}/>)
+    }
+
+    confirm(flag) {
         Alert.alert(
-            '提交工作？',
-            '提交后进入审核流程，不可更改。',
-            [
-                {
-                    text: '取消', onPress: () => {
+            flag === 0 ? '提交工作？' : "审核通过",
+            flag === 0 ? '提交后进入审核流程，不可更改' : "审核通过，工作马上开展",
+            [{
+                text: '取消', onPress: () => {
                 }
-                },
-                {
-                    text: '确定', onPress: () => {
-                    this.setState({isLoading: true,});
-                    ApiService.auditWork(this.props.item.scId, 0)
-                        .then((responseJson) => {
-                            if (!responseJson.IsErr) {
-                                this.props.refreshFunc();
-                                this.props.nav.goBack(null)
-                            } else {
-                                setTimeout(() => {
-                                    this.setState({isLoading: false})
-                                }, 100);
-                                SnackBar.show(responseJson.ErrDesc);
-                            }
-                        })
-                        .catch((error) => {
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                            console.log(error);
-                            SnackBar.show("出错了，请稍后再试");
-                        }).done();
-                }
-                },
-            ]
+            }, {text: '确定', onPress: () => this.confirmFunc(flag)},]
         );
+    }
+
+    confirmFunc(flag) {
+        this.setState({isLoading: true,});
+        ApiService.auditWork(this.props.item.scId, flag, this.state.confirmRemark)
+            .then((responseJson) => {
+                if (!responseJson.IsErr) {
+                    this.props.refreshFunc();
+                    this.props.nav.goBack(null)
+                } else {
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                    SnackBar.show(responseJson.ErrDesc);
+                }
+            })
+            .catch((error) => {
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试");
+            }).done();
     }
 
 
@@ -203,27 +226,55 @@ export default class SwAddPager extends Component<{}> {
             }).done();
     }
 
+    getMenu() {
+        if (this.props.item) {//已创建
+            if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
+                return ["修改", "最终提交"]
+            } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
+                return ["驳回", "通过"]
+            } else return []
+        } else return ["创建"]
+    }
+
+    getMenuFunc() {
+        if (this.props.item) {//已创建
+            if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
+                return  [
+                    () => this.props.nav.goBack(null),
+                    () => this.submit(),//修改
+                    () => this.confirm(0)//最终提交
+                ]
+            } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
+                return [() => this.props.nav.goBack(null),
+                    () => this.popupDialog.show(),//驳回
+                    () => this.confirm(1)]//通过
+            } else return[() => this.props.nav.goBack(null),]//noting
+        } else return  [() => this.props.nav.goBack(null), () => this.submit(),]//新增
+
+    }
+
     render() {
         return (
             <View style={styles.container}>
+
                 <Toolbar
                     elevation={2}
-                    title={["创建日程"]}
+                    title={["新创建日程",this.props.memberType.indexOf('0')>-1?(this.props.item&&this.props.item.scCreator===App.account ?"主理":'协助'):'-']}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={true}
-                    actionArray={this.props.item ? ["修改", "最终提交"] : ['创建']}
-                    functionArray={[
-                        () => this.props.nav.goBack(null),
-                        () => this.submit(),
-                        () => this.confirm()
-                    ]}
+                    actionArray={this.getMenu()}
+                    functionArray={this.getMenuFunc()}
                 />
                 <ScrollView>
                     <View style={{marginBottom: 55}}>
                         <View style={styles.cardContainer}>
                             <DatePicker
+                                disabled={
+                                    (this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                    (this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                }
                                 customStyles={{
                                     placeholderText: {
                                         color: 'black',
@@ -250,6 +301,10 @@ export default class SwAddPager extends Component<{}> {
                         <View style={styles.cardContainer}>
                             <Text style={{margin: 16, color: 'black'}}>日程工作描述</Text>
                             <TextInput
+                                editable={
+                                    !(this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
+                                    !(this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                }
                                 style={styles.inputStyle}
                                 multiline={true}
                                 placeholder="在这里填写"
@@ -266,6 +321,10 @@ export default class SwAddPager extends Component<{}> {
                             <SwMemberList
                                 items={this.state.members}
                                 isHasBackground={false}
+                                disable={
+                                    (this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                    (this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                }
                                 addFunc={() => {
                                     this.props.nav.navigate('swParam', {
                                         finishFunc: (members) => {
@@ -295,14 +354,19 @@ export default class SwAddPager extends Component<{}> {
                                     dataSourcePic: this.state.dataSourcePic.cloneWithRows(JSON.parse(JSON.stringify(this.state.pics))),
                                 });
                             }}/>
-                            <TouchableOpacity onPress={() => {
-                                ImagePicker.showImagePicker(ImageOptions.options, (response) => {
-                                    if (!response.didCancel) {
-                                        this.state.pics.push(response);
-                                        this.setState({dataSourcePic: this.state.dataSourcePic.cloneWithRows(this.state.pics),});
-                                    }
-                                });
-                            }} style={styles.buttonStyle}>
+                            <TouchableOpacity
+                                disabled={
+                                    (this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||//非创建+已审核+普通人
+                                    (this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                }
+                                onPress={() => {
+                                    ImagePicker.showImagePicker(ImageOptions.options, (response) => {
+                                        if (!response.didCancel) {
+                                            this.state.pics.push(response);
+                                            this.setState({dataSourcePic: this.state.dataSourcePic.cloneWithRows(this.state.pics),});
+                                        }
+                                    });
+                                }} style={styles.buttonStyle}>
                                 <Text style={{color: 'white', margin: 16}}>拍照</Text>
                             </TouchableOpacity>
                         </View>
@@ -328,6 +392,8 @@ export default class SwAddPager extends Component<{}> {
                         }
                     </View>
                 </ScrollView>
+                {this.confirmDialog()}
+
                 <Loading visible={this.state.isLoading}/>
             </View>
         );

@@ -43,7 +43,7 @@ export default class SwMainPager extends Component {
 
     _onRefresh() {
         this.setState({isRefreshing: true,});
-        ApiService.getList(this.props.memberType.indexOf("2")>-1?"1,2.3,4,5":this.props.memberType.indexOf("1")>-1?"123":"6", "")
+        ApiService.getList(this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" :  "1,2,3,4,5","")
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.setState({
@@ -84,17 +84,28 @@ export default class SwMainPager extends Component {
                             colors={[Color.colorPrimary]}
                             progressBackgroundColor="white"
                         />}
-                    renderItem={({item}) => <SwMainItem item={item} action={() => {
-                        if (item.scStatus === 0)
-                            this.props.nav.navigate("swAdd", {
-                                item: item,
-                                refreshFunc: () => {
-                                    this._onRefresh()
-                                }
-                            });
-                        else
-                            this.props.nav.navigate("swDetail")
-                    }}/>
+                    renderItem={({item}) => <SwMainItem
+                        item={item}
+                        action={() => {
+                            if (item.scStatus === 0 || item.scStatus === 1 || item.scStatus === 3) {
+                                this.props.nav.navigate("swAdd", {
+                                    memberType: this.props.memberType,
+                                    item: item,
+                                    refreshFunc: () => {
+                                        this._onRefresh()
+                                    }
+                                });
+                            } else {
+                                this.props.nav.navigate("swDetail", {
+                                    memberType: this.props.memberType,
+                                    item: item,
+                                    refreshFunc: () => {
+                                        this._onRefresh()
+                                    }
+                                })
+                            }
+                        }
+                        }/>
                     }
                 />
             )
@@ -168,7 +179,6 @@ export default class SwMainPager extends Component {
                         } else {
                             return null
                         }
-
                     })()
                 }
 
@@ -183,7 +193,8 @@ export default class SwMainPager extends Component {
                                     this.props.nav.navigate('swAdd', {
                                         refreshFunc: () => {
                                             this._onRefresh()
-                                        }
+                                        },
+                                        memberType: this.props.memberType
                                     });
                                 }}/>
                         }
