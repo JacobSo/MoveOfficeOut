@@ -169,12 +169,10 @@ export default class QcMainPager extends Component {
                             this.setState({isSearch: !this.state.isSearch})
                         },
                         () => this.props.nav.navigate("qcCar")
-
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {
                         this._search(text).then((array) => {
-                            //       console.log(array);
                             this.setState({
                                 dataSource: this.state.dataSource.cloneWithRows(array),
                             });

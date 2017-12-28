@@ -30,6 +30,7 @@ export default class SwMainPager extends Component {
         super(props);
         this.state = {
             isRefreshing: false,
+            isSearch: false,
             isFilter: false,
             items: [],
             itemsBackup: [],
@@ -112,8 +113,12 @@ export default class SwMainPager extends Component {
         }
     }
 
-    async  _search(value) {
+    async  searchType(value) {
         return this.state.itemsBackup.filter((item) => (StatusGroup.swItemStatus[item.scStatus].toLowerCase().indexOf(exList[value].toLowerCase()) > -1));
+    }
+
+    async  searchText(text) {
+        return this.state.items.filter((item) => (JSON.stringify(item).toLowerCase().indexOf(text.toLowerCase()) > -1));
     }
 
     render() {
@@ -133,12 +138,32 @@ export default class SwMainPager extends Component {
                     actionArray={[require("../../drawable/filter.png"), require("../../drawable/search.png")]}
                     functionArray={[
                         () => {
-                            this.props.nav.goBack(null)
+                            if (this.state.isSearch) {
+                                this.setState({
+                                    isSearch: !this.state.isSearch,
+                                    isHeader: true,
+                                    items: this.state.itemsBackup
+                                })
+                            } else this.props.nav.goBack(null)
                         },
                         () => this.setState({isFilter: !this.state.isFilter}),
-                        () => this.props.nav.navigate('swSearch')
+                        () => this.setState({isSearch: !this.state.isSearch})
 
-                    ]}/>
+                    ]}
+                    isSearch={this.state.isSearch}
+                    searchFunc={(text) => {
+                        if(text){
+                            this.searchText(text).then((array) => {
+                                this.setState({
+                                    items: array
+                                });
+                            })
+                        }else {
+                            this.setState({
+                                items: this.state.itemsBackup
+                            });
+                        }
+                    }}/>
                 {
                     (() => {
                         if (this.state.isFilter) {
@@ -162,7 +187,7 @@ export default class SwMainPager extends Component {
                                             items: this.state.itemsBackup
                                         });
                                     } else {
-                                        this._search(value).then((array) => {
+                                        this.searchType(value).then((array) => {
                                             this.setState({
                                                 items: array
                                             });

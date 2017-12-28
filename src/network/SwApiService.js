@@ -39,6 +39,7 @@ export  default  class SwApiService {
 
             })
     }
+
     static getRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
 
@@ -60,7 +61,8 @@ export  default  class SwApiService {
                 console.log(responseJson);
                 return responseJson;
 
-            }) }
+            })
+    }
 
     static getList(filter, member,) {
         let method = 'ScheduleWork/GetSchedule';
@@ -68,12 +70,12 @@ export  default  class SwApiService {
             account: App.account,
             filter: filter,
             member: member,
-          //  userttype: type
+            //  userttype: type
         });
         return this.postRequest(method, param);
     }
 
-    static createWork(time,content, helper, scheduleId,isSubmit ) {
+    static createWork(time, content, helper, scheduleId, isSubmit,helpContent) {
         let method = 'ScheduleWork/CreateSchedule';
         let param = JSON.stringify({
             account: App.account,
@@ -81,18 +83,27 @@ export  default  class SwApiService {
             helper: helper,
             scheduleId: scheduleId,
             worktime: time,
-            issubmit:isSubmit?1:0
+            issubmit: isSubmit ? 1 : 0,
+            helpcontent:helpContent
         });
         return this.postRequest(method, param);
     }
 
-    static auditWork(scheduleId, status,remark) {//0submit 1audit 2reject 3finish
+    static deleteWork(scheduleId) {
+        let method = 'ScheduleWork/CreateSchedule';
+        let param = JSON.stringify({
+            scheduleId: scheduleId,
+        });
+        return this.postRequest(method, param);
+    }
+
+    static auditWork(scheduleId, status, remark) {//0submit 1audit 2reject 3finish
         let method = 'ScheduleWork/AuditSchedule';
         let param = JSON.stringify({
             account: App.account,
             scheduleId: scheduleId,
             status: status,
-            rejectremark:remark
+            rejectremark: remark
         });
         return this.postRequest(method, param);
     }
@@ -107,16 +118,16 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static callHelper(scheduleId, helper) {
+    static callHelper(scheduleId, helper,content) {
         let method = 'ScheduleWork/CallHelper';
         let param = JSON.stringify({
             account: App.account,
             scheduleId: scheduleId,
             helper: helper,
+            helpcontent:content
         });
         return this.postRequest(method, param);
     }
-
 
 
     static uploadImage(uploadId, fileName, imageStr) {
@@ -138,16 +149,16 @@ export  default  class SwApiService {
         });
         return this.postRequest(method, param);
     }
+
     static getMembers() {
         let method = 'User/getAssistUsers';
-        let param = JSON.stringify({
-        });
+        let param = JSON.stringify({});
         return this.getRequest(method, param);
     }
+
     static initWorkType() {
-        let method = 'User/getworktypes?account='+App.account;
-        let param = JSON.stringify({
-        });
+        let method = 'User/getworktypes?account=' + App.account;
+        let param = JSON.stringify({});
         return this.getRequest(method, param);
     }
 }

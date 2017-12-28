@@ -48,6 +48,7 @@ export default class SwDetailPager extends Component<{}> {
                 rowHasChanged: (row1, row2) => true,
             }),
             image: [],
+            helpContent: this.props.item && this.props.item.helpContent
         };
     }
 
@@ -78,7 +79,7 @@ export default class SwDetailPager extends Component<{}> {
             }, {
                 text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    ApiService.callHelper(this.props.item.scId, membersStr.substring(0, membersStr.length - 1))
+                    ApiService.callHelper(this.props.item.scId, membersStr.substring(0, membersStr.length - 1), this.state.helpContent)
                         .then((responseJson) => {
                             if (!responseJson.IsErr) {
                                 this.props.refreshFunc();
@@ -391,30 +392,56 @@ export default class SwDetailPager extends Component<{}> {
                             <View style={styles.titleContainer}>
                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>协同工作</Text>
                             </View>
-                            <SwMemberList
-                                disable={(!(this.props.memberType.indexOf("0") > -1)) || this.props.item.scStatus !== 2}
-                                items={this.state.members}
-                                isHasBackground={true}
-                                addFunc={() => {
-                                    this.props.nav.navigate('swParam', {
-                                        finishFunc: (members) => {
-                                            let flag = false;
-                                            this.state.members.map((data1) => {
-                                                members.map((data2) => flag = (data1.name === data2.name));
-                                                if (!flag)
-                                                    members.push(data1)
-                                            });
-                                            this.setState({
-                                                members: members,
-                                                isShowConfirmMember: true
-                                            })
-                                        }
-                                    });
-                                }}
-                                editFunc={(item, index) => {
-                                    this.state.members.splice(index, 1);
-                                    this.setState({members: this.state.members})
-                                }}/>
+                            <View style={[styles.iconContainer, {
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }]}>
+                                <TextInput
+                                    editable={
+                                        (this.props.item && this.props.item.scStatus === 2 && this.props.memberType.indexOf('0') > -1) &&
+                                        (this.props.item && this.props.item.scCreator === App.account)//非本人
+                                    }
+                                    style={styles.inputStyle}
+                                    multiline={true}
+                                    placeholder="请填写需要协助的内容"
+                                    returnKeyType={'done'}
+                                    underlineColorAndroid="transparent"
+                                    blurOnSubmit={true}
+                                    defaultValue={this.state.helpContent}
+                                    onChangeText={(text) => this.setState({
+                                        helpContent: text,
+                                        isShowConfirmMember: true
+                                    })}/>
+                                <View style={{backgroundColor: Color.line, width: width - 64, height: 1}}/>
+                                <SwMemberList
+                                    disable={(!(this.props.memberType.indexOf("0") > -1)) || this.props.item.scStatus !== 2|| (this.props.item && this.props.item.scCreator !== App.account)}
+                                    items={this.state.members}
+                                    isHasBackground={false}
+                                    addFunc={() => {
+                                        this.props.nav.navigate('swParam', {
+                                            finishFunc: (members) => {
+                                                let flag = false;
+                                                this.state.members.map((data1) => {
+                                                    members.map((data2) => flag = (data1.name === data2.name));
+                                                    if (!flag)
+                                                        members.push(data1)
+                                                });
+                                                this.setState({
+                                                    members: members,
+                                                    isShowConfirmMember: true
+                                                })
+                                            }
+                                        });
+                                    }}
+                                    editFunc={(item, index) => {
+                                        this.state.members.splice(index, 1);
+                                        this.setState({
+                                            members: this.state.members,
+                                            isShowConfirmMember: true
+                                        })
+
+                                    }}/>
+                            </View>
                             {
                                 (() => {
                                     if (this.state.isShowConfirmMember) {
@@ -437,7 +464,7 @@ export default class SwDetailPager extends Component<{}> {
                                         return ( <View style={styles.emptyText}><Text>还没有添加工作处理</Text></View>)
                                     } else {
                                         return <FlatList
-                                            keyExtractor={(item, index) => item.fbguid}
+                                            keyExtractor={(item, index) => item.fbId}
                                             data={this.props.item.ScheduleFeedbackList}
                                             renderItem={({item}) =>
                                                 <SwFeedbackItem

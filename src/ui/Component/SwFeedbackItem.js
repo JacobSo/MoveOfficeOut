@@ -61,7 +61,7 @@ export default class SwFeedbackItem extends Component {
                     (() => {
                         if (this.props.data.scImages) {
                             return <FlatList
-                                //   keyExtractor={(item, index) => item.fbguid}
+                                   keyExtractor={(item, index) => item}
                                 numColumns={4}
                                 data={this.props.data.scImages.split(',')}
                                 renderItem={({item}) =>
@@ -75,8 +75,6 @@ export default class SwFeedbackItem extends Component {
                         }
                     })()
                 }
-
-
                 <View style={{
                     justifyContent: 'space-between',
                     flexDirection: 'row',

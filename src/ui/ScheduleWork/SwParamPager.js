@@ -37,7 +37,7 @@ export default class SwParamPager extends Component {
         let list = [];
         items.map((item, index) => {
             list.push({name: item, key: Math.random(), isSelect: false})
-        })
+        });
         return list
     }
 

@@ -46,13 +46,14 @@ export default class SwAddPager extends Component<{}> {
             dataSourcePic: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
-            confirmRemark: ''
-
+            confirmRemark: '',
+            helpContent:this.props.item?this.props.item.helpContent:''
         };
 
     }
 
     componentDidMount() {
+
     }
 
     initItems() {
@@ -101,10 +102,41 @@ export default class SwAddPager extends Component<{}> {
         );
     }
 
+    deleteWork() {
+        Alert.alert(
+            "删除工作",
+            "删除后不可恢复",
+            [{
+                text: '取消', onPress: () => {
+                }
+            }, {
+                text: '确定', onPress: () => {
+                    ApiService.deleteWork(this.props.item.scId)
+                        .then((responseJson) => {
+                            if (!responseJson.IsErr) {
+                                this.props.refreshFunc();
+                                this.props.nav.goBack(null)
+                                SnackBar.show("删除成功");
+                            } else {
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                                SnackBar.show(responseJson.ErrDesc);
+                            }
+                        })
+                        .catch((error) => {
+                            setTimeout(() => {
+                                this.setState({isLoading: false})
+                            }, 100);
+                            console.log(error);
+                            SnackBar.show("出错了，请稍后再试");
+                        }).done();
+                }
+            },]
+        );
+    }
 
     submit() {
-
-
         if (!this.state.date || !this.state.remark) {
             SnackBar.show("请填写日期和工作");
             return
@@ -132,7 +164,7 @@ export default class SwAddPager extends Component<{}> {
             membersStr = data.name + "," + membersStr
         });
         this.setState({isLoading: true,});
-        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null,isBoth)
+        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null, isBoth,this.state.helpContent)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     if (this.state.pics.length !== 0) {
@@ -232,7 +264,7 @@ export default class SwAddPager extends Component<{}> {
     getMenu() {
         if (this.props.item) {//已创建
             if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
-                return ["修改"]
+                return ["删除", "操作"]
             } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
                 return ["驳回", "通过"]
             } else return []
@@ -244,8 +276,8 @@ export default class SwAddPager extends Component<{}> {
             if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
                 return [
                     () => this.props.nav.goBack(null),
+                    () => this.deleteWork(),
                     () => this.submit(),//修改
-                    //    () => this.confirm(0)//最终提交
                 ]
             } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
                 return [() => this.props.nav.goBack(null),
@@ -259,7 +291,6 @@ export default class SwAddPager extends Component<{}> {
     render() {
         return (
             <View style={styles.container}>
-
                 <Toolbar
                     elevation={2}
                     title={["新创建日程", this.props.memberType.indexOf('0') > -1 ? (this.props.item ? ( this.props.item.scCreator === App.account ? "主理" : '协助') : '主理') : '-']}
@@ -275,8 +306,8 @@ export default class SwAddPager extends Component<{}> {
                         <View style={styles.cardContainer}>
                             <DatePicker
                                 disabled={
-                                    (this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
-                                    (this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                    (this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                    (this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 customStyles={{
                                     placeholderText: {
@@ -305,8 +336,8 @@ export default class SwAddPager extends Component<{}> {
                             <Text style={{margin: 16, color: 'black'}}>日程工作描述</Text>
                             <TextInput
                                 editable={
-                                    !(this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
-                                    !(this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                    !(this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
+                                    !(this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 style={styles.inputStyle}
                                 multiline={true}
@@ -320,13 +351,27 @@ export default class SwAddPager extends Component<{}> {
 
                         <View style={styles.cardContainer}>
                             <Text style={{margin: 16, color: 'black'}}>协助人员</Text>
+                            <TextInput
+                                editable={
+                                    !(this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
+                                    !(this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
+                                }
+                                style={styles.inputStyle}
+                                multiline={true}
+                                placeholder="请填写需要协助的内容"
+                                returnKeyType={'done'}
+                                underlineColorAndroid="transparent"
+                                blurOnSubmit={true}
+                                defaultValue={this.state.helpContent}
+                                onChangeText={(text) => this.setState({helpContent: text})}/>
                             <View style={{backgroundColor: Color.line, width: width - 64, height: 1}}/>
+
                             <SwMemberList
                                 items={this.state.members}
                                 isHasBackground={false}
                                 disable={
-                                    (this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
-                                    (this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                    (this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                    (this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 addFunc={() => {
                                     this.props.nav.navigate('swParam', {
@@ -359,8 +404,8 @@ export default class SwAddPager extends Component<{}> {
                             }}/>
                             <TouchableOpacity
                                 disabled={
-                                    (this.props.item && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||//非创建+已审核+普通人
-                                    (this.props.item && this.props.item.scCreator !== App.account)//非本人
+                                    (this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||//非创建+已审核+普通人
+                                    (this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 onPress={() => {
                                     ImagePicker.showImagePicker(ImageOptions.options, (response) => {
@@ -381,6 +426,7 @@ export default class SwAddPager extends Component<{}> {
                                         <View style={{backgroundColor: Color.line, width: width - 64, height: 1}}/>
                                         <FlatList
                                             data={this.state.submittedPics}
+                                            keyExtractor={(item, index) => item}
                                             extraData={this.state}
                                             renderItem={({item}) => {
                                                 console.log(item);
