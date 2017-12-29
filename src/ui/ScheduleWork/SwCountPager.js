@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     statusLineContainer: {
         justifyContent: 'space-between',
         flexDirection: 'row',
-        width: 250 - 16,
+        width: width/3*2,
         paddingLeft: 10,
         paddingBottom: 10,
         alignItems: 'center',
