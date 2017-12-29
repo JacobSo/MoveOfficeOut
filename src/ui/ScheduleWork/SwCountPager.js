@@ -99,15 +99,17 @@ export default class SwCountPager extends Component {
                                     <Text style={{color: 'black', fontSize: 18, margin: 10}}>{item.UserName}</Text>
                                     <View style={styles.statusLineContainer}>
                                         <Text >待审核</Text>
-                                        <Text style={styles.statusCountContainer}>{item.submited?item.submited:'0'}</Text>
+                                        <View style={styles.statusCountContainer}><Text style={{color:"white"}}>{item.submited?item.submited:'0'}</Text></View>
                                     </View>
                                     <View style={styles.statusLineContainer}>
                                         <Text >处理中</Text>
-                                        <Text style={styles.statusCountContainer}>{item.processing?item.processing:'0'}</Text>
+                                        <View style={styles.statusCountContainer}><Text style={{color:"white"}}>{item.processing?item.processing:'0'}</Text></View>
                                     </View>
                                     <View style={styles.statusLineContainer}>
                                         <Text >待评分</Text>
-                                        <Text style={[styles.statusCountContainer,{backgroundColor:item.waitscore?Color.colorAccent:Color.colorBlueGrey,}]}>{item.waitscore?item.waitscore:'0'}</Text>
+                                        <View style={[styles.statusCountContainer,{backgroundColor:item.waitscore?Color.colorAccent:Color.colorGrey,}]}>
+                                            <Text style={{color:"white"}}>{item.waitscore?item.waitscore:'0'}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
@@ -201,12 +203,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     statusCountContainer: {
-        padding: 3,
+        justifyContent:'center',
+alignItems:'center',
+marginRight:10,
         borderRadius: 10,
-        width: 45,
-        textAlign: 'center',
-        backgroundColor: Color.colorBlueGrey,
-        color: 'white'
+        width: 40,
+        backgroundColor: Color.colorGrey,
     }
 
 
