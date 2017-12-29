@@ -48,7 +48,8 @@ export default class SwDetailPager extends Component<{}> {
                 rowHasChanged: (row1, row2) => true,
             }),
             image: [],
-            helpContent: this.props.item && this.props.item.helpContent
+            helpContent: this.props.item && this.props.item.helpContent,
+            resultComment:''
         };
     }
 
@@ -249,7 +250,7 @@ export default class SwDetailPager extends Component<{}> {
             }, {
                 text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    ApiService.setResult(this.props.item.scId, this.state.starA)
+                    ApiService.setResult(this.props.item.scId, this.state.starA,this.state.resultComment)
                         .then((responseJson) => {
                             if (!responseJson.IsErr) {
                                 this.props.refreshFunc();
@@ -375,16 +376,19 @@ export default class SwDetailPager extends Component<{}> {
                             {
                                 (() => {
                                     if (this.props.item.scStatus === 5) {
-                                        return <View style={{alignItems: 'center',}}>
+                                        return <View style={{alignItems: 'center'}}>
                                             <View style={styles.titleContainer}>
-                                                <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text></View>
-                                            <View style={styles.starContainer}>
-                                                <View style={styles.starContainer}>
-                                                    <StarSeek onSelect={() => {
-                                                    }} defaultStar={this.props.item.scWorkResult} disable={true}/>
+                                                <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text>
+                                            </View>
+                                            <View style={[styles.starContainer,{paddingTop:16}]}>
+                                                    <StarSeek
+                                                        onSelect={()=>{}}
+                                                        defaultStar={this.props.item.scWorkResult} disable={true}/>
                                                     <Text>{StatusGroup.swStarDesc[this.props.item.scWorkResult]}</Text>
+                                                    <View style={{width:width-64,height:1,backgroundColor:Color.line,marginTop:16}}/>
+                                                    <Text style={{margin:16}}>{this.props.item.scoreRemark?this.props.item.scoreRemark:"无评价"}</Text>
                                                 </View>
-                                            </View></View>
+                                            </View>
                                     }
                                 })()
                             }
@@ -545,11 +549,21 @@ export default class SwDetailPager extends Component<{}> {
                                     if (this.props.memberType.indexOf("2") > -1 && this.props.item.scStatus === 4) {
                                         return <View style={{alignItems: 'center',}}>
                                             <View style={styles.titleContainer}>
-                                                <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text></View>
-                                            <View style={styles.starContainer}>
-                                                <StarSeek onSelect={(select) => this.setState({starA: select})}/>
-                                                <Text>{StatusGroup.swStarDesc[this.state.starA]}</Text>
+                                                <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text>
                                             </View>
+                                            <View style={styles.starContainer}>
+                                                <StarSeek onSelect={(select) => this.setState({starA: select})}defaultStar={0}/>
+                                                <Text>{StatusGroup.swStarDesc[this.state.starA]}</Text>
+                                                <TextInput
+                                                    style={styles.inputStyle}
+                                                    multiline={true}
+                                                    placeholder="填写评价"
+                                                    returnKeyType={'done'}
+                                                    underlineColorAndroid="transparent"
+                                                    blurOnSubmit={true}
+                                                    onChangeText={(text) => this.setState({resultComment: text})}/>
+                                            </View>
+
                                             <TouchableOpacity
                                                 style={[styles.iconContainer, styles.greenBtnStyle]}
                                                 onPress={
@@ -561,7 +575,6 @@ export default class SwDetailPager extends Component<{}> {
                                     }
                                 })()
                             }
-
                         </View>
                     </ScrollView>
                     <Loading visible={this.state.isLoading}/>
@@ -597,11 +610,10 @@ const styles = StyleSheet.create({
     },
     starContainer: {
         width: width - 32,
-        height: 55 + 32,
         backgroundColor: 'white',
         margin: 16,
         elevation: 2,
-        borderRadius: 50,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },

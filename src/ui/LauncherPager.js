@@ -94,9 +94,15 @@ export default class LauncherPager extends Component {
                     setTimeout(() => {
                         this.setState({isLoading: false})
                     }, 100);
-                    this.props.nav.navigate('swMain',{
-                        memberType:responseJson.worktypes
-                    });//0normal/1audit/2check
+                    if(responseJson.worktypes.indexOf('2')>-1){
+                        this.props.nav.navigate('swCount',{
+                            memberType:responseJson.worktypes
+                        });//0normal/1audit/2check
+                    }else{
+                        this.props.nav.navigate('swMain',{
+                            memberType:responseJson.worktypes
+                        });//0normal/1audit/2check
+                    }
                 } else {
                     setTimeout(() => {
                         this.setState({isLoading: false})

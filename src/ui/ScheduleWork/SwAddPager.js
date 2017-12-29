@@ -111,6 +111,7 @@ export default class SwAddPager extends Component<{}> {
                 }
             }, {
                 text: '确定', onPress: () => {
+                    this.setState({isLoading: true,});
                     ApiService.deleteWork(this.props.item.scId)
                         .then((responseJson) => {
                             if (!responseJson.IsErr) {

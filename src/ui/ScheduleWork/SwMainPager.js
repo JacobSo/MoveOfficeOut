@@ -23,8 +23,8 @@ const {width, height} = Dimensions.get('window');
 const exList = ["全部", "待提交", "待审核", "处理中", "已审核", "待评分", "已完结"];
 export default class SwMainPager extends Component {
     //this.props.memberType
-    //监督:12345
-    //审核:123
+    //监督:12345 cs1
+    //审核:123 cs2
     //普通:6
     constructor(props) {
         super(props);
@@ -44,7 +44,7 @@ export default class SwMainPager extends Component {
 
     _onRefresh() {
         this.setState({isRefreshing: true,});
-        ApiService.getList(this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" : "1,2,3,4,5", "")
+        ApiService.getList(this.props.account,this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" : "1,2,3,4,5", "")
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.setState({
@@ -130,7 +130,7 @@ export default class SwMainPager extends Component {
 
                 <Toolbar
                     elevation={2}
-                    title={[this.props.memberType.indexOf("2") > -1 ? "工作监督" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作", exList[this.state.radioValue]]}
+                    title={[this.props.memberType.indexOf("2") > -1 ? this.props.account+"的工作" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作", exList[this.state.radioValue]]}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}

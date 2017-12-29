@@ -64,10 +64,10 @@ export  default  class SwApiService {
             })
     }
 
-    static getList(filter, member,) {
+    static getList(name,filter, member) {
         let method = 'ScheduleWork/GetSchedule';
         let param = JSON.stringify({
-            account: App.account,
+            account: name===null?App.account:name,
             filter: filter,
             member: member,
             //  userttype: type
@@ -90,7 +90,7 @@ export  default  class SwApiService {
     }
 
     static deleteWork(scheduleId) {
-        let method = 'ScheduleWork/CreateSchedule';
+        let method = 'ScheduleWork/delwork';
         let param = JSON.stringify({
             scheduleId: scheduleId,
         });
@@ -140,12 +140,13 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static setResult(scheduleId, result,) {
+    static setResult(scheduleId, result,comment) {
         let method = 'ScheduleWork/WorkResultSet';
         let param = JSON.stringify({
             account: App.account,
             scheduleId: scheduleId,
             result: result,
+            scoreremark:comment
         });
         return this.postRequest(method, param);
     }
@@ -158,6 +159,12 @@ export  default  class SwApiService {
 
     static initWorkType() {
         let method = 'User/getworktypes?account=' + App.account;
+        let param = JSON.stringify({});
+        return this.getRequest(method, param);
+    }
+
+    static getCount(date) {
+        let method = 'ScheduleWork/getWorkReport?yearmonth='+date;
         let param = JSON.stringify({});
         return this.getRequest(method, param);
     }
