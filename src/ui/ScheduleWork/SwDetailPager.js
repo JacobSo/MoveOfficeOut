@@ -315,7 +315,7 @@ export default class SwDetailPager extends Component<{}> {
                     <Toolbar
                         elevation={2}
                         title={["日程工作", this.props.memberType.indexOf('0') > -1 ?
-                            (this.props.item.scCreator === App.account ? "主理" : '协助') : '-']}
+                            (this.props.item.scCreator === App.account ? "我的工作" : '协助') : '-']}
                         color={Color.colorGreen}
                         isHomeUp={true}
                         isAction={true}

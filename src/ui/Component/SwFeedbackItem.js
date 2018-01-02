@@ -51,7 +51,7 @@ export default class SwFeedbackItem extends Component {
                     borderTopRightRadius: 10,
                     borderTopLeftRadius: 10,
                     padding: 5,
-                }}>{this.props.host === this.props.data.fbCreator ? '主理人' : '协助人'}</Text>
+                }}>{this.props.host === this.props.data.fbCreator ? '创建人' : '协助人'}</Text>
 
                 <Text style={{
                     margin: 16,

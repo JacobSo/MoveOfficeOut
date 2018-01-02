@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    TouchableOpacity, Dimensions, FlatList, StyleSheet, Text,RefreshControl
+    TouchableOpacity, Dimensions, FlatList, StyleSheet, Text, RefreshControl
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/SwApiService';
@@ -18,6 +18,7 @@ import WpMainItem from "../Component/WpMainItem";
 import RadioForm from 'react-native-simple-radio-button';
 import SwMainItem from "../Component/SwMainItem";
 import * as ColorGroup from "../../constant/ColorGroup";
+import DatePicker from "../Component/DatePicker";
 
 const {width, height} = Dimensions.get('window')
 let myDate = new Date();
@@ -36,7 +37,9 @@ export default class SwCountPager extends Component {
     }
 
     initItems(items) {
-
+        items.map((data, index) => {
+            data.key = index
+        });
         return items
     }
 
@@ -85,30 +88,35 @@ export default class SwCountPager extends Component {
                     renderItem={({item}) => <TouchableOpacity
 
                         onPress={() => {
-                            this.props.nav.navigate('swMain',{
-                                memberType:this.props.memberType,
-                                account:item.UserName
+                            this.props.nav.navigate('swMain', {
+                                memberType: this.props.memberType,
+                                account: item.UserName
                             });//0normal/1audit/2check
                         }}>
                         <View style={styles.viewContainer}>
                             <View style={{marginBottom: 16, flexDirection: 'row'}}>
-                                <View style={[styles.headContainer,{ backgroundColor: ColorGroup.nameColor[item.UserName.charCodeAt()%13],}]}>
+                                <View
+                                    style={[styles.headContainer, {backgroundColor: ColorGroup.nameColor[item.UserName.charCodeAt() % 13],}]}>
                                     <Text style={{color: 'white',}}>{item.UserName.substring(0, 1)}</Text>
                                 </View>
                                 <View >
                                     <Text style={{color: 'black', fontSize: 18, margin: 10}}>{item.UserName}</Text>
                                     <View style={styles.statusLineContainer}>
                                         <Text >待审核</Text>
-                                        <View style={styles.statusCountContainer}><Text style={{color:"white"}}>{item.submited?item.submited:'0'}</Text></View>
+                                        <View style={styles.statusCountContainer}><Text
+                                            style={{color: "white"}}>{item.submited ? item.submited : '0'}</Text></View>
                                     </View>
                                     <View style={styles.statusLineContainer}>
                                         <Text >处理中</Text>
-                                        <View style={styles.statusCountContainer}><Text style={{color:"white"}}>{item.processing?item.processing:'0'}</Text></View>
+                                        <View style={styles.statusCountContainer}><Text
+                                            style={{color: "white"}}>{item.processing ? item.processing : '0'}</Text></View>
                                     </View>
                                     <View style={styles.statusLineContainer}>
                                         <Text >待评分</Text>
-                                        <View style={[styles.statusCountContainer,{backgroundColor:item.waitscore?Color.colorAccent:Color.colorGrey,}]}>
-                                            <Text style={{color:"white"}}>{item.waitscore?item.waitscore:'0'}</Text>
+                                        <View
+                                            style={[styles.statusCountContainer, {backgroundColor: item.waitscore ? Color.colorAccent : Color.colorGrey,}]}>
+                                            <Text
+                                                style={{color: "white"}}>{item.waitscore ? item.waitscore : '0'}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -118,29 +126,54 @@ export default class SwCountPager extends Component {
 
                             <View style={{flexDirection: 'row', justifyContent: 'center', margin: 10}}>
                                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <View style={{width: 50, height: 3, backgroundColor: item.Scorelist[0]&&item.Scorelist[0].s1?Color.colorRed:Color.line,marginBottom:5}}/>
+                                    <View style={{
+                                        width: 50,
+                                        height: 3,
+                                        backgroundColor: item.Scorelist[0] && item.Scorelist[0].s1 ? Color.colorRed : Color.line,
+                                        marginBottom: 5
+                                    }}/>
                                     <Text>不及格</Text>
-                                    <Text>{item.Scorelist[0]&&item.Scorelist[0].s1?item.Scorelist[0].s1:"0"}</Text>
+                                    <Text>{item.Scorelist[0] && item.Scorelist[0].s1 ? item.Scorelist[0].s1 : "0"}</Text>
                                 </View>
                                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <View style={{width: 50, height: 3, backgroundColor: item.Scorelist[0]&&item.Scorelist[0].s2?Color.colorYellow:Color.line,marginBottom:5}}/>
+                                    <View style={{
+                                        width: 50,
+                                        height: 3,
+                                        backgroundColor: item.Scorelist[0] && item.Scorelist[0].s2 ? Color.colorYellow : Color.line,
+                                        marginBottom: 5
+                                    }}/>
                                     <Text>及格</Text>
-                                    <Text>{item.Scorelist[0]&&item.Scorelist[0].s2?item.Scorelist[0].s2:"0"}</Text>
+                                    <Text>{item.Scorelist[0] && item.Scorelist[0].s2 ? item.Scorelist[0].s2 : "0"}</Text>
                                 </View>
                                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <View style={{width: 50, height: 3, backgroundColor: item.Scorelist[0]&&item.Scorelist[0].s3?Color.colorOrange:Color.line,marginBottom:5}}/>
+                                    <View style={{
+                                        width: 50,
+                                        height: 3,
+                                        backgroundColor: item.Scorelist[0] && item.Scorelist[0].s3 ? Color.colorOrange : Color.line,
+                                        marginBottom: 5
+                                    }}/>
                                     <Text>良好</Text>
-                                    <Text>{item.Scorelist[0]&&item.Scorelist[0].s3?item.Scorelist[0].s3:"0"}</Text>
+                                    <Text>{item.Scorelist[0] && item.Scorelist[0].s3 ? item.Scorelist[0].s3 : "0"}</Text>
                                 </View>
                                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <View style={{width: 50, height: 3, backgroundColor: item.Scorelist[0]&&item.Scorelist[0].s4?Color.colorLightBlue:Color.line,marginBottom:5}}/>
+                                    <View style={{
+                                        width: 50,
+                                        height: 3,
+                                        backgroundColor: item.Scorelist[0] && item.Scorelist[0].s4 ? Color.colorLightBlue : Color.line,
+                                        marginBottom: 5
+                                    }}/>
                                     <Text>优秀</Text>
-                                    <Text>{item.Scorelist[0]&&item.Scorelist[0].s4?item.Scorelist[0].s4:"0"}</Text>
+                                    <Text>{item.Scorelist[0] && item.Scorelist[0].s4 ? item.Scorelist[0].s4 : "0"}</Text>
                                 </View>
                                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <View style={{width: 50, height: 3, backgroundColor: item.Scorelist[0]&&item.Scorelist[0].s5?Color.colorGreen:Color.line,marginBottom:5}}/>
+                                    <View style={{
+                                        width: 50,
+                                        height: 3,
+                                        backgroundColor: item.Scorelist[0] && item.Scorelist[0].s5 ? Color.colorGreen : Color.line,
+                                        marginBottom: 5
+                                    }}/>
                                     <Text>卓越</Text>
-                                    <Text>{item.Scorelist[0]&&item.Scorelist[0].s5?item.Scorelist[0].s5:"0"}</Text>
+                                    <Text>{item.Scorelist[0] && item.Scorelist[0].s5 ? item.Scorelist[0].s5 : "0"}</Text>
                                 </View>
                             </View>
                         </View>
@@ -159,20 +192,21 @@ export default class SwCountPager extends Component {
 
                 <Toolbar
                     elevation={2}
-                    title={["监督工作统计"]}
+                    title={["监督工作统计", this.state.timeFilter]}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
-                    isActionByText={true}
+                    isActionByText={false}
                     actionArray={[]}
                     functionArray={[
                         () => {
                             this.props.nav.goBack(null)
                         },
+                        () => {
+
+                        }
                     ]}/>
                 {this._getView()}
-
-
             </View>
         )
     }
@@ -197,15 +231,15 @@ const styles = StyleSheet.create({
     statusLineContainer: {
         justifyContent: 'space-between',
         flexDirection: 'row',
-        width: width/3*2,
+        width: width / 3 * 2,
         paddingLeft: 10,
         paddingBottom: 10,
         alignItems: 'center',
     },
     statusCountContainer: {
-        justifyContent:'center',
-alignItems:'center',
-marginRight:10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
         borderRadius: 10,
         width: 40,
         backgroundColor: Color.colorGrey,

@@ -14,7 +14,6 @@ import Color from '../../constant/Color';
 import FloatButton from "../Component/FloatButton";
 import SnackBar from 'react-native-snackbar-dialog'
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-import WpMainItem from "../Component/WpMainItem";
 import RadioForm from 'react-native-simple-radio-button';
 import SwMainItem from "../Component/SwMainItem";
 import * as StatusGroup from "../../constant/StatusGroup";
