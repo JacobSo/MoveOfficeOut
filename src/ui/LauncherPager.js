@@ -101,6 +101,7 @@ export default class LauncherPager extends Component {
                         });//0normal/1audit/2check
                     }else{
                         this.props.nav.navigate('swMain',{
+                            account:null,
                             memberType:responseJson.worktypes
                         });//0normal/1audit/2check
                     }

@@ -43,7 +43,10 @@ export default class SwMainPager extends Component {
 
     _onRefresh() {
         this.setState({isRefreshing: true,});
-        ApiService.getList(this.props.account,this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" : "1,2,3,4,5", "")
+        ApiService.getList(
+            this.props.account,
+            this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" : "1,2,3,4,5",
+            "")
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.setState({
@@ -129,7 +132,7 @@ export default class SwMainPager extends Component {
 
                 <Toolbar
                     elevation={2}
-                    title={[this.props.memberType.indexOf("2") > -1 ? this.props.account+"的工作" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作", exList[this.state.radioValue]]}
+                    title={[this.props.memberType.indexOf("2") > -1 ? this.props.account + "的工作" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作", exList[this.state.radioValue]]}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
@@ -151,13 +154,13 @@ export default class SwMainPager extends Component {
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {
-                        if(text){
+                        if (text) {
                             this.searchText(text).then((array) => {
                                 this.setState({
                                     items: array
                                 });
                             })
-                        }else {
+                        } else {
                             this.setState({
                                 items: this.state.itemsBackup
                             });
