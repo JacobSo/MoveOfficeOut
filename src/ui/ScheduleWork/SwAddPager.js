@@ -9,7 +9,7 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView, FlatList, Platform, TextInput, ScrollView
+    ListView, FlatList, Platform, TextInput, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import Toolbar from "../Component/Toolbar";
 import InputDialog from "../Component/InputDialog";
@@ -303,7 +303,7 @@ export default class SwAddPager extends Component<{}> {
                     functionArray={this.getMenuFunc()}
                 />
                 <ScrollView>
-                    <View style={{marginBottom: 55}}>
+                    <View style={{marginBottom: 110}}>
                         <View style={styles.cardContainer}>
                             <DatePicker
                                 disabled={
@@ -452,7 +452,7 @@ export default class SwAddPager extends Component<{}> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+       // flex: 1,
         alignItems: 'center',
         backgroundColor: Color.background,
     },

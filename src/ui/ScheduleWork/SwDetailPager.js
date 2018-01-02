@@ -310,7 +310,7 @@ export default class SwDetailPager extends Component<{}> {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-55}>
+            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-75}>
                 <View style={{backgroundColor: Color.background, marginBottom: 155}}>
                     <Toolbar
                         elevation={2}
