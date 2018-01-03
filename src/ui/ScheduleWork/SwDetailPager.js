@@ -168,7 +168,7 @@ export default class SwDetailPager extends Component<{}> {
     postImgReq(data, index, callBackData, mainId) {
         ApiService.uploadImage(
             mainId,
-            data.fileName,
+            data.fileName?data.fileName:data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
             callBackData)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {

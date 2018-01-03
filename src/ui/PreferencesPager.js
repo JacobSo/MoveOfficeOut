@@ -154,7 +154,10 @@ export default class PreferencesPager extends Component {
                         <ScrollView>
                             <Text style={{margin: 16}}>
                                 v6:{'\n'}
-                                1.【日程】项目管理人日程工作上线{'\n'}
+                                1.1【日程】项目管理人日程工作上线{'\n'}
+                                1.2:-
+                                1.3:修复苹果手机上传本地图片bug
+                                1.4：修复苹果手机拍照上传bug
                                 v5:{'\n'}
                                 1.【全局】修复标题宽度{'\n'}
                                 2.【售后】更改开发专员查看详细页面，增加图片显示格式{'\n'}
