@@ -491,7 +491,8 @@ export default class SwDetailPager extends Component<{}> {
                                 (() => {
                                     if (this.props.item.scStatus === 2 &&
                                         this.props.memberType.indexOf('0') > -1 &&
-                                        this.props.item.scMembers.indexOf(App.account) > -1) {
+                                        (this.props.item.scMembers.indexOf(App.account) > -1||
+                                        this.props.item.scCreator.indexOf(App.account) > -1)) {
                                         return <View style={{alignItems: 'center',}}>
                                             <View style={styles.titleContainer}>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>新增处理</Text>

@@ -388,21 +388,23 @@ export default class SwAddPager extends Component<{}> {
                                 addFunc={() => {
                                     this.props.nav.navigate('swParam', {
                                         finishFunc: (members) => {
-                                            console.log(members)
-                                            console.log(this.state.members)
+                                          //  console.log(JSON.stringify(members));
+                                        //    console.log(JSON.stringify(this.state.members))
                                             if(this.state.members.length===0){
                                                 this.setState({members: members})
                                             }else{
                                                 let flag = false;
                                                 this.state.members.map((data1) => {
-                                                    members.map((data2) => flag = (data1.name === data2.name));
+                                                    members.map((data2) => {
+                                                        flag = (data1.name === data2.name)
+                                                    });
                                                     if (!flag){
                                                         members.push(data1)
                                                     }
                                                     flag = false;
                                                 });
                                                 this.setState({members: members})
-
+                                                console.log(JSON.stringify(this.state.members))
                                             }
 
                                         }

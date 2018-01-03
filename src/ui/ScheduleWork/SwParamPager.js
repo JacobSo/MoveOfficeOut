@@ -109,6 +109,7 @@ export default class SwParamPager extends Component {
             )
         }
     }
+
     async  _search(text) {
         console.log(text)
         return this.state.itemsBackup.filter((item) => {
@@ -116,6 +117,7 @@ export default class SwParamPager extends Component {
             return item ? (item.name.toLowerCase().indexOf(text.toLowerCase()) > -1) : ("无");
         });
     }
+
     render() {
         return (
             <View style={{
@@ -138,33 +140,35 @@ export default class SwParamPager extends Component {
                         () => {
                             let members = [];
                             this.state.items.map((data) => {
-                                if (data.isSelect)
+                                if (data.isSelect) {
                                     members.push(data)
+                                   // console.log(data)
+                                }
                             });
                             this.props.finishFunc(members);
                             this.props.nav.goBack(null);
                         }
 
                     ]}/>
-               {/* <TextInput style={{
-                    width: width ,
-                    height:55,
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                   // textAlign:'center',
-                    borderColor: Color.line,
-                    borderBottomWidth: 1,
-                }}
-                           placeholder="搜索"
-                           returnKeyType={'done'}
-                           blurOnSubmit={true}
-                           underlineColorAndroid="transparent"
-                           onChangeText={(text) => {
-                               this._search(text).then((array) => {
-                                   //       console.log(array);
-                                    this.setState({items:array})
-                               })
-                           }}/>*/}
+                {/* <TextInput style={{
+                 width: width ,
+                 height:55,
+                 paddingLeft: 16,
+                 paddingRight: 16,
+                 // textAlign:'center',
+                 borderColor: Color.line,
+                 borderBottomWidth: 1,
+                 }}
+                 placeholder="搜索"
+                 returnKeyType={'done'}
+                 blurOnSubmit={true}
+                 underlineColorAndroid="transparent"
+                 onChangeText={(text) => {
+                 this._search(text).then((array) => {
+                 //       console.log(array);
+                 this.setState({items:array})
+                 })
+                 }}/>*/}
                 {this._getView()}
 
 

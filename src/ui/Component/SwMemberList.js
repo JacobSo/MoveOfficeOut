@@ -21,12 +21,13 @@ export default class SwMemberList extends Component {
         disable: PropTypes.bool.isRequired,
     };
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log(nextProps);
-        this.setState({items: nextProps});
-        return true;
-    }
+    componentWillReceiveProps(nextProps) {
+    //    console.log(JSON.stringify(nextProps));
 
+      //  this.setState({items: nextProps});
+      //  console.log(this.state.items)
+
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -48,6 +49,7 @@ export default class SwMemberList extends Component {
             } : {margin: 16}}><Text>没有协助人员</Text></View> :
                 <FlatList
                     horizontal={true}
+                    keyExtractor={(item, index) => item.name}
                     data={this.props.items}
                     extraData={this.state}
                     style={[{width: width - 32},
