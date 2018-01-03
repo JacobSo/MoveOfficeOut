@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {
     View,
-    TouchableOpacity, Dimensions, FlatList, RefreshControl, Text
+    TouchableOpacity, Dimensions, FlatList, TextInput, Text
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/SwApiService';
@@ -17,6 +17,7 @@ import RefreshEmptyView from "../Component/RefreshEmptyView";
 import WpMainItem from "../Component/WpMainItem";
 import RadioForm from 'react-native-simple-radio-button';
 import SwMainItem from "../Component/SwMainItem";
+import * as ColorGroup from "../../constant/ColorGroup";
 
 const {width, height} = Dimensions.get('window');
 export default class SwParamPager extends Component {
@@ -25,6 +26,7 @@ export default class SwParamPager extends Component {
         this.state = {
             isRefreshing: false,
             items: [],
+            itemsBackup: [],
             selectItems: []
         }
     }
@@ -48,6 +50,7 @@ export default class SwParamPager extends Component {
                 if (!responseJson.IsErr) {
                     this.setState({
                         items: this.initItems(responseJson.list),
+                        itemsBackup: this.initItems(responseJson.list),
                         isRefreshing: false,
                     });
                 } else {
@@ -74,13 +77,31 @@ export default class SwParamPager extends Component {
                     extraData={this.state}
                     ListFooterComponent={<View style={{height: 75}}/>}
                     renderItem={({item}) => <TouchableOpacity
-                        disabled={App.account===item.name}
-                        style={{padding: 16, backgroundColor: item.isSelect ? Color.line : 'white'}}
+                        disabled={App.account === item.name}
+                        style={{
+                            padding: 16,
+                            backgroundColor: item.isSelect ? Color.line : 'white',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
                         onPress={() => {
                             console.log(item);
                             item.isSelect = !item.isSelect;
-                            this.setState({items: this.state.items})
+                            this.setState({items: this.state.items});
                         }}>
+                        <View style={{
+                            borderRadius: 50,
+                            width: 45,
+                            height: 45,
+                            backgroundColor: ColorGroup.nameColor[item.name.charCodeAt() % 13],
+                            margin: 10,
+                            elevation: 2,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{color: 'white',}}>{item.name.substring(0, 1)}</Text>
+                        </View>
+
                         <Text>{item.name}</Text>
                     </TouchableOpacity>
                     }
@@ -88,7 +109,13 @@ export default class SwParamPager extends Component {
             )
         }
     }
-
+    async  _search(text) {
+        console.log(text)
+        return this.state.itemsBackup.filter((item) => {
+            console.log(item);
+            return item ? (item.name.toLowerCase().indexOf(text.toLowerCase()) > -1) : ("无");
+        });
+    }
     render() {
         return (
             <View style={{
@@ -119,7 +146,25 @@ export default class SwParamPager extends Component {
                         }
 
                     ]}/>
-
+               {/* <TextInput style={{
+                    width: width ,
+                    height:55,
+                    paddingLeft: 16,
+                    paddingRight: 16,
+                   // textAlign:'center',
+                    borderColor: Color.line,
+                    borderBottomWidth: 1,
+                }}
+                           placeholder="搜索"
+                           returnKeyType={'done'}
+                           blurOnSubmit={true}
+                           underlineColorAndroid="transparent"
+                           onChangeText={(text) => {
+                               this._search(text).then((array) => {
+                                   //       console.log(array);
+                                    this.setState({items:array})
+                               })
+                           }}/>*/}
                 {this._getView()}
 
 

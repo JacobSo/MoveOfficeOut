@@ -9,17 +9,10 @@ import {
     StyleSheet, Dimensions, FlatList, RefreshControl,
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
-import ApiService from '../../network/SwApiService';
 import Color from '../../constant/Color';
-import FloatButton from "../Component/FloatButton";
-import SnackBar from 'react-native-snackbar-dialog'
-import RefreshEmptyView from "../Component/RefreshEmptyView";
-import RadioForm from 'react-native-simple-radio-button';
-import SwMainItem from "../Component/SwMainItem";
+import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-view';
+import SwListView from "../Component/SwListView";
 import * as StatusGroup from "../../constant/StatusGroup";
-
-const {width, height} = Dimensions.get('window');
-const exList = ["全部", "待提交", "待审核", "处理中", "已审核", "待评分", "已完结"];
 export default class SwMainPager extends Component {
     //this.props.memberType
     //监督:12345 cs1
@@ -28,218 +21,86 @@ export default class SwMainPager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isRefreshing: false,
             isSearch: false,
             isFilter: false,
-            items: [],
-            itemsBackup: [],
-            radioValue: 0,
+            pageFlag: 0,
+            filterText: "",
+            searchKey: "",
         }
     }
 
     componentDidMount() {
-        this._onRefresh();
     }
 
-    _onRefresh() {
-        this.setState({isRefreshing: true,});
-        ApiService.getList(
-            this.props.account,
-            this.props.memberType.indexOf("0") > -1 ? "0,1,2,3,4,5" : "1,2,3,4,5",
-            "")
-            .then((responseJson) => {
-                if (!responseJson.IsErr) {
-                    this.setState({
-                        items: responseJson.list,
-                        itemsBackup: responseJson.list,
-                        isRefreshing: false,
-                    });
-                } else {
-                    this.setState({isRefreshing: false,});
-                    SnackBar.show(responseJson.ErrDesc);
-                }
-            })
-            .catch((error) => {
-                this.setState({isRefreshing: false,});
-                console.log(error);
-                SnackBar.show("出错了，请稍后再试");
-            }).done();
+    getView() {
+        return <ScrollableTabView
+            initialPage={0}
+            tabBarBackgroundColor={Color.colorGreen}
+            tabBarActiveTextColor='white'
+            locked={false}
+            tabBarInactiveTextColor={Color.background}
+            tabBarUnderlineStyle={{backgroundColor: 'white',}}
+            onChangeTab={({i}) => this.setState({pageFlag: i,
+                isSearch:false,
+                isFilter:false,
+            }) }>
+            <SwListView tabLabel='工作监督'
+                        pageType={1}
+                        nav={this.props.nav}
+                        memberType={this.props.memberType}
+                        searchKey={this.state.searchKey}
+                        isSearch={this.state.isSearch}
+
+            />
+            <SwListView tabLabel={"我的" + this.state.filterText + "工作"}
+                        pageType={0}
+                        nav={this.props.nav}
+                        memberType={this.props.memberType}
+                        isFilter={this.state.isFilter}
+                        filterFunc={(value) => this.setState({
+                            isFilter: !this.state.isFilter,
+                            filterText: value === 0 ? "" : StatusGroup.swMainFilter[value]
+                        })}
+                        searchKey={this.state.searchKey}
+                        isSearch={this.state.isSearch}
+
+            />
+        </ScrollableTabView>
     }
 
-    _getView() {
-        if (this.state.items && this.state.items.length === 0) {
-            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
-                this._onRefresh()
-            } }/>)
-        } else {
-            return (
-                <FlatList
-                    data={this.state.items}
-                    ListFooterComponent={<View style={{height: 75}}/>}
-                    keyExtractor={(item, index) => item.scGuid}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="刷新中..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />}
-                    renderItem={({item}) => <SwMainItem
-                        item={item}
-                        action={() => {
-                            if (item.scStatus === 0 || item.scStatus === 1 || item.scStatus === 3) {
-                                this.props.nav.navigate("swAdd", {
-                                    memberType: this.props.memberType,
-                                    item: item,
-                                    refreshFunc: () => {
-                                        this._onRefresh()
-                                    }
-                                });
-                            } else {
-                                this.props.nav.navigate("swDetail", {
-                                    memberType: this.props.memberType,
-                                    item: item,
-                                    refreshFunc: () => {
-                                        this._onRefresh()
-                                    }
-                                })
-                            }
-                        }
-                        }/>
-                    }
-                />
-            )
-        }
-    }
-
-    async  searchType(value) {
-        return this.state.itemsBackup.filter((item) => (StatusGroup.swItemStatus[item.scStatus].toLowerCase().indexOf(exList[value].toLowerCase()) > -1));
-    }
-
-    async  searchText(text) {
-        return this.state.items.filter((item) => (JSON.stringify(item).toLowerCase().indexOf(text.toLowerCase()) > -1));
-    }
-
+    /*    [this.props.memberType.indexOf("2") > -1 ? this.props.account + "的工作" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作",
+     exList[this.state.radioValue]]*/
     render() {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: Color.background,
-            }}>
-
+            <View style={{flex: 1, backgroundColor: Color.background,}}>
                 <Toolbar
                     elevation={2}
-                    title={[this.props.memberType.indexOf("2") > -1 ? this.props.account + "的工作" : this.props.memberType.indexOf("0") > -1 ? "日程工作" : "审核工作", exList[this.state.radioValue]]}
+                    title={["日程工作",]}
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../../drawable/filter.png"), require("../../drawable/search.png")]}
+                    actionArray={this.state.pageFlag === 0 ? [require("../../drawable/search.png")] : [require("../../drawable/search.png"), require("../../drawable/filter.png")]}
                     functionArray={[
                         () => {
                             if (this.state.isSearch) {
                                 this.setState({
                                     isSearch: !this.state.isSearch,
-                                    isHeader: true,
-                                    items: this.state.itemsBackup
                                 })
                             } else this.props.nav.goBack(null)
                         },
+                        () => this.setState({isSearch: !this.state.isSearch}),
                         () => this.setState({isFilter: !this.state.isFilter}),
-                        () => this.setState({isSearch: !this.state.isSearch})
 
                     ]}
                     isSearch={this.state.isSearch}
-                    searchFunc={(text) => {
-                        if (text) {
-                            this.searchText(text).then((array) => {
-                                this.setState({
-                                    items: array
-                                });
-                            })
-                        } else {
-                            this.setState({
-                                items: this.state.itemsBackup
-                            });
-                        }
-                    }}/>
-                {
-                    (() => {
-                        if (this.state.isFilter) {
-                            return <RadioForm
-                                buttonColor={Color.colorGreen}
-                                labelStyle={{color: Color.content, margin: 16}}
-                                radio_props={ [
-                                    {label: exList[0], value: 0},
-                                    {label: exList[1], value: 1},
-                                    {label: exList[2], value: 2},
-                                    {label: exList[3], value: 3},
-                                    {label: exList[4], value: 4},
-                                    {label: exList[5], value: 5},
-                                ]}
-                                initial={this.state.radioValue}
-                                formHorizontal={false}
-                                style={styles.radioContainer}
-                                onPress={(value) => {
-                                    if (value === 0) {
-                                        this.setState({
-                                            items: this.state.itemsBackup
-                                        });
-                                    } else {
-                                        this.searchType(value).then((array) => {
-                                            this.setState({
-                                                items: array
-                                            });
-                                        });
-                                    }
+                    searchFunc={(text) => this.setState({searchKey: text})}/>
 
-                                    this.setState({
-                                        radioValue: value,
-                                        isFilter: false,
-                                    });
-                                }}
-                            />
-                        } else {
-                            return null
-                        }
-                    })()
-                }
-                {this._getView()}
-                {
-                    (() => {
-                        if (this.props.memberType.indexOf("0") > -1) {
-                            return <FloatButton
-                                color={Color.colorOrange}
-                                drawable={require('../../drawable/add.png')}
-                                action={() => {
-                                    this.props.nav.navigate('swAdd', {
-                                        refreshFunc: () => {
-                                            this._onRefresh()
-                                        },
-                                        memberType: this.props.memberType
-                                    });
-                                }}/>
-                        }
-                    })()
-                }
+                {this.getView()}
+
 
             </View>
         )
     }
 }
-const styles = StyleSheet.create({
-    radioContainer: {
-        marginLeft: 16,
-        marginBottom: 16,
-        width: width - 32,
-        backgroundColor: 'white',
-        paddingTop: 16,
-        paddingLeft: 16,
-        elevation: 2,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10
-    }
-});
+const styles = StyleSheet.create({});

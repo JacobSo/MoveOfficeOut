@@ -96,11 +96,12 @@ export default class LauncherPager extends Component {
                         this.setState({isLoading: false})
                     }, 100);
                     if(responseJson.worktypes.indexOf('2')>-1){
-                        this.props.nav.navigate('swCount',{
+                        this.props.nav.navigate('swMain',{
+                            account:null,
                             memberType:responseJson.worktypes
                         });//0normal/1audit/2check
                     }else{
-                        this.props.nav.navigate('swMain',{
+                        this.props.nav.navigate('swSub',{
                             account:null,
                             memberType:responseJson.worktypes
                         });//0normal/1audit/2check

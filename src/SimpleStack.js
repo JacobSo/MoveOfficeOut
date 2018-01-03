@@ -53,7 +53,7 @@ import SwMainPager from "./ui/ScheduleWork/SwMainPager";
 import SwAddPager from "./ui/ScheduleWork/SwAddPager";
 import SwDetailPager from "./ui/ScheduleWork/SwDetailPager";
 import SwParamPager from "./ui/ScheduleWork/SwParamPager";
-import SwCountPager from "./ui/ScheduleWork/SwCountPager";
+import SwSubMainPager from "./ui/ScheduleWork/SwSubMainPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -222,9 +222,9 @@ const SwParamScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwParamPager {...navigation.state.params}
                                                                            nav={navigation}/></View>);
 
-const SwCountScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwCountPager {...navigation.state.params}
-                                                                           nav={navigation}/></View>);
+const SwSubMainScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwSubMainPager {...navigation.state.params}
+                                                                           nav={navigation}></SwSubMainPager></View>);
 
 const SimpleStack = StackNavigator({
         launcher: {
@@ -362,8 +362,8 @@ const SimpleStack = StackNavigator({
         swDetail: {
             screen: SwDetailScreen,
         },
-        swCount: {
-            screen: SwCountScreen,
+        swSub: {
+            screen: SwSubMainScreen,
         },
 
     },

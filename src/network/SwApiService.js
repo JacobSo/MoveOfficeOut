@@ -3,6 +3,7 @@
  */
 'use strict';
 import App from '../constant/Application';
+//let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
 let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
 let newFetch = function (input, opts) {
     return new Promise((resolve, reject) => {
@@ -64,10 +65,10 @@ export  default  class SwApiService {
             })
     }
 
-    static getList(name,filter, member) {
+    static getList(filter, member) {
         let method = 'ScheduleWork/GetSchedule';
         let param = JSON.stringify({
-            account: name===null?App.account:name,
+            account: App.account,
             filter: filter,
             member: member,
             //  userttype: type

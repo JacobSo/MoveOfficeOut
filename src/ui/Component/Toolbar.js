@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         padding: 16,
-
         width: width,
     },
 
@@ -145,7 +144,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     title: {
-
         width:200,
         color: 'white',
         fontSize: 18,

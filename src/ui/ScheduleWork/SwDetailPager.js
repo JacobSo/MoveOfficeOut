@@ -49,7 +49,7 @@ export default class SwDetailPager extends Component<{}> {
             }),
             image: [],
             helpContent: this.props.item && this.props.item.helpContent,
-            resultComment:''
+            resultComment: ''
         };
     }
 
@@ -168,7 +168,7 @@ export default class SwDetailPager extends Component<{}> {
     postImgReq(data, index, callBackData, mainId) {
         ApiService.uploadImage(
             mainId,
-            data.fileName?data.fileName:data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
+            data.fileName ? data.fileName : data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
             callBackData)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
@@ -250,7 +250,7 @@ export default class SwDetailPager extends Component<{}> {
             }, {
                 text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    ApiService.setResult(this.props.item.scId, this.state.starA,this.state.resultComment)
+                    ApiService.setResult(this.props.item.scId, this.state.starA, this.state.resultComment)
                         .then((responseJson) => {
                             if (!responseJson.IsErr) {
                                 this.props.refreshFunc();
@@ -314,8 +314,8 @@ export default class SwDetailPager extends Component<{}> {
                 <View style={{backgroundColor: Color.background, marginBottom: 155}}>
                     <Toolbar
                         elevation={2}
-                        title={["日程工作", this.props.memberType.indexOf('0') > -1 ?
-                            (this.props.item.scCreator === App.account ? "我的工作" : '协助') : '-']}
+                        title={["日程工作", this.props.item.scCreator === App.account ? "我的工作" :
+                            (this.props.item.scMembers.indexOf(App.account) > -1 ? '协助' : '查看')]}
                         color={Color.colorGreen}
                         isHomeUp={true}
                         isAction={true}
@@ -349,7 +349,6 @@ export default class SwDetailPager extends Component<{}> {
                                     this.workDetail()
                                 }
 
-
                                 <View style={styles.itemText}>
                                     <View/>
                                     <View style={{flexDirection: "row"}}>
@@ -365,9 +364,7 @@ export default class SwDetailPager extends Component<{}> {
                                                     pics: this.props.item.scImages.split(',')
                                                 });
                                             else SnackBar.show('没有图片')
-
                                         }} style={{marginTop: 16, marginBottom: 6, marginLeft: 16}}>
-
                                             <Text style={{color: Color.colorGreen}}>查看图片</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -380,15 +377,21 @@ export default class SwDetailPager extends Component<{}> {
                                             <View style={styles.titleContainer}>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text>
                                             </View>
-                                            <View style={[styles.starContainer,{paddingTop:16}]}>
-                                                    <StarSeek
-                                                        onSelect={()=>{}}
-                                                        defaultStar={this.props.item.scWorkResult} disable={true}/>
-                                                    <Text>{StatusGroup.swStarDesc[this.props.item.scWorkResult]}</Text>
-                                                    <View style={{width:width-64,height:1,backgroundColor:Color.line,marginTop:16}}/>
-                                                    <Text style={{margin:16}}>{this.props.item.scoreRemark?this.props.item.scoreRemark:"无评价"}</Text>
-                                                </View>
+                                            <View style={[styles.starContainer, {paddingTop: 16}]}>
+                                                <StarSeek
+                                                    onSelect={() => {
+                                                    }}
+                                                    defaultStar={this.props.item.scWorkResult} disable={true}/>
+                                                <Text>{StatusGroup.swStarDesc[this.props.item.scWorkResult]}</Text>
+                                                <View style={{
+                                                    width: width - 64,
+                                                    height: 1,
+                                                    backgroundColor: Color.line,
+                                                    marginTop: 16
+                                                }}/>
+                                                <Text style={{margin: 16}}>{this.props.item.scoreRemark ? this.props.item.scoreRemark : "无评价"}</Text>
                                             </View>
+                                        </View>
                                     }
                                 })()
                             }
@@ -418,7 +421,7 @@ export default class SwDetailPager extends Component<{}> {
                                     })}/>
                                 <View style={{backgroundColor: Color.line, width: width - 64, height: 1}}/>
                                 <SwMemberList
-                                    disable={(!(this.props.memberType.indexOf("0") > -1)) || this.props.item.scStatus !== 2|| (this.props.item && this.props.item.scCreator !== App.account)}
+                                    disable={(!(this.props.memberType.indexOf("0") > -1)) || this.props.item.scStatus !== 2 || (this.props.item && this.props.item.scCreator !== App.account)}
                                     items={this.state.members}
                                     isHasBackground={false}
                                     addFunc={() => {
@@ -486,7 +489,9 @@ export default class SwDetailPager extends Component<{}> {
 
                             {//普通填写
                                 (() => {
-                                    if (this.props.item.scStatus === 2 && this.props.memberType.indexOf('0') > -1) {
+                                    if (this.props.item.scStatus === 2 &&
+                                        this.props.memberType.indexOf('0') > -1 &&
+                                        this.props.item.scMembers.indexOf(App.account) > -1) {
                                         return <View style={{alignItems: 'center',}}>
                                             <View style={styles.titleContainer}>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>新增处理</Text>
@@ -552,7 +557,8 @@ export default class SwDetailPager extends Component<{}> {
                                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text>
                                             </View>
                                             <View style={styles.starContainer}>
-                                                <StarSeek onSelect={(select) => this.setState({starA: select})}defaultStar={0}/>
+                                                <StarSeek onSelect={(select) => this.setState({starA: select})}
+                                                          defaultStar={0}/>
                                                 <Text>{StatusGroup.swStarDesc[this.state.starA]}</Text>
                                                 <TextInput
                                                     style={styles.inputStyle}

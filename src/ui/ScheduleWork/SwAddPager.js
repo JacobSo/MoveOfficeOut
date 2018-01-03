@@ -47,7 +47,7 @@ export default class SwAddPager extends Component<{}> {
                 rowHasChanged: (row1, row2) => true,
             }),
             confirmRemark: '',
-            helpContent:this.props.item?this.props.item.helpContent:''
+            helpContent: this.props.item ? this.props.item.helpContent : ''
         };
 
     }
@@ -165,7 +165,7 @@ export default class SwAddPager extends Component<{}> {
             membersStr = data.name + "," + membersStr
         });
         this.setState({isLoading: true,});
-        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null, isBoth,this.state.helpContent)
+        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null, isBoth, this.state.helpContent)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     if (this.state.pics.length !== 0) {
@@ -222,11 +222,11 @@ export default class SwAddPager extends Component<{}> {
             })
         } else {
             this.state.pics.map((data, index) => {
-              //  SnackBar.show(JSON.stringify(data));
-              //  SnackBar.show(mainId);
+                //  SnackBar.show(JSON.stringify(data));
+                //  SnackBar.show(mainId);
                 IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
-                   // console.log(data)
-                //   console.log(callBackData)
+                    // console.log(data)
+                    //   console.log(callBackData)
                     this.postImgReq(data, index, callBackData, mainId, isBoth);
 
 
@@ -237,10 +237,10 @@ export default class SwAddPager extends Component<{}> {
 
     postImgReq(data, index, callBackData, mainId, isBoth) {
 
-       //
+        //
         ApiService.uploadImage(
             mainId,
-            data.fileName?data.fileName:data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
+            data.fileName ? data.fileName : data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
             callBackData)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
@@ -301,7 +301,11 @@ export default class SwAddPager extends Component<{}> {
             <View style={styles.container}>
                 <Toolbar
                     elevation={2}
-                    title={["新创建日程", this.props.memberType.indexOf('0') > -1 ? (this.props.item ? ( this.props.item.scCreator === App.account ? "我的工作" : '协助') : '我的工作') : '-']}
+                    title={["新创建日程",
+                        this.props.item ? ( this.props.item.scCreator === App.account ? "我的工作" //创建人查看
+                            : (this.props.memberType.indexOf('1') > -1 ? "审核"//审核人
+                                : "查看"))//其他
+                            : '我的工作']}//创建
                     color={Color.colorGreen}
                     isHomeUp={true}
                     isAction={true}
@@ -314,8 +318,8 @@ export default class SwAddPager extends Component<{}> {
                         <View style={styles.cardContainer}>
                             <DatePicker
                                 disabled={
-                                    (this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
-                                    (this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
+                                    (this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                    (this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 customStyles={{
                                     placeholderText: {
@@ -344,8 +348,8 @@ export default class SwAddPager extends Component<{}> {
                             <Text style={{margin: 16, color: 'black'}}>日程工作描述</Text>
                             <TextInput
                                 editable={
-                                    !(this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
-                                    !(this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
+                                    !(this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
+                                    !(this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 style={styles.inputStyle}
                                 multiline={true}
@@ -361,8 +365,8 @@ export default class SwAddPager extends Component<{}> {
                             <Text style={{margin: 16, color: 'black'}}>协助人员</Text>
                             <TextInput
                                 editable={
-                                    !(this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
-                                    !(this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
+                                    !(this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
+                                    !(this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 style={styles.inputStyle}
                                 multiline={true}
@@ -378,19 +382,29 @@ export default class SwAddPager extends Component<{}> {
                                 items={this.state.members}
                                 isHasBackground={false}
                                 disable={
-                                    (this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
-                                    (this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
+                                    (this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                    (this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 addFunc={() => {
                                     this.props.nav.navigate('swParam', {
                                         finishFunc: (members) => {
-                                            let flag = false;
-                                            this.state.members.map((data1) => {
-                                                members.map((data2) => flag = (data1.name === data2.name));
-                                                if (!flag)
-                                                    members.push(data1)
-                                            });
-                                            this.setState({members: members})
+                                            console.log(members)
+                                            console.log(this.state.members)
+                                            if(this.state.members.length===0){
+                                                this.setState({members: members})
+                                            }else{
+                                                let flag = false;
+                                                this.state.members.map((data1) => {
+                                                    members.map((data2) => flag = (data1.name === data2.name));
+                                                    if (!flag){
+                                                        members.push(data1)
+                                                    }
+                                                    flag = false;
+                                                });
+                                                this.setState({members: members})
+
+                                            }
+
                                         }
                                     });
                                 }}
@@ -412,8 +426,8 @@ export default class SwAddPager extends Component<{}> {
                             }}/>
                             <TouchableOpacity
                                 disabled={
-                                    (this.props.item!==undefined  && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||//非创建+已审核+普通人
-                                    (this.props.item!==undefined  && this.props.item.scCreator !== App.account)//非本人
+                                    (this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||//非创建+已审核+普通人
+                                    (this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
                                 }
                                 onPress={() => {
                                     ImagePicker.showImagePicker(ImageOptions.options, (response) => {
@@ -459,7 +473,7 @@ export default class SwAddPager extends Component<{}> {
 
 const styles = StyleSheet.create({
     container: {
-       // flex: 1,
+        // flex: 1,
         alignItems: 'center',
         backgroundColor: Color.background,
     },
