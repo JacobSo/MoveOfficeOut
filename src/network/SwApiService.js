@@ -165,7 +165,7 @@ export  default  class SwApiService {
     }
 
     static getCount(date) {
-        let method = 'ScheduleWork/getWorkReport?yearmonth='+date;
+        let method = 'ScheduleWork/getWorkReport?yearmonth='+date+'&account'+App.account;
         let param = JSON.stringify({});
         return this.getRequest(method, param);
     }
