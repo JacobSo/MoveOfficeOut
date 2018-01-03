@@ -389,7 +389,8 @@ export default class SwDetailPager extends Component<{}> {
                                                     backgroundColor: Color.line,
                                                     marginTop: 16
                                                 }}/>
-                                                <Text style={{margin: 16}}>{this.props.item.scoreRemark ? this.props.item.scoreRemark : "无评价"}</Text>
+                                                <Text
+                                                    style={{margin: 16}}>{this.props.item.scoreRemark ? this.props.item.scoreRemark : "无评价"}</Text>
                                             </View>
                                         </View>
                                     }
@@ -403,22 +404,35 @@ export default class SwDetailPager extends Component<{}> {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }]}>
-                                <TextInput
-                                    editable={
-                                        (this.props.item && this.props.item.scStatus === 2 && this.props.memberType.indexOf('0') > -1) &&
-                                        (this.props.item && this.props.item.scCreator === App.account)//非本人
-                                    }
-                                    style={styles.inputStyle}
-                                    multiline={true}
-                                    placeholder="请填写需要协助的内容"
-                                    returnKeyType={'done'}
-                                    underlineColorAndroid="transparent"
-                                    blurOnSubmit={true}
-                                    defaultValue={this.state.helpContent}
-                                    onChangeText={(text) => this.setState({
-                                        helpContent: text,
-                                        isShowConfirmMember: true
-                                    })}/>
+                                {
+                                    (() => {
+                                        if ((this.props.item && this.props.item.scStatus === 2 && this.props.memberType.indexOf('0') > -1) &&
+                                            (this.props.item && this.props.item.scCreator === App.account)) {
+                                            return <TextInput
+                                                editable={
+                                                    (this.props.item && this.props.item.scStatus === 2 && this.props.memberType.indexOf('0') > -1) &&
+                                                    (this.props.item && this.props.item.scCreator === App.account)
+                                                    //非本人
+                                                }
+                                                style={styles.inputStyle}
+                                                multiline={true}
+                                                placeholder="请填写需要协助的内容"
+                                                returnKeyType={'done'}
+                                                underlineColorAndroid="transparent"
+                                                blurOnSubmit={true}
+                                                defaultValue={this.state.helpContent}
+                                                onChangeText={(text) => this.setState({
+                                                    helpContent: text,
+                                                    isShowConfirmMember: true
+                                                })}/>
+                                        } else {
+                                            return <Text
+                                                style={{margin: 16}}>{ this.props.item.helpContent ? this.props.item.helpContent : "无内容"}</Text>
+
+                                        }
+                                    })()
+                                }
+
                                 <View style={{backgroundColor: Color.line, width: width - 64, height: 1}}/>
                                 <SwMemberList
                                     disable={(!(this.props.memberType.indexOf("0") > -1)) || this.props.item.scStatus !== 2 || (this.props.item && this.props.item.scCreator !== App.account)}
@@ -491,7 +505,7 @@ export default class SwDetailPager extends Component<{}> {
                                 (() => {
                                     if (this.props.item.scStatus === 2 &&
                                         this.props.memberType.indexOf('0') > -1 &&
-                                        (this.props.item.scMembers.indexOf(App.account) > -1||
+                                        (this.props.item.scMembers.indexOf(App.account) > -1 ||
                                         this.props.item.scCreator.indexOf(App.account) > -1)) {
                                         return <View style={{alignItems: 'center',}}>
                                             <View style={styles.titleContainer}>
@@ -639,9 +653,9 @@ const styles = StyleSheet.create({
     inputStyle: {
         width: width - 64,
         marginRight: 10,
-        height:100,
+        height: 100,
         textAlign: 'center',
-        fontSize:15
+        fontSize: 15
     },
     emptyText: {
         width: width - 32,
