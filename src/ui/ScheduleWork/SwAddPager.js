@@ -222,20 +222,25 @@ export default class SwAddPager extends Component<{}> {
             })
         } else {
             this.state.pics.map((data, index) => {
+              //  SnackBar.show(JSON.stringify(data));
+              //  SnackBar.show(mainId);
                 IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
                    // console.log(data)
-                  //  console.log(callBackData)
-                    //SnackBar.show(mainId+','+index+','+JSON.stringify(data));
+                //   console.log(callBackData)
                     this.postImgReq(data, index, callBackData, mainId, isBoth);
+
+
                 })
             });
         }
     }
 
     postImgReq(data, index, callBackData, mainId, isBoth) {
+
+       //
         ApiService.uploadImage(
             mainId,
-            data.fileName,
+            data.fileName?data.fileName:data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
             callBackData)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {

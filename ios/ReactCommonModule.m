@@ -116,6 +116,7 @@ RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callba
   NSData *pic = UIImageJPEGRepresentation(img, 0.3f);
   NSString *encodedImageStr = [pic base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
   NSArray *arrays = [NSArray arrayWithObjects:encodedImageStr,nil];
+  NSLog(@"string image:%@",encodedImageStr);
   callback(arrays);
   
 }
