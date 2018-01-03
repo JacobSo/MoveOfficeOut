@@ -150,7 +150,7 @@ export default class SwParamPager extends Component {
                         }
 
                     ]}/>
-                {/* <TextInput style={{
+                 <TextInput style={{
                  width: width ,
                  height:55,
                  paddingLeft: 16,
@@ -168,7 +168,7 @@ export default class SwParamPager extends Component {
                  //       console.log(array);
                  this.setState({items:array})
                  })
-                 }}/>*/}
+                 }}/>
                 {this._getView()}
 
 

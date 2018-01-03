@@ -40,19 +40,41 @@ export default class SwMainPager extends Component {
             locked={false}
             tabBarInactiveTextColor={Color.background}
             tabBarUnderlineStyle={{backgroundColor: 'white',}}
-            onChangeTab={({i}) => this.setState({pageFlag: i,
-                isSearch:false,
-                isFilter:false,
+            onChangeTab={({i}) => this.setState({
+                pageFlag: i,
+                isSearch: false,
+                isFilter: false,
             }) }>
-            <SwListView tabLabel='工作监督'
-                        pageType={1}
-                        nav={this.props.nav}
-                        memberType={this.props.memberType}
-                        searchKey={this.state.searchKey}
-                        isSearch={this.state.isSearch}
+            {
+                (() => {
+                    if (this.props.memberType.indexOf('1') > -1) {
+                        return <SwListView
+                            tabLabel='我的工作'
+                            pageType={0}
+                            nav={this.props.nav}
+                            memberType={this.props.memberType}
+                            isFilter={this.state.isFilter}
+                            filterFunc={(value) => this.setState({
+                                isFilter: !this.state.isFilter,
+                                filterText: value === 0 ? "" : StatusGroup.swMainFilter[value]
+                            })}
+                            searchKey={this.state.searchKey}
+                            isSearch={this.state.isSearch}
+                            account={null}
+                        />
+                    } else {
+                        return <SwListView tabLabel='工作监督'
+                                           pageType={1}
+                                           nav={this.props.nav}
+                                           memberType={this.props.memberType}
+                                           searchKey={this.state.searchKey}
+                                           isSearch={this.state.isSearch}
 
-            />
-            <SwListView tabLabel={"我的" + this.state.filterText + "工作"}
+                        />
+                    }
+                })()
+            }
+            <SwListView tabLabel={this.props.memberType.indexOf('1') > -1?"审核工作":"我的"+this.state.filterText+"工作"}//// + pageFlag===1?this.state.filterText:"" +
                         pageType={0}
                         nav={this.props.nav}
                         memberType={this.props.memberType}
@@ -63,6 +85,7 @@ export default class SwMainPager extends Component {
                         })}
                         searchKey={this.state.searchKey}
                         isSearch={this.state.isSearch}
+                        isAuditCreate={true}
 
             />
         </ScrollableTabView>
@@ -80,7 +103,7 @@ export default class SwMainPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={this.state.pageFlag === 0 ? [require("../../drawable/search.png")] : [require("../../drawable/search.png"), require("../../drawable/filter.png")]}
+                    actionArray={this.state.pageFlag === 0&&this.props.memberType.indexOf('2') > -1 ? [require("../../drawable/search.png")] : [require("../../drawable/search.png"), require("../../drawable/filter.png")]}
                     functionArray={[
                         () => {
                             if (this.state.isSearch) {

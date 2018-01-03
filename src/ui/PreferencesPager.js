@@ -124,7 +124,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v6'],
+                                ['此版本更新记录', 'v7'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -153,6 +153,12 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16}}>
+                                v7:{'\n'}
+                                1.【日程】监督人分页管理{'\n'}
+                                2.【日程】监督人/审核人增加建单协助功能{'\n'}
+                                3.【日程】人员管理增加颜色区分和搜索功能{'\n'}
+                                4.【日程】统计页面增加协助数，相关选项高亮{'\n'}
+                                5.【日程】页面显示优化{'\n'}
                                 v6:{'\n'}
                                 1.1【日程】项目管理人日程工作上线{'\n'}
                                 1.2:-

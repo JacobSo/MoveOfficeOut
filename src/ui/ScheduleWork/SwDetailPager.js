@@ -638,11 +638,9 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         width: width - 64,
-        padding:16,
         marginRight: 10,
+        height:100,
         textAlign: 'center',
-        borderTopWidth: 1,
-        borderTopColor: Color.line,
         fontSize:15
     },
     emptyText: {

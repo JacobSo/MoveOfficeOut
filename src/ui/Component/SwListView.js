@@ -121,6 +121,7 @@ export default class SwListView extends Component {
         ApiService.getList(
             this.props.memberType.indexOf("1") > -1|| this.props.memberType.indexOf("2") > -1 ? "1,2,3,4,5" : "0,1,2,3,4,5",
             this.props.account,
+            this.props.memberType.indexOf("1") > -1&&this.props.isAuditCreate
         )
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
