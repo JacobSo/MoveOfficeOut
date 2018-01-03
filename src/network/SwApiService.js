@@ -70,7 +70,7 @@ export  default  class SwApiService {
         let param = JSON.stringify({
             account: App.account,
             filter: filter,
-            member: member,
+            member: member?member:App.account
             //  userttype: type
         });
         return this.postRequest(method, param);
