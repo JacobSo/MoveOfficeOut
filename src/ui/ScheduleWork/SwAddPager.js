@@ -222,7 +222,9 @@ export default class SwAddPager extends Component<{}> {
             })
         } else {
             this.state.pics.map((data, index) => {
-                IosModule.getImageBase64(data.path, (callBackData) => {
+                IosModule.getImageBase64(data.uri.replace('file://', ''), (callBackData) => {
+                   // console.log(data)
+                  //  console.log(callBackData)
                     //SnackBar.show(mainId+','+index+','+JSON.stringify(data));
                     this.postImgReq(data, index, callBackData, mainId, isBoth);
                 })
