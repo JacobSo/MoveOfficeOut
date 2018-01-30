@@ -26,7 +26,7 @@ const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 let typeGroup = ['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing', "manager_reviewed"];
 let transGroup = ['已创建', '等待处理', '处理中', '提交审核', '已审核', '完结'];
-const exList = ["时效很快，处理结果非常满意", "时效快，处理结果一般","时效一般，处理结果一般","时效慢，处理结果一般","时效很慢，处理结果不理想"];
+const exList = ["5-时效很快，处理结果非常满意", "4-时效快，处理结果一般","3-时效一般，处理结果一般","2-时效慢，处理结果一般","1-时效很慢，处理结果不理想"];
 let colorGroup = [Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen, 'black'];
 export default class AsOrderDetailPager extends Component {
     constructor(props) {
