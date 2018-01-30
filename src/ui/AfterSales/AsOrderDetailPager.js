@@ -26,7 +26,7 @@ const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 let typeGroup = ['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing', "manager_reviewed"];
 let transGroup = ['已创建', '等待处理', '处理中', '提交审核', '已审核', '完结'];
-const exList = ["优", "良","差"];
+const exList = ["时效很快，处理结果非常满意", "时效快，处理结果一般","时效一般，处理结果一般","时效慢，处理结果一般","时效很慢，处理结果不理想"];
 let colorGroup = [Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen, 'black'];
 export default class AsOrderDetailPager extends Component {
     constructor(props) {
@@ -377,6 +377,8 @@ export default class AsOrderDetailPager extends Component {
                                                         {label: exList[0], value: 0},
                                                         {label: exList[1], value: 1},
                                                         {label: exList[2], value: 2},
+                                                        {label: exList[3], value: 3},
+                                                        {label: exList[4], value: 4},
                                                     ]}
                                                     initial={this.state.radioValue}
                                                     formHorizontal={false}

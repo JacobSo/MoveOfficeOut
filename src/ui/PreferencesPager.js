@@ -124,7 +124,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v7'],
+                                ['此版本更新记录', 'v8'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -153,6 +153,8 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16}}>
+                                v8:{'\n'}
+                                1.【售后】评分更新{'\n'}{'\n'}
                                 v7:{'\n'}
                                 1.【日程】监督人分页管理{'\n'}
                                 2.【日程】监督人/审核人增加建单协助功能{'\n'}
