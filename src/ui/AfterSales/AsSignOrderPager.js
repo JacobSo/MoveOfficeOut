@@ -10,7 +10,11 @@ import {
     Alert,
     Image,
     KeyboardAvoidingView,
-    StyleSheet, TouchableOpacity, TextInput, ListView, Platform
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
+    ListView,
+    Platform
 } from 'react-native';
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
