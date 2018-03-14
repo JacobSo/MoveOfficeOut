@@ -152,9 +152,11 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
-                            <Text style={{margin: 16}}>
+                            <Text style={{margin: 16}}>//314:ios v9 update,android v8 none
+                                v9:{'\n'}
+                                1.【全局】禁用首页更新提示{'\n'}{'\n'}
                                 v8:{'\n'}
-                                1.【售后】评分更新{'\n'}{'\n'}
+                                1.【售后】评分更新{'\n'}
                                 v7:{'\n'}
                                 1.【日程】监督人分页管理{'\n'}
                                 2.【日程】监督人/审核人增加建单协助功能{'\n'}
