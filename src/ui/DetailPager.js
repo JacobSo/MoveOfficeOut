@@ -31,7 +31,7 @@ const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 
 
- class DetailPager extends Component {
+class DetailPager extends Component {
 
     constructor(props) {
         super(props);
@@ -49,35 +49,28 @@ const {width, height} = Dimensions.get('window');
             }),
             rejectContent: '',
             carNumber: this.props.task.CarNumber,
-            tripText:""
+            tripText: ""
         };
 
     }
 
     componentDidMount() {
-     //   InteractionManager.runAfterInteractions(() => {
-        //    console.log('----------detail componentDidMount-----------------');
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.state.items),
-            });
-
-
-
-     //   });
-
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+        });
     }
 
-    _getTypeString(){
+    _getTypeString() {
         let temp;
-        if(this.props.task.DailyType===0){
+        if (this.props.task.DailyType === 0) {
             temp = "当天来回"
-        }else if(this.props.task.DailyType===1){
+        } else if (this.props.task.DailyType === 1) {
             temp = "驻厂"
 
-        }else if(this.props.task.DailyType===2){
-            temp = "出差，结束时间："+(this.props.task.DailyEndDate?Utility.getTime(this.props.task.DailyEndDate):'无')
+        } else if (this.props.task.DailyType === 2) {
+            temp = "出差，结束时间：" + (this.props.task.DailyEndDate ? Utility.getTime(this.props.task.DailyEndDate) : '无')
 
-        }else{
+        } else {
             temp = "不需要外出"
         }
         return temp;
@@ -87,7 +80,7 @@ const {width, height} = Dimensions.get('window');
         return <ListView
             dataSource={this.state.dataSource}
             enableEmptySections={true}
-            style={{marginBottom:25}}
+            style={{marginBottom: 25}}
             renderRow={ (rowData, rowID, sectionID) =>
                 <DetailItem
                     status={this.props.task.DailyRecordState}
@@ -96,10 +89,10 @@ const {width, height} = Dimensions.get('window');
 
                         if (this.props.task.DailyRecordState === 2 && App.account === this.props.task.Creator) {
                             //sign work
-                            this.props.nav.navigate('sign',{
+                            this.props.nav.navigate('sign', {
                                 position: sectionID,
                                 task: this.props.task,
-                                content:rowData.WorkResult,
+                                content: rowData.WorkResult,
                                 commentWork: (resultArray) => {
                                     this.state.items = JSON.parse(JSON.stringify(resultArray));
                                     // console.log('-----------------update'+JSON.stringify( this.state.items));
@@ -113,14 +106,14 @@ const {width, height} = Dimensions.get('window');
 
                         } else {
                             let type = -1;
-                            if (this.props.task.DailyRecordState === 3 && (App.jobType==='2'||App.jobType==='5' )&& App.account !== this.props.task.Creator) {
+                            if (this.props.task.DailyRecordState === 3 && (App.jobType === '2' || App.jobType === '5' ) && App.account !== this.props.task.Creator) {
                                 type = 1;
-                            } else if (this.props.task.DailyRecordState === 3 && App.jobType==='3') {
+                            } else if (this.props.task.DailyRecordState === 3 && App.jobType === '3') {
                                 type = 0;
                             } else SnackBar.show('当前你不需要操作本工作');
 
                             if (type !== -1) {
-                                this.props.nav.navigate('comment',{
+                                this.props.nav.navigate('comment', {
                                     type: type,//1 full star
                                     position: sectionID,
                                     task: this.props.task,
@@ -166,11 +159,11 @@ const {width, height} = Dimensions.get('window');
             } else if (this.props.task.DailyRecordState === 2) {
                 return ['完成']
             } else return [];
-        } else if ((App.jobType==='2'||App.jobType==='5') && this.props.task.Creator !== App.account) {
+        } else if ((App.jobType === '2' || App.jobType === '5') && this.props.task.Creator !== App.account) {
             if (this.props.task.DailyRecordState === 1) {
                 return ['审核', '驳回']
             } else return [];
-        } else if (App.jobType==='4') {
+        } else if (App.jobType === '4') {
             if (this.props.task.DailyRecordState === 2) {
                 return ['填写车牌', '删除']
             } else if (this.props.task.DailyRecordState === 1 || this.props.task.DailyRecordState === 3) {
@@ -190,7 +183,7 @@ const {width, height} = Dimensions.get('window');
                     this._finishDialog();
                 }]
             } else return [];
-        } else if ((App.jobType==='2'||App.jobType==='5')&& this.props.task.Creator !== App.account) {
+        } else if ((App.jobType === '2' || App.jobType === '5') && this.props.task.Creator !== App.account) {
             if (this.props.task.DailyRecordState === 1) {
                 return [
                     () => {
@@ -200,7 +193,7 @@ const {width, height} = Dimensions.get('window');
                         this.popupDialog.show();
                     }]
             } else return [];
-        } else if (App.jobType==='4') {
+        } else if (App.jobType === '4') {
             if (this.props.task.DailyRecordState === 2) {
                 return [
                     () => {
@@ -221,13 +214,14 @@ const {width, height} = Dimensions.get('window');
         if (this.props.task.CarType === '') {
             SnackBar.show('不需要车牌');
         } else {
-            this.props.nav.navigate('param',{
+            this.props.nav.navigate('param', {
                 title: '选择车牌',
                 type: 2,//2 car
                 searchKey: this.props.task.Guid,
                 setSelect: (select) => {
                     this.setState({carNumber: select})
-                }},);
+                }
+            },);
         }
 
 
@@ -258,7 +252,7 @@ const {width, height} = Dimensions.get('window');
             if (!work.WorkResult) {
                 allFinish = false;
             }
-            if(work.VisitingMode.indexOf("走访")>-1&& this.props.task.Signtype!==3){
+            if (work.VisitingMode.indexOf("走访") > -1 && this.props.task.Signtype !== 3) {
                 allSign = false;
             }
         });
@@ -268,17 +262,17 @@ const {width, height} = Dimensions.get('window');
             return;
         }
 
-/*        if(!allSign){
-            SnackBar.show('还没完成签到');
-            return;
-        }*/
+        /*        if(!allSign){
+         SnackBar.show('还没完成签到');
+         return;
+         }*/
         if ((this.props.task.CarType === '公司车辆' || this.props.task.CarType === '私车公用') && !this.props.task.CarNumber) {
             SnackBar.show('请先联系助理，填写公司车牌号码');
             return;
         }
         Alert.alert(
-            allSign?'完结':'未完成签到',
-            allSign?'是否完结当前任务？':'你的签到还没完成，是否坚持提交？',
+            allSign ? '完结' : '未完成签到',
+            allSign ? '是否完结当前任务？' : '你的签到还没完成，是否坚持提交？',
             [
                 {
                     text: '取消', onPress: () => {
@@ -332,9 +326,7 @@ const {width, height} = Dimensions.get('window');
                     }
                 ]} str={['驳回', '驳回内容']}/>
         )
-            }
-            
-            
+    }
 
 
     _finish(flag) {
@@ -343,7 +335,7 @@ const {width, height} = Dimensions.get('window');
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     SnackBar.show('操作成功');
-                   // this.props.nav.pop();
+                    // this.props.nav.pop();
                     this.props.actions.refreshList(true);
                     this.props.nav.goBack(null);
                 } else {
@@ -413,7 +405,7 @@ const {width, height} = Dimensions.get('window');
                         flexDirection: 'column',
                         backgroundColor: Color.colorCyan,
                         padding: 16,
-                        elevation:2
+                        elevation: 2
                     }}>
                         <Text style={{color: 'white', marginBottom: 5}}>{'对接时间：' + this.props.task.DockingDate}</Text>
                         <Text style={{color: 'white', marginBottom: 5}}>{'车辆类型：' + this.props.task.CarType}</Text>
@@ -435,7 +427,7 @@ const {width, height} = Dimensions.get('window');
 }
 
 const mapStateToProps = (state) => {
- //   console.log(JSON.stringify(state));
+    //   console.log(JSON.stringify(state));
 
     return {
         refreshList: state.mainStore.refreshList

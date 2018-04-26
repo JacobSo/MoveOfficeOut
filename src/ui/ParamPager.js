@@ -90,8 +90,10 @@ export default class PasswordPager extends Component {
                     } else SnackBar.show(responseJson.ErrDesc)
                 })
                 .done(this.props.nav.goBack(null))
+            this.props.setSelect(rowData);
         } else {
             this.props.setSelect(rowData);
+
             this.props.nav.goBack(null);
         }
     }
@@ -182,8 +184,9 @@ export default class PasswordPager extends Component {
                 backgroundColor: 'white'
             }}>
                 <Toolbar title={[this.props.title]}
-                         color={Color.colorCyan}
-                         elevation={2}
+                         color={'white'}
+                         elevation={5}
+                         isWhiteBar={true}
                          isHomeUp={true}
                          isAction={true}
                          isActionByText={true}
@@ -280,10 +283,11 @@ const styles = StyleSheet.create({
     textInput: {
         width: width - 32,
         height: 45,
-        marginLeft: 16,
-        marginRight: 16,
+        margin: 16,
+        textAlign:"center",
         borderColor: Color.line,
-        borderBottomWidth: 1,
+        borderWidth: 1,
+        borderRadius:20,
     },
 
 });

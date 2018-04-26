@@ -54,6 +54,10 @@ import SwAddPager from "./ui/ScheduleWork/SwAddPager";
 import SwDetailPager from "./ui/ScheduleWork/SwDetailPager";
 import SwParamPager from "./ui/ScheduleWork/SwParamPager";
 import SwSubMainPager from "./ui/ScheduleWork/SwSubMainPager";
+import CfCreatePager from "./ui/CarForm/CfCreatePager";
+import CfListPager from "./ui/CarForm/CfListPager";
+import CfTrackPager from "./ui/CarForm/CfTrackPager";
+import CfSignPager from "./ui/CarForm/CfSignPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -111,7 +115,7 @@ const WorkAddScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorCyanDark)}<WorkAddPager {...navigation.state.params}
                                                                             nav={navigation}/></View>);
 const ParamScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorCyanDark)}<ParamPager {...navigation.state.params}
+    style={{height: height}}>{_statusBar(Color.line)}<ParamPager {...navigation.state.params}
                                                                           nav={navigation}/></View>);
 const CommentScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorCyanDark)}<CommentPager {...navigation.state.params}
@@ -224,7 +228,21 @@ const SwParamScreen = ({navigation}) => _renderScreen(<View
 
 const SwSubMainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwSubMainPager {...navigation.state.params}
-                                                                           nav={navigation}></SwSubMainPager></View>);
+                                                                           nav={navigation}/></View>);
+const CfListScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfListPager {...navigation.state.params}
+                                                                               nav={navigation}/></View>);
+const CfCreateScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfCreatePager {...navigation.state.params}
+                                                                     nav={navigation}/></View>);
+
+const CfTrackScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfTrackPager {...navigation.state.params}
+                                                                     nav={navigation}/></View>);
+const CfSignScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfSignPager {...navigation.state.params}
+                                                                     nav={navigation}/></View>);
+
 
 const SimpleStack = StackNavigator({
         launcher: {
@@ -365,7 +383,18 @@ const SimpleStack = StackNavigator({
         swSub: {
             screen: SwSubMainScreen,
         },
-
+        cfList: {
+            screen: CfListScreen,
+        },
+        cfCreate: {
+            screen: CfCreateScreen,
+        },
+        cfTrack: {
+            screen: CfTrackScreen,
+        },
+        cfSign: {
+            screen: CfSignScreen,
+        },
     },
     {
         initialRouteName: 'login',

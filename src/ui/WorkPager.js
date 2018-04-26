@@ -270,6 +270,7 @@ class WorkPager extends Component {
                             if (this.state.tripType === 2 && this.state.isNeedTrip) {
                                 return (
                                     <DatePicker
+                                        myWidth={150}
                                         style={{
                                             backgroundColor: Color.trans,
                                             position: 'absolute',
@@ -386,6 +387,8 @@ class WorkPager extends Component {
                                     <View style={styles.control}>
                                         <Image style={styles.ctrlIcon} source={require('../drawable/clock.png')}/>
                                         <DatePicker
+                                            myWidth={200}
+
                                             date={this.state.date}
                                             mode="date"
                                             placeholder="对接时间"

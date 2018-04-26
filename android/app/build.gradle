@@ -27,6 +27,7 @@ android {
             abiFilters 'armeabi', 'x86'
         }
     }
+    //customize add
     dexOptions {
         incremental true
         javaMaxHeapSize "2560m"

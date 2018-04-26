@@ -11,9 +11,10 @@ import {
     DatePickerIOS,
     Platform,
     Animated,
-    StyleSheet
+    StyleSheet,Dimensions
 } from 'react-native';
 import Moment from 'moment';
+const {width, height} = Dimensions.get('window');
 
 const FORMATS = {
     'date': 'YYYY-MM-DD',
@@ -274,7 +275,7 @@ export default class DatePicker extends Component {
 
         return (
             <TouchableOpacity
-                style={[Style.dateTouch, style]}
+                style={[{width: this.props.myWidth?this.props.myWidth:(width-32),}, style]}
                 underlayColor={'transparent'}
                 onPress={this.onPressDate}
             >
@@ -393,9 +394,7 @@ DatePicker.propTypes = {
     is24Hour: PropTypes.bool
 };
 const Style = StyleSheet.create({
-    dateTouch: {
-        width: 100
-    },
+
     dateTouchBody: {
         flexDirection: 'row',
         height: 40,
@@ -411,13 +410,19 @@ const Style = StyleSheet.create({
         height: 40,
         borderWidth: 1,
         borderColor: 'transparent',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     dateText: {
-        color: 'white'
+        paddingRight:16,
+
+        color: 'white',
+
     },
     placeholderText: {
-        color: 'white'
+
+        paddingRight:16,
+        color: 'white',
+
     },
     datePickerMask: {
         flex: 1,

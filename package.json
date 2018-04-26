@@ -22,6 +22,7 @@
     "react-native-interactable": "0.0.9",
     "react-native-loading-spinner-overlay": "^0.5.1",
     "react-native-popup-dialog": "^0.9.29",
+    "react-native-popup-menu": "^0.12.6",
     "react-native-root-siblings": "1.2.0",
     "react-native-root-toast": "1.0.3",
     "react-native-scrollable-tab-view": "^0.6.7",

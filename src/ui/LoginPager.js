@@ -28,7 +28,6 @@ import AndroidModule from '../module/AndoridCommontModule'
 import IosModule from '../module/IosCommontModule'
 import SnackBar from 'react-native-snackbar-dialog'
 import { Hoshi } from 'react-native-textinput-effects';
-
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class LoginPager extends Component {
@@ -36,8 +35,8 @@ export default class LoginPager extends Component {
     constructor(props) {
         super(props);//父组件传递的属性
         this.state = {//本页面的状态
-            account: '',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
-            pwd: '',
+            account: '保安',//崔韵强//孙小伟//李成功//张选国//杨伟军//陈彬
+            pwd: '123',
             isLoading: false,
             check: false,
         };

@@ -3,6 +3,15 @@
  */
 export  default  class ApiService {
 
+    static replaceT(time){
+        return new Date(time).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+    }
+
+    static getYyMmDdFormat(time){
+        let temp = new Date(time)
+        return temp.getFullYear()+"-"+(temp.getMonth()+1)+'-'+temp.getDate();
+    }
+
     static getTime(ReviewDate) {
         let date = new Date(parseInt(ReviewDate.replace("/Date(", "").replace(")/", ""), 10));
         let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
