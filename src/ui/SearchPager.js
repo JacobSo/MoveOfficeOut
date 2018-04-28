@@ -119,7 +119,7 @@ export default class SearchPager extends Component {
     _timeSelect() {
         if (this.state.isTimeSelect) {
             return (<View
-                style={{flexDirection: 'row', width: width - 32, justifyContent: 'space-around'}}>
+                style={{flexDirection: 'column', width: width - 32, justifyContent: 'space-around',alignItems:'center'}}>
 
                 <DatePicker
                     date={this.state.beginTime}
@@ -288,6 +288,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             elevation: 2,
             flexDirection: 'column',
+            borderRadius:10
 
         },
         control: {
@@ -298,6 +299,8 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             marginBottom: 8,
             marginTop: 8,
+            borderRadius:10
+
         },
         ctrlIcon: {
             width: 25,

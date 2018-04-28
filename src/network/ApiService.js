@@ -135,20 +135,21 @@ export  default  class ApiService {
         return this._request(method, param);
     }
 
-    static createWork(date, isCar, catSrc, member, remark, work, dpt, trip, tripBack) {
+    static createWork(date,  remark, work, dpt, trip, tripBack,order) {
         let method = 'DailyRecord/CreateDailyRecord';
         let param = JSON.stringify({
             uniqueIdentifier: App.session,
             Creator: App.account,
             DockingDate: date,
-            IsApplyCar: isCar,
-            CarType: catSrc,
-            FollowPeson: member,
+            IsApplyCar: 1,
+            CarType: "",
+            FollowPeson: "",
             Remark: remark,
             listWorkDetail: work,
             Dptid: dpt,
             DailyType: trip,
-            DailyEndDate: tripBack
+            DailyEndDate: tripBack,
+            CarNO:order
         });
         return this._request(method, param);
     }

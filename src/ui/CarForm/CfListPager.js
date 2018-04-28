@@ -19,6 +19,8 @@ import QcCarCreatePager from "./CfCreatePager";
 import QcCarItem from "../Component/QcCarItem";
 import CfCarItem from "../Component/CfCarItem";
 import App from '../../constant/Application';
+import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-view';
+import CfListView from "./CfListView";
 
 const {width, height} = Dimensions.get('window');
 
@@ -36,122 +38,8 @@ export default class CfListPager extends Component {
     }
 
     componentDidMount() {
-        this.getCar();
     }
 
-    getCar() {
-        this.setState({isRefreshing: true});
-        ApiService.getList((App.workType === '保安' ? '1,2' : '0,1,2,4'), '').then((responseJson) => {
-            this.setState({isRefreshing: false});
-            if (!responseJson.isErr) {
-                this.setState({
-                    items: responseJson.data,
-                    dataSource: this.state.dataSource.cloneWithRows(responseJson.data)
-                });
-            } else {
-                SnackBar.show(responseJson.errDesc);
-            }
-        })
-            .catch((error) => {
-                console.log(error);
-                SnackBar.show("出错了，请稍后再试", {duration: 1500});
-                this.setState({isRefreshing: false});
-            }).done();
-    }
-
-    deleteCar(guid) {
-        Alert.alert(
-            '取消用车',
-            '是否取消用车，删除本申请',
-            [
-                {
-                    text: '取消', onPress: () => {
-                }
-                },
-                {
-                    text: '确定', onPress: () => {
-                    this.setState({isLoading: true});
-                    ApiService.dismissOrder(guid)
-                        .then((responseJson) => {
-                            this.setState({isLoading: false})
-                            if (!responseJson.isErr) {
-                                this.getCar();
-                                SnackBar.show("删除成功");
-                            } else {
-                                SnackBar.show(responseJson.errDesc);
-
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            SnackBar.show("出错了，请稍后再试");
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                        }).done();
-                }
-                },
-            ]
-        )
-    }
-
-    getView() {
-        if (this.state.items && this.state.items.length === 0) {
-            return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
-                this.getCar()
-            } }/>)
-        } else {
-            return (
-                <ListView
-                    ref="scrollView"
-                    style={styles.tabView}
-                    dataSource={this.state.dataSource}
-                    removeClippedSubviews={false}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this.getCar()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="刷新中..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />}
-                    enableEmptySections={true}
-                    renderRow={(rowData, rowID, sectionID) => {
-                        console.log(JSON.stringify(rowData));
-                        return App.workType === '保安' ?
-                            <TouchableOpacity
-                                style={{
-                                    margin: 16,
-                                    backgroundColor: Color.colorIndigoDark,
-                                    borderRadius: 10,
-                                    elevation: 5,
-                                    padding: 16
-                                }}
-                                onPress={() => {
-                                    this.props.nav.navigate("cfSign", {
-                                        carInfo: rowData,
-                                        finishFunc: () => {
-                                            this.getCar()
-                                        }
-                                    })
-                                }}>
-                                <Text style={{fontSize: 20, color: 'white', margin: 16}}>{rowData.carNum}</Text>
-                                <Text style={{margin: 16, color: 'white'}}>{'用车人：' + rowData.account}</Text>
-                                <Image style={{position: 'absolute', alignContent: 'center', right: -55, top: 0}}
-                                       source={require('../../drawable/car_image.png')}/>
-                            </TouchableOpacity> : <CfCarItem carInfo={rowData} deleteCar={() => {
-                                this.deleteCar(rowData.billNo)
-                            }}/>
-
-
-                    }
-
-                    }/>
-            )
-        }
-    }
 
     render() {
         return (
@@ -160,13 +48,13 @@ export default class CfListPager extends Component {
                 backgroundColor: Color.background,
             }}>
                 <Toolbar
-                    elevation={5}
+                    elevation={App.workType === '保安'?5:0}
                     title={["我的用车"]}
                     color={Color.colorBlueGrey}
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={true}
-                    actionArray={[App.workType==='保安'?'':'创建']}
+                    actionArray={[App.workType === '保安' ? '' : '创建']}
                     functionArray={[
                         () => this.props.nav.goBack(null),
                         () => this.props.nav.navigate("cfCreate", {
@@ -176,8 +64,27 @@ export default class CfListPager extends Component {
                         })
 
                     ]}/>
-                {this.getView()}
-                <Loading visible={this.state.isLoading}/>
+                {
+                    (() => {
+                        if (App.workType === '保安') {
+                            return <CfListView  nav={this.props.nav} type={'2,3'}/>
+                        } else {
+                            return <ScrollableTabView
+                                initialPage={0}
+                                tabBarBackgroundColor={Color.colorBlueGrey}
+                                tabBarActiveTextColor='white'
+                                locked={false}
+                                tabBarInactiveTextColor={Color.background}
+                                tabBarUnderlineStyle={{backgroundColor: 'white',}}
+                                onChangeTab={({i}) => this.setState({floatButtonVisible: (i === 0)}) }>
+                                <CfListView tabLabel='申请' nav={this.props.nav} type={'0,1,2,3'}/>
+                                <CfListView tabLabel='审核' nav={this.props.nav} type={'0'}/>
+                                <CfListView tabLabel='结束' nav={this.props.nav} type={'4,5,6,7'}/>
+                            </ScrollableTabView>
+                        }
+                    })()
+                }
+
             </View>
 
         )

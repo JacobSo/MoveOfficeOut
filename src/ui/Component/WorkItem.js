@@ -98,6 +98,7 @@ const styles = StyleSheet.create(
             elevation: 2,
             flexDirection: 'column',
             justifyContent: 'center',
+            borderRadius:10
 
         },
         iconCircle: {

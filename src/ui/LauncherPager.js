@@ -148,9 +148,9 @@ export default class LauncherPager extends Component {
                         <Text style={styles.group}>外协工作</Text>
                         <View style={styles.iconContainer}>
                             <TouchableOpacity style={{alignItems: 'center', flex: 1}} onPress={() => {
-                                if ((App.PowerNum & 1) === 1)
+                        //        if ((App.PowerNum & 1) === 1)
                                     this.props.nav.navigate('main');
-                                else SnackBar.show("没有权限")
+                             //  else SnackBar.show("没有权限")
                             }}>
                                 <Image style={{width: 55, height: 55}} resizeMode="contain"
                                        source={ require('../drawable/ic_launcher_cyan.png')}/>

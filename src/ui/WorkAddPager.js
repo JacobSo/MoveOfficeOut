@@ -47,7 +47,7 @@ export default class PasswordPager extends Component {
 
     onBackAction = () => {
         Alert.alert(
-            '退出编辑1？',
+            '退出编辑？',
             '放弃当前填写内容？退出后不可恢复',
             [
                 {

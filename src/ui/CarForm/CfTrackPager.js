@@ -30,7 +30,7 @@ export default class CfTrackPager extends Component {
         }}>
             <Toolbar
                 elevation={2}
-                title={['查看报表']}
+                title={['用车详细']}
                 color={Color.colorBlueGrey}
                 isHomeUp={true}
                 isAction={false}

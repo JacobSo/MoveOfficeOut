@@ -12,10 +12,11 @@ import Color from "../../constant/Color"
 import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
 const statusText = ['等待分配', '未出车', '已出车', '已结束', '分配失败'];
-export default class QcCarItem extends Component {
+export default class CfCarItem extends Component {
     static propTypes = {
         carInfo: PropTypes.any.isRequired,
-        deleteCar: PropTypes.func.isRequired,
+        actionText: PropTypes.any.isRequired,
+        actionFunc: PropTypes.func.isRequired,
     };
 
     detailView() {
@@ -156,11 +157,11 @@ export default class QcCarItem extends Component {
 
                 {
                     (() => {
-                        if (this.props.carInfo.status < 2) {
+                        if (this.props.carInfo.status < 2||this.props.actionText==='选择') {
                             return <TouchableOpacity onPress={() =>
-                                this.props.deleteCar()}>
+                                this.props.actionFunc()}>
                                 <View style={styles.button}>
-                                    <Text style={{color: 'white'}}>取消用车</Text>
+                                    <Text style={{color: 'white'}}>{this.props.actionText}</Text>
                                 </View>
                             </TouchableOpacity>
                         }

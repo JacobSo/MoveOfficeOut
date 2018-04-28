@@ -45,7 +45,7 @@ export class DetailItem extends Component {
 
         }
         return (
-            <View style={{backgroundColor: titleColor[this.props.status], width: width-32, alignItems: 'center'}}>
+            <View style={{backgroundColor: titleColor[this.props.status], width: width-32, alignItems: 'center',borderTopLeftRadius:10,borderTopRightRadius:10}}>
                 <Text style={{color: 'white', margin: 5}}>{title}</Text>
             </View>)
     }
@@ -135,6 +135,7 @@ const styles = StyleSheet.create(
             backgroundColor: 'white',
             elevation: 2,
             margin: 16,
+            borderRadius:10
         },
 
         textStyle: {

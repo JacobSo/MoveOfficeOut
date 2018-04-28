@@ -58,6 +58,7 @@ import CfCreatePager from "./ui/CarForm/CfCreatePager";
 import CfListPager from "./ui/CarForm/CfListPager";
 import CfTrackPager from "./ui/CarForm/CfTrackPager";
 import CfSignPager from "./ui/CarForm/CfSignPager";
+import CfCarParamPager from "./ui/CarForm/CfCarParamPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -116,7 +117,7 @@ const WorkAddScreen = ({navigation}) => _renderScreen(<View
                                                                             nav={navigation}/></View>);
 const ParamScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.line)}<ParamPager {...navigation.state.params}
-                                                                          nav={navigation}/></View>);
+                                                                 nav={navigation}/></View>);
 const CommentScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorCyanDark)}<CommentPager {...navigation.state.params}
                                                                             nav={navigation}/></View>);
@@ -197,52 +198,55 @@ const AsMainScreen = ({navigation}) => _renderScreen(<View
                                                                          nav={navigation}/></View>);
 const AsAddScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsAddOrderPager {...navigation.state.params}
-                                                                         nav={navigation}/></View>);
+                                                                             nav={navigation}/></View>);
 const AsSignScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignOrderPager {...navigation.state.params}
-                                                                         nav={navigation}/></View>);
+                                                                              nav={navigation}/></View>);
 const AsProductScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsProductSearchPager {...navigation.state.params}
-                                                                         nav={navigation}/></View>);
+                                                                                  nav={navigation}/></View>);
 const AsFormScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsSignFormPager {...navigation.state.params}
-                                                                         nav={navigation}/></View>);
+                                                                             nav={navigation}/></View>);
 const AsParamScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsParamPager {...navigation.state.params}
-                                                                         nav={navigation}/></View>);
+                                                                          nav={navigation}/></View>);
 const AsOrderDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorOrange)}<AsOrderDetailPager {...navigation.state.params}
-                                                                          nav={navigation}/></View>);
+                                                                                nav={navigation}/></View>);
 const SwMainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwMainPager {...navigation.state.params}
-                                                                                nav={navigation}/></View>);
+                                                                            nav={navigation}/></View>);
 const SwAddScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwAddPager {...navigation.state.params}
-                                                                                nav={navigation}/></View>);
+                                                                           nav={navigation}/></View>);
 const SwDetailScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwDetailPager {...navigation.state.params}
-                                                                           nav={navigation}/></View>);
+                                                                              nav={navigation}/></View>);
 const SwParamScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwParamPager {...navigation.state.params}
-                                                                           nav={navigation}/></View>);
+                                                                             nav={navigation}/></View>);
 
 const SwSubMainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorGreenDark)}<SwSubMainPager {...navigation.state.params}
-                                                                           nav={navigation}/></View>);
+                                                                               nav={navigation}/></View>);
 const CfListScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfListPager {...navigation.state.params}
                                                                                nav={navigation}/></View>);
 const CfCreateScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfCreatePager {...navigation.state.params}
-                                                                     nav={navigation}/></View>);
+                                                                                 nav={navigation}/></View>);
 
 const CfTrackScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfTrackPager {...navigation.state.params}
-                                                                     nav={navigation}/></View>);
+                                                                                nav={navigation}/></View>);
 const CfSignScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfSignPager {...navigation.state.params}
-                                                                     nav={navigation}/></View>);
+                                                                               nav={navigation}/></View>);
 
+const CfParamScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.line)}<CfCarParamPager {...navigation.state.params}
+                                                                      nav={navigation}/></View>);
 
 const SimpleStack = StackNavigator({
         launcher: {
@@ -394,6 +398,9 @@ const SimpleStack = StackNavigator({
         },
         cfSign: {
             screen: CfSignScreen,
+        },
+        cfParam: {
+            screen: CfParamScreen,
         },
     },
     {

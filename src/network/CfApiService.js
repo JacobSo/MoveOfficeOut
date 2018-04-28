@@ -89,19 +89,20 @@ export  default  class CfApiService {
         return this.getRequest(GPS_URL, method);
     }
 
-    static getList(status) {
+    static getList(status,type) {
         let method = 'CarApply/GetBill?' +
             'account=' + App.account +
             '&workOrder=' + "" +
+            '&leader=' + (status==='0'?1:0) +
             '&status=' + status;
         return this.getRequest(BASE_URL, method);
     }
 
     static requestCar(params) {
-        let targets = ''
+        let targets = '';
         params.locations.map((str)=>{
             targets=targets+str+','
-        })
+        });
         let method = 'CarApply/Apply';
         let param = JSON.stringify({
             account: App.account,

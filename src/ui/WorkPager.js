@@ -15,7 +15,7 @@ import {
     TouchableOpacity,
     TextInput,
     Switch, Alert,
-    KeyboardAvoidingView, BackHandler,Platform
+    KeyboardAvoidingView, BackHandler, Platform
 } from 'react-native';
 import SnackBar from 'react-native-snackbar-dialog'
 import Color from '../constant/Color';
@@ -49,10 +49,10 @@ class WorkPager extends Component {
             isTripVisible: false,
             isRemarkVisible: false,
             isDepartmentVisible: false,
-            isNeedCar: false,
+           // isNeedCar: false,
             isNeedTrip: false,
-            carType: carList[0],//default open value
-            carMember: '',
+            //carType: carList[0],//default open value
+           // carMember: '',
             tripType: 0,//
             tripText: tripList[0],//
             remarkStr: '',
@@ -63,6 +63,9 @@ class WorkPager extends Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
+
+            //add
+            selectCarOrder:""
         };
     }
 
@@ -92,7 +95,7 @@ class WorkPager extends Component {
         return true
     };
 
-    goBack(){
+    goBack() {
         if (Platform.OS === "android")
             BackHandler.removeEventListener('hardwareBackPress', this.onBackAction);
         this.props.nav.goBack(null);
@@ -146,14 +149,12 @@ class WorkPager extends Component {
                     this.setState({isLoading: true});
                     ApiService.createWork(
                         this.state.date,
-                        this.state.isNeedCar,
-                        this.state.isNeedCar ? this.state.carType : '',
-                        this.state.carMember,
                         this.state.remarkStr,
                         JSON.stringify(this.state.items),
                         this.state.departmentId,
                         this.state.isNeedTrip ? this.state.tripType : 3,
-                        this.state.tripDate
+                        this.state.tripDate,
+                        this.state.selectCarOrder
                     )
                         .then((responseJson) => {
                             if (!responseJson.IsErr) {
@@ -181,7 +182,7 @@ class WorkPager extends Component {
     }
 
     _carView() {
-        if (this.state.isCarVisible) {
+/*        if (this.state.isCarVisible) {
             return (
                 <View>
                     <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
@@ -195,8 +196,8 @@ class WorkPager extends Component {
                                 }
                             }}
                             onTintColor={Color.colorAccent}
-                            tintColor  ={Color.colorBlueGrey}
-                            thumbTintColor ={"white"}
+                            tintColor={Color.colorBlueGrey}
+                            thumbTintColor={"white"}
                             value={this.state.isNeedCar}/>
                     </View>
                     <RadioForm
@@ -227,13 +228,13 @@ class WorkPager extends Component {
             )
         } else {
             return ( null)
-        }
+        }*/
     }
 
     _tripView() {
         if (this.state.isTripVisible) {
             return (
-                <View style={{paddingBottom: 16}}>
+                <View style={{paddingBottom: 16,}}>
                     <View style={{flexDirection: 'row', width: width, justifyContent: 'space-between',}}>
                         <Text style={{margin: 16, paddingLeft: 16, color: 'white', textAlign: "center"}}>是否外出</Text>
                         <Switch
@@ -242,8 +243,8 @@ class WorkPager extends Component {
                                 this.setState({isNeedTrip: value,});
                             }}
                             onTintColor={Color.colorAccent}
-                            tintColor  ={Color.colorBlueGrey}
-                            thumbTintColor ={"white"}
+                            tintColor={Color.colorBlueGrey}
+                            thumbTintColor={"white"}
                             value={this.state.isNeedTrip}/>
                     </View>
                     <RadioForm
@@ -364,7 +365,7 @@ class WorkPager extends Component {
                              functionArray={[
                                  () => {
                                      if (this.state.items.length === 0) {
-                                          this.goBack()
+                                         this.goBack()
                                      } else this.onBackAction()
                                  },
                                  () => this._createWork()
@@ -374,21 +375,18 @@ class WorkPager extends Component {
                         <View style={{
                             backgroundColor: Color.background
                         }}>
-
-
                             <ScrollView>
                                 <View style={{
                                     flexDirection: 'column',
                                     backgroundColor: Color.colorCyanDark,
                                     alignItems: 'center',
-                                    elevation:2
+                                    elevation: 2
                                 }}>
 
                                     <View style={styles.control}>
                                         <Image style={styles.ctrlIcon} source={require('../drawable/clock.png')}/>
                                         <DatePicker
                                             myWidth={200}
-
                                             date={this.state.date}
                                             mode="date"
                                             placeholder="对接时间"
@@ -426,19 +424,22 @@ class WorkPager extends Component {
 
                                     {this._departmentView()}
                                     <TouchableOpacity onPress={() => {
-                                        this.setState({isCarVisible: !this.state.isCarVisible});
+                                   //     this.setState({isCarVisible: !this.state.isCarVisible});
+                                        this.props.nav.navigate('cfParam',{
+                                            finishFunc:(bill)=>{
+                                                this.setState({selectCarOrder:bill});
+                                            }
+                                        })
                                     }}>
                                         <View style={styles.control}>
                                             <Image style={styles.ctrlIcon} source={require('../drawable/car.png')}/>
                                             <Text numberOfLines={1}
                                                   style={{color: 'white', width: 200}}>
-                                                {this.state.isNeedCar ? (this.state.carType + '  ' + this.state.carMember) : '不申请车辆'}
+                                                { this.state.selectCarOrder?(''+this.state.selectCarOrder):'选择车辆申请单'}
                                             </Text>
                                         </View>
                                     </TouchableOpacity>
-                                    {
-                                        this._carView()
-                                    }
+
                                     <TouchableOpacity onPress={() => {
                                         this.setState({isTripVisible: !this.state.isTripVisible});
                                     }}>
@@ -557,6 +558,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             elevation: 2,
             flexDirection: 'column',
+            borderRadius: 10
         },
         control: {
             width: width - 32,
@@ -566,6 +568,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             marginBottom: 8,
             marginTop: 8,
+            borderRadius: 10
         },
         ctrlIcon: {
             width: 25,

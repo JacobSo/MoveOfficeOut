@@ -11,7 +11,7 @@ import {
     ListView,
     Text,
     Image,
-    InteractionManager,
+    TouchableOpacity,
     Alert
 } from 'react-native';
 import Color from '../constant/Color';
@@ -48,7 +48,7 @@ class DetailPager extends Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
             rejectContent: '',
-            carNumber: this.props.task.CarNumber,
+            //      carNumber: this.props.task.CarNumber,
             tripText: ""
         };
 
@@ -165,9 +165,9 @@ class DetailPager extends Component {
             } else return [];
         } else if (App.jobType === '4') {
             if (this.props.task.DailyRecordState === 2) {
-                return ['填写车牌', '删除']
+                return ['删除']//'填写车牌',
             } else if (this.props.task.DailyRecordState === 1 || this.props.task.DailyRecordState === 3) {
-                return ['填写车牌']
+                return []//'填写车牌'
             } else return [];
         } else return [];
     }
@@ -196,36 +196,35 @@ class DetailPager extends Component {
         } else if (App.jobType === '4') {
             if (this.props.task.DailyRecordState === 2) {
                 return [
-                    () => {
-                        this._carSelect();
-                    },
+                    /*                    () => {
+                     this._carSelect();
+                     },*/
                     () => {
                         this._deleteDialog()
                     }]
             } else if (this.props.task.DailyRecordState === 1 || this.props.task.DailyRecordState === 3) {
-                return [() => {
-                    this._carSelect();
-                }]
+                return [/*() => {
+                 this._carSelect();
+                 }*/]
             } else return [];
         } else return [];
     }
 
-    _carSelect() {
-        if (this.props.task.CarType === '') {
-            SnackBar.show('不需要车牌');
-        } else {
-            this.props.nav.navigate('param', {
-                title: '选择车牌',
-                type: 2,//2 car
-                searchKey: this.props.task.Guid,
-                setSelect: (select) => {
-                    this.setState({carNumber: select})
-                }
-            },);
-        }
-
-
-    }
+    /*
+     _carSelect() {
+     if (this.props.task.CarType === '') {
+     SnackBar.show('不需要车牌');
+     } else {
+     this.props.nav.navigate('param', {
+     title: '选择车牌',
+     type: 2,//2 car
+     searchKey: this.props.task.Guid,
+     setSelect: (select) => {
+     this.setState({carNumber: select})
+     }
+     },);
+     }
+     }*/
 
     _deleteDialog() {
         Alert.alert(
@@ -266,10 +265,11 @@ class DetailPager extends Component {
          SnackBar.show('还没完成签到');
          return;
          }*/
-        if ((this.props.task.CarType === '公司车辆' || this.props.task.CarType === '私车公用') && !this.props.task.CarNumber) {
-            SnackBar.show('请先联系助理，填写公司车牌号码');
-            return;
-        }
+        //428      remove
+        /*        if ((this.props.task.CarType === '公司车辆' || this.props.task.CarType === '私车公用') && !this.props.task.CarNumber) {
+         SnackBar.show('请先联系助理，填写公司车牌号码');
+         return;
+         }*/
         Alert.alert(
             allSign ? '完结' : '未完成签到',
             allSign ? '是否完结当前任务？' : '你的签到还没完成，是否坚持提交？',
@@ -402,20 +402,24 @@ class DetailPager extends Component {
                          ].concat(this._getActionFunc())}/>
                 <ScrollView>
                     <View style={{
+                        margin:16,
                         flexDirection: 'column',
-                        backgroundColor: Color.colorCyan,
                         padding: 16,
-                        elevation: 2
+                        elevation: 2,
+                        backgroundColor: 'white',
+                        borderRadius:10
                     }}>
-                        <Text style={{color: 'white', marginBottom: 5}}>{'对接时间：' + this.props.task.DockingDate}</Text>
-                        <Text style={{color: 'white', marginBottom: 5}}>{'车辆类型：' + this.props.task.CarType}</Text>
-                        <Text style={{color: 'white', marginBottom: 5}}>{'车牌号码：' + this.state.carNumber}</Text>
-                        <Text style={{color: 'white', marginBottom: 5}}>{'陪同人：' + this.props.task.FollowPeson}</Text>
-                        <Text style={{color: 'white', marginBottom: 5}}>{'备注：' + this.props.task.Remark}</Text>
-                        <Text style={{color: 'white'}}>{'申请人：' + this.props.task.Creator}</Text>
-                        <Text style={{color: 'white'}}>{'外出类型：' + this._getTypeString()}</Text>
+                        <Text style={{marginBottom: 5}}>{'对接时间：' + this.props.task.DockingDate}</Text>
 
+                        <Text style={{marginBottom: 5}}>{'备注：' + this.props.task.Remark}</Text>
+                        <Text style={{marginBottom: 5}}>{'申请人：' + this.props.task.Creator}</Text>
+                        <Text style={{marginBottom: 5}}>{'外出类型：' + this._getTypeString()}</Text>
+                        <Text style={{marginBottom: 5}}>{'车辆单据：' + this.props.task.DailyRecordNo}</Text>
+                        <TouchableOpacity onPress={() => {
+                            this.props.nav.navigate('cfTrack');
+                        }}><Text style={{width: width - 64, textAlign: 'right',color:Color.colorCyan}}>查看用车详情</Text></TouchableOpacity>
                     </View>
+
                     {this._setReject()}
                     {this._setList()}
                 </ScrollView>
