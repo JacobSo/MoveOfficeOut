@@ -42,7 +42,8 @@ export default class CfTrackPager extends Component {
                     },
                 ]}
             />
-            <WebView source={{uri: 'http://192.168.1.113:811'}}/>
+            {/*<WebView source={{uri: 'http://192.168.1.113:811'}}/>*/}
+            <WebView source={require('../../assets/index.html')}/>
         </View>;
     }
 }
