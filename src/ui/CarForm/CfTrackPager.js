@@ -44,7 +44,7 @@ export default class CfTrackPager extends Component {
     getCar() {
         this.setState({isRefreshing: true});
         ApiService.getGpsHistory("20007378639110152490631632e67e5be6207621293b590baeee1789670000010018010").then((responseJson) => {
-            this.componentSelectAction(responseJson.data)
+            this.refs.webView.postMessage(JSON.stringify(responseJson.data));
         })
             .catch((error) => {
                 console.log(error);
@@ -78,14 +78,6 @@ export default class CfTrackPager extends Component {
     }
 
 
-    componentSelectAction(itemName) {
-        console.log(itemName);
-        let msg = {
-            component: '',
-            command: itemName
-        };
-        this.refs.webView.postMessage(JSON.stringify(msg));
-    }
 
     render() {
         console.log(this.props.filePath);

@@ -57,8 +57,8 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(bindPushAccount:(NSString *)account)
 {
-//  RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
- 
+  //  RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
+  
   [CloudPushSDK bindAccount:account
                withCallback:^(CloudPushCallbackResult *res){
                  NSLog(@"绑定成功%@",account);
@@ -69,10 +69,10 @@ RCT_EXPORT_METHOD(bindPushAccount:(NSString *)account)
 RCT_EXPORT_METHOD(unbindPushAccount:(NSString *)un)
 {
   //  RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
-
+  
   
   [CloudPushSDK unbindAccount:^(CloudPushCallbackResult *res) {
-     NSLog(@"解绑成功");
+    NSLog(@"解绑成功");
   }];
   
 }
@@ -81,9 +81,9 @@ RCT_EXPORT_METHOD(unbindPushAccount:(NSString *)un)
 RCT_EXPORT_METHOD(checkUpdate:(NSString *)un)
 {
   NSLog(@"check update");
- // [[PgyUpdateManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
+  // [[PgyUpdateManager sharedPgyManager]startManagerWithAppId:@"662cbac6fcc48aca832a63511afdc0bc"];
   
- // [[PgyUpdateManager sharedPgyManager] checkUpdateWithDelegete:self selector:@selector(updateMethod:)];
+  // [[PgyUpdateManager sharedPgyManager] checkUpdateWithDelegete:self selector:@selector(updateMethod:)];
   
 }
 
@@ -92,7 +92,7 @@ RCT_EXPORT_METHOD(checkUpdate:(NSString *)un)
 RCT_EXPORT_METHOD(getVersionName:(RCTResponseSenderBlock)callback)
 {
   NSString *appCurVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-
+  
   NSLog(@"当前应用软件版本:%@",appCurVersion);
   callback(@[appCurVersion]);
 }
@@ -110,7 +110,7 @@ RCT_EXPORT_METHOD(getImageBase64:(NSString *)path:(RCTResponseSenderBlock)callba
   //NSString *path2 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]stringByAppendingPathComponent:@"headimg.png"];
   //NSLog(@"图片:%@",path2);
   NSLog(@"图片:%@",path);
-   //UIImage图片转成Base64字符串：
+  //UIImage图片转成Base64字符串：
   NSData *data = [NSData dataWithContentsOfFile:path];
   UIImage *img = [UIImage imageWithData:data];
   NSData *pic = UIImageJPEGRepresentation(img, 0.3f);
@@ -141,13 +141,13 @@ RCT_EXPORT_METHOD(outputReportAction:(NSString *)pdfJson:(int)woodOrSoft:(int)co
   self.bodyStr_Html = nil;
   self.htmlString = nil;
   self.htmlModel = nil;
-//  self.lsWebView = nil;
+  //  self.lsWebView = nil;
   self.titleStr = nil;
   self.typeStr = nil;
-//  self.render = nil;
+  //  self.render = nil;
   
   
-
+  
   self.serice = serice;
   self.code = code;
   self.woodOrSoft = woodOrSoft;
@@ -189,7 +189,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
   NSLog(@"完整地址：%@",pdfArray);
   
   
-//  NSString *pdfString = [pdfArray mj_JSONString];
+  //  NSString *pdfString = [pdfArray mj_JSONString];
   
   
   
@@ -234,16 +234,16 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
 -(void)webViewDidStartLoad:(UIWebView *)webView
 {
   //开始加载网页调用此方法
-//  [self showHUD];
+  //  [self showHUD];
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-//  [self dissPHUD];
+  //  [self dissPHUD];
   //网页加载完成调用此方法
   [self lsPrintInWifi];
   
-
+  
   
   
   NSLog(@"*****");
@@ -376,7 +376,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
     
     NSLog(@"PDF地址*****%@",self.strDocPath);
     
-
+    
     if ([pdfData writeToFile:self.strDocPath atomically:YES]) {
       NSLog(@"%@",self.strDocPath);
       ok();
@@ -430,7 +430,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
     body = self.htmlModel.Enpty;
     [self.serice.Itemlist enumerateObjectsUsingBlock:^(WDProduct * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
       
-//      obj.check = YES;
+      //      obj.check = YES;
       /*这里可以加个全部打印或者部分打印*/
       //                if (obj.isPrint ==  WD_YES_PRINT_CP)
       if (obj.check ==  1)
@@ -467,32 +467,32 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
           UIImage *cachedImage=[[UIImage alloc]initWithContentsOfFile:imageNames];
           
           
-//          NSArray *filesNameArray = [[NSFileManager defaultManager]subpathsOfDirectoryAtPath:addresss error:nil];
-//          
-//          NSLog(@"%ld",(unsigned long)filesNameArray.count);
-//          
-//          for(int i=0;i<filesNameArray.count;i++)
-//          {
-//            NSLog(@"%@",filesNameArray[i]);
-//          }
-//          if (<#condition#>) {
-//            <#statements#>
-//          }
+          //          NSArray *filesNameArray = [[NSFileManager defaultManager]subpathsOfDirectoryAtPath:addresss error:nil];
+          //
+          //          NSLog(@"%ld",(unsigned long)filesNameArray.count);
+          //
+          //          for(int i=0;i<filesNameArray.count;i++)
+          //          {
+          //            NSLog(@"%@",filesNameArray[i]);
+          //          }
+          //          if (<#condition#>) {
+          //            <#statements#>
+          //          }
           
           
           
           
           /*填写了评审记录时*/
           //                        else{
-//          UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:obj.pImage];
+          //          UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:obj.pImage];
           
-//          NSString *address = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject];
-//          
-//          NSLog(@"******************%@",address);
-//          
-//          
-//          
-//          NSLog(@"******************%@",addresss);
+          //          NSString *address = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject];
+          //
+          //          NSLog(@"******************%@",address);
+          //
+          //
+          //
+          //          NSLog(@"******************%@",addresss);
           
           
           
@@ -512,21 +512,21 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
           NSString *imgBase64str = [imgData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
           
           NSString *isAccess;
-//          switch (obj.pStatusPass) {
-//            case WD_Result_Null:
-//              isAccess = @"-";
-//              break;
-//            case WD_Result_Fail:
-//              isAccess = @"不通过";
-//              break;
-//            case WD_Result_Pass:
-//              isAccess = @"通过";
-//              break;
-//            default:
-//              isAccess = @"-";
-//              break;
-//          }
-
+          //          switch (obj.pStatusPass) {
+          //            case WD_Result_Null:
+          //              isAccess = @"-";
+          //              break;
+          //            case WD_Result_Fail:
+          //              isAccess = @"不通过";
+          //              break;
+          //            case WD_Result_Pass:
+          //              isAccess = @"通过";
+          //              break;
+          //            default:
+          //              isAccess = @"-";
+          //              break;
+          //          }
+          
           if(self.code==0){
             if ([obj.pResultList rangeOfString:@"0-1"].location !=NSNotFound) {
               isAccess = @"通过";
@@ -559,7 +559,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
             
           }
           
-
+          
           
           
           NSString *pop = @"";
@@ -585,7 +585,7 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
                                 isAccess,
                                 countProduct+1,
                                 pop
-
+                                
                                 //                                                  ,
                                 //                                                  style,
                                 //                                                  self.htmlModel.Enpty
@@ -706,18 +706,18 @@ RCT_EXPORT_METHOD(getAllPrint:(RCTResponseSenderBlock)callback:(RCTResponseSende
 #pragma mark someEven
 
 - (void)lsPrintInWifi{
-//  [self showHUD];
+  //  [self showHUD];
   
-//  [LSNet lsCheckNetIsWiFi:^{
+  //  [LSNet lsCheckNetIsWiFi:^{
   
-    [self lsCreatePdfFromWeb:^{
-//      [self dissPHUD];
-      
-    } no:^{
-//      [self dissPHUD];
-//      [Common lsWarnningMessage:@"创建文档失败。请重试" tagView:self];
-    }];
-
+  [self lsCreatePdfFromWeb:^{
+    //      [self dissPHUD];
+    
+  } no:^{
+    //      [self dissPHUD];
+    //      [Common lsWarnningMessage:@"创建文档失败。请重试" tagView:self];
+  }];
+  
 }
 
 

@@ -157,7 +157,7 @@ export default class CfSignPager extends Component {
                                 elevation: 5,
                                 alignItems: 'center'
                             }}>
-                                <TextInput style={{width: width - 32, textAlign: 'center'}}
+                                <TextInput style={{width: width - 32, height:55,textAlign: 'center'}}
                                            placeholder="填写里程"
                                            returnKeyType={'done'}
                                            keyboardType={'numeric'}

@@ -21,17 +21,8 @@
 </html>
 <script type="text/javascript">
     window.document.addEventListener('message', function (e) {
-        var message = e.data;
-        //console.log(msg);
-
-        var obj = JSON.parse(message);
-        //  alert(JSON.stringify(obj.component))
-        var command = obj.command;
-        setData(command)
-
-       /* command.map(function (data) {
-
-        });*/
+         // alert(e.data)
+        setData(JSON.parse( e.data))
     });
 
 

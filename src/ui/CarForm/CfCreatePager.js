@@ -181,7 +181,6 @@ export default class CfCreatePager extends Component {
 
                                 <Text style={{color: Color.colorAccent, margin: 16}}>基本信息</Text>
                                 <View style={styles.itemStyle}>
-                                    <Text style={{position: 'absolute', left: 16}}>用车时间</Text>
                                     <DatePicker
                                         customStyles={ {
                                             placeholderText: {
@@ -202,6 +201,8 @@ export default class CfCreatePager extends Component {
                                             //SnackBar.show(date)
                                         }}
                                     />
+                                    <Text style={{position: 'absolute', left: 16,color:'black'}}>用车时间</Text>
+
                                 </View>
 
                                 <FlatList

@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CodePushServerURL</key>
-	<string>http://lsprt.lsmuyprt.com:3000/</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,6 +35,8 @@
 	<string>11</string>
 	<key>CodePushDeploymentKey</key>
 	<string>rUSnlAlD495AqyWnBLYII84EgW1E4ksvOXqog</string>
+	<key>CodePushServerURL</key>
+	<string>http://lsprt.lsmuyprt.com:3000/</string>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
