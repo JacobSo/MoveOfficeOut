@@ -33,29 +33,7 @@
 
         });*/
     });
-    //to app
-    function pushMessage(data) {
-        console.log(data);
-        window.postMessage(data, '*')
-    }
-    request();
-    function request() {
-        $.ajax({
-            type: "get",
-            url: "http://113.105.237.98:8888/DesignPlanCode/Get",
-            //  url: "http://lsprt.lsmuyprt.com:8023/ServiceCenter/ServiceProvider/getMemberList",
-            //    url: "http://113.105.237.98:8023/ServiceCenter/ServiceProvider/getData?SessionKey=wCdNE9wUUI=92753384@MTUyMzUwNjA5OC4zNDE3OA==",
-            data: params,
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                console.log(data);
-            },
-            error: function () {
-                $('.modal').modal('open');
-            }
-        });
-    }
+
 
     function setData(data) {
 
