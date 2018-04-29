@@ -89,6 +89,25 @@ export  default  class CfApiService {
         return this.getRequest(GPS_URL, method);
     }
 
+    static getDevicesNow(token) {
+        let method = 'devices/tracking?' +
+            'access_token=' + token +
+            '&map_type=BAIDU' +
+            '&account=18126633069' +
+            '&imeis=868120184180922' ;
+        return this.getRequest(GPS_URL, method);
+    }
+
+    static getAddress(token,lng,lat) {
+        let method = 'tool/address?' +
+            'access_token=' + token +
+            '&map_type=BAIDU' +
+            '&account=18126633069' +
+            '&lng='+lng+
+            '&lat='+lat ;
+        return this.getRequest(GPS_URL, method);
+    }
+
     static getList(status,type) {
         let method = 'CarApply/GetBill?' +
             'account=' + App.account +
