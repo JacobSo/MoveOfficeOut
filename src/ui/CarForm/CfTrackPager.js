@@ -43,7 +43,7 @@ export default class CfTrackPager extends Component {
 
     getCar() {
         this.setState({isRefreshing: true});
-        ApiService.getGpsHistory("20007378639110152490631632e67e5be6207621293b590baeee1789670000010018010").then((responseJson) => {
+        ApiService.getGpsHistory("20007378639110152522677532f63c4056f34968ef4598a97735e9912b0000010018010").then((responseJson) => {
             this.refs.webView.postMessage(JSON.stringify(responseJson.data));
         })
             .catch((error) => {
@@ -153,8 +153,8 @@ export default class CfTrackPager extends Component {
             <WebView
                 ref='webView'
               //  injectedJavaScript={}
-         //       source={require('../../assets/index.html')}
-                html={html}
+                source={require('../../assets/index.html')}
+               // html={html}
                 injectedJavaScript={jsCode}
                 javaScriptEnabledAndroid={true}
             />
