@@ -15,9 +15,9 @@ import ApiService from '../../network/CfApiService';
 
 const Dimensions = require('Dimensions');
 let jsCode = `
-        var data = 'myLocationData';
+       // var formatData = JSON.parse(data);
+
         var map = new BMap.Map("allmap");
-        var formatData = JSON.parse(data);
         var point = new BMap.Point(formatData.data[0].lng, formatData.data[0].lat);
         map.centerAndZoom(point, 10);
         var pois = [];
@@ -75,7 +75,7 @@ export default class CfTrackPager extends Component {
         this.setState({isRefreshing: true});
         ApiService.getGpsHistory("20007378639110152522677532f63c4056f34968ef4598a97735e9912b0000010018010").then((responseJson) => {
             //this.refs.webView.postMessage(JSON.stringify(responseJson.data));
-            let temp  = 'var data ="'+ JSON.stringify(responseJson.data)+'";'
+            let temp  = 'var formatData ='+ JSON.stringify(responseJson.data)+';'
             jsCode = temp +jsCode
             console.log(jsCode)
             this.setState({
