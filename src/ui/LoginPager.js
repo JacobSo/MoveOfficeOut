@@ -12,11 +12,9 @@ import {
     View,
     Image,
     TextInput,
-    InteractionManager,
     TouchableOpacity,
     KeyboardAvoidingView,
     ScrollView,
-    Platform,
 } from 'react-native';
 import Loading from 'react-native-loading-spinner-overlay';
 import ApiService from '../network/ApiService';
@@ -24,10 +22,7 @@ import Color from '../constant/Color';
 import App from '../constant/Application';
 import {NavigationActions,} from 'react-navigation';
 import CheckBox from "../ui/Component/CheckBox";
-import AndroidModule from '../module/AndoridCommontModule'
-import IosModule from '../module/IosCommontModule'
 import SnackBar from 'react-native-snackbar-dialog'
-import { Hoshi } from 'react-native-textinput-effects';
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class LoginPager extends Component {
