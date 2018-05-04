@@ -11,7 +11,7 @@ import {View, Image, StyleSheet, Dimensions, Text, TouchableOpacity, Alert} from
 import Color from "../../constant/Color"
 import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
-const statusText = ['等待分配', '未出车', '已出车', '已结束', '分配失败'];
+const statusText = ['待审核', '待分配', '未出车', '已出车', '已结束','审核失败','分配失败','放弃用车'];
 export default class CfCarItem extends Component {
     static propTypes = {
         carInfo: PropTypes.any.isRequired,
@@ -70,10 +70,10 @@ export default class CfCarItem extends Component {
                 }}>
                     {
                         (() => {
-                            if (this.props.carInfo.status === 2) {//pass
+                            if (this.props.carInfo.status === 3) {//pass
                                 return <Image style={{alignContent: 'center'}}
                                               source={require('../../drawable/car_image.png')}/>
-                            } else if (this.props.carInfo.status === 1) {//process
+                            } else if (this.props.carInfo.status === 2) {//process
                                 return <Image style={{alignContent: 'center'}}
                                               source={require('../../drawable/car_red.png')}/>
                             } else {

@@ -54,14 +54,9 @@ export default class CfListPager extends Component {
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={true}
-                    actionArray={[App.workType === '保安' ? '' : '创建']}
+                    actionArray={[]}
                     functionArray={[
                         () => this.props.nav.goBack(null),
-                        () => this.props.nav.navigate("cfCreate", {
-                            finishFunc: () => {
-                                this.getCar()
-                            }
-                        })
 
                     ]}/>
                 {

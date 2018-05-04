@@ -19,6 +19,7 @@ import QcCarCreatePager from "./CfCreatePager";
 import QcCarItem from "../Component/QcCarItem";
 import CfCarItem from "../Component/CfCarItem";
 import App from '../../constant/Application';
+import FloatButton from "../Component/FloatButton";
 
 const {width, height} = Dimensions.get('window');
 
@@ -140,7 +141,7 @@ export default class CfListView extends Component {
                                 <Text style={{margin: 16, color: 'white'}}>{'用车人：' + rowData.account}</Text>
                                 <Image style={{position: 'absolute', alignContent: 'center', right: -55, top: 0}}
                                        source={require('../../drawable/car_image.png')}/>
-                            </TouchableOpacity> : <CfCarItem carInfo={rowData} deleteCar={() => {
+                            </TouchableOpacity> : <CfCarItem carInfo={rowData} actionText={'删除'} actionFunc={() => {
                                 this.deleteCar(rowData.billNo)
                             }}/>
 
@@ -160,6 +161,19 @@ export default class CfListView extends Component {
             }}>
 
                 {this.getView()}
+                {
+                    (() => {
+                        if (App.workType !== '保安' && this.props.type === '0,1,2,3') {
+                            return (
+                                <FloatButton drawable={require('../../drawable/add.png')}
+                                             action={() => this.props.nav.navigate("cfCreate", {
+                                                 finishFunc: () => {
+                                                     this.getCar()
+                                                 }
+                                             })}/>)
+                        } else return null;
+                    })()
+                }
                 <Loading visible={this.state.isLoading}/>
             </View>
 
