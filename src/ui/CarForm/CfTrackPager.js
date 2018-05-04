@@ -43,9 +43,7 @@ let jsCode = `
         map.addOverlay(marker);              // 将标注添加到地图中
         map.centerAndZoom(point, 15);
 
-        var sContent = "出发起点";
-        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
-        map.openInfoWindow(infoWindow, point); //开启信息窗口
+
     `;
 export default class CfTrackPager extends Component {
 
@@ -159,30 +157,35 @@ export default class CfTrackPager extends Component {
                 margin: 16,
                 borderRadius: 10,
                 position: 'absolute',
-                bottom: 25+16,
+                bottom: 25 + 16,
                 width: width - 32,
                 elevation: 5,
             }}>
 
-                <View style={{flexDirection:'row',justifyContent:'space-between',margin: 16}}>
-                    <Text style={{color: Color.colorBlue, fontSize: 18, }}>粤X11v71</Text>
-                    <Image style={{width:25,height:25}} source={require('../../drawable/info_icon.png')}/>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
+                    <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                        <Text style={{color: Color.colorBlue, fontSize: 18,}}>粤X11v71</Text>
+                        <Text style={{marginLeft: 10, marginBottom: 2}}>在线</Text>
+                    </View>
+                    <Image style={{width: 25, height: 25}} source={require('../../drawable/info_icon.png')}/>
                 </View>
 
-                <View style={{flexDirection:'row',marginLeft: 16}}>
-                    <Image style={{width:20,height:20}} source={require('../../drawable/location_green.png')}/>
+                <View style={{flexDirection: 'row', marginLeft: 16,marginRight: 16,justifyContent:'space-between'}}>
+                    <View style={{flexDirection:'row'}}>
+                    <Image style={{width: 20, height: 20}} source={require('../../drawable/location_green.png')}/>
                     <Text style={{color: Color.colorGreen,}}>当前位置</Text>
+                    </View>
+                    <Text>定位时间</Text>
                 </View>
-                <Text style={{marginLeft:16,marginRight:16,marginBottom:16}}>搜狐新闻中心24小时值班电话：010-65102160 转6291或65101378:</Text>
-               {/* <Text>定位时间</Text>
-                <Text>速度</Text>
-                <Text>在线状态</Text>*/}
+                <Text style={{marginLeft: 16, marginRight: 16, marginBottom: 16,marginTop:5}}>顺德区镇325国道龙江二桥5路段林氏木业大厦1-3层</Text>
 
-                <View style={{flexDirection:'row',marginLeft: 16}}>
-                    <Image style={{width:20,height:20}} source={require('../../drawable/location_red.png')}/>
+
+                <View style={{flexDirection: 'row', marginLeft: 16}}>
+                    <Image style={{width: 20, height: 20}} source={require('../../drawable/location_red.png')}/>
                     <Text style={{color: Color.colorRed,}}>起点</Text>
                 </View>
-                <Text style={{marginLeft:16,marginRight:16,marginBottom:16}}>搜狐新闻中心24小时值班电话：010-65102160 转6291或65101378:</Text>
+                <Text style={{marginLeft: 16, marginRight: 16, marginBottom: 16,marginTop:5}}>
+                    广东省佛山市顺德区龙源明珠酒店(121省道南)</Text>
 
 
             </View>
