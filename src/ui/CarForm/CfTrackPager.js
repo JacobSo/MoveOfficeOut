@@ -159,7 +159,7 @@ export default class CfTrackPager extends Component {
                 margin: 16,
                 borderRadius: 10,
                 position: 'absolute',
-                bottom: 55,
+                bottom: 25+16,
                 width: width - 32,
                 elevation: 5,
             }}>
