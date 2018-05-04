@@ -5,6 +5,8 @@
 'use strict';
 import React, {Component} from 'react';
 import {
+    Image,
+    Text,
     View,
     WebView,
 } from 'react-native';
@@ -14,6 +16,8 @@ import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
 
 const Dimensions = require('Dimensions');
+const {width, height} = Dimensions.get('window');
+
 let jsCode = `
         var formatData = JSON.parse(data);
 
@@ -75,9 +79,9 @@ export default class CfTrackPager extends Component {
         this.setState({isRefreshing: true});
         ApiService.getGpsHistory("20007378639110152522677532f63c4056f34968ef4598a97735e9912b0000010018010").then((responseJson) => {
             //this.refs.webView.postMessage(JSON.stringify(responseJson.data));
-            let temp  = 'var data =\''+ JSON.stringify(responseJson.data)+'\';'
-            jsCode = temp +jsCode
-            console.log(jsCode)
+            let temp = 'var data =\'' + JSON.stringify(responseJson.data) + '\';'
+            jsCode = temp + jsCode;
+            console.log(jsCode);
             this.setState({
                 isData: true,
                 isLoading: false
@@ -116,15 +120,15 @@ export default class CfTrackPager extends Component {
 
 
     render() {
-
         return <View style={{
             flex: 1,
             backgroundColor: Color.background
         }}>
             <Toolbar
+                isWhiteBar={true}
                 elevation={2}
                 title={['用车详细']}
-                color={Color.colorBlueGrey}
+                color={'white'}
                 isHomeUp={true}
                 isAction={false}
                 isActionByText={true}
@@ -140,6 +144,7 @@ export default class CfTrackPager extends Component {
                 (() => {
                     if (this.state.isData) {
                         return <WebView
+                            style={{backgroundColor: Color.background}}
                             ref='webView'
                             source={require('../../assets/index.html')}
                             injectedJavaScript={jsCode}
@@ -148,6 +153,39 @@ export default class CfTrackPager extends Component {
                     }
                 })()
             }
+
+            <View style={{
+                backgroundColor: 'white',
+                margin: 16,
+                borderRadius: 10,
+                position: 'absolute',
+                bottom: 55,
+                width: width - 32,
+                elevation: 5,
+            }}>
+
+                <View style={{flexDirection:'row',justifyContent:'space-between',margin: 16}}>
+                    <Text style={{color: Color.colorBlue, fontSize: 18, }}>粤X11v71</Text>
+                    <Image style={{width:25,height:25}} source={require('../../drawable/info_icon.png')}/>
+                </View>
+
+                <View style={{flexDirection:'row',marginLeft: 16}}>
+                    <Image style={{width:20,height:20}} source={require('../../drawable/location_green.png')}/>
+                    <Text style={{color: Color.colorGreen,}}>当前位置</Text>
+                </View>
+                <Text style={{marginLeft:16,marginRight:16,marginBottom:16}}>搜狐新闻中心24小时值班电话：010-65102160 转6291或65101378:</Text>
+               {/* <Text>定位时间</Text>
+                <Text>速度</Text>
+                <Text>在线状态</Text>*/}
+
+                <View style={{flexDirection:'row',marginLeft: 16}}>
+                    <Image style={{width:20,height:20}} source={require('../../drawable/location_red.png')}/>
+                    <Text style={{color: Color.colorRed,}}>起点</Text>
+                </View>
+                <Text style={{marginLeft:16,marginRight:16,marginBottom:16}}>搜狐新闻中心24小时值班电话：010-65102160 转6291或65101378:</Text>
+
+
+            </View>
 
             <Loading visible={this.state.isLoading}/>
 

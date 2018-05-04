@@ -238,7 +238,7 @@ const CfCreateScreen = ({navigation}) => _renderScreen(<View
                                                                                  nav={navigation}/></View>);
 
 const CfTrackScreen = ({navigation}) => _renderScreen(<View
-    style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfTrackPager {...navigation.state.params}
+    style={{height: height}}>{_statusBar(Color.line)}<CfTrackPager {...navigation.state.params}
                                                                                 nav={navigation}/></View>);
 const CfSignScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorBlueGreyDark)}<CfSignPager {...navigation.state.params}
