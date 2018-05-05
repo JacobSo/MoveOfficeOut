@@ -5,24 +5,16 @@
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, ListView, Text, TouchableOpacity, Alert,
-    DeviceEventEmitter, Image, TextInput, ScrollView, KeyboardAvoidingView, RefreshControl
+    View,
+    ListView,
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
-import ApiService from '../../network/CfApiService';
 import Color from '../../constant/Color';
-import Loading from 'react-native-loading-spinner-overlay'
-import SnackBar from 'react-native-snackbar-dialog'
-import DatePicker from '../../ui/Component/DatePicker';
-import RefreshEmptyView from "../Component/RefreshEmptyView";
-import QcCarCreatePager from "./CfCreatePager";
-import QcCarItem from "../Component/QcCarItem";
-import CfCarItem from "../Component/CfCarItem";
+
 import App from '../../constant/Application';
 import ScrollableTabView, {DefaultTabBar,} from 'react-native-scrollable-tab-view';
 import CfListView from "./CfListView";
 
-const {width, height} = Dimensions.get('window');
 
 export default class CfListPager extends Component {
     constructor(props) {
@@ -85,25 +77,3 @@ export default class CfListPager extends Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    button: {
-        width: width - 32,
-        height: 45,
-        backgroundColor: Color.colorAccent,
-        margin: 16,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    textInput: {
-        width: width - 32,
-        marginRight: 10,
-        borderColor: Color.colorAccent,
-        borderBottomWidth: 1,
-    },
-    selection: {
-        width: 55,
-        height: 5,
-        marginTop: 16,
-        marginBottom: 16
-    }
-});

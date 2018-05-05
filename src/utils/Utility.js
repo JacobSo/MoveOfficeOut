@@ -12,6 +12,12 @@ export  default  class ApiService {
         return temp.getFullYear()+"-"+(temp.getMonth()+1)+'-'+temp.getDate();
     }
 
+    static getFullTime(time){
+        let temp = new Date();
+        temp.setTime(time*1000);
+        return temp.getFullYear()+"-"+(temp.getMonth()+1)+'-'+temp.getDate()+" "+temp.getHours()+":"+temp.getMinutes();
+    }
+
     static getTime(ReviewDate) {
         let date = new Date(parseInt(ReviewDate.replace("/Date(", "").replace(")/", ""), 10));
         let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;

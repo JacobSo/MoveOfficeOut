@@ -75,26 +75,25 @@ export  default  class CfApiService {
         return this.getRequest(GPS_URL, method);
     }
 
-    static getGpsHistory(token) {
-        let begin = Date.parse(new Date("2018/04/07 14:15:05")).toString().substr(0, 10);
-        let end = Date.parse(new Date()).toString().substr(0, 10);
+    static getGpsHistory(token,imei) {
+        let begin = Date.parse(new Date(new Date().setHours(0, 0, 0, 0))).toString().substr(0, 10);//0 clock
+        let end = Date.parse(new Date()).toString().substr(0, 10);// now
         let method = 'devices/history?' +
             'access_token=' + token +
             '&map_type=BAIDU' +
             '&account=18126633069' +
-            '&imei=868120184180922' +
-            //   '&time=' + App.account +
+            '&imei=' +imei+
             '&begin_time=' + begin +
             '&end_time=' + end;
         return this.getRequest(GPS_URL, method);
     }
 
-    static getDevicesNow(token) {
+    static getDevicesNow(token,imei) {
         let method = 'devices/tracking?' +
             'access_token=' + token +
             '&map_type=BAIDU' +
             '&account=18126633069' +
-            '&imeis=868120184180922' ;
+            '&imeis='+imei ;
         return this.getRequest(GPS_URL, method);
     }
 
@@ -108,10 +107,10 @@ export  default  class CfApiService {
         return this.getRequest(GPS_URL, method);
     }
 
-    static getList(status,type) {
+    static getList(status,workOrder) {
         let method = 'CarApply/GetBill?' +
             'account=' + App.account +
-            '&workOrder=' + "" +
+            '&workOrder=' + workOrder +
             '&leader=' + (status==='0'?1:0) +
             '&status=' + status;
         return this.getRequest(BASE_URL, method);
@@ -155,6 +154,15 @@ export  default  class CfApiService {
         let method = 'CarApply/GiveUpCar';
         let param = JSON.stringify({
             billNo: order,
+        });
+        return this.postRequest(BASE_URL, method, param);
+    }
+
+    static confirmOrder(order,type) {
+        let method = 'CarApply/Audit';
+        let param = JSON.stringify({
+            billNo: order,
+            type: type,
         });
         return this.postRequest(BASE_URL, method, param);
     }

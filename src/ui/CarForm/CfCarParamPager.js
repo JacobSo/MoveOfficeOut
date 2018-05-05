@@ -5,20 +5,15 @@
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, ListView, Text, TouchableOpacity, Alert,
-    DeviceEventEmitter, Image, TextInput, ScrollView, KeyboardAvoidingView, RefreshControl
+    View, StyleSheet, Dimensions, ListView, RefreshControl
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay'
 import SnackBar from 'react-native-snackbar-dialog'
-import DatePicker from '../../ui/Component/DatePicker';
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-import QcCarCreatePager from "./CfCreatePager";
-import QcCarItem from "../Component/QcCarItem";
 import CfCarItem from "../Component/CfCarItem";
-import App from '../../constant/Application';
 
 const {width, height} = Dimensions.get('window');
 
@@ -83,10 +78,10 @@ export default class CfListView extends Component {
                         />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) => {
-                        return  <CfCarItem carInfo={rowData} actionText={"选择"} actionFunc={() => {
-                                this.props.finishFunc(rowData.billNo);
-                                this.props.nav.goBack(null);
-                            }}/>
+                        return <CfCarItem carInfo={rowData} actionText={"选择"} actionFunc={() => {
+                            this.props.finishFunc(rowData.billNo);
+                            this.props.nav.goBack(null);
+                        }}/>
                     }
 
                     }/>

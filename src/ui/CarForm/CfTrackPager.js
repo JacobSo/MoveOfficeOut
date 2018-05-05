@@ -6,7 +6,8 @@
 import React, {Component} from 'react';
 import {
     Image,
-    Text,
+    Text, TouchableOpacity,
+    Alert,
     View,
     WebView,
 } from 'react-native';
@@ -14,9 +15,12 @@ import Loading from 'react-native-loading-spinner-overlay';
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
+import SnackBar from 'react-native-snackbar-dialog'
+import Utility from "../../utils/Utility";
 
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
+const statusText = ['待审核', '待分配', '未出车', '已出车', '已结束', '审核失败', '分配失败', '放弃用车'];
 
 let jsCode = `
         var formatData = JSON.parse(data);
@@ -51,7 +55,15 @@ export default class CfTrackPager extends Component {
         super(props);
         this.state = {
             isData: false,
-            isLoading: true
+            isLoading: true,
+            token: '',
+            carInfo: {},
+            beginPoint: null,
+            beginAddress: '',
+            nowPoint: null,
+            endAddress: '',
+            nowTime:'',
+
         }
     }
 
@@ -62,60 +74,132 @@ export default class CfTrackPager extends Component {
         //  this.getDeviceAddress();
     }
 
-    getToken() {
-        this.setState({isRefreshing: true});
-        ApiService.getGpsToken().then((responseJson) => {
+    getCar() {
+        console.log(this.props.carOrder)
+        this.setState({isLoading: true});
+        ApiService.getList('', this.props.carOrder).then((responseJson) => {
+            this.setState({isLoading: false});
+            if (!responseJson.isErr) {
+                this.setState({
+                    carInfo: responseJson.data[0],
+                });
+                //  if (responseJson.data[0] && responseJson.data[0].iemiCode) {
+                this.getToken()
+                //   }
+
+            } else {
+                SnackBar.show(responseJson.errDesc);
+            }
         })
             .catch((error) => {
                 console.log(error);
                 SnackBar.show("出错了，请稍后再试", {duration: 1500});
-                this.setState({isRefreshing: false});
+                this.setState({isLoading: false});
             }).done();
     }
 
-    getCar() {
-        this.setState({isRefreshing: true});
-        ApiService.getGpsHistory("20007378639110152522677532f63c4056f34968ef4598a97735e9912b0000010018010").then((responseJson) => {
-            //this.refs.webView.postMessage(JSON.stringify(responseJson.data));
-            let temp = 'var data =\'' + JSON.stringify(responseJson.data) + '\';'
-            jsCode = temp + jsCode;
-            console.log(jsCode);
-            this.setState({
-                isData: true,
-                isLoading: false
-            });
+    getToken() {
+        ApiService.getGpsToken().then((responseJson) => {
+            if (responseJson.ret === 0) {
+                this.state.token = responseJson.access_token;
+                this.getTrack(responseJson.access_token,)
+            } else {
+                SnackBar.show('获取轨迹失败')
+            }
         })
             .catch((error) => {
                 console.log(error);
                 SnackBar.show("出错了，请稍后再试", {duration: 1500});
-                this.setState({isRefreshing: false});
             }).done();
+    }
+
+
+    //868120184180922
+
+    getTrack() {
+        ApiService.getGpsHistory(this.state.token, "868120184180922")//this.state.carInfo.imeiCode
+            .then((responseJson) => {
+                //this.refs.webView.postMessage(JSON.stringify(responseJson.data));
+                if (responseJson.ret === 0) {
+                    let temp = 'var data =\'' + JSON.stringify(responseJson.data) + '\';'
+                    jsCode = temp + jsCode;
+                    //  console.log(jsCode);
+                    this.setState({
+                        beginPoint: responseJson.data[0],
+                        isData: true,
+                    });
+                    this.getDeviceAddress(this.state.beginPoint);
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试", {duration: 1500});
+            }).done();
+    }
+
+    getDeviceAddress(point) {
+        ApiService.getAddress(this.state.token, point.lng, point.lat).then((responseJson) => {
+            if (responseJson.ret === 0) {
+                if (point === this.state.beginPoint){
+                    this.getNow();
+                    this.setState({beginAddress: responseJson.address})
+                } else
+                    this.setState({endAddress: responseJson.address});
+            }
+        }).catch((error) => {
+            console.log(error);
+            SnackBar.show("出错了，请稍后再试", {duration: 1500});
+        }).done();
     }
 
     getNow() {
-        this.setState({isRefreshing: true});
-        ApiService.getDevicesNow("20007378639110152490631632e67e5be6207621293b590baeee1789670000010018010").then((responseJson) => {
-
-        })
-            .catch((error) => {
-                console.log(error);
-                SnackBar.show("出错了，请稍后再试", {duration: 1500});
-                this.setState({isRefreshing: false});
-            }).done();
+        ApiService.getDevicesNow(this.state.token, "868120184180922").then((responseJson) => {
+            if (responseJson.ret===0) {
+                this.setState({nowPoint: responseJson.data[0],
+                    nowTime:Utility.getFullTime(responseJson.data[0].gps_time)})
+                this.getDeviceAddress(this.state.nowPoint)
+            }
+        }).catch((error) => {
+            console.log(error);
+            SnackBar.show("出错了，请稍后再试", {duration: 1500});
+        }).done();
     }
 
-    getDeviceAddress() {
-        this.setState({isRefreshing: true});
-        ApiService.getAddress("20007378639110152490631632e67e5be6207621293b590baeee1789670000010018010", 112.93823, 22.907767).then((responseJson) => {
 
-        })
-            .catch((error) => {
-                console.log(error);
-                SnackBar.show("出错了，请稍后再试", {duration: 1500});
-                this.setState({isRefreshing: false});
-            }).done();
+    detailView() {
+        Alert.alert(
+            '用车详细',
+
+            '用车单号：' + this.state.carInfo.billNo + '\n' +
+            '状态：' + statusText[this.state.carInfo.status] + '\n' +
+            '车辆类型：' + (this.state.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
+
+            '申请时间：' + Utility.replaceT(this.state.carInfo.createTime) + '\n' +
+            '用车日期：' + Utility.getYyMmDdFormat(this.state.carInfo.tripTime) + '\n' +
+            '申请人：' + this.state.carInfo.account + '\n\n' +
+
+            '目的地：' + this.state.carInfo.tripTarget + '\n' +
+            '外出范围：' + (this.state.carInfo.tripArea ? "佛山外" : "佛山内") + '\n' +
+            '预计里程：' + this.state.carInfo.tripDistance + '\n' +
+
+            (this.state.carInfo.carPower ? ('排量：' + this.state.carInfo.carPower) : '') + '\n' +
+            '随行人员：' + (this.state.carInfo.tripMember ? this.state.carInfo.tripMember : '') + '\n' +
+            '加油卡：' + (this.state.carInfo.needCard ? "需要" : "不需要") + '\n' +
+            '备注：' + (this.state.carInfo.remark ? this.state.carInfo.remark : '') + '\n\n' +
+
+            '起始里程：' + (this.state.carInfo.beginPoint ? this.state.carInfo.beginPoint : '') + '\n' +
+            '结束里程：' + (this.state.carInfo.endPoint ? this.state.carInfo.endPoint : '') + '\n',
+
+            //  '工号：'+this.state.carInfo.workNum+'\n',
+            [
+                {
+                    text: '确认', onPress: () => {
+                }
+                },
+            ]
+        )
     }
-
 
     render() {
         return <View style={{
@@ -164,28 +248,65 @@ export default class CfTrackPager extends Component {
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 16}}>
                     <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-                        <Text style={{color: Color.colorBlue, fontSize: 18,}}>粤X11v71</Text>
-                        <Text style={{marginLeft: 10, marginBottom: 2}}>在线</Text>
+                        <Text style={{
+                            color: Color.colorBlue,
+                            fontSize: 18,
+                        }}>{this.state.carInfo.carNum ? this.state.carInfo.carNum : '未分配车辆'}</Text>
+                        <Text style={{
+                            marginLeft: 10,
+                            marginBottom: 2
+                        }}>{ this.state.carInfo.imeiCode ? '等待状态获取' : ''}</Text>
                     </View>
-                    <Image style={{width: 25, height: 25}} source={require('../../drawable/info_icon.png')}/>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.detailView()
+                        }
+                        }>
+
+                        <Image style={{width: 25, height: 25}} source={require('../../drawable/info_icon.png')}/>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={{flexDirection: 'row', marginLeft: 16,marginRight: 16,justifyContent:'space-between'}}>
-                    <View style={{flexDirection:'row'}}>
-                    <Image style={{width: 20, height: 20}} source={require('../../drawable/location_green.png')}/>
-                    <Text style={{color: Color.colorGreen,}}>当前位置</Text>
-                    </View>
-                    <Text>定位时间</Text>
-                </View>
-                <Text style={{marginLeft: 16, marginRight: 16, marginBottom: 16,marginTop:5}}>顺德区镇325国道龙江二桥5路段林氏木业大厦1-3层</Text>
+                {
+                    (() => {
+                        //if (this.state.carInfo.imeiCode) {
+                          if(1===1){
+                            return<View>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    marginLeft: 16,
+                                    marginRight: 16,
+                                    justifyContent: 'space-between'
+                                }}>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <Image style={{width: 20, height: 20}}
+                                               source={require('../../drawable/location_green.png')}/>
+                                        <Text style={{color: Color.colorGreen,}}>当前位置</Text>
+                                    </View>
+                                    <Text>{this.state.nowTime}</Text>
+                                </View>
+                                <Text style={{marginLeft: 16, marginRight: 16, marginBottom: 16, marginTop: 5}}>{this.state.endAddress}</Text>
 
 
-                <View style={{flexDirection: 'row', marginLeft: 16}}>
-                    <Image style={{width: 20, height: 20}} source={require('../../drawable/location_red.png')}/>
-                    <Text style={{color: Color.colorRed,}}>起点</Text>
-                </View>
-                <Text style={{marginLeft: 16, marginRight: 16, marginBottom: 16,marginTop:5}}>
-                    广东省佛山市顺德区龙源明珠酒店(121省道南)</Text>
+                                <View style={{flexDirection: 'row', marginLeft: 16}}>
+                                    <Image style={{width: 20, height: 20}}
+                                           source={require('../../drawable/location_red.png')}/>
+                                    <Text style={{color: Color.colorRed,}}>起点</Text>
+                                </View>
+                                <Text style={{
+                                    marginLeft: 16,
+                                    marginRight: 16,
+                                    marginBottom: 16,
+                                    marginTop: 5
+                                }}>{this.state.beginAddress}</Text>
+                            </View>
+                        } else {
+                            return <View>
+                                <Text style={{margin: 16}}>没有位置信息</Text>
+                            </View>
+                        }
+                    })()
+                }
 
 
             </View>

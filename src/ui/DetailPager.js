@@ -5,6 +5,7 @@
  */
 'use strict';
 import React, {Component, PropTypes} from 'react';
+import CfApiService from '../network/CfApiService';
 import {
     View,
     ScrollView,
@@ -334,10 +335,14 @@ class DetailPager extends Component {
         ApiService.finishWork(this.props.task.Guid, flag, this.state.rejectContent)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-                    SnackBar.show('操作成功');
-                    // this.props.nav.pop();
-                    this.props.actions.refreshList(true);
-                    this.props.nav.goBack(null);
+                    if (this.props.task.DailyRecordNo && (flag === 0 || flag === 1)) {
+                        this.confirmCar(this.props.task.DailyRecordNo, flag + 1)
+                    } else {
+                        SnackBar.show('操作成功');
+                        this.props.actions.refreshList(true);
+                        this.props.nav.goBack(null);
+
+                    }
                 } else {
                     SnackBar.show(responseJson.ErrDesc);
                     setTimeout(() => {
@@ -354,6 +359,32 @@ class DetailPager extends Component {
             })
             .done();
     }
+
+    confirmCar(guid, type) {
+        CfApiService.confirmOrder(guid, type)//2reject
+            .then((responseJson) => {
+                this.setState({isLoading: false})
+                if (!responseJson.isErr) {
+                    SnackBar.show('操作成功');
+                    // this.props.nav.pop();
+                    this.props.actions.refreshList(true);
+                    this.props.nav.goBack(null);
+                } else {
+                    SnackBar.show('车辆申请审核出错，请在【车辆申请】手动审核');
+                    setTimeout(() => {
+                        this.setState({isLoading: false})
+                    }, 100);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show('车辆申请审核出错，请在【车辆申请】手动审核');
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
+    }
+
 
     _delete() {
         this.setState({isLoading: true});
@@ -402,22 +433,39 @@ class DetailPager extends Component {
                          ].concat(this._getActionFunc())}/>
                 <ScrollView>
                     <View style={{
-                        margin:16,
+                        margin: 16,
                         flexDirection: 'column',
                         padding: 16,
                         elevation: 2,
                         backgroundColor: 'white',
-                        borderRadius:10
+                        borderRadius: 10
                     }}>
                         <Text style={{marginBottom: 5}}>{'对接时间：' + this.props.task.DockingDate}</Text>
 
                         <Text style={{marginBottom: 5}}>{'备注：' + this.props.task.Remark}</Text>
                         <Text style={{marginBottom: 5}}>{'申请人：' + this.props.task.Creator}</Text>
                         <Text style={{marginBottom: 5}}>{'外出类型：' + this._getTypeString()}</Text>
-                        <Text style={{marginBottom: 5}}>{'车辆单据：' + this.props.task.DailyRecordNo}</Text>
-                        <TouchableOpacity onPress={() => {
-                            this.props.nav.navigate('cfTrack');
-                        }}><Text style={{width: width - 64, textAlign: 'right',color:Color.colorCyan}}>查看用车详情</Text></TouchableOpacity>
+                        {
+                            (() => {
+                                if (this.props.task.DailyRecordNo) {
+                                    return <View>
+                                        <Text style={{marginBottom: 5}}>{'车辆单据：' + this.props.task.DailyRecordNo}</Text>
+                                        <TouchableOpacity onPress={() => {
+                                            this.props.nav.navigate('cfTrack',
+                                                {
+                                                    carOrder: this.props.task.DailyRecordNo
+                                                }
+                                            );
+                                        }}><Text style={{
+                                            width: width - 64,
+                                            textAlign: 'right',
+                                            color: Color.colorCyan
+                                        }}>查看用车详情</Text></TouchableOpacity>
+                                    </View>
+                                }
+                            })()
+                        }
+
                     </View>
 
                     {this._setReject()}
