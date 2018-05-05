@@ -132,7 +132,7 @@ class CustomList extends Component {
     }
 
     onAndroidLocationChange = (e) => {
-        console.log((e.address + ":" + e.lat + ":" + e.lng));
+      //  console.log((e.address + ":" + e.lat + ":" + e.lng));
         if (this.state.address !== e.address) {
             this.setState({
                 address: e.address,

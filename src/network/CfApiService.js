@@ -110,7 +110,7 @@ export  default  class CfApiService {
     static getList(status,workOrder) {
         let method = 'CarApply/GetBill?' +
             'account=' + App.account +
-            '&workOrder=' + workOrder +
+            '&workOrder=' + (workOrder?workOrder:'') +
             '&leader=' + (status==='0'?1:0) +
             '&status=' + status;
         return this.getRequest(BASE_URL, method);

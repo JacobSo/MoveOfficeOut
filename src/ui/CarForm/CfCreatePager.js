@@ -190,9 +190,9 @@ export default class CfCreatePager extends Component {
                                             dateText: {color: 'black', textAlign: 'right'},
                                         }}
                                         date={this.state.useTime}
-                                        mode="date"
+                                        mode="datetime"
                                         placeholder="选择"
-                                        format="YYYY-MM-DD"
+                                        format="YYYY-MM-DD HH:MM"
                                         confirmBtnText="确认"
                                         cancelBtnText="取消"
                                         showIcon={true}
