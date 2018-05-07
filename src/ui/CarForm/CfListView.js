@@ -48,7 +48,7 @@ export default class CfListView extends Component {
             '车辆类型：' + (rowData.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
 
             '申请时间：' + Utility.replaceT(rowData.createTime) + '\n' +
-            '用车日期：' + Utility.getYyMmDdFormat(rowData.tripTime) + '\n' +
+            '用车日期：' + Utility.replaceT(rowData.tripTime) + '\n' +
             '申请人：' + rowData.account + '\n\n' +
 
             '目的地：' + rowData.tripTarget + '\n' +
@@ -205,15 +205,17 @@ export default class CfListView extends Component {
             }/>
         } else {
             return <TouchableOpacity style={{
-                backgroundColor: '#CFD8DC',
+              //  backgroundColor: '#CFD8DC',
+                backgroundColor: 'white',
                 borderRadius: 10,
                 width: width - 32,
                 margin: 16,
                 elevation: 2,
-                padding: 16,
+
             }} onPress={() => {
                 this.detailView(rowData);
             }}>
+                <View style={{backgroundColor: '#CFD8DC',padding:16,borderTopLeftRadius:10,borderTopRightRadius:10}}>
                 <Text style={{
                     fontSize: 18,
                 }}>{rowData.carType === 0 ? '公司车辆' : '私人车辆'}</Text>
@@ -221,21 +223,24 @@ export default class CfListView extends Component {
                     fontSize: 25,
 
                 }}>{'申请人：' + rowData.creator}</Text>
-                <View style={{
+                </View>
+          {/*      <View style={{
                     backgroundColor: Color.line,
                     width: 200,
                     height: 1,
                     marginTop: 16,
                     marginBottom: 16
-                }}/>
+                }}/>*/}
+                <View style={{padding:16}}>
+
                 <Text style={{
                     fontSize: 15
-                }}>{'用车时间：' + Utility.getYyMmDdFormat(rowData.tripTime)}</Text>
+                }}>{'用车时间：' + Utility.replaceT(rowData.tripTime)}</Text>
                 <Text >
                     {'目的地：' + rowData.tripTarget}
                 </Text>
                 <Text >{rowData.Remark}</Text>
-
+                </View>
             </TouchableOpacity>
         }
     }
@@ -276,7 +281,7 @@ export default class CfListView extends Component {
             }}>
 
                 {this.getView()}
-                {
+{/*                {
                     (() => {
                         if (App.workType !== '保安' && this.props.type === '0,1,2,3') {
                             return (
@@ -288,7 +293,7 @@ export default class CfListView extends Component {
                                              })}/>)
                         } else return null;
                     })()
-                }
+                }*/}
                 <Loading visible={this.state.isLoading}/>
             </View>
 

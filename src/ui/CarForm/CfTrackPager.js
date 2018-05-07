@@ -157,7 +157,7 @@ export default class CfTrackPager extends Component {
         ApiService.getDevicesNow(this.state.token, "868120184180922").then((responseJson) => {
             if (responseJson.ret===0) {
                 this.setState({nowPoint: responseJson.data[0],
-                    nowTime:Utility.getFullTime(responseJson.data[0].gps_time)})
+                    nowTime:Utility.getFullTime(responseJson.data[0].gps_time,true)})
                 this.getDeviceAddress(this.state.nowPoint)
             }
         }).catch((error) => {
@@ -176,7 +176,7 @@ export default class CfTrackPager extends Component {
             '车辆类型：' + (this.state.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.state.carInfo.createTime) + '\n' +
-            '用车日期：' + Utility.getYyMmDdFormat(this.state.carInfo.tripTime) + '\n' +
+            '用车日期：' + Utility.replaceT(this.state.carInfo.tripTime) + '\n' +
             '申请人：' + this.state.carInfo.account + '\n\n' +
 
             '目的地：' + this.state.carInfo.tripTarget + '\n' +

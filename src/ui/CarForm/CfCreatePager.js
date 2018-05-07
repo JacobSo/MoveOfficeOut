@@ -62,7 +62,7 @@ export default class CfCreatePager extends Component {
             SnackBar.show("必须选择目的地");
             return
         }
-        if (!this.state.distance === 0) {
+        if (this.state.distance === 0) {
             SnackBar.show("必须填写里程信息");
             return
         }
@@ -192,13 +192,13 @@ export default class CfCreatePager extends Component {
                                         date={this.state.useTime}
                                         mode="datetime"
                                         placeholder="选择"
-                                        format="YYYY-MM-DD HH:MM"
+                                        format="YYYY-MM-DD HH:mm"
                                         confirmBtnText="确认"
                                         cancelBtnText="取消"
                                         showIcon={true}
                                         onDateChange={(date) => {
                                             this.setState({useTime: date});
-                                            //SnackBar.show(date)
+                                         //   SnackBar.show(date)
                                         }}
                                     />
                                     <Text style={{position: 'absolute', left: 16,color:'black'}}>用车时间</Text>

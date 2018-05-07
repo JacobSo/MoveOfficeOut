@@ -28,7 +28,7 @@ export default class CfCarItem extends Component {
             '车辆类型：' + (this.props.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.props.carInfo.createTime) + '\n' +
-            '用车日期：' +  Utility.getYyMmDdFormat(this.props.carInfo.tripTime)+ '\n' +
+            '用车日期：' +  Utility.replaceT(this.props.carInfo.tripTime)+ '\n' +
             '申请人：' + this.props.carInfo.account + '\n\n' +
 
             '目的地：' + this.props.carInfo.tripTarget + '\n' +
@@ -63,21 +63,21 @@ export default class CfCarItem extends Component {
                 marginBottom: 55,
             }}>
                 <View style={{
-                    width: width - 32,
+                    width: width,
                     flexDirection: 'row',
                     justifyContent: 'center',
-                    margin: 16,
+                    alignItems:'center'
                 }}>
                     {
                         (() => {
                             if (this.props.carInfo.status === 3) {//pass
-                                return <Image style={{alignContent: 'center'}}
+                                return <Image style={{alignContent: 'center',width:100,height:100}}
                                               source={require('../../drawable/car_image.png')}/>
                             } else if (this.props.carInfo.status === 2) {//process
-                                return <Image style={{alignContent: 'center'}}
+                                return <Image style={{alignContent: 'center',width:100,height:100}}
                                               source={require('../../drawable/car_red.png')}/>
                             } else {
-                                return <Image style={{alignContent: 'center'}}
+                                return <Image style={{alignContent: 'center',width:100,height:100}}
                                               source={require('../../drawable/car_gray.png')}/>
                             }
                         })()
@@ -147,7 +147,7 @@ export default class CfCarItem extends Component {
                     <Text style={{
                         color: 'white',
                         fontSize: 15
-                    }}>{'用车时间：'+Utility.getYyMmDdFormat(this.props.carInfo.tripTime)}</Text>
+                    }}>{'用车时间：'+Utility.replaceT(this.props.carInfo.tripTime,false)}</Text>
                     <Text style={{color: 'white'}}>
                         {'目的地：' + this.props.carInfo.tripTarget}
                     </Text>
