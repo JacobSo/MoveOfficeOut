@@ -12,6 +12,7 @@ import {
     WebView,
 } from 'react-native';
 import Loading from 'react-native-loading-spinner-overlay';
+import {MapView, MapTypes, MapModule, Geolocation} from 'react-native-baidu-map';
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
@@ -63,6 +64,22 @@ export default class CfTrackPager extends Component {
             nowPoint: null,
             endAddress: '',
             nowTime:'',
+
+
+
+            locationEnable: false,
+            mayType: MapTypes.NONE,
+            zoom: 15,
+            center: {
+                longitude: 113.981718,
+                latitude: 22.542449
+            },
+            trafficEnabled: false,
+            baiduHeatMapEnabled: false,
+            mLocation: {
+                longitude: 0.0,
+                latitude: 0.0
+            }
 
         }
     }
@@ -222,7 +239,7 @@ export default class CfTrackPager extends Component {
                 ]}
             />
 
-            {
+{/*            {
                 (() => {
                     if (this.state.isData) {
                         return <WebView
@@ -234,8 +251,15 @@ export default class CfTrackPager extends Component {
                         />
                     }
                 })()
-            }
-
+            }*/}
+            <MapView
+                trafficEnabled={this.state.trafficEnabled}
+                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                zoom={this.state.zoom}
+                mapType={this.state.mapType}
+                center={this.state.center}
+                style={{height: height, width: width, backgroundColor: Color.colorBlue, elevation: 5}}
+            />
             <View style={{
                 backgroundColor: 'white',
                 margin: 16,

@@ -65,6 +65,7 @@ export default class MainPager extends Component {
                         <CustomList tabLabel='外出任务' type="5" nav={this.props.nav}
                                     finishFunc={() => this.popupDialog.show()}/>
                         <CustomList tabLabel='审核' type="1" nav={this.props.nav}/>
+                        <CustomList tabLabel='监督' type="0,1,2" nav={this.props.nav}/>
                         <CustomList tabLabel='评分' type="3" nav={this.props.nav}/>
                     </ScrollableTabView>
                 )
