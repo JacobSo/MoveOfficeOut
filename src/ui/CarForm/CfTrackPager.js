@@ -22,7 +22,7 @@ import Utility from "../../utils/Utility";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 const statusText = ['待审核', '待分配', '未出车', '已出车', '已结束', '审核失败', '分配失败', '放弃用车'];
-
+//SQVgE6NAxt5sfvPZkCWVAceRC5GVcEyS
 let jsCode = `
         var formatData = JSON.parse(data);
 
