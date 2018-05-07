@@ -75,9 +75,9 @@ export default class CfTrackPager extends Component {
     }
 
     getCar() {
-        console.log(this.props.carOrder)
+        console.log(this.props.carOrder);
         this.setState({isLoading: true});
-        ApiService.getList('', this.props.carOrder).then((responseJson) => {
+        ApiService.getDetail(this.props.carOrder).then((responseJson) => {
             this.setState({isLoading: false});
             if (!responseJson.isErr) {
                 this.setState({
@@ -251,11 +251,11 @@ export default class CfTrackPager extends Component {
                         <Text style={{
                             color: Color.colorBlue,
                             fontSize: 18,
-                        }}>{this.state.carInfo.carNum ? this.state.carInfo.carNum : '未分配车辆'}</Text>
+                        }}>{this.state.carInfo ? this.state.carInfo.carNum : '未分配车辆'}</Text>
                         <Text style={{
                             marginLeft: 10,
                             marginBottom: 2
-                        }}>{ this.state.carInfo.imeiCode ? '等待状态获取' : ''}</Text>
+                        }}>{  this.state.carInfo&&this.state.carInfo.imeiCode ? '等待状态获取' : ''}</Text>
                     </View>
                     <TouchableOpacity
                         onPress={() => {

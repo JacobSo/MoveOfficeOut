@@ -451,11 +451,14 @@ class DetailPager extends Component {
                                     return <View>
                                         <Text style={{marginBottom: 5}}>{'车辆单据：' + this.props.task.DailyRecordNo}</Text>
                                         <TouchableOpacity onPress={() => {
-                                            this.props.nav.navigate('cfTrack',
-                                                {
-                                                    carOrder: this.props.task.DailyRecordNo
-                                                }
-                                            );
+                                            if(this.props.task.DailyRecordNo){
+                                                this.props.nav.navigate('cfTrack',
+                                                    {
+                                                        carOrder: this.props.task.DailyRecordNo
+                                                    }
+                                                );
+                                            }else SnackBar.show("没有用车信息")
+
                                         }}><Text style={{
                                             width: width - 64,
                                             textAlign: 'right',
