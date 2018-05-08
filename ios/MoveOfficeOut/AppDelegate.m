@@ -45,7 +45,6 @@
   [self registerAPNS:application];
   [self registerMessageReceive];
   [CloudPushSDK sendNotificationAck:launchOptions];
-  
   return YES;
 }
 

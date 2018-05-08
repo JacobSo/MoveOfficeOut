@@ -22,6 +22,12 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		331011D919BD4D2CB6B490E8 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0567D27E474A248F417101 /* libRNFS.a */; };
 		3DFA60C3D09E43B5B9C14121 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EFCB920E8CA41F780B76941 /* libCodePush.a */; };
+		49169B4820A04B0A00EBF15B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B2220A04B0A00EBF15B /* CoreLocation.framework */; };
+		49169B4A20A04B1500EBF15B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4920A04B1500EBF15B /* QuartzCore.framework */; };
+		49169B4C20A04B1F00EBF15B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4B20A04B1F00EBF15B /* OpenGLES.framework */; };
+		49169B4E20A04B3500EBF15B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4D20A04B3500EBF15B /* CoreGraphics.framework */; };
+		49169B5020A04B4100EBF15B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4F20A04B4100EBF15B /* Security.framework */; };
+		49169B5220A04B6D00EBF15B /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B5120A04B6C00EBF15B /* libstdc++.6.0.9.tbd */; };
 		491B960C1EDBF99000E497B4 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 493DA8D11EDBCFDA00C7779F /* libRNFetchBlob.a */; };
 		491B96B71EE7991A00E497B4 /* WDMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96B21EE7991A00E497B4 /* WDMaterial.m */; };
 		491B96B81EE7991A00E497B4 /* WDProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96B41EE7991A00E497B4 /* WDProduct.m */; };
@@ -375,6 +381,12 @@
 		1C8AF3C51DAB4487BE05F379 /* SQLite.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../node_modules/react-native-sqlite-storage/src/ios/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		2ADF03D66CBD4047952F19C7 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		3EFCB920E8CA41F780B76941 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
+		49169B2220A04B0A00EBF15B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		49169B4920A04B1500EBF15B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		49169B4B20A04B1F00EBF15B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		49169B4D20A04B3500EBF15B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		49169B4F20A04B4100EBF15B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		49169B5120A04B6C00EBF15B /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		491B96B11EE7991A00E497B4 /* WDMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDMaterial.h; sourceTree = "<group>"; };
 		491B96B21EE7991A00E497B4 /* WDMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDMaterial.m; sourceTree = "<group>"; };
 		491B96B31EE7991A00E497B4 /* WDProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDProduct.h; sourceTree = "<group>"; };
@@ -479,6 +491,7 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		AC2831E88DF441278541218A /* libRCTBaiduMap.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTBaiduMap.a; sourceTree = "<group>"; };
 		B79279E2219143FEBD2F2485 /* libInteractable.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libInteractable.a; sourceTree = "<group>"; };
 		BD24752497EB45A9ADF1A0D0 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		D9662B9B97DD479D99144E1C /* libSQLite.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSQLite.a; sourceTree = "<group>"; };
@@ -497,6 +510,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49169B5220A04B6D00EBF15B /* libstdc++.6.0.9.tbd in Frameworks */,
+				49F302DB1E8C9572003967E8 /* CoreTelephony.framework in Frameworks */,
+				49B878BA1ED56E600075E99A /* libsqlite3.0.tbd in Frameworks */,
+				49169B5020A04B4100EBF15B /* Security.framework in Frameworks */,
+				49169B4E20A04B3500EBF15B /* CoreGraphics.framework in Frameworks */,
+				49F302DD1E8C9586003967E8 /* SystemConfiguration.framework in Frameworks */,
+				49169B4C20A04B1F00EBF15B /* OpenGLES.framework in Frameworks */,
+				49169B4A20A04B1500EBF15B /* QuartzCore.framework in Frameworks */,
+				49169B4820A04B0A00EBF15B /* CoreLocation.framework in Frameworks */,
 				4937C5981F17654F001CB368 /* libRCTWebSocket.a in Frameworks */,
 				4937C5871F176417001CB368 /* libjschelpers.a in Frameworks */,
 				4937C5881F176417001CB368 /* libjschelpers.a in Frameworks */,
@@ -504,10 +526,7 @@
 				4937C5861F175AE8001CB368 /* libyoga.a in Frameworks */,
 				4937C56D1F1458E0001CB368 /* libcxxreact.a in Frameworks */,
 				491B960C1EDBF99000E497B4 /* libRNFetchBlob.a in Frameworks */,
-				49B878BA1ED56E600075E99A /* libsqlite3.0.tbd in Frameworks */,
 				49B878B81ED56E530075E99A /* libsqlite3.tbd in Frameworks */,
-				49F302DD1E8C9586003967E8 /* SystemConfiguration.framework in Frameworks */,
-				49F302DB1E8C9572003967E8 /* CoreTelephony.framework in Frameworks */,
 				49F302D91E8C954B003967E8 /* libz.tbd in Frameworks */,
 				49F302D71E8C9541003967E8 /* libresolv.tbd in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -646,6 +665,12 @@
 		407C9172DC20C36226F79A98 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49169B5120A04B6C00EBF15B /* libstdc++.6.0.9.tbd */,
+				49169B4F20A04B4100EBF15B /* Security.framework */,
+				49169B4D20A04B3500EBF15B /* CoreGraphics.framework */,
+				49169B4B20A04B1F00EBF15B /* OpenGLES.framework */,
+				49169B4920A04B1500EBF15B /* QuartzCore.framework */,
+				49169B2220A04B0A00EBF15B /* CoreLocation.framework */,
 				49B878B91ED56E600075E99A /* libsqlite3.0.tbd */,
 				49B878B71ED56E530075E99A /* libsqlite3.tbd */,
 				49F302DC1E8C9586003967E8 /* SystemConfiguration.framework */,
@@ -802,6 +827,7 @@
 				BD24752497EB45A9ADF1A0D0 /* libRNImagePicker.a */,
 				D9662B9B97DD479D99144E1C /* libSQLite.a */,
 				0B0567D27E474A248F417101 /* libRNFS.a */,
+				AC2831E88DF441278541218A /* libRCTBaiduMap.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1457,12 +1483,14 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-baidu-map/ios/RCTBaiduMap/**",
 				);
 				INFOPLIST_FILE = MoveOfficeOutTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1489,12 +1517,14 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-baidu-map/ios/RCTBaiduMap/**",
 				);
 				INFOPLIST_FILE = MoveOfficeOutTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1529,6 +1559,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"/**",
 				);
 				INFOPLIST_FILE = MoveOfficeOut/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1563,6 +1594,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"/**",
 				);
 				INFOPLIST_FILE = MoveOfficeOut/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1635,6 +1667,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"/**",
 				);
 				INFOPLIST_FILE = MoveOfficeOut/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1661,12 +1694,14 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-baidu-map/ios/RCTBaiduMap/**",
 				);
 				INFOPLIST_FILE = MoveOfficeOutTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
