@@ -281,7 +281,7 @@ export default class CfListView extends Component {
             }}>
 
                 {this.getView()}
-{/*                {
+                {
                     (() => {
                         if (App.workType !== '保安' && this.props.type === '0,1,2,3') {
                             return (
@@ -293,7 +293,7 @@ export default class CfListView extends Component {
                                              })}/>)
                         } else return null;
                     })()
-                }*/}
+                }
                 <Loading visible={this.state.isLoading}/>
             </View>
 

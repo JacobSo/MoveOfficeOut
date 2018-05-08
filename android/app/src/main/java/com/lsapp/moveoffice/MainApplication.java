@@ -21,7 +21,6 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.lsapp.moveoffice.react.ReactModulePackage;
 
-import org.lovebing.reactnative.baidumap.BaiduMapPackage;
 import org.pgsqlite.SQLitePluginPackage;
 
 import java.util.Arrays;
@@ -61,7 +60,6 @@ public class MainApplication extends Application implements ReactApplication {
                     new Interactable(),
                     new ImagePickerPackage(),
                     new SQLitePluginPackage(),
-                    new BaiduMapPackage(getApplicationContext()),
                     //new CodePush("aPV6JAJYhGxfIZmLmA50quNeOMc94ksvOXqog", getApplicationContext(), BuildConfig.DEBUG),
                     new CodePush(
                             "aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog",
