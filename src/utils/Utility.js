@@ -12,6 +12,7 @@ export  default  class ApiService {
         return temp.getFullYear()+"-"+(temp.getMonth()+1)+'-'+temp.getDate();
     }
 
+
     static getFullTime(time,addSeconds){
         let temp = new Date();
         temp.setTime(addSeconds?(time*1000):time);

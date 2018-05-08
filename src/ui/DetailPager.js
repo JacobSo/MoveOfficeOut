@@ -335,7 +335,9 @@ class DetailPager extends Component {
         ApiService.finishWork(this.props.task.Guid, flag, this.state.rejectContent)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-                    if (this.props.task.DailyRecordNo && (flag === 0 || flag === 1)) {
+                    if (this.props.task.DailyRecordNo && //单号
+                        (flag === 0 || flag === 1) && //角色
+                        new Date().getHours() < 18) {//时间限制
                         this.confirmCar(this.props.task.DailyRecordNo, flag + 1)
                     } else {
                         SnackBar.show('操作成功');
@@ -451,13 +453,13 @@ class DetailPager extends Component {
                                     return <View>
                                         <Text style={{marginBottom: 5}}>{'车辆单据：' + this.props.task.DailyRecordNo}</Text>
                                         <TouchableOpacity onPress={() => {
-                                            if(this.props.task.DailyRecordNo){
+                                            if (this.props.task.DailyRecordNo) {
                                                 this.props.nav.navigate('cfTrack',
                                                     {
                                                         carOrder: this.props.task.DailyRecordNo
                                                     }
                                                 );
-                                            }else SnackBar.show("没有用车信息")
+                                            } else SnackBar.show("没有用车信息")
 
                                         }}><Text style={{
                                             width: width - 64,

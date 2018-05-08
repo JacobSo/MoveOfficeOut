@@ -23,6 +23,7 @@ import App from '../constant/Application';
 import {NavigationActions,} from 'react-navigation';
 import CheckBox from "../ui/Component/CheckBox";
 import SnackBar from 'react-native-snackbar-dialog'
+import Utility from "../utils/Utility";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 export default class LoginPager extends Component {

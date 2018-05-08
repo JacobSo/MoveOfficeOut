@@ -67,7 +67,7 @@ export default class CfListView extends Component {
             [
                 {
                     text: '驳回', onPress: () => {
-                    this.confirmCar(rowData.billNo,2)
+                    this.confirmCar(rowData.billNo, 2)
                 }
                 },
                 {
@@ -76,7 +76,7 @@ export default class CfListView extends Component {
                 },
                 {
                     text: '通过', onPress: () => {
-                    this.confirmCar(rowData.billNo,1)
+                    this.confirmCar(rowData.billNo, 1)
                 }
                 },
 
@@ -140,40 +140,43 @@ export default class CfListView extends Component {
         )
     }
 
-    confirmCar(guid,type) {
-        Alert.alert(
-            type===1?'通过':'驳回',
-            type===1?'通过车辆申请单，进入分配车辆流程':'驳回车辆申请单，车辆申请结束',
-            [
-                {
-                    text: '取消', onPress: () => {
-                }
-                },
-                {
-                    text: '确定', onPress: () => {
-                    this.setState({isLoading: true});
-                    ApiService.confirmOrder(guid, type)//2reject
-                        .then((responseJson) => {
-                            this.setState({isLoading: false})
-                            if (!responseJson.isErr) {
-                                this.getCar();
-                                SnackBar.show("审核成功");
-                            } else {
-                                SnackBar.show(responseJson.errDesc);
-
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            SnackBar.show("出错了，请稍后再试");
-                            setTimeout(() => {
+    confirmCar(guid, type) {
+        let now = new Date().getHours();
+        if ((now >= 18 && App.workType === '人事部') || now < 18 && App.workType !== '人事部') {
+            Alert.alert(
+                type === 1 ? '通过' : '驳回',
+                type === 1 ? '通过车辆申请单，进入分配车辆流程' : '驳回车辆申请单，车辆申请结束',
+                [
+                    {
+                        text: '取消', onPress: () => {
+                    }
+                    },
+                    {
+                        text: '确定', onPress: () => {
+                        this.setState({isLoading: true});
+                        ApiService.confirmOrder(guid, type)//2reject
+                            .then((responseJson) => {
                                 this.setState({isLoading: false})
-                            }, 100);
-                        }).done();
-                }
-                },
-            ]
-        )
+                                if (!responseJson.isErr) {
+                                    this.getCar();
+                                    SnackBar.show("审核成功");
+                                } else {
+                                    SnackBar.show(responseJson.errDesc);
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                SnackBar.show("出错了，请稍后再试");
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }).done();
+                    }
+                    },
+                ]
+            )
+        }else SnackBar.show('非审核时间段');
+
     }
 
     getItemView(rowData) {
@@ -205,7 +208,7 @@ export default class CfListView extends Component {
             }/>
         } else {
             return <TouchableOpacity style={{
-              //  backgroundColor: '#CFD8DC',
+                //  backgroundColor: '#CFD8DC',
                 backgroundColor: 'white',
                 borderRadius: 10,
                 width: width - 32,
@@ -215,31 +218,36 @@ export default class CfListView extends Component {
             }} onPress={() => {
                 this.detailView(rowData);
             }}>
-                <View style={{backgroundColor: '#CFD8DC',padding:16,borderTopLeftRadius:10,borderTopRightRadius:10}}>
-                <Text style={{
-                    fontSize: 18,
-                }}>{rowData.carType === 0 ? '公司车辆' : '私人车辆'}</Text>
-                <Text style={{
-                    fontSize: 25,
+                <View style={{
+                    backgroundColor: '#CFD8DC',
+                    padding: 16,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10
+                }}>
+                    <Text style={{
+                        fontSize: 18,
+                    }}>{rowData.carType === 0 ? '公司车辆' : '私人车辆'}</Text>
+                    <Text style={{
+                        fontSize: 25,
 
-                }}>{'申请人：' + rowData.creator}</Text>
+                    }}>{'申请人：' + rowData.creator}</Text>
                 </View>
-          {/*      <View style={{
-                    backgroundColor: Color.line,
-                    width: 200,
-                    height: 1,
-                    marginTop: 16,
-                    marginBottom: 16
-                }}/>*/}
-                <View style={{padding:16}}>
+                {/*      <View style={{
+                 backgroundColor: Color.line,
+                 width: 200,
+                 height: 1,
+                 marginTop: 16,
+                 marginBottom: 16
+                 }}/>*/}
+                <View style={{padding: 16}}>
 
-                <Text style={{
-                    fontSize: 15
-                }}>{'用车时间：' + Utility.replaceT(rowData.tripTime)}</Text>
-                <Text >
-                    {'目的地：' + rowData.tripTarget}
-                </Text>
-                <Text >{rowData.Remark}</Text>
+                    <Text style={{
+                        fontSize: 15
+                    }}>{'用车时间：' + Utility.replaceT(rowData.tripTime)}</Text>
+                    <Text >
+                        {'目的地：' + rowData.tripTarget}
+                    </Text>
+                    <Text >{rowData.Remark}</Text>
                 </View>
             </TouchableOpacity>
         }
