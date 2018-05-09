@@ -116,7 +116,6 @@ export default class CfCreatePager extends Component {
                 flex: 1,
                 backgroundColor: 'white',
             }}>
-                <MenuProvider>
                     <Toolbar
                         elevation={5}
                         title={["车辆申请"]}
@@ -130,10 +129,10 @@ export default class CfCreatePager extends Component {
                                 this.props.nav.goBack(null)
                             },
                         ]}/>
-                    <KeyboardAvoidingView behavior='position'>
+                    <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={-55}>
                         <ScrollView>
                             <View style={{
-                                marginBottom: 100
+                                paddingBottom: 100
                             }}>
                                 <View style={{
                                     width: width - 32,
@@ -268,6 +267,7 @@ export default class CfCreatePager extends Component {
 
 
                                 <Text style={{color: Color.colorAccent, margin: 16}}>路线信息</Text>
+                                <MenuProvider>
 
                                 <Menu onSelect={value => this.setState({tripArea: value})}>
                                     <MenuTrigger >
@@ -291,6 +291,8 @@ export default class CfCreatePager extends Component {
 
                                     </MenuOptions>
                                 </Menu>
+                                </MenuProvider>
+
                                 <View style={styles.itemStyle}>
                                     <Text style={{marginLeft: 16}}>预计里程</Text>
                                     <TextInput style={styles.textInput}
@@ -377,7 +379,6 @@ export default class CfCreatePager extends Component {
                         </ScrollView>
                     </KeyboardAvoidingView>
                     <Loading visible={this.state.isLoading}/>
-                </MenuProvider>
                 <InputDialog
                     isMulti={false}
                     action={[
