@@ -282,7 +282,6 @@ export default class CfCreatePager extends Component {
                                             <Text style={{color: "white", margin: 10}}>{item}</Text></TouchableOpacity>}
                                 />
 
-
                                 <Text style={{color: Color.colorAccent, margin: 16}}>路线信息</Text>
 
                                 <Menu onSelect={value => this.setState({tripArea: value})}>
