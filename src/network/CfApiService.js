@@ -5,6 +5,7 @@
 import App from '../constant/Application';
 let GPS_URL = 'http://api.gpsoo.net/1/';
 let BASE_URL = 'http://192.168.1.190:8806/LsCarApply/';
+//let BASE_URL = 'http://kh.linshimuye.cn:8806/LsCarApply';
 let md5 = require('js-md5');
 let newFetch = function (input, opts) {
     return new Promise((resolve, reject) => {
@@ -116,10 +117,11 @@ export  default  class CfApiService {
         return this.getRequest(BASE_URL, method);
     }
 
-    static getDetail(workOrder) {
+    static getDetail(workOrder,status) {
         let method = 'CarApply/GetBillInfo?' +
             'account=' + App.account +
-            '&workOrder=' + workOrder;
+            '&workOrder=' + workOrder+
+            '&status=' + (status?status:'');
         return this.getRequest(BASE_URL, method);
     }
 

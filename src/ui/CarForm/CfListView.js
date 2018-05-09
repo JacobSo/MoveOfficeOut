@@ -45,7 +45,8 @@ export default class CfListView extends Component {
 
             '用车单号：' + rowData.billNo + '\n' +
             '状态：' + statusText[rowData.status] + '\n' +
-            '车辆类型：' + (rowData.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
+            '车辆类型：' + (rowData.carType === 0 ? "公司车辆" : "私人车辆") + '\n' +
+            '车牌号码：' + (rowData.carNum) + '\n\n' +
 
             '申请时间：' + Utility.replaceT(rowData.createTime) + '\n' +
             '用车日期：' + Utility.replaceT(rowData.tripTime) + '\n' +
@@ -86,17 +87,18 @@ export default class CfListView extends Component {
 
     getCar() {
         this.setState({isRefreshing: true});
-        ApiService.getList(this.props.type).then((responseJson) => {
-            this.setState({isRefreshing: false});
-            if (!responseJson.isErr) {
-                this.setState({
-                    items: responseJson.data,
-                    dataSource: this.state.dataSource.cloneWithRows(responseJson.data)
-                });
-            } else {
-                SnackBar.show(responseJson.errDesc);
-            }
-        })
+        (App.workType==='人事部'?ApiService.getDetail('',this.props.type):ApiService.getList(this.props.type))
+            .then((responseJson) => {
+                this.setState({isRefreshing: false});
+                if (!responseJson.isErr) {
+                    this.setState({
+                        items: responseJson.data,
+                        dataSource: this.state.dataSource.cloneWithRows(responseJson.data)
+                    });
+                } else {
+                    SnackBar.show(responseJson.errDesc);
+                }
+            })
             .catch((error) => {
                 console.log(error);
                 SnackBar.show("出错了，请稍后再试", {duration: 1500});
@@ -142,7 +144,7 @@ export default class CfListView extends Component {
 
     confirmCar(guid, type) {
         let now = new Date().getHours();
-        if ((now >= 18 && App.workType === '人事部') || now < 18 && App.workType !== '人事部') {
+        if ((now >= 11 && App.workType === '人事部') || now < 11 && App.workType !== '人事部') {
             Alert.alert(
                 type === 1 ? '通过' : '驳回',
                 type === 1 ? '通过车辆申请单，进入分配车辆流程' : '驳回车辆申请单，车辆申请结束',
@@ -175,7 +177,7 @@ export default class CfListView extends Component {
                     },
                 ]
             )
-        }else SnackBar.show('非审核时间段');
+        } else SnackBar.show('非审核时间段');
 
     }
 

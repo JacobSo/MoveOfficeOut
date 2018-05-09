@@ -92,7 +92,7 @@ export default class CfSignPager extends Component {
 
 
     capFunc() {
-        ImagePicker.launchImageLibrary(options, (response) => {
+        ImagePicker.launchCamera(options, (response) => {
             console.log(JSON.stringify(response));
             if (!response.didCancel) {
                 this.setState({

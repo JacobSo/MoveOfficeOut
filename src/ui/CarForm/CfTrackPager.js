@@ -4,23 +4,26 @@
  */
 'use strict';
 import React, {Component} from 'react';
+import RNFS from 'react-native-fs'
 import {
     Image,
     Text, TouchableOpacity,
     Alert,
     View,
     WebView,
+    Platform
 } from 'react-native';
-import Loading from 'react-native-loading-spinner-overlay';
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
 import SnackBar from 'react-native-snackbar-dialog'
 import Utility from "../../utils/Utility";
+import Loading from 'react-native-loading-spinner-overlay';
 
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 const statusText = ['待审核', '待分配', '未出车', '已出车', '已结束', '审核失败', '分配失败', '放弃用车'];
+const deviceStatusText = ['正常数据', '设备未上线', '设备已过期', '设备离线'];
 //SQVgE6NAxt5sfvPZkCWVAceRC5GVcEyS
 let jsCode = `
         var formatData = JSON.parse(data);
@@ -46,9 +49,12 @@ let jsCode = `
         var marker = new BMap.Marker(point);  // 创建标注
         map.addOverlay(marker);              // 将标注添加到地图中
         map.centerAndZoom(point, 15);
-
-
     `;
+
+let html = '<!DOCTYPE html> <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style type="text/css">body, html, #allmap {width: 100%;height: 100%;overflow: hidden;margin: 0;} </style> <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1fvdmzCGS0mrY2i6CB1yiWBD"></script> </head> <body> <div id="allmap"></div> </body> </html> <script type="text/javascript">';
+let end = "</script>";
+
+
 export default class CfTrackPager extends Component {
 
     constructor(props) {
@@ -62,7 +68,9 @@ export default class CfTrackPager extends Component {
             beginAddress: '',
             nowPoint: null,
             endAddress: '',
-            nowTime:'',
+            nowTime: '',
+            isFullScreen: false,
+            deviceStatus: -1
 
         }
     }
@@ -74,6 +82,23 @@ export default class CfTrackPager extends Component {
         //  this.getDeviceAddress();
     }
 
+    write() {
+        let path = RNFS.DocumentDirectoryPath + '/index.html';
+        //  console.log(path)
+        //  console.log(html + jsCode + end)
+        RNFS.writeFile(path, html + jsCode + end)
+            .then(() => {
+                this.setState({
+                    isData: true,
+                });
+                this.getDeviceAddress(this.state.beginPoint);
+            })
+            .catch((error) => {
+                console.log(error)
+            }).done()
+    }
+
+    //用车信息
     getCar() {
         console.log(this.props.carOrder);
         this.setState({isLoading: true});
@@ -83,9 +108,9 @@ export default class CfTrackPager extends Component {
                 this.setState({
                     carInfo: responseJson.data[0],
                 });
-                //  if (responseJson.data[0] && responseJson.data[0].iemiCode) {
-                this.getToken()
-                //   }
+                if (responseJson.data[0] && responseJson.data[0].imeiCode) {
+                    this.getToken();
+                }
 
             } else {
                 SnackBar.show(responseJson.errDesc);
@@ -98,6 +123,7 @@ export default class CfTrackPager extends Component {
             }).done();
     }
 
+    //gps token
     getToken() {
         ApiService.getGpsToken().then((responseJson) => {
             if (responseJson.ret === 0) {
@@ -115,20 +141,25 @@ export default class CfTrackPager extends Component {
 
 
     //868120184180922
-
+    //轨迹+开始位置
     getTrack() {
-        ApiService.getGpsHistory(this.state.token, "868120184180922")//this.state.carInfo.imeiCode
+        ApiService.getGpsHistory(this.state.token, this.state.carInfo.imeiCode)//  868120184180922
             .then((responseJson) => {
                 //this.refs.webView.postMessage(JSON.stringify(responseJson.data));
                 if (responseJson.ret === 0) {
                     let temp = 'var data =\'' + JSON.stringify(responseJson.data) + '\';'
                     jsCode = temp + jsCode;
                     //  console.log(jsCode);
-                    this.setState({
-                        beginPoint: responseJson.data[0],
-                        isData: true,
-                    });
-                    this.getDeviceAddress(this.state.beginPoint);
+                    if (Platform.OS === 'ios') {
+                        this.setState({
+                            beginPoint: responseJson.data[0],
+                            isData: true,
+                        });
+                        this.getDeviceAddress(this.state.beginPoint);
+                    } else {
+                        this.write();
+                        this.state.beginPoint = responseJson.data[0];
+                    }
                 }
 
             })
@@ -138,10 +169,11 @@ export default class CfTrackPager extends Component {
             }).done();
     }
 
+    //地理编码
     getDeviceAddress(point) {
         ApiService.getAddress(this.state.token, point.lng, point.lat).then((responseJson) => {
             if (responseJson.ret === 0) {
-                if (point === this.state.beginPoint){
+                if (point === this.state.beginPoint) {
                     this.getNow();
                     this.setState({beginAddress: responseJson.address})
                 } else
@@ -153,11 +185,14 @@ export default class CfTrackPager extends Component {
         }).done();
     }
 
+//当前位置
     getNow() {
-        ApiService.getDevicesNow(this.state.token, "868120184180922").then((responseJson) => {
-            if (responseJson.ret===0) {
-                this.setState({nowPoint: responseJson.data[0],
-                    nowTime:Utility.getFullTime(responseJson.data[0].gps_time,true)})
+        ApiService.getDevicesNow(this.state.token, this.state.carInfo.imeiCode).then((responseJson) => {
+            if (responseJson.ret === 0) {
+                this.setState({
+                    nowPoint: responseJson.data[0],
+                    nowTime: Utility.getFullTime(responseJson.data[0].gps_time, true)
+                });
                 this.getDeviceAddress(this.state.nowPoint)
             }
         }).catch((error) => {
@@ -173,7 +208,8 @@ export default class CfTrackPager extends Component {
 
             '用车单号：' + this.state.carInfo.billNo + '\n' +
             '状态：' + statusText[this.state.carInfo.status] + '\n' +
-            '车辆类型：' + (this.state.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
+            '车辆类型：' + (this.state.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n' +
+            '车牌号码：' + this.state.carInfo.carNum + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.state.carInfo.createTime) + '\n' +
             '用车日期：' + Utility.replaceT(this.state.carInfo.tripTime) + '\n' +
@@ -212,29 +248,41 @@ export default class CfTrackPager extends Component {
                 title={['用车详细']}
                 color={'white'}
                 isHomeUp={true}
-                isAction={false}
+                isAction={true}
                 isActionByText={true}
-                actionArray={[]}
+                actionArray={['全屏']}
                 functionArray={[
                     () => {
                         this.props.nav.goBack(null)
                     },
-                ]}
-            />
+                    () => {
+                        this.setState({isFullScreen: !this.state.isFullScreen})
+                    }
+                ]}/>
 
-{/*            {
+            {
                 (() => {
                     if (this.state.isData) {
-                        return <WebView
-                            style={{backgroundColor: Color.background}}
-                            ref='webView'
-                            source={require('../../assets/index.html')}
-                            injectedJavaScript={jsCode}
-                            javaScriptEnabledAndroid={true}
-                        />
+                        if (Platform.OS === 'ios') {
+                            return <WebView
+                                style={{backgroundColor: Color.background}}
+                                ref='webView'
+                                source={require('../../assets/index.html')}
+                                injectedJavaScript={jsCode}
+                                javaScriptEnabledAndroid={true}
+                            />
+                        } else {
+                            return <WebView
+                                style={{backgroundColor: Color.background}}
+                                ref='webView'
+                                source={{uri: ('file://' + RNFS.DocumentDirectoryPath + '/index.html')}}
+                                javaScriptEnabledAndroid={true}
+                            />
+                        }
+
                     }
                 })()
-            }*/}
+            }
 
             <View style={{
                 backgroundColor: 'white',
@@ -251,11 +299,11 @@ export default class CfTrackPager extends Component {
                         <Text style={{
                             color: Color.colorBlue,
                             fontSize: 18,
-                        }}>{this.state.carInfo ? this.state.carInfo.carNum : '未分配车辆'}</Text>
+                        }}>{this.state.carInfo && this.state.carInfo.carNum ? this.state.carInfo.carNum : '没有车牌信息'}</Text>
                         <Text style={{
                             marginLeft: 10,
                             marginBottom: 2
-                        }}>{  this.state.carInfo&&this.state.carInfo.imeiCode ? '等待状态获取' : ''}</Text>
+                        }}>{  (this.state.carInfo && this.state.carInfo.imeiCode&&this.state.nowPoint) ? (deviceStatusText[this.state.nowPoint.device_info]) : '没有imei码'}</Text>
                     </View>
                     <TouchableOpacity
                         onPress={() => {
@@ -269,52 +317,55 @@ export default class CfTrackPager extends Component {
 
                 {
                     (() => {
-                        //if (this.state.carInfo.imeiCode) {
-                          if(1===1){
-                            return<View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginLeft: 16,
-                                    marginRight: 16,
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <Image style={{width: 20, height: 20}}
-                                               source={require('../../drawable/location_green.png')}/>
-                                        <Text style={{color: Color.colorGreen,}}>当前位置</Text>
+                        if (this.state.carInfo.imeiCode) {
+                            if (this.state.isFullScreen) {
+                                return null
+                            } else {
+                                return <View>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginLeft: 16,
+                                        marginRight: 16,
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <Image style={{width: 20, height: 20}}
+                                                   source={require('../../drawable/location_green.png')}/>
+                                            <Text style={{color: Color.colorGreen,}}>当前位置</Text>
+                                        </View>
+                                        <Text>{this.state.nowTime}</Text>
                                     </View>
-                                    <Text>{this.state.nowTime}</Text>
-                                </View>
-                                <Text style={{marginLeft: 16, marginRight: 16, marginBottom: 16, marginTop: 5}}>{this.state.endAddress}</Text>
+                                    <Text style={{
+                                        marginLeft: 16,
+                                        marginRight: 16,
+                                        marginBottom: 16,
+                                        marginTop: 5
+                                    }}>{this.state.endAddress}</Text>
 
-
-                                <View style={{flexDirection: 'row', marginLeft: 16}}>
-                                    <Image style={{width: 20, height: 20}}
-                                           source={require('../../drawable/location_red.png')}/>
-                                    <Text style={{color: Color.colorRed,}}>起点</Text>
+                                    <View style={{flexDirection: 'row', marginLeft: 16}}>
+                                        <Image style={{width: 20, height: 20}}
+                                               source={require('../../drawable/location_red.png')}/>
+                                        <Text style={{color: Color.colorRed,}}>起点</Text>
+                                    </View>
+                                    <Text style={{
+                                        marginLeft: 16,
+                                        marginRight: 16,
+                                        marginBottom: 16,
+                                        marginTop: 5
+                                    }}>{this.state.beginAddress}</Text>
                                 </View>
-                                <Text style={{
-                                    marginLeft: 16,
-                                    marginRight: 16,
-                                    marginBottom: 16,
-                                    marginTop: 5
-                                }}>{this.state.beginAddress}</Text>
-                            </View>
+                            }
                         } else {
                             return <View>
                                 <Text style={{margin: 16}}>没有位置信息</Text>
                             </View>
                         }
+
                     })()
                 }
-
-
             </View>
-
             <Loading visible={this.state.isLoading}/>
-
         </View>;
     }
 }
-
 

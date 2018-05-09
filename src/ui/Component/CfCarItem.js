@@ -25,7 +25,8 @@ export default class CfCarItem extends Component {
 
             '用车单号：' + this.props.carInfo.billNo + '\n' +
             '状态：' + statusText[this.props.carInfo.status] + '\n' +
-            '车辆类型：' + (this.props.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n\n' +
+            '车辆类型：' + (this.props.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n' +
+            '车牌号码：' + (this.props.carInfo.carNum) + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.props.carInfo.createTime) + '\n' +
             '用车日期：' +  Utility.replaceT(this.props.carInfo.tripTime)+ '\n' +

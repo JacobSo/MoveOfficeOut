@@ -40,7 +40,7 @@ export default class CfListPager extends Component {
                 backgroundColor: Color.background,
             }}>
                 <Toolbar
-                    elevation={App.workType === '保安'?5:0}
+                    elevation={App.workType === '保安' ? 5 : 0}
                     title={["我的用车"]}
                     color={Color.colorBlueGrey}
                     isHomeUp={true}
@@ -53,7 +53,9 @@ export default class CfListPager extends Component {
                 {
                     (() => {
                         if (App.workType === '保安') {
-                            return <CfListView  nav={this.props.nav} type={'2,3'}/>
+                            return <CfListView nav={this.props.nav} type={'2,3'}/>
+                        } else if (App.workType === '人事部') {
+                            return <CfListView tabLabel='审核' nav={this.props.nav} type={'0'}/>
                         } else {
                             return <ScrollableTabView
                                 initialPage={0}
