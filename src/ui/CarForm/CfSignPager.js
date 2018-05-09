@@ -126,7 +126,7 @@ export default class CfSignPager extends Component {
                         <View>
                             <View style={{
                                 margin: 16,
-                                backgroundColor: Color.colorIndigoDark,
+                                backgroundColor:this.props.carInfo.beginPoint ?Color.colorTeal: Color.colorIndigo,
                                 borderRadius: 10,
                                 elevation: 5,
                             }}>
@@ -144,10 +144,10 @@ export default class CfSignPager extends Component {
                                     padding: 16
                                 }}>
                                     <Text>{'起始里程：' + (this.props.carInfo.beginPoint ? this.props.carInfo.beginPoint : '未填写')}</Text>
-                                    <Text>{'结束里程：' + (this.props.carInfo.endPoint ? this.props.carInfo.endPoint : '未填写')}</Text>
+                                    <Text style={{marginTop:8,}}>{'结束里程：' + (this.props.carInfo.endPoint ? this.props.carInfo.endPoint : '未填写')}</Text>
                                 </View>
                                 <Image style={{position: 'absolute', alignContent: 'center', right: -55, top: 0}}
-                                       source={require('../../drawable/car_image.png')}/>
+                                       source={this.props.carInfo.beginPoint ?require('../../drawable/car_image.png'):require('../../drawable/car_red.png')}/>
                             </View>
 
                             <View style={{

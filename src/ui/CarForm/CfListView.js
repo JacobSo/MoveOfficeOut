@@ -186,10 +186,9 @@ export default class CfListView extends Component {
             return <TouchableOpacity
                 style={{
                     margin: 16,
-                    backgroundColor: Color.colorIndigoDark,
+                    backgroundColor:rowData.beginPoint ?Color.colorTeal: Color.colorIndigo,
                     borderRadius: 10,
                     elevation: 5,
-                    padding: 16
                 }}
                 onPress={() => {
                     this.props.nav.navigate("cfSign", {
@@ -201,8 +200,18 @@ export default class CfListView extends Component {
                 }}>
                 <Text style={{fontSize: 20, color: 'white', margin: 16}}>{rowData.carNum}</Text>
                 <Text style={{margin: 16, color: 'white'}}>{'用车人：' + rowData.account}</Text>
+
+                <View style={{
+                    backgroundColor: 'white',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    padding: 16
+                }}>
+                    <Text>{'起始里程：' + (rowData.beginPoint ? rowData.beginPoint : '未填写')}</Text>
+                    <Text style={{marginTop:8,}}>{'结束里程：' + (rowData.endPoint ? rowData.endPoint : '未填写')}</Text>
+                </View>
                 <Image style={{position: 'absolute', alignContent: 'center', right: -55, top: 0}}
-                       source={require('../../drawable/car_image.png')}/>
+                       source={rowData.beginPoint ?require('../../drawable/car_image.png'):require('../../drawable/car_red.png')}/>
             </TouchableOpacity>
         } else if (rowData.creator === App.account) {
             return <CfCarItem carInfo={rowData} actionText={'删除'} actionFunc={
