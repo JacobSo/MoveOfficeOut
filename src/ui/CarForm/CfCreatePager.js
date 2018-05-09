@@ -47,10 +47,27 @@ export default class CfCreatePager extends Component {
             myCar: '',
             selection: 0,
             carType: '公司车辆',
+
+            isHasPrivateCar: false,
+            privateCarItems: [],
         }
     }
 
     componentDidMount() {
+        ApiService.getPrivateCar()
+            .then((responseJson) => {
+                if (!responseJson.IsErr) {
+                    this.setState({
+                        isHasPrivateCar: responseJson.data && responseJson.data.length !== 0,
+                        privateCarItems:responseJson.data,
+                        privateCar: responseJson.data && responseJson.data.length ===1?responseJson.data[0].carNum:'',
+                        privateFeature: responseJson.data && responseJson.data.length ===1?responseJson.data[0].carPower:'',
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            }).done();
     }
 
     requestCar() {
@@ -106,8 +123,6 @@ export default class CfCreatePager extends Component {
                 },
             ]
         )
-
-
     }
 
     render() {
@@ -116,6 +131,8 @@ export default class CfCreatePager extends Component {
                 flex: 1,
                 backgroundColor: 'white',
             }}>
+                <MenuProvider>
+
                     <Toolbar
                         elevation={5}
                         title={["车辆申请"]}
@@ -197,17 +214,17 @@ export default class CfCreatePager extends Component {
                                         showIcon={true}
                                         onDateChange={(date) => {
                                             this.setState({useTime: date});
-                                         //   SnackBar.show(date)
+                                            //   SnackBar.show(date)
                                         }}
                                     />
-                                    <Text style={{position: 'absolute', left: 16,color:'black'}}>用车时间</Text>
+                                    <Text style={{position: 'absolute', left: 16, color: 'black'}}>用车时间</Text>
 
                                 </View>
 
                                 <FlatList
                                     horizontal={false}
                                     numColumns={2}
-                                    // keyExtractor={(item, index) => item.name}
+                                    keyExtractor={(item, index) => item}
                                     data={this.state.locations}
                                     extraData={this.state}
                                     ListHeaderComponent={
@@ -267,7 +284,6 @@ export default class CfCreatePager extends Component {
 
 
                                 <Text style={{color: Color.colorAccent, margin: 16}}>路线信息</Text>
-                                <MenuProvider>
 
                                 <Menu onSelect={value => this.setState({tripArea: value})}>
                                     <MenuTrigger >
@@ -291,7 +307,6 @@ export default class CfCreatePager extends Component {
 
                                     </MenuOptions>
                                 </Menu>
-                                </MenuProvider>
 
                                 <View style={styles.itemStyle}>
                                     <Text style={{marginLeft: 16}}>预计里程</Text>
@@ -311,9 +326,32 @@ export default class CfCreatePager extends Component {
                                             return <View>
                                                 <Text style={{color: Color.colorAccent, margin: 16}}>私车信息</Text>
 
+                                                <FlatList
+                                                    horizontal={true}
+                                                    keyExtractor={(item, index) => item.id}
+                                                    data={this.state.privateCarItems}
+                                                    extraData={this.state}
+                                                    renderItem={({item, index}) =>
+                                                        <TouchableOpacity
+                                                            style={{
+                                                                backgroundColor: Color.colorIndigoDark,
+                                                                borderRadius: 20,
+                                                                elevation: 5,
+                                                                margin: 16
+                                                            }}
+                                                            onPress={() => {
+                                                                this.setState({
+                                                                    privateCar: item.carNum,
+                                                                    privateFeature: item.carPower,
+                                                                })
+                                                            }
+                                                            }>
+                                                            <Text style={{color: "white", margin: 10}}>{item.carNum}</Text></TouchableOpacity>}
+                                                />
                                                 <View style={styles.itemStyle}>
                                                     <Text style={{marginLeft: 16}}>私车车牌</Text>
                                                     <TextInput style={styles.textInput}
+                                                               value={this.state.privateCar}
                                                                placeholder="请输入私车车牌"
                                                                returnKeyType={'done'}
                                                                blurOnSubmit={true}
@@ -323,6 +361,7 @@ export default class CfCreatePager extends Component {
                                                 <View style={styles.itemStyle}>
                                                     <Text style={{marginLeft: 16}}>排量</Text>
                                                     <TextInput style={styles.textInput}
+                                                               value={this.state.privateFeature}
                                                                placeholder="排量"
                                                                returnKeyType={'done'}
                                                                blurOnSubmit={true}
@@ -379,26 +418,28 @@ export default class CfCreatePager extends Component {
                         </ScrollView>
                     </KeyboardAvoidingView>
                     <Loading visible={this.state.isLoading}/>
-                <InputDialog
-                    isMulti={false}
-                    action={[
-                        (popupDialog) => {
-                            this.popupDialog = popupDialog;
-                        },
-                        (text) => {
-                            this.setState({editContent: text})
-                        },
-                        () => {
-                            this.setState({editContent: ''});
-                            this.popupDialog.dismiss();
-                        },
-                        () => {
-                            this.setState({editContent: ''});
-                            this.state.locations.push(this.state.editContent);
-                            this.setState({});
-                            this.popupDialog.dismiss();
-                        }
-                    ]} str={['填写目的地', '如果在供应商列表没有的目的地，请此填写']}/>
+                    <InputDialog
+                        isMulti={false}
+                        action={[
+                            (popupDialog) => {
+                                this.popupDialog = popupDialog;
+                            },
+                            (text) => {
+                                this.setState({editContent: text})
+                            },
+                            () => {
+                                this.setState({editContent: ''});
+                                this.popupDialog.dismiss();
+                            },
+                            () => {
+                                this.setState({editContent: ''});
+                                this.state.locations.push(this.state.editContent);
+                                this.setState({});
+                                this.popupDialog.dismiss();
+                            }
+                        ]} str={['填写目的地', '如果在供应商列表没有的目的地，请此填写']}/>
+                </MenuProvider>
+
             </View>
 
         )

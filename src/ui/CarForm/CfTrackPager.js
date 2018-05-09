@@ -30,6 +30,8 @@ let jsCode = `
 
         var map = new BMap.Map("allmap");
         var point = new BMap.Point(formatData[0].lng, formatData[0].lat);
+   		var point2 = new BMap.Point(formatData[formatData.length-1].lng, formatData[formatData.length-1].lat);
+
         map.centerAndZoom(point, 10);
         var pois = [];
         formatData.map(function (temp) {
@@ -46,9 +48,11 @@ let jsCode = `
         });
         map.addOverlay(polyline);          //增加折线
 
-        var marker = new BMap.Marker(point);  // 创建标注
+        var marker = new BMap.Marker(point);  // 起点
         map.addOverlay(marker);              // 将标注添加到地图中
         map.centerAndZoom(point, 15);
+        var marker2 = new BMap.Marker(point2); //终点
+        map.addOverlay(marker2);              
     `;
 
 let html = '<!DOCTYPE html> <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style type="text/css">body, html, #allmap {width: 100%;height: 100%;overflow: hidden;margin: 0;} </style> <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1fvdmzCGS0mrY2i6CB1yiWBD"></script> </head> <body> <div id="allmap"></div> </body> </html> <script type="text/javascript">';
@@ -303,7 +307,7 @@ export default class CfTrackPager extends Component {
                         <Text style={{
                             marginLeft: 10,
                             marginBottom: 2
-                        }}>{  (this.state.carInfo && this.state.carInfo.imeiCode&&this.state.nowPoint) ? (deviceStatusText[this.state.nowPoint.device_info]) : '没有imei码'}</Text>
+                        }}>{  (this.state.carInfo && this.state.carInfo.imeiCode && this.state.nowPoint) ? (deviceStatusText[this.state.nowPoint.device_info]) : '没有imei码'}</Text>
                     </View>
                     <TouchableOpacity
                         onPress={() => {

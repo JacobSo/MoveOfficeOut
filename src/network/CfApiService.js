@@ -124,7 +124,11 @@ export  default  class CfApiService {
             '&status=' + (status?status:'');
         return this.getRequest(BASE_URL, method);
     }
-
+    static getPrivateCar() {
+        let method = 'CarMgr/Get?' +
+            'account=' + App.account ;
+        return this.getRequest(BASE_URL, method);
+    }
     static requestCar(params) {
         let targets = '';
         params.locations.map((str) => {
@@ -175,4 +179,6 @@ export  default  class CfApiService {
         });
         return this.postRequest(BASE_URL, method, param);
     }
+
+
 }
