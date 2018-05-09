@@ -41,6 +41,14 @@ export default class CfSignPager extends Component {
 
 
     setDistance() {
+        if(this.props.carInfo.actualTripTime){
+            let date = new Date(this.props.carInfo.actualTripTime);
+            if((new Date().getMilliseconds()-date.getMilliseconds())<1000*60*30){
+                SnackBar.show('半个小时内不可重复操作');
+                return
+            }
+        }
+
         if (!this.state.distance) {
             SnackBar.show('请填写里程');
             return
@@ -126,7 +134,7 @@ export default class CfSignPager extends Component {
                         <View>
                             <View style={{
                                 margin: 16,
-                                backgroundColor:this.props.carInfo.beginPoint ?Color.colorTeal: Color.colorIndigo,
+                                backgroundColor: this.props.carInfo.beginPoint ? Color.colorTeal : Color.colorIndigo,
                                 borderRadius: 10,
                                 elevation: 5,
                             }}>
@@ -144,10 +152,11 @@ export default class CfSignPager extends Component {
                                     padding: 16
                                 }}>
                                     <Text>{'起始里程：' + (this.props.carInfo.beginPoint ? this.props.carInfo.beginPoint : '未填写')}</Text>
-                                    <Text style={{marginTop:8,}}>{'结束里程：' + (this.props.carInfo.endPoint ? this.props.carInfo.endPoint : '未填写')}</Text>
+                                    <Text
+                                        style={{marginTop: 8,}}>{'结束里程：' + (this.props.carInfo.endPoint ? this.props.carInfo.endPoint : '未填写')}</Text>
                                 </View>
                                 <Image style={{position: 'absolute', alignContent: 'center', right: -55, top: 0}}
-                                       source={this.props.carInfo.beginPoint ?require('../../drawable/car_image.png'):require('../../drawable/car_red.png')}/>
+                                       source={this.props.carInfo.beginPoint ? require('../../drawable/car_image.png') : require('../../drawable/car_red.png')}/>
                             </View>
 
                             <View style={{
@@ -157,7 +166,7 @@ export default class CfSignPager extends Component {
                                 elevation: 5,
                                 alignItems: 'center'
                             }}>
-                                <TextInput style={{width: width - 32, height:55,textAlign: 'center'}}
+                                <TextInput style={{width: width - 32, height: 55, textAlign: 'center'}}
                                            placeholder="填写里程"
                                            returnKeyType={'done'}
                                            keyboardType={'numeric'}

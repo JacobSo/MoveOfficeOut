@@ -7,8 +7,8 @@ export  default  class ApiService {
         return new Date(time).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
     }
 
-    static getYyMmDdFormat(time){
-        let temp = new Date(time)
+        static getYyMmDdFormat(time){
+        let temp = new Date(time);
         return temp.getFullYear()+"-"+(temp.getMonth()+1)+'-'+temp.getDate();
     }
 
