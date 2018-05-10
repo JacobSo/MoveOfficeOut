@@ -43,7 +43,10 @@ export default class CfSignPager extends Component {
     setDistance() {
         if(this.props.carInfo.actualTripTime){
             let date = new Date(this.props.carInfo.actualTripTime);
-            if((new Date().getMilliseconds()-date.getMilliseconds())<1000*60*30){
+            if((new Date().getTime()-date.getTime())<(1000*60*30)){
+                console.log((new Date().getTime()-date.getTime()));
+                console.log(new Date().getTime());
+                console.log(date.getTime());
                 SnackBar.show('半个小时内不可重复操作');
                 return
             }
