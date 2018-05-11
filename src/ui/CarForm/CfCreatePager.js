@@ -22,6 +22,8 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import {MenuProvider} from 'react-native-popup-menu';
+import Moment from 'moment';
+import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
 const areaParams = ["佛山市内", "佛山市外"];
 export default class CfCreatePager extends Component {
@@ -50,6 +52,8 @@ export default class CfCreatePager extends Component {
 
             isHasPrivateCar: false,
             privateCarItems: [],
+
+            limitDate:Utility.getDate(1)
         }
     }
 
@@ -209,6 +213,7 @@ export default class CfCreatePager extends Component {
                                         mode="datetime"
                                         placeholder="选择"
                                         format="YYYY-MM-DD HH:mm"
+                                        minDate={this.state.limitDate}
                                         confirmBtnText="确认"
                                         cancelBtnText="取消"
                                         showIcon={true}

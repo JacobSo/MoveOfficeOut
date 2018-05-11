@@ -15,6 +15,7 @@ import Loading from 'react-native-loading-spinner-overlay'
 import SnackBar from 'react-native-snackbar-dialog'
 import IosModule from '../../module/IosCommontModule'
 import AndroidModule from '../../module/AndoridCommontModule'
+import Utility from "../../utils/Utility";
 const ImagePicker = require('react-native-image-picker');
 const options = {
     quality: 0.2,
@@ -39,19 +40,18 @@ export default class CfSignPager extends Component {
     componentDidMount() {
     }
 
+//16532329
+//1800000
 
     setDistance() {
-        if(this.props.carInfo.actualTripTime){
-            let date = new Date(this.props.carInfo.actualTripTime);
-            if((new Date().getTime()-date.getTime())<(1000*60*30)){
-                console.log((new Date().getTime()-date.getTime()));
-                console.log(new Date().getTime());
-                console.log(date.getTime());
-                SnackBar.show('半个小时内不可重复操作');
-                return
-            }
-        }
-
+        /*        let date = new Date("2018-05-11 11:39:29");
+         let time = (new Date().getTime()-date.getTime());
+         if(this.props.carInfo.actualTripTime){
+         if(time<(60*30*1000)){
+         SnackBar.show('半个小时内不可重复操作');
+         return
+         }
+         }*/
         if (!this.state.distance) {
             SnackBar.show('请填写里程');
             return
@@ -61,7 +61,7 @@ export default class CfSignPager extends Component {
             return
         }
         Alert.alert(
-            this.props.carInfo.beginPoint ? '结束里程记录' : '起始里程记录',
+            this.props.carInfo.beginPoint ? '是否结束用车' : '起始里程记录',
             '本次记录里程：' + this.state.distance,
             [
                 {
@@ -93,12 +93,11 @@ export default class CfSignPager extends Component {
             } else {
                 SnackBar.show(responseJson.errDesc);
             }
-        })
-            .catch((error) => {
-                console.log(error);
-                SnackBar.show("出错了，请稍后再试", {duration: 1500});
-                this.setState({isLoading: false});
-            }).done();
+        }).catch((error) => {
+            console.log(error);
+            SnackBar.show("出错了，请稍后再试", {duration: 1500});
+            this.setState({isLoading: false});
+        }).done();
     }
 
 

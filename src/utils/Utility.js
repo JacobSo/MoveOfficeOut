@@ -3,8 +3,20 @@
  */
 export  default  class ApiService {
 
+    static getDate(dayCount){
+        if(!dayCount){
+            dayCount = 0;
+        }
+        let dd = new Date();
+        dd.setDate(dd.getDate()+dayCount);//设置日期
+        let y = dd.getFullYear();
+        let m = dd.getMonth()+1;//获取当前月份的日期
+        let d = dd.getDate();
+        return y+"-"+m+"-"+d;
+    }
+
     static replaceT(time){
-        return new Date(time).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+        return time.replace("T"," ");
     }
 
         static getYyMmDdFormat(time){
