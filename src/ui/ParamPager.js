@@ -183,38 +183,39 @@ export default class PasswordPager extends Component {
                 flex: 1,
                 backgroundColor: 'white'
             }}>
-                <Toolbar title={[this.props.title]}
-                         color={'white'}
-                         elevation={5}
-                         isWhiteBar={true}
-                         isHomeUp={true}
-                         isAction={true}
-                         isActionByText={true}
-                         actionArray={[(this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49' ? '添加' : null, this.state.isMulti ? '完成' : null]}
-                         functionArray={[
-                             () => {
-                                 this.props.nav.goBack(null)
-                             },
-                             (this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49' ? () => {
-                                 this.popupDialog.show();
-                             } : null,
-                             this.state.isMulti ? () => {
-                                 this._setSelect(this.state.selectItems.toString())
-                             } : null
-                         ]}/>
-                    <TextInput style={styles.textInput}
-                               placeholder="搜索"
-                               returnKeyType={'done'}
-                               blurOnSubmit={true}
-                               underlineColorAndroid="transparent"
-                               onChangeText={(text) => {
-                                   this._search(text).then((array) => {
-                                       //       console.log(array);
-                                       this.setState({
-                                           dataSource: this.state.dataSource.cloneWithRows(array),
-                                       });
-                                   })
-                               }}/>
+                <Toolbar
+                    title={[this.props.title]}
+                    color={'white'}
+                    elevation={5}
+                    isWhiteBar={true}
+                    isHomeUp={true}
+                    isAction={true}
+                    isActionByText={true}
+                    actionArray={[(this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49' ? '添加' : null, this.state.isMulti ? '完成' : null]}
+                    functionArray={[
+                        () => {
+                            this.props.nav.goBack(null)
+                        },
+                        (this.props.title.indexOf('供应商') > -1) && App.FirstDptId === '49' ? () => {
+                            this.popupDialog.show();
+                        } : null,
+                        this.state.isMulti ? () => {
+                            this._setSelect(this.state.selectItems.toString())
+                        } : null
+                    ]}/>
+                <TextInput style={styles.textInput}
+                           placeholder="搜索"
+                           returnKeyType={'done'}
+                           blurOnSubmit={true}
+                           underlineColorAndroid="transparent"
+                           onChangeText={(text) => {
+                               this._search(text).then((array) => {
+                                   //       console.log(array);
+                                   this.setState({
+                                       dataSource: this.state.dataSource.cloneWithRows(array),
+                                   });
+                               })
+                           }}/>
                 {
                     (() => {
                         if (this.state.isMulti)
@@ -284,10 +285,10 @@ const styles = StyleSheet.create({
         width: width - 32,
         height: 45,
         margin: 16,
-        textAlign:"center",
+        textAlign: "center",
         borderColor: Color.line,
         borderWidth: 1,
-        borderRadius:20,
+        borderRadius: 20,
     },
 
 });

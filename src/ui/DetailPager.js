@@ -337,7 +337,7 @@ class DetailPager extends Component {
                 if (!responseJson.IsErr) {
                     if (this.props.task.DailyRecordNo && //单号
                         (flag === 0 || flag === 1) && //角色
-                        new Date().getHours() < 11) {//时间限制
+                        new Date().getHours() < 18) {//时间限制
                         this.confirmCar(this.props.task.DailyRecordNo, flag + 1)
                     } else {
                         SnackBar.show('操作成功');

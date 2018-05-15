@@ -144,7 +144,7 @@ export default class CfListView extends Component {
 
     confirmCar(guid, type) {
         let now = new Date().getHours();
-        if ((now >= 11 && App.workType === '人事部') || now < 11 && App.workType !== '人事部') {
+        if ((now >= 18 && App.workType === '人事部') || now < 18 && App.workType !== '人事部') {
             Alert.alert(
                 type === 1 ? '通过' : '驳回',
                 type === 1 ? '通过车辆申请单，进入分配车辆流程' : '驳回车辆申请单，车辆申请结束',
