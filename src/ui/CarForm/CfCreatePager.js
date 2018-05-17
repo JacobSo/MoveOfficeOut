@@ -5,7 +5,7 @@
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, Platform, ListView, Text, TouchableOpacity, Alert,
+    View, StyleSheet, Dimensions, Text, TouchableOpacity, Alert,
     FlatList, Image, TextInput, ScrollView, KeyboardAvoidingView, Switch
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
@@ -53,7 +53,7 @@ export default class CfCreatePager extends Component {
             isHasPrivateCar: false,
             privateCarItems: [],
 
-            limitDate:Utility.getDate(1)
+            limitDate: Utility.getDate(1)
         }
     }
 
@@ -63,9 +63,9 @@ export default class CfCreatePager extends Component {
                 if (!responseJson.IsErr) {
                     this.setState({
                         isHasPrivateCar: responseJson.data && responseJson.data.length !== 0,
-                        privateCarItems:responseJson.data,
-                        privateCar: responseJson.data && responseJson.data.length ===1?responseJson.data[0].carNum:'',
-                        privateFeature: responseJson.data && responseJson.data.length ===1?responseJson.data[0].carPower:'',
+                        privateCarItems: responseJson.data,
+                        privateCar: responseJson.data && responseJson.data.length === 1 ? responseJson.data[0].carNum : '',
+                        privateFeature: responseJson.data && responseJson.data.length === 1 ? responseJson.data[0].carPower : '',
                     })
                 }
             })
@@ -350,7 +350,10 @@ export default class CfCreatePager extends Component {
                                                                 })
                                                             }
                                                             }>
-                                                            <Text style={{color: "white", margin: 10}}>{item.carNum}</Text></TouchableOpacity>}
+                                                            <Text style={{
+                                                                color: "white",
+                                                                margin: 10
+                                                            }}>{item.carNum}</Text></TouchableOpacity>}
                                                 />
                                                 <View style={styles.itemStyle}>
                                                     <Text style={{marginLeft: 16}}>私车车牌</Text>
