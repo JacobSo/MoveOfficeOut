@@ -117,18 +117,20 @@ export  default  class CfApiService {
         return this.getRequest(BASE_URL, method);
     }
 
-    static getDetail(workOrder,status) {
+    static getDetail(workOrder, status) {
         let method = 'CarApply/GetBillInfo?' +
             'account=' + App.account +
-            '&workOrder=' + workOrder+
-            '&status=' + (status?status:'');
+            '&workOrder=' + workOrder +
+            '&status=' + (status ? status : '');
         return this.getRequest(BASE_URL, method);
     }
+
     static getPrivateCar() {
         let method = 'CarMgr/Get?' +
-            'account=' + App.account ;
+            'account=' + App.account;
         return this.getRequest(BASE_URL, method);
     }
+
     static requestCar(params) {
         let targets = '';
         params.locations.map((str) => {
@@ -145,7 +147,8 @@ export  default  class CfApiService {
             tripArea: params.tripArea,
             tripDistance: params.distance,
             needCard: params.card,
-            tripTime: params.useTime,
+            tripTime: params.beginTime,
+            returnTime: params.endTime,
             tripTarget: targets.substring(0, targets.length - 1),
             remark: params.remark,
         });

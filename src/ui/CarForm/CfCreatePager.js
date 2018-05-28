@@ -32,7 +32,8 @@ export default class CfCreatePager extends Component {
         this.state = {
             isLoading: false,
 
-            useTime: '',
+            beginTime: '',
+            endTime: '',
             locations: [],
 
             tripArea: 0,
@@ -53,7 +54,9 @@ export default class CfCreatePager extends Component {
             isHasPrivateCar: false,
             privateCarItems: [],
 
-            limitDate: Utility.getDate(1)
+            limitDate: Utility.getDate(1),
+
+            cardText: '不需要'
         }
     }
 
@@ -75,7 +78,7 @@ export default class CfCreatePager extends Component {
     }
 
     requestCar() {
-        if (!this.state.useTime) {
+        if (!this.state.endTime||!this.state.beginTime) {
             SnackBar.show("必须选择用车日期");
             return
         }
@@ -209,7 +212,7 @@ export default class CfCreatePager extends Component {
                                             },
                                             dateText: {color: 'black', textAlign: 'right'},
                                         }}
-                                        date={this.state.useTime}
+                                        date={this.state.beginTime}
                                         mode="datetime"
                                         placeholder="选择"
                                         format="YYYY-MM-DD HH:mm"
@@ -218,14 +221,36 @@ export default class CfCreatePager extends Component {
                                         cancelBtnText="取消"
                                         showIcon={true}
                                         onDateChange={(date) => {
-                                            this.setState({useTime: date});
+                                            this.setState({beginTime: date});
                                             //   SnackBar.show(date)
                                         }}
                                     />
-                                    <Text style={{position: 'absolute', left: 16, color: 'black'}}>用车时间</Text>
-
+                                    <Text style={{position: 'absolute', left: 16, color: 'black'}}>用车开始时间</Text>
                                 </View>
-
+                                <View style={styles.itemStyle}>
+                                    <DatePicker
+                                        customStyles={ {
+                                            placeholderText: {
+                                                color: 'black',
+                                                textAlign: 'right'
+                                            },
+                                            dateText: {color: 'black', textAlign: 'right'},
+                                        }}
+                                        date={this.state.endTime}
+                                        mode="datetime"
+                                        placeholder="选择"
+                                        format="YYYY-MM-DD HH:mm"
+                                        minDate={this.state.limitDate}
+                                        confirmBtnText="确认"
+                                        cancelBtnText="取消"
+                                        showIcon={true}
+                                        onDateChange={(date) => {
+                                            this.setState({endTime: date});
+                                            //   SnackBar.show(date)
+                                        }}
+                                    />
+                                    <Text style={{position: 'absolute', left: 16, color: 'black'}}>用车结束时间</Text>
+                                </View>
                                 <FlatList
                                     horizontal={false}
                                     numColumns={2}
@@ -403,11 +428,14 @@ export default class CfCreatePager extends Component {
                                 <View style={{height: 1, width: width, backgroundColor: Color.line}}/>
 
                                 <View style={[styles.textStyle, {width: width, marginTop: 16, marginBottom: 32}]}>
-                                    <Text style={{fontSize: 15}}>加油卡</Text>
+                                    <Text style={{fontSize: 15}}>{this.state.cardText + '加油卡'}</Text>
                                     <Switch
                                         style={{marginRight: 32}}
                                         onValueChange={(value) => {
-                                            this.setState({card: value});
+                                            this.setState({
+                                                card: value,
+                                                cardText: value ? '需要' : '不需要'
+                                            });
                                         }}
                                         onTintColor={Color.colorAccent}
                                         tintColor={Color.colorBlueGrey}

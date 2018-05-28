@@ -49,7 +49,8 @@ export default class CfListView extends Component {
             '车牌号码：' + (rowData.carNum) + '\n\n' +
 
             '申请时间：' + Utility.replaceT(rowData.createTime) + '\n' +
-            '用车日期：' + Utility.replaceT(rowData.tripTime) + '\n' +
+            '用车开始日期：' + Utility.replaceT(rowData.tripTime) + '\n' +
+            '用车结束日期：' + (rowData.returnTime?Utility.replaceT(rowData.returnTime):'') + '\n' +
             '申请人：' + rowData.account + '\n\n' +
 
             '目的地：' + rowData.tripTarget + '\n' +
@@ -254,7 +255,10 @@ export default class CfListView extends Component {
 
                     <Text style={{
                         fontSize: 15
-                    }}>{'用车时间：' + Utility.replaceT(rowData.tripTime)}</Text>
+                    }}>{'开始时间：' + Utility.replaceT(rowData.tripTime)}</Text>
+                    <Text style={{
+                        fontSize: 15
+                    }}>{'结束时间：' + (rowData.returnTime?Utility.replaceT(rowData.returnTime):'')}</Text>
                     <Text >
                         {'目的地：' + rowData.tripTarget}
                     </Text>

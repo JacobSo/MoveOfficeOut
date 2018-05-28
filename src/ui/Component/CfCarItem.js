@@ -29,7 +29,8 @@ export default class CfCarItem extends Component {
             '车牌号码：' + (this.props.carInfo.carNum) + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.props.carInfo.createTime) + '\n' +
-            '用车日期：' +  Utility.replaceT(this.props.carInfo.tripTime)+ '\n' +
+            '用车开始日期：' +  Utility.replaceT(this.props.carInfo.tripTime)+ '\n' +
+            '用车结束日期：' +  (this.props.carInfo.returnTime?Utility.replaceT(this.props.carInfo.returnTime):'')+ '\n' +
             '申请人：' + this.props.carInfo.account + '\n\n' +
 
             '目的地：' + this.props.carInfo.tripTarget + '\n' +
@@ -148,7 +149,11 @@ export default class CfCarItem extends Component {
                     <Text style={{
                         color: 'white',
                         fontSize: 15
-                    }}>{'用车时间：'+Utility.replaceT(this.props.carInfo.tripTime,false)}</Text>
+                    }}>{'开始时间：'+Utility.replaceT(this.props.carInfo.tripTime,false)}</Text>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: 15
+                    }}>{'结束时间：'+(this.props.carInfo.returnTime?Utility.replaceT(this.props.carInfo.returnTime,false):'')}</Text>
                     <Text style={{color: 'white'}}>
                         {'目的地：' + this.props.carInfo.tripTarget}
                     </Text>

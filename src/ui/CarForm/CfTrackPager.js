@@ -216,7 +216,8 @@ export default class CfTrackPager extends Component {
             '车牌号码：' + this.state.carInfo.carNum + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.state.carInfo.createTime) + '\n' +
-            '用车日期：' + Utility.replaceT(this.state.carInfo.tripTime) + '\n' +
+            '用车开始日期：' + Utility.replaceT(this.state.carInfo.tripTime) + '\n' +
+            '用车结束日期：' + (this.state.carInfo.returnTime?Utility.replaceT(this.state.carInfo.returnTime):'') + '\n' +
             '申请人：' + this.state.carInfo.account + '\n\n' +
 
             '目的地：' + this.state.carInfo.tripTarget + '\n' +
