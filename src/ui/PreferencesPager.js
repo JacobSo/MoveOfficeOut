@@ -124,7 +124,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v8'],
+                                ['此版本更新记录', 'v10'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -152,9 +152,12 @@ export default class PreferencesPager extends Component {
                     <View style={styles.layoutContainer}>
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
-                            <Text style={{margin: 16}}>//314:ios v9 update,android v8 none
+                            <Text style={{margin: 16}}>
+                                v10:{'\n'}
+                                1.【全局】新增申请车辆模块{'\n'}
+                                2.【外出】申请车辆流程整合新模块{'\n'}{'\n'}
                                 v9:{'\n'}
-                                1.【全局】禁用首页更新提示{'\n'}{'\n'}
+                                1.【全局】ios禁用首页更新提示{'\n'}
                                 v8:{'\n'}
                                 1.【售后】评分更新{'\n'}
                                 v7:{'\n'}

@@ -73,9 +73,10 @@ export default class CfTrackPager extends Component {
             nowPoint: null,
             endAddress: '',
             nowTime: '',
-            isFullScreen: false,
-            deviceStatus: -1
+            isFullScreen: true,
+            deviceStatus: -1,
 
+            carMessage:'正在获取行车数据'
         }
     }
 
@@ -114,6 +115,8 @@ export default class CfTrackPager extends Component {
                 });
                 if (responseJson.data[0] && responseJson.data[0].imeiCode) {
                     this.getToken();
+                }else{
+                    this.setState({carMessage:'没有imei无法获取数据'})
                 }
 
             } else {
@@ -151,18 +154,23 @@ export default class CfTrackPager extends Component {
             .then((responseJson) => {
                 //this.refs.webView.postMessage(JSON.stringify(responseJson.data));
                 if (responseJson.ret === 0) {
-                    let temp = 'var data =\'' + JSON.stringify(responseJson.data) + '\';'
-                    jsCode = temp + jsCode;
-                    //  console.log(jsCode);
-                    if (Platform.OS === 'ios') {
-                        this.setState({
-                            beginPoint: responseJson.data[0],
-                            isData: true,
-                        });
-                        this.getDeviceAddress(this.state.beginPoint);
+                    if (responseJson && responseJson.data.length !== 0) {
+                        let temp = 'var data =\'' + JSON.stringify(responseJson.data) + '\';'
+                        jsCode = temp + jsCode;
+                        //  console.log(jsCode);
+                        if (Platform.OS === 'ios') {
+                            this.setState({
+                                beginPoint: responseJson.data[0],
+                                isData: true,
+                            });
+                            this.getDeviceAddress(this.state.beginPoint);
+                        } else {
+                            this.write();
+                            this.state.beginPoint = responseJson.data[0];
+                        }
                     } else {
-                        this.write();
-                        this.state.beginPoint = responseJson.data[0];
+                        this.getNow();
+                        SnackBar.show("没有轨迹数据")
                     }
                 }
 
@@ -194,6 +202,7 @@ export default class CfTrackPager extends Component {
         ApiService.getDevicesNow(this.state.token, this.state.carInfo.imeiCode).then((responseJson) => {
             if (responseJson.ret === 0) {
                 this.setState({
+                    isFullScreen:responseJson.data[0].device_info!==0,
                     nowPoint: responseJson.data[0],
                     nowTime: Utility.getFullTime(responseJson.data[0].gps_time, true)
                 });
@@ -213,11 +222,12 @@ export default class CfTrackPager extends Component {
             '用车单号：' + this.state.carInfo.billNo + '\n' +
             '状态：' + statusText[this.state.carInfo.status] + '\n' +
             '车辆类型：' + (this.state.carInfo.carType === 0 ? "公司车辆" : "私人车辆") + '\n' +
-            '车牌号码：' + this.state.carInfo.carNum + '\n\n' +
+            '车牌号码：' + this.state.carInfo.carNum + '\n' +
+            'imei：' + this.state.carInfo.imeiCode + '\n\n' +
 
             '申请时间：' + Utility.replaceT(this.state.carInfo.createTime) + '\n' +
             '用车开始日期：' + Utility.replaceT(this.state.carInfo.tripTime) + '\n' +
-            '用车结束日期：' + (this.state.carInfo.returnTime?Utility.replaceT(this.state.carInfo.returnTime):'') + '\n' +
+            '用车结束日期：' + (this.state.carInfo.returnTime ? Utility.replaceT(this.state.carInfo.returnTime) : '') + '\n' +
             '申请人：' + this.state.carInfo.account + '\n\n' +
 
             '目的地：' + this.state.carInfo.tripTarget + '\n' +
@@ -308,7 +318,7 @@ export default class CfTrackPager extends Component {
                         <Text style={{
                             marginLeft: 10,
                             marginBottom: 2
-                        }}>{  (this.state.carInfo && this.state.carInfo.imeiCode && this.state.nowPoint) ? (deviceStatusText[this.state.nowPoint.device_info]) : '没有imei码'}</Text>
+                        }}>{  (this.state.carInfo && this.state.carInfo.imeiCode && this.state.nowPoint) ? (deviceStatusText[this.state.nowPoint.device_info]) : this.state.carMessage}</Text>
                     </View>
                     <TouchableOpacity
                         onPress={() => {
