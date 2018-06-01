@@ -97,6 +97,17 @@ class WdSearchPager extends Component {
                         backgroundColor: Color.trans,
                         width: width,
                     }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={()=>{}}
+                            tintColor={Color.colorBlueGrey}//ios
+                            title="Loading..."//ios
+                            titleColor='white'
+                            colors={[Color.colorPrimary]}
+                            progressBackgroundColor="white"
+                        />
+                    }
                     dataSource={this.state.dataSource}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
@@ -133,7 +144,7 @@ class WdSearchPager extends Component {
             }}>
                 <Toolbar
                     elevation={2}
-                    title={[App.workType.indexOf("板木驻厂工程师") > -1 ? "板木研发" : "软体研发"]}
+                    title={['历史评审单']}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
                     isAction={true}
