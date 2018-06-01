@@ -802,6 +802,7 @@ const styles = StyleSheet.create(
             shadowRadius: 3,
             alignItems: 'center',
             elevation: 2,
+            borderRadius:10,
         },
         control: {
             width: width - 32,
@@ -811,6 +812,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             marginBottom: 8,
             marginTop: 8,
+            borderRadius:10
         },
         ctrlIcon: {
             width: 25,

@@ -10,6 +10,7 @@ import {
     ListView,
     RefreshControl,
     Dimensions,
+    TextInput, TouchableOpacity, Text
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/WdApiService';
@@ -23,10 +24,9 @@ import {connect} from "react-redux";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SQLite from '../../db/Sqlite';
 import Loading from 'react-native-loading-spinner-overlay';
-let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 
-class WdMainPager extends Component {
+class WdSearchPager extends Component {
     constructor(props) {
         super(props);
 
@@ -35,31 +35,27 @@ class WdMainPager extends Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => true,
             }),
-            isRefreshing: true,
+            isRefreshing: false,
             isSearch: false,
+            keyword:''
         }
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            sqLite.createWdTable();
-            this.getDataLocal();
-            //    this._onRefresh();
-        });
-    }
-
-    componentWillReceiveProps(newProps) {
-        //console.log(JSON.stringify(this.state.items) + '------------WdMainPager-------------');
-        //  this.state.items.Itemlist[newProps.position] = newProps.product;
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         })
     }
 
-    _onRefresh() {
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(this.state.items),
+        })
+    }
+
+    onSearch() {
         this.setState({isRefreshing: true});
-        sqLite.clearWdData();
-        ApiService.getSeries()
+        ApiService.searchSeries(this.state.keyword,"")
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.setState({
@@ -67,8 +63,6 @@ class WdMainPager extends Component {
                         dataSource: this.state.dataSource.cloneWithRows(responseJson.Serieslist),
                         isRefreshing: false,
                     });
-                    sqLite.insertWdData(responseJson.Serieslist);//db save
-                    SnackBar.show("同步数据完成")
                 } else {
                     SnackBar.show(responseJson.ErrDesc);
                     this.setState({
@@ -89,31 +83,11 @@ class WdMainPager extends Component {
             }).done();
     }
 
-    getDataLocal() {
-        this.setState({isRefreshing: true});
-        sqLite.getWdData().then((results) => {
-            this.setState({isRefreshing: false});
-            if (results.length !== 0) {
-              //  console.log("****************************" + JSON.stringify(results));
-                this.setState({
-                    items: results,
-                    dataSource: this.state.dataSource.cloneWithRows(results),
-                    isRefreshing: false,
-                });
-                SnackBar.show("本地数据")
-            } else {
-                this._onRefresh();
-            }
-        }).catch((err) => {
-            this.setState({isRefreshing: false});
-            SnackBar.show("出错了，请稍后再试");
-        }).done();
-    }
 
     _getView() {
         if (this.state.items.length === 0) {
             return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
-                this._onRefresh()
+
             } }/>)
         } else {
             return (
@@ -124,17 +98,6 @@ class WdMainPager extends Component {
                         width: width,
                     }}
                     dataSource={this.state.dataSource}
-                    //removeClippedSubviews={false}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this._onRefresh()}
-                            tintColor={Color.colorBlueGrey}//ios
-                            title="刷新中..."//ios
-                            titleColor='white'
-                            colors={[Color.colorPrimary]}
-                            progressBackgroundColor="white"
-                        />}
                     enableEmptySections={true}
                     renderRow={(rowData, rowID, sectionID) =>
                         <WdMainItem
@@ -145,12 +108,9 @@ class WdMainPager extends Component {
                                     'wdProduct',
                                     {
                                         task: rowData,
+                                        isSearch:true,
                                         finishFunc: () => {
-                                            sqLite.clearWdSeries(rowData.SeriesGuid);
-                                            this.state.items.splice(sectionID, 1);
-                                            this.setState({
-                                                dataSource: this.state.dataSource.cloneWithRows(JSON.parse(JSON.stringify(this.state.items))),
-                                            });
+
                                         }
                                     },
                                 );
@@ -173,37 +133,50 @@ class WdMainPager extends Component {
             }}>
                 <Toolbar
                     elevation={2}
-                    title={[App.workType.indexOf("板木驻厂工程师")>-1 ? "板木研发" : "软体研发"]}
+                    title={[App.workType.indexOf("板木驻厂工程师") > -1 ? "板木研发" : "软体研发"]}
                     color={Color.colorDeepOrange}
                     isHomeUp={true}
                     isAction={true}
                     isActionByText={false}
-                    actionArray={[require("../../drawable/search.png")]}
+                    actionArray={[]}
                     functionArray={[
                         () => {
-                         /*   if (this.state.isSearch) {
-                                this.setState({
-                                    isSearch: !this.state.isSearch,
-                                    isHeader: true
-                                })
-                            } else this.props.nav.goBack(null)*/
-                            this.props.nav.goBack(null)
-                        },
-                        () => {
-                            this.props.nav.navigate('wdSearch')
+                            this.props.nav.goBack(null);
                         },
                     ]}
-                /*    isSearch={this.state.isSearch}
-                    searchFunc={(text) => {
-                        this._search(text).then((array) => {
-                            //       console.log(array);
-                            this.setState({
-                                dataSource: this.state.dataSource.cloneWithRows(array),
-                            });
-                        })
-                    }}
-*/
                 />
+
+                <View style={{flexDirection: "row"}}>
+
+                    <TextInput style={{
+                        width: width - 100,
+                        height: 45,
+                        marginLeft: 16,
+                        marginRight: 16,
+                        borderColor: Color.line,
+                        borderBottomWidth: 1,
+                    }}
+                               placeholder="输入系列"
+                               returnKeyType={'done'}
+                               blurOnSubmit={true}
+                               underlineColorAndroid="transparent"
+                               onChangeText={(text) => {
+                                   this.state.keyword = text
+                               }}/>
+                    <TouchableOpacity
+                        style={{
+                            backgroundColor: Color.colorDeepOrange,
+                            margin: 8,
+                            justifyContent: "center",
+                            padding: 10,
+                            borderRadius: 10
+                        }}
+                        onPress={() => {
+                            this.onSearch();
+                        }}>
+                        <Text style={{color: "white"}}>搜索</Text>
+                    </TouchableOpacity>
+                </View>
                 {
                     this._getView()
                 }
@@ -223,4 +196,4 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators(WdActions, dispatch)
     }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(WdMainPager);
+export default connect(mapStateToProps, mapDispatchToProps)(WdSearchPager);

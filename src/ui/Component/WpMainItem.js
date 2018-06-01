@@ -24,14 +24,15 @@ export default class WpMainItem extends Component {
             <TouchableOpacity
                 onPress={this.props.action}
                 style={styles.itemCard}>
+                <View style={{width: width - 32, padding: 5,    backgroundColor: this.props.rowData.ReviewType === 1 ? Color.colorTeal : Color.colorAmber,
+                    borderTopLeftRadius:10,borderTopRightRadius:10}}>
                 <Text style={{
-                    textAlign: 'center',
                     width: width - 32,
-                    padding: 5,
+                    textAlign: 'center',
                     color: 'white',
-                    backgroundColor: this.props.rowData.ReviewType === 1 ? Color.colorTeal : Color.colorAmber
                 }}>
                     {this.props.rowData.ReviewType === 1 ? '软体评审' : '板木评审'}</Text>
+                </View>
                 <View style={styles.itemText}>
                     <Text>{'评审时间'}</Text>
                     <Text
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
         marginTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        borderRadius:10
     },
 });

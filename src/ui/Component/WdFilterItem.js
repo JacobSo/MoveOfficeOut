@@ -89,13 +89,14 @@ export class WdFilterItem extends Component {
                     this.props.func
                 }
                 style={[styles.mainContainer]}>
+                <View style={{  width: width / 3 - 10, backgroundColor: this.state.statusColor,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                 <Text style={{
                     width: width / 3 - 10,
-                    backgroundColor: this.state.statusColor,
+
                     color: 'white',
                     textAlign: 'center'
                 }}>{this.state.statusText}</Text>
-
+                </View>
                 <View style={{width: 100, height: 100}}>
                     <CachedImage
                         resizeMode="contain"
@@ -132,6 +133,7 @@ const styles = StyleSheet.create(
             width: width / 3 - 10,
             elevation: 2,
             margin: 5,
+            borderRadius:10
         },
     });
 

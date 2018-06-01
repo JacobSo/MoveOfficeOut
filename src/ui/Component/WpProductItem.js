@@ -29,7 +29,7 @@ export class WpProductItem extends Component {
         //   console.log(JSON.stringify(this.props.task));
         return (
             <TouchableOpacity
-                style={{flexDirection: 'row', backgroundColor: 'white', elevation: 2, margin: 16}}
+                style={{flexDirection: 'row', backgroundColor: 'white', elevation: 2, margin: 16,borderRadius:10}}
                 onPress={() => {
                     //this.props.func(this.props.product)
                     this.props.func();

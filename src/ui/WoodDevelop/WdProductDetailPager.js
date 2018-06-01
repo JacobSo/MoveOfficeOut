@@ -97,17 +97,20 @@ class WdProductDetailPager extends Component {
                             (this.state.intentStep === 0 && (this.props.product.stage === 7 || this.props.product.stage === 6 || this.props.product.stage === 5 || this.props.product.stage === 4)) ||
                             (this.state.intentStep === 1 && (this.props.product.stage === 7 || this.props.product.stage === 6 || this.props.product.stage === 3 || this.props.product.stage === 2)) ||
                             (this.state.intentStep === 2 && (this.props.product.stage === 7 || this.props.product.stage === 5 || this.props.product.stage === 3 || this.props.product.stage === 1));
-                        if (isHasIntent) {
-                            this.props.nav.navigate(
-                                'wdPost',
-                                {
-                                    title: this.state.intentTitle,
-                                    step: this.state.intentStep,
-                                    product: this.props.product,
-                                    position: this.props.position
-                                },
-                            );
-                        } else SnackBar.show("本阶段你不需要评审");
+                        if(!this.props.isSearch){
+                            if (isHasIntent) {
+                                this.props.nav.navigate(
+                                    'wdPost',
+                                    {
+                                        title: this.state.intentTitle,
+                                        step: this.state.intentStep,
+                                        product: this.props.product,
+                                        position: this.props.position
+                                    },
+                                );
+                            } else SnackBar.show("本阶段你不需要评审");
+                        }else SnackBar.show("搜索状态下不可更改单据")
+
                         this.popupDialog.dismiss();
                     }}>
                         <Text style={{margin: 16}}>填写评审</Text>

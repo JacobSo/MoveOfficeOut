@@ -49,7 +49,7 @@ class WdProductListPager extends Component {
             dataSource: this.state.dataSource.cloneWithRows(this.state.items),
         });
         this.countNumber();
-   //     console.log(JSON.stringify(this.props));
+        //     console.log(JSON.stringify(this.props));
     }
 
     componentWillReceiveProps(newProps) {
@@ -111,13 +111,13 @@ class WdProductListPager extends Component {
                             {
                                 task: this.props.task,
                                 step: 1,
-                                stepName: App.workType.indexOf("板木驻厂工程师")>-1 ? '打印白胚评审' : '打印木架评审',
+                                stepName: '打印' + this.getName() + '评审',
                                 selectMode: true,
                             },
                         );
                         this.popupDialog.dismiss();
                     }}>
-                        <Text style={{margin: 16}}>{App.workType.indexOf("板木驻厂工程师")>-1 ? '白胚评审报表' : '木架评审报表'}</Text>
+                        <Text style={{margin: 16}}>{this.getName() + '评审报表'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
@@ -164,7 +164,7 @@ class WdProductListPager extends Component {
                                 {
                                     task: this.props.task,
                                     step: 1,
-                                    stepName: App.workType.indexOf("板木驻厂工程师")>-1 ? '白胚评审进度' : '木架评审进度',
+                                    stepName: this.getName() + '评审进度',
                                     selectMode: false,
                                 },
                             );
@@ -172,7 +172,7 @@ class WdProductListPager extends Component {
                         style={{alignItems: 'center'}}>
                         <View style={styles.iconCircle}>
                             <Text>{this.state.aNum}</Text></View>
-                        <Text >{App.workType.indexOf("板木驻厂工程师")>-1 ? '白胚' : '木架'}</Text>
+                        <Text >{this.getName()}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.nav.navigate(
@@ -217,7 +217,7 @@ class WdProductListPager extends Component {
                                 })
                             }
                             Alert.alert(
-                                App.workType.indexOf("板木驻厂工程师")>-1 ? this.props.task.SeriesName : '评审信息',
+                                App.workType.indexOf("板木驻厂工程师") > -1 ? this.props.task.SeriesName : '评审信息',
                                 "预约评审时间：" + this.props.task.SeriesName + '\n' +
                                 "工厂：" + this.props.task.FacName + '\n' +
                                 "电话：" + this.props.task.sFactoryCall + '\n' +
@@ -255,102 +255,99 @@ class WdProductListPager extends Component {
         return this.state.items.filter((item) => item.ItemName.toLowerCase().indexOf(text.toLowerCase()) > -1);
     }
 
+    getName() {
+        if (App.workType.indexOf("板木驻厂工程师") > -1) {
+            return "白胚"
+        } else {
+            return "木架"
+        }
+    }
+
     finishCheck() {
+        let desc = "\n未完成评审："
         for (let i = 0; i < this.props.task.Itemlist.length; i++) {
             let data = this.props.task.Itemlist[i];
             let result = false;
-            if (data.pResultList) {
+         //   if (data.pResultList) {
                 switch (data.stage) {
                     case 7://all
                         let temp = data.pResultList.split(",");
-  /*                      if (App.workType.indexOf("板木驻厂") > -1)
-                            result = (temp.length === 3) &&
-                                (data.pResultList.indexOf("0-1") > -1) &&
-                                (data.pResultList.indexOf("1-1") > -1) &&
-                                (data.pResultList.indexOf("2-1") > -1);
-                         else*/
-                            result = (temp.length === 3) &&
-                                (data.pResultList.indexOf("0-") > -1) &&
-                                (data.pResultList.indexOf("1-") > -1) &&
-                                (data.pResultList.indexOf("2-") > -1);
+                        result = (temp.length === 3) &&
+                            (data.pResultList.indexOf("0-") > -1) &&
+                            (data.pResultList.indexOf("1-") > -1) &&
+                            (data.pResultList.indexOf("2-") > -1);
 
 
+                        desc += (  (data.pResultList.indexOf("0-") > -1) ? "" : (data.ItemName + ":" + this.getName()+'\n'));
+                        desc += (  (data.pResultList.indexOf("1-") > -1) ? "" : (data.ItemName + ":" + '成品\n'));
+                        desc += (  (data.pResultList.indexOf("2-") > -1) ? "" : (data.ItemName + ":" + '包装\n'));
                         break;
                     case 6://ab
-                        /*       if (App.workType.indexOf("板木驻厂") > -1) {
-                         result = ((data.pResultList.indexOf("0-1") > -1 && data.pResultList.indexOf("1-1") > -1));
-                         } else */
                         result = ((data.pResultList.indexOf("0-") > -1 && data.pResultList.indexOf("1-") > -1));
+                        desc += (  (data.pResultList.indexOf("0-") > -1) ? "" : (data.ItemName + ":" + this.getName()+'\n'));
+                        desc += (  (data.pResultList.indexOf("1-") > -1) ? "" : (data.ItemName + ":" + '成品\n'));
                         break;
                     case 5://ac
-                        /*              if (App.workType.indexOf("板木驻厂") > -1) {
-                         result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("0-1") > -1));
-                         } else*/
                         result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("0-") > -1));
+                        desc += (  (data.pResultList.indexOf("2-") > -1) ? "" : (data.ItemName + ":" + '包装\n'));
+                        desc += (  (data.pResultList.indexOf("0-") > -1) ? "" : (data.ItemName + ":" + this.getName()+'\n'));
                         break;
                     case 4://a
-                        /*                  if (App.workType.indexOf("板木驻厂") > -1) {
-                         result = (data.pResultList.indexOf("0-1") > -1);
-                         } else */
                         result = (data.pResultList.indexOf("0-") > -1);
+                        desc += (  (data.pResultList.indexOf("0-") > -1) ? "" : (data.ItemName + ":" + this.getName()+'\n'));
                         break;
                     case 3://bc
-                        /*                if (App.workType.indexOf("板木驻厂") > -1) {
-                         result = ((data.pResultList.indexOf("2-1") > -1 && data.pResultList.indexOf("1-1") > -1));
-                         } else*/
                         result = ((data.pResultList.indexOf("2-") > -1 && data.pResultList.indexOf("1-") > -1));
+                        desc += (  (data.pResultList.indexOf("1-") > -1) ? "" : (data.ItemName + ":" + '成品\n'));
+                        desc += (  (data.pResultList.indexOf("2-") > -1) ? "" : (data.ItemName + ":" + '包装\n'));
                         break;
                     case 2://b
-                        /*                     if (App.workType.indexOf("板木驻厂") > -1) {
-                         result = (data.pResultList.indexOf("1-1") > -1);
-                         } else  */
                         result = (data.pResultList.indexOf("1-") > -1);
+                        desc += (  (data.pResultList.indexOf("1-") > -1) ? "" : (data.ItemName + ":" + '成品\n'));
                         break;
                     case 1://c
-                        /*                        if (App.workType.indexOf("板木驻厂") > -1) {
-                         result = (data.pResultList.indexOf("2-1") > -1);
-                         } else */
                         result = (data.pResultList.indexOf("2-") > -1);
+                        desc += (  (data.pResultList.indexOf("2-") > -1) ? "" : (data.ItemName + ":" + '包装\n'));
                         break;
                 }
-            }
-            if (!result) {
+         //   }
+/*            if (!result) {
                 SnackBar.show("还有没有评审完成的任务");
                 return;
-            }
+            }*/
         }
-        return true;
+      // return true;
+        return desc.substring(0,desc.length-1)
+
     }
 
     finishTask() {
-        if (this.finishCheck()) {
-            this.setState({isLoading: true})
-            ApiService.submitStatus(this.props.task.SeriesGuid)
-                .then((responseJson) => {
-                    setTimeout(() => {
-                        this.setState({isLoading: false})
-                    }, 100);
-                    if (!responseJson.IsErr) {
-                        SnackBar.show("提交成功", {duration: 3000});
-                        this.props.finishFunc();
-                        this.props.nav.goBack(null)
-                    } else {
-                        SnackBar.show(responseJson.ErrDesc, {duration: 3000});
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    SnackBar.show("出错了，请稍后再试", {duration: 3000});
-                    setTimeout(() => {
-                        this.setState({isLoading: false})
-                    }, 100);
-                }).done();
-        }
+        this.setState({isLoading: true})
+        ApiService.submitStatus(this.props.task.SeriesGuid)
+            .then((responseJson) => {
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+                if (!responseJson.IsErr) {
+                    SnackBar.show("提交成功", {duration: 3000});
+                    this.props.finishFunc();
+                    this.props.nav.goBack(null)
+                } else {
+                    SnackBar.show(responseJson.ErrDesc, {duration: 3000});
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                SnackBar.show("出错了，请稍后再试", {duration: 3000});
+                setTimeout(() => {
+                    this.setState({isLoading: false})
+                }, 100);
+            }).done();
     }
 
 
     render() {
-       // console.log("product list render")
+        // console.log("product list render")
         return (
             <View style={{
                 flex: 1,
@@ -381,9 +378,10 @@ class WdProductListPager extends Component {
                             })
                         },
                         () => {
+                        if(!this.props.isSearch){
                             Alert.alert(
                                 '评审完成',
-                                '是否提交评审？',
+                                '是否提交评审？'+this.finishCheck(),
                                 [
                                     {
                                         text: '取消', onPress: () => {
@@ -396,7 +394,10 @@ class WdProductListPager extends Component {
                                     },
                                 ]
                             );
-                        },
+                        }else{
+                            SnackBar.show('搜索状态下不可更改单据')
+                        }
+                        }
                     ]}
                     isSearch={this.state.isSearch}
                     searchFunc={(text) => {
@@ -415,7 +416,7 @@ class WdProductListPager extends Component {
                     removeClippedSubviews={false}
                     enableEmptySections={true}
                     renderHeader={() => this.getHeaderView()}
-                    renderRow={(rowData,  sectionID,rowID) =>
+                    renderRow={(rowData, sectionID, rowID) =>
                         <WdProductItem
                             key={rowID}
                             product={rowData}
@@ -424,6 +425,7 @@ class WdProductListPager extends Component {
                                 this.props.nav.navigate(
                                     'wdDetail',
                                     {
+                                        isSearch:this.props.isSearch,
                                         product: rowData,
                                         position: rowID
                                     },

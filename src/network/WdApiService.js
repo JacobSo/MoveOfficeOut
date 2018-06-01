@@ -4,6 +4,8 @@
 'use strict';
 //let BASE_URL = "http://119.145.166.182:8806/MoveOffice/";
 let BASE_URL = "http://lsprt.lsmuyprt.com:8806/moveofficeTest/";
+let BASE_URL2 = 'http://lsprt.lsmuyprt.com:8806/outapply/';
+
 //let BASE_URL = "http://192.168.2.3:8806/moveofficeTest/";
 import App from '../constant/Application';
 let newFetch = function (input, opts) {
@@ -14,10 +16,10 @@ let newFetch = function (input, opts) {
 };
 export  default  class ApiService {
 
-    static postRequest(method, param) {
+    static postRequest(method, param, otherUrl) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
 
-        return newFetch(BASE_URL + method, {
+        return newFetch((otherUrl ? otherUrl : BASE_URL) + method, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -35,7 +37,8 @@ export  default  class ApiService {
                 console.log(responseJson);
                 return responseJson;
 
-            }) }
+            })
+    }
 
     static getRequest(method, param) {
         console.log('method:' + BASE_URL + method + '\nparam:' + param);
@@ -47,7 +50,7 @@ export  default  class ApiService {
                 'Content-Type': 'application/json',
             },
             timeout: 30000
-           /// body: param
+            /// body: param
         })
             .then((response) => {
                 console.log(response);
@@ -57,8 +60,8 @@ export  default  class ApiService {
             .then((responseJson) => {
                 console.log(responseJson);
                 return responseJson;
-
-            }) }
+            })
+    }
 
 
     static getSeries() {
@@ -67,7 +70,7 @@ export  default  class ApiService {
     }
 
     static submitStatus(id) {
-        let method = 'PlateTrackSeriesState'
+        let method = 'PlateTrackSeriesState';
         let param = JSON.stringify({
             SeriesGuid: id,
             State: 2,
@@ -76,7 +79,7 @@ export  default  class ApiService {
     }
 
     static submitProduct(data) {
-        let method = 'PlateTrackReviewResult'
+        let method = 'PlateTrackReviewResult';
         let param = JSON.stringify({
             account: App.account,
             fileName: data,
@@ -85,12 +88,22 @@ export  default  class ApiService {
     }
 
     static postImg(data) {
-        let method = 'PlateTrackImgUpload'
+        let method = 'PlateTrackImgUpload';
         let param = JSON.stringify({
             account: App.account,
             listPicJson: data,
         });
         return this.postRequest(method, param);
+    }
+
+    static searchSeries(series, factory) {
+        let method = 'ReviewBillN/GetReviewBillSerch';
+        let param = JSON.stringify({
+            series: series,
+            facname: factory,
+            state: 3,
+        });
+        return this.postRequest(method, param,BASE_URL2);
     }
 
 }

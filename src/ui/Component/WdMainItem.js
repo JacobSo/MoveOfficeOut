@@ -130,7 +130,8 @@ const styles = StyleSheet.create(
             marginLeft: 16,
             marginRight: 16,
             marginTop: 10,
-            paddingTop: 10
+            paddingTop: 10,
+            borderRadius:10
         },
 
         iconContainer: {

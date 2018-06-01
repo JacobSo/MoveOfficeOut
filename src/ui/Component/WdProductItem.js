@@ -84,14 +84,14 @@ export class WdProductItem extends Component {
             <TouchableOpacity
                 onPress={this.props.func}>
                 <View style={styles.mainContainer}>
+                    <View style={{borderTopLeftRadius:10,borderTopRightRadius:10, width: width - 32, backgroundColor: this.state.statusColor,}}>
                     <Text style={{
+                        padding:2,
                         width: width - 32,
-                        backgroundColor: this.state.statusColor,
                         color: 'white',
                         textAlign: 'center'
-                    }}>{this.state.statusText}</Text>
+                    }}>{this.state.statusText}</Text></View>
                     <View style={{flexDirection: 'row',}}>
-
                         <View style={{width: 100, height: 100}}>
                             <CachedImage
                                 resizeMode="contain"
@@ -138,6 +138,7 @@ const styles = StyleSheet.create(
             marginLeft: 16,
             marginRight: 16,
             marginTop: 10,
+            borderRadius:10,
         },
     });
 

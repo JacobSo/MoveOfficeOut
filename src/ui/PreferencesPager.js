@@ -153,9 +153,12 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16}}>
+                                v11:{'\n'}
+                                1.【板木/软体研发】新增搜索历史评审，方便打印以往报告{'\n'}
+                                2.【板木/软体研发】解除完成所有产品才能提交的限定，改为警告提醒{'\n'}{'\n'}
                                 v10:{'\n'}
                                 1.【全局】新增申请车辆模块{'\n'}
-                                2.【外出】申请车辆流程整合新模块{'\n'}{'\n'}
+                                2.【外出】申请车辆流程整合新模块{'\n'}
                                 v9:{'\n'}
                                 1.【全局】ios禁用首页更新提示{'\n'}
                                 v8:{'\n'}

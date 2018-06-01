@@ -59,6 +59,7 @@ import CfListPager from "./ui/CarForm/CfListPager";
 import CfTrackPager from "./ui/CarForm/CfTrackPager";
 import CfSignPager from "./ui/CarForm/CfSignPager";
 import CfCarParamPager from "./ui/CarForm/CfCarParamPager";
+import WdSearchPager from "./ui/WoodDevelop/WdSearchPager";
 const {width, height} = Dimensions.get('window');
 
 
@@ -147,6 +148,9 @@ const WdReviewScreen = ({navigation}) => _renderScreen(<View
                                                                                    nav={navigation}/></View>);
 const WdFileListScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorDeepOrangeDark)}<WdFileListPager {...navigation.state.params}
+                                                                                     nav={navigation}/></View>);
+const WdSearchScreen = ({navigation}) => _renderScreen(<View
+    style={{height: height}}>{_statusBar(Color.colorDeepOrangeDark)}<WdSearchPager {...navigation.state.params}
                                                                                      nav={navigation}/></View>);
 const WpMainScreen = ({navigation}) => _renderScreen(<View
     style={{height: height}}>{_statusBar(Color.colorPurpleDark)}<WpMainPager {...navigation.state.params}
@@ -299,6 +303,9 @@ const SimpleStack = StackNavigator({
         },
         wdFilter: {
             screen: WdProductFilterScreen,
+        },
+        wdSearch: {
+            screen: WdSearchScreen,
         },
         wdPost: {
             screen: WdPostScreen,
