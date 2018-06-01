@@ -124,7 +124,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v10'],
+                                ['此版本更新记录', 'v11'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[

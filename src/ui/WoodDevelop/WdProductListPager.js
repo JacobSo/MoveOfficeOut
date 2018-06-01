@@ -264,6 +264,7 @@ class WdProductListPager extends Component {
     }
 
     finishCheck() {
+        let isUnfinish = false;
         let desc = "\n未完成评审："
         for (let i = 0; i < this.props.task.Itemlist.length; i++) {
             let data = this.props.task.Itemlist[i];
@@ -315,9 +316,13 @@ class WdProductListPager extends Component {
                 SnackBar.show("还有没有评审完成的任务");
                 return;
             }*/
+            if (!result) {
+                isUnfinish = true;
+            }
         }
       // return true;
-        return desc.substring(0,desc.length-1)
+
+        return isUnfinish?desc.substring(0,desc.length-1):''
 
     }
 
