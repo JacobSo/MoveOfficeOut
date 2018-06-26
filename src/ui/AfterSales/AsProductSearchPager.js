@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'use strict';
 import React, {Component} from 'react';
 import {
@@ -8,16 +5,14 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    Platform,
     TextInput,
-    StyleSheet, Button,
+    StyleSheet,
 } from 'react-native';
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
 import SnackBar from 'react-native-snackbar-dialog'
 import ApiService from '../../network/AsApiService';
-import {WpProductItem} from "../Component/WpProductItem";
 import {AsProductItem} from "../Component/AsProductItem";
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');

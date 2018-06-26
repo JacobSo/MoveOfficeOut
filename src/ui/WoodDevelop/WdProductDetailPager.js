@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -9,14 +6,14 @@ import {
     ScrollView,
     Text,
     StyleSheet,
-    Dimensions, TouchableOpacity, Image,
+    Dimensions, TouchableOpacity,
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
 import SnackBar from 'react-native-snackbar-dialog'
 import {WdActions} from "../../actions/WdAction";
 
-import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
+import PopupDialog  from 'react-native-popup-dialog';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {CachedImage} from "react-native-img-cache";

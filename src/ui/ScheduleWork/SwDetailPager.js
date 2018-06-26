@@ -9,7 +9,7 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView, FlatList, SectionList, TextInput, ScrollView, KeyboardAvoidingView
+    ListView, FlatList,  TextInput, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import Toolbar from "../Component/Toolbar";
 import Loading from 'react-native-loading-spinner-overlay';

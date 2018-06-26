@@ -1,7 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- *
- */
 'use strict';
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs'

@@ -1,10 +1,7 @@
-/**
- * Created by Administrator on 2017/3/15.
- */
 'use strict';
 import React, {Component, } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color'
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');

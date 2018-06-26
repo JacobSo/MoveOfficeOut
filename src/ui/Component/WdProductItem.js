@@ -1,10 +1,7 @@
-/**
- * Created by Administrator on 2017/3/14.
- */
 'use strict';
 import React, {Component, } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image,  TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import {CachedImage, ImageCache} from "react-native-img-cache";
 import App from '../../constant/Application';

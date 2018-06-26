@@ -1,24 +1,16 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View,
-    TouchableOpacity, Dimensions, FlatList, StyleSheet, Text, RefreshControl
+     Dimensions, FlatList, StyleSheet,  RefreshControl
 } from 'react-native';
-import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/SwApiService';
 import Color from '../../constant/Color';
-import App from '../../constant/Application';
 import SnackBar from 'react-native-snackbar-dialog'
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-import WpMainItem from "../Component/WpMainItem";
 import RadioForm from 'react-native-simple-radio-button';
 import SwMainItem from "../Component/SwMainItem";
-import * as ColorGroup from "../../constant/ColorGroup";
-import DatePicker from "../Component/DatePicker";
 import SwCountItem from "./SwCountItem";
 import PropTypes from 'prop-types';
 import * as StatusGroup from "../../constant/StatusGroup";

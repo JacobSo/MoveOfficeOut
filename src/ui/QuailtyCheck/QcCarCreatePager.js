@@ -1,12 +1,10 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, Platform, ListView, Text, TouchableOpacity, Alert,
-    DeviceEventEmitter, Image, TextInput, ScrollView, KeyboardAvoidingView
+    View, StyleSheet, Dimensions,
+    Text, TouchableOpacity,
+    Image, TextInput, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';

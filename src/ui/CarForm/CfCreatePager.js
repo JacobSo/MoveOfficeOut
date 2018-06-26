@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -22,7 +19,6 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import {MenuProvider} from 'react-native-popup-menu';
-import Moment from 'moment';
 import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
 const areaParams = ["佛山市内", "佛山市外"];

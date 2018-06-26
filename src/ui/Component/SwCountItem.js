@@ -1,9 +1,3 @@
-/**
- * Created by Administrator on 2017/3/17.
- */
-/**
- * Created by Administrator on 2017/3/15.
- */
 'use strict';
 import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
@@ -11,7 +5,6 @@ import {View, StyleSheet, TouchableOpacity, Text, Dimensions} from 'react-native
 
 import Color from "../../constant/Color";
 import * as ColorGroup from "../../constant/ColorGroup";
-import * as StatusGroup from "../../constant/StatusGroup";
 const {width, height} = Dimensions.get('window');
 
 export default class SwCountItem extends Component {

@@ -1,21 +1,17 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions,  ListView, Text, TouchableOpacity, Alert,
-    DeviceEventEmitter, Image, TextInput, ScrollView, KeyboardAvoidingView, RefreshControl
+    View, StyleSheet, Dimensions,  ListView,
+    Alert,
+    RefreshControl
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay'
 import SnackBar from 'react-native-snackbar-dialog'
-import DatePicker from '../../ui/Component/DatePicker';
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-import QcCarCreatePager from "./QcCarCreatePager";
 import QcCarItem from "../Component/QcCarItem";
 
 const {width, height} = Dimensions.get('window');

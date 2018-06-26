@@ -1,12 +1,8 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View, StyleSheet, Dimensions, RefreshControl, ListView, Text, TouchableOpacity, InteractionManager,
-    TouchableWithoutFeedback
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';

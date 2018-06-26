@@ -1,9 +1,3 @@
-/**
- * Created by Administrator on 2017/3/17.
- */
-/**
- * Created by Administrator on 2017/3/15.
- */
 'use strict';
 import RadioForm from 'react-native-simple-radio-button';
 import React, {Component,} from 'react';
@@ -12,8 +6,6 @@ import {
     View,
     StyleSheet,
     Dimensions,
-    TouchableOpacity,
-    Text,
     ListView,
     RefreshControl,
     InteractionManager
@@ -23,7 +15,6 @@ import Color from "../../constant/Color"
 import ApiService from '../../network/AsApiService';
 import App from '../../constant/Application';
 import SnackBar from 'react-native-snackbar-dialog'
-import Utility from "../../utils/Utility";
 import Loading from 'react-native-loading-spinner-overlay';
 import AsMainItem from "./AsMainItem";
 import FloatButton from "../Component/FloatButton";

@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -13,11 +10,7 @@ import {
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
-import {WdActions} from "../../actions/WdAction";
 import SnackBar from 'react-native-snackbar-dialog'
-import PopupDialog, {DialogTitle, SlideAnimation}from 'react-native-popup-dialog';
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
 import ApiService from '../../network/QcApiService';
 
 import Drawer from 'react-native-drawer'
@@ -26,9 +19,6 @@ import RNFetchBlob from "react-native-fetch-blob";
 import AndroidModule from '../../module/AndoridCommontModule'
 import Loading from 'react-native-loading-spinner-overlay'
 const {width, height} = Dimensions.get('window');
-const drawerStyles = {
-    main: {backgroundColor: 'black', shadowColor: "black", shadowOpacity: 0.8, shadowRadius: 3},
-};
 let dirs = RNFetchBlob.fs.dirs;
 export default  class QcProductDetailPager extends Component {
     constructor(props) {

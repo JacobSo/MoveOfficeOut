@@ -1,16 +1,8 @@
-/**
- * Created by Administrator on 2017/3/17.
- */
-/**
- * Created by Administrator on 2017/3/15.
- * 'created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing'
- */
 'use strict';
 import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
 import {View, StyleSheet, Dimensions, TouchableOpacity, Text} from 'react-native';
 import Color from "../../constant/Color"
-import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
 let typeGroup=['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing',"manager_reviewed"];
 let transGroup=['已创建', '等待处理', '处理中', '提交审核', '已审核','完结'];

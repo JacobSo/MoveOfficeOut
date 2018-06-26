@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2017/3/13.
+ * 外出工作api
  */
 'use strict';
 //let BASE_URL = 'http://192.168.2.3:8806/outapply/';

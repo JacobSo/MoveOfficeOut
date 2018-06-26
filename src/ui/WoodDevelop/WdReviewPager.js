@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -13,8 +10,7 @@ import {
 } from 'react-native';
 import Toolbar from './../Component/Toolbar';
 import Color from '../../constant/Color';
-import {WdFilterItem} from "../Component/WdFilterItem";
-import {CachedImage, CustomCachedImage, ImageCache} from "react-native-img-cache";
+import {CachedImage} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
 
 export default class WdReviewPager extends Component {

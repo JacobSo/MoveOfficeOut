@@ -1,13 +1,9 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View,
     Alert,
-    Button,
     ListView,
     Text,
     StyleSheet,

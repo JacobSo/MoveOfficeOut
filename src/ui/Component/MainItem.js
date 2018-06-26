@@ -1,10 +1,7 @@
-/**
- * Created by Administrator on 2017/3/14.
- */
 'use strict';
 import React, {Component, } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image,  TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import Utility from "../../utils/Utility";
 

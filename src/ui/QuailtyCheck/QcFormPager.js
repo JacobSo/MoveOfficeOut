@@ -1,11 +1,9 @@
 /**
- * Created by Administrator on 2017/3/13.
  * pause on 6/16:submit location info
  */
 'user strict';
 
 import {
-    StyleSheet,
     View,
     ListView,
     Text,
@@ -24,7 +22,6 @@ import ApiService from '../../network/QcApiService';
 import SnackBar from 'react-native-snackbar-dialog'
 import SQLite from '../../db/Sqlite';
 import QcInputDialog from "../Component/QcInputDialog";
-import {QC_FORM_ITEM_SOFA, QC_FORM_ITEM_WOOD} from "../../constant/QcFormItems";
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 

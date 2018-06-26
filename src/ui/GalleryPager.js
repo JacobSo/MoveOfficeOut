@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/6/2.
- */
 import React, {Component} from 'react';
 
 import Gallery from 'react-native-gallery';

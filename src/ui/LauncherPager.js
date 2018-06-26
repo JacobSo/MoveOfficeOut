@@ -1,5 +1,4 @@
 /**
- * Created by Administrator on 2017/3/13.
  *
  ┌────────────┬───────────────────────────────────────┐
  │Android       │ Deployment Key                        │http://lsprt.lsmuyprt.com:3000/
@@ -50,7 +49,11 @@ export default class LauncherPager extends Component {
             isLoading: false
         }
     }
-
+    /**
+     * code-push 热更新
+     * 蒲公英更新检查
+     * 绑定推送账号
+     */
     componentDidMount() {
         this._bindPush();
         UpdateService.update(false);
@@ -65,7 +68,6 @@ export default class LauncherPager extends Component {
             mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
             deploymentKey: Platform.OS === 'ios' ? code_push_production_key_ios : code_push_production_key_android,
         });
-
         //    sqLite.drop(TABLE_Q_S_DRAFT);
         // sqLite.drop(TABLE_Q_S_DRAFT);
         //  sqLite.drop(TABLE_Q_S_PRODUCT);

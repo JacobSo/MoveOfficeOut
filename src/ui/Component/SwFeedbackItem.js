@@ -1,13 +1,7 @@
-/**
- * Created by Administrator on 2017/3/17.
- */
-/**
- * Created by Administrator on 2017/3/15.
- */
 'use strict';
 import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
-import {View, Image, TouchableOpacity, FlatList, Text, Dimensions} from 'react-native';
+import {View,  TouchableOpacity, FlatList, Text, Dimensions} from 'react-native';
 import Color from "../../constant/Color";
 import {CachedImage} from "react-native-img-cache";
 

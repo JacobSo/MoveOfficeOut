@@ -1,12 +1,11 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, ListView, Text, TouchableOpacity, Alert,
-    Platform, Image, TextInput, ScrollView, KeyboardAvoidingView, RefreshControl
+    View,
+    Dimensions,
+    Text, TouchableOpacity, Alert,
+    Platform, Image, TextInput, ScrollView, KeyboardAvoidingView,
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
@@ -15,7 +14,6 @@ import Loading from 'react-native-loading-spinner-overlay'
 import SnackBar from 'react-native-snackbar-dialog'
 import IosModule from '../../module/IosCommontModule'
 import AndroidModule from '../../module/AndoridCommontModule'
-import Utility from "../../utils/Utility";
 const ImagePicker = require('react-native-image-picker');
 const options = {
     quality: 0.2,

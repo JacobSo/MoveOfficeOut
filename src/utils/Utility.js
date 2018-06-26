@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/6/1.
- */
 export  default  class ApiService {
 
     static getDate(dayCount){

@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -22,7 +19,6 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
 import SQLite from '../../db/Sqlite';
-import Loading from 'react-native-loading-spinner-overlay';
 let sqLite = new SQLite();
 const {width, height} = Dimensions.get('window');
 

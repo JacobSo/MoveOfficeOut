@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2017/3/13.
+ * 日程工作api
  */
 'use strict';
 import App from '../constant/Application';

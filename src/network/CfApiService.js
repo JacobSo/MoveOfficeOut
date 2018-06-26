@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2017/3/13.
+ * 车辆申请api
  */
 'use strict';
 import App from '../constant/Application';

@@ -9,7 +9,7 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView, FlatList, Platform, TextInput, ScrollView, KeyboardAvoidingView
+    ListView, FlatList, Platform, TextInput, ScrollView,
 } from 'react-native';
 import Toolbar from "../Component/Toolbar";
 import InputDialog from "../Component/InputDialog";

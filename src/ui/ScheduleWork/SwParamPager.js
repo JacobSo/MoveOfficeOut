@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -14,9 +11,6 @@ import Color from '../../constant/Color';
 import App from '../../constant/Application';
 import SnackBar from 'react-native-snackbar-dialog'
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-import WpMainItem from "../Component/WpMainItem";
-import RadioForm from 'react-native-simple-radio-button';
-import SwMainItem from "../Component/SwMainItem";
 import * as ColorGroup from "../../constant/ColorGroup";
 
 const {width, height} = Dimensions.get('window');

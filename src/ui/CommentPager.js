@@ -1,8 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- *
- * loading usage
- */
 'use strict';
 import React, {Component} from 'react';
 import {

@@ -1,13 +1,7 @@
-/**
- * Created by Administrator on 2017/3/17.
- */
-/**
- * Created by Administrator on 2017/3/15.
- */
 'use strict';
 import React, {Component, } from 'react';
 import PropTypes from 'prop-types';
-import {View, Image, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity} from 'react-native';
+import {View,  StyleSheet,  Text, TouchableOpacity} from 'react-native';
 import Color from "../../constant/Color"
 export default class LocationView extends Component {
     static propTypes = {

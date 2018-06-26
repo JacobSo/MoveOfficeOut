@@ -1,10 +1,7 @@
-/**
- * Created by Administrator on 2017/3/14.
- */
 'use strict';
-import React, {Component, } from 'react';
+import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import Color from '../../constant/Color';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -47,10 +44,10 @@ export class WdFilterItem extends Component {
             if (this.props.step === 1) {
                 if (this.props.product.pResultList.indexOf("0-1") > -1) {
                     color = Color.colorGreen;
-                    text = (App.workType.indexOf("板木驻厂工程师")>-1 ? "白胚" : "木架") + "-通过";
+                    text = (App.workType.indexOf("板木驻厂工程师") > -1 ? "白胚" : "木架") + "-通过";
                 } else if (this.props.product.pResultList.indexOf("0-0") > -1) {
                     color = Color.colorRed;
-                    text = (App.workType.indexOf("板木驻厂工程师")>-1 ? "白胚" : "木架") + "-不通过";
+                    text = (App.workType.indexOf("板木驻厂工程师") > -1 ? "白胚" : "木架") + "-不通过";
                 }
             }
             else if (this.props.step === 2) {
@@ -89,13 +86,18 @@ export class WdFilterItem extends Component {
                     this.props.func
                 }
                 style={[styles.mainContainer]}>
-                <View style={{  width: width / 3 - 10, backgroundColor: this.state.statusColor,borderTopRightRadius:10,borderTopLeftRadius:10}}>
-                <Text style={{
+                <View style={{
                     width: width / 3 - 10,
+                    backgroundColor: this.state.statusColor,
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10
+                }}>
+                    <Text style={{
+                        width: width / 3 - 10,
 
-                    color: 'white',
-                    textAlign: 'center'
-                }}>{this.state.statusText}</Text>
+                        color: 'white',
+                        textAlign: 'center'
+                    }}>{this.state.statusText}</Text>
                 </View>
                 <View style={{width: 100, height: 100}}>
                     <CachedImage
@@ -133,7 +135,7 @@ const styles = StyleSheet.create(
             width: width / 3 - 10,
             elevation: 2,
             margin: 5,
-            borderRadius:10
+            borderRadius: 10
         },
     });
 

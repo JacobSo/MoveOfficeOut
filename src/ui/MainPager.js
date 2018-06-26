@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 //1：开发专员，2：项目专员，3：数据专员，4：助理，5：项目专员管理员
 

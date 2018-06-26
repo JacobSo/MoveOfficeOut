@@ -1,7 +1,3 @@
-/**
- * @flow
- */
-
 import React from 'react';
 import LoginPager from './ui/LoginPager';
 import MainPager from './ui/MainPager';

@@ -1,22 +1,11 @@
-/**
- * Created by Administrator on 2017/3/14.
- */
 'use strict';
 import React, {Component,} from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Dimensions, ListView} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Dimensions,} from 'react-native';
 import Color from '../../constant/Color';
 import {CachedImage} from "react-native-img-cache";
 const {width, height} = Dimensions.get('window');
-const ImagePicker = require('react-native-image-picker');
-const options = {
-    quality: 0.2,
-    noData: true,
-    storageOptions: {
-        skipBackup: true,//not icloud
-        path: 'images'
-    }
-};
+
 export class AsProductEditor extends Component {
     static propTypes = {
         product: PropTypes.any.isRequired,

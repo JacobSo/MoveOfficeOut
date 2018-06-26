@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2017/6/1.
+ * 蒲公英更新api
  */
 'use strict';
 import React, {Component} from 'react';

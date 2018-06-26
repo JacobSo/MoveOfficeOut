@@ -1,12 +1,9 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions, Alert, ListView, Text, TouchableOpacity, Image,
+    StyleSheet, Dimensions, Alert, ListView,
 
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
@@ -14,7 +11,6 @@ import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay';
 import QcProductItem from "../Component/QcProductItem";
-import Drawer from 'react-native-drawer'
 import SnackBar from 'react-native-snackbar-dialog'
 
 const {width, height} = Dimensions.get('window');

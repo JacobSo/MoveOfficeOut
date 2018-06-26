@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
@@ -12,14 +9,12 @@ import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/QcApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay'
-import SQLite from '../../db/Sqlite';
 import SnackBar from 'react-native-snackbar-dialog'
 import InputDialog from "../Component/InputDialog";
 import AndroidModule from '../../module/AndoridCommontModule'
 import IosModule from '../../module/IosCommontModule'
 import Utility from "../../utils/Utility";
 const {width, height} = Dimensions.get('window');
-let sqLite = new SQLite();
 const ImagePicker = require('react-native-image-picker');
 const options = {
     quality: 0.2,

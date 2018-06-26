@@ -1,14 +1,11 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View, StyleSheet, Dimensions, ListView, Text, TouchableOpacity, Alert,
-    DeviceEventEmitter, Image, TextInput, ScrollView, KeyboardAvoidingView, RefreshControl
+    Image,
+    RefreshControl
 } from 'react-native';
-import Toolbar from '../Component/Toolbar';
 import ApiService from '../../network/CfApiService';
 import Color from '../../constant/Color';
 import Loading from 'react-native-loading-spinner-overlay'

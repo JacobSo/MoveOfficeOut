@@ -1,13 +1,9 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'use strict';
 import React, {Component} from 'react';
 import {
     View,
     ScrollView,
     Text,
-    Alert,
     Image,
     KeyboardAvoidingView,
     StyleSheet, TouchableOpacity, TextInput, Switch
@@ -15,8 +11,6 @@ import {
 import Color from '../../constant/Color';
 import Toolbar from './../Component/Toolbar'
 import Loading from 'react-native-loading-spinner-overlay';
-import SnackBar from 'react-native-snackbar-dialog'
-import {NavigationActions,} from 'react-navigation';
 import DatePicker from "../Component/DatePicker";
 import RadioForm from 'react-native-simple-radio-button';
 

@@ -1,12 +1,8 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View,
-    InteractionManager,
     ListView,
     RefreshControl,
     Dimensions,
@@ -15,15 +11,12 @@ import {
 import Toolbar from './../Component/Toolbar';
 import ApiService from '../../network/WdApiService';
 import Color from '../../constant/Color';
-import App from '../../constant/Application';
 import SnackBar from 'react-native-snackbar-dialog'
 import {WdMainItem} from "../Component/WdMainItem";
 import {WdActions} from "../../actions/WdAction";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import RefreshEmptyView from "../Component/RefreshEmptyView";
-import SQLite from '../../db/Sqlite';
-import Loading from 'react-native-loading-spinner-overlay';
 const {width, height} = Dimensions.get('window');
 
 class WdSearchPager extends Component {

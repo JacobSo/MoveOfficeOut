@@ -1,12 +1,9 @@
-/**
- * Created by Administrator on 2017/3/13.
- */
 'user strict';
 
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet, Dimensions, FlatList, RefreshControl,
+    StyleSheet,
 } from 'react-native';
 import Toolbar from '../Component/Toolbar';
 import Color from '../../constant/Color';
