@@ -29,7 +29,7 @@ export  default  class ApiService {
                 'Content-Type': 'application/json',
             },
             body: param,
-            timeout: 30000
+            timeout: 60000
         })
             .then((response) => {
                 console.log(response);
@@ -51,7 +51,7 @@ export  default  class ApiService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            timeout: 30000
+            timeout: 60000
             /// body: param
         })
             .then((response) => {

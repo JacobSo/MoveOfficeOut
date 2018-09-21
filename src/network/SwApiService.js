@@ -4,7 +4,8 @@
 'use strict';
 import App from '../constant/Application';
 //let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
-let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
+//let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
+let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wsschtest/';
 let newFetch = function (input, opts) {
     return new Promise((resolve, reject) => {
         setTimeout(reject, opts.timeout);
@@ -27,7 +28,7 @@ export  default  class SwApiService {
                 'Content-Type': 'application/json',
             },
             body: param,
-            timeout: 30000
+            timeout: 60000
         })
             .then((response) => {
                 console.log(response);
@@ -50,7 +51,7 @@ export  default  class SwApiService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            timeout: 30000
+            timeout: 60000
             /// body: param
         })
             .then((response) => {
@@ -76,7 +77,7 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static createWork(time, content, helper, scheduleId, isSubmit,helpContent) {
+    static createWork(time, content, helper, scheduleId, isSubmit,helpContent,workType) {
         let method = 'ScheduleWork/CreateSchedule';
         let param = JSON.stringify({
             account: App.account,
@@ -85,7 +86,8 @@ export  default  class SwApiService {
             scheduleId: scheduleId,
             worktime: time,
             issubmit: isSubmit ? 1 : 0,
-            helpcontent:helpContent
+            helpcontent:helpContent,
+            worktype:workType
         });
         return this.postRequest(method, param);
     }
@@ -98,13 +100,14 @@ export  default  class SwApiService {
         return this.postRequest(method, param);
     }
 
-    static auditWork(scheduleId, status, remark) {//0submit 1audit 2reject 3finish
+    static auditWork(scheduleId, status, remark,finishDate) {//0submit 1audit 2reject 3finish
         let method = 'ScheduleWork/AuditSchedule';
         let param = JSON.stringify({
             account: App.account,
             scheduleId: scheduleId,
             status: status,
-            rejectremark: remark
+            rejectremark: remark,
+            plancompletime:finishDate
         });
         return this.postRequest(method, param);
     }

@@ -9,7 +9,7 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView, FlatList,  TextInput, ScrollView, KeyboardAvoidingView
+    ListView, FlatList, TextInput, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import Toolbar from "../Component/Toolbar";
 import Loading from 'react-native-loading-spinner-overlay';
@@ -284,9 +284,14 @@ export default class SwDetailPager extends Component<{}> {
                         borderColor: Color.line,
                         paddingTop: 10
                     }]}>
-                    <Text>{'工作日期'}</Text>
+                    <Text>{'工作开始日期'}</Text>
                     <Text
                         style={{color: Color.black_semi_transparent}}>{this.props.item.scWorkTime}</Text>
+                </View>
+                <View style={styles.itemText}>
+                    <Text>{'工作类别'}</Text>
+                    <Text
+                        style={{color: Color.black_semi_transparent}}>{this.props.item.workType}</Text>
                 </View>
                 <View style={styles.itemText}>
                     <Text>{'审核时间'}</Text>
@@ -303,6 +308,11 @@ export default class SwDetailPager extends Component<{}> {
                     <Text>{'创建人'}</Text>
                     <Text
                         style={{color: Color.black_semi_transparent}}>{this.props.item.scCreator}</Text>
+                </View>
+                <View style={styles.itemText}>
+                    <Text>{'预计完成时间'}</Text>
+                    <Text
+                        style={{color: Color.black_semi_transparent}}>{this.props.item.planCompleTime}</Text>
                 </View>
             </View>
         else return null
@@ -321,10 +331,12 @@ export default class SwDetailPager extends Component<{}> {
                         isAction={true}
                         isActionByText={true}
                         actionArray={this.props.item.scStatus === 2 && this.props.item.scCreator === App.account ? ['完成'] : []}
-                        functionArray={[
-                            () => this.props.nav.goBack(null),
-                            () => this.finishSchedule()
-                        ]}
+                        functionArray={
+                            this.props.item.scStatus === 2 && this.props.item.scCreator === App.account ?
+                                [
+                                    () => this.props.nav.goBack(null),
+                                    () => this.finishSchedule()
+                                ]:[ () => this.props.nav.goBack(null)]}
                     />
                     <ScrollView>
                         <View style={{
@@ -517,6 +529,11 @@ export default class SwDetailPager extends Component<{}> {
                                                 justifyContent: 'center'
                                             }]}>
                                                 <Text style={{margin: 16, color: 'black'}}>工作处理</Text>
+                                                <View style={{
+                                                    backgroundColor: Color.line,
+                                                    height: 1,
+                                                    width: width - 64
+                                                }}/>
                                                 <TextInput
                                                     style={styles.inputStyle}
                                                     multiline={true}
@@ -564,9 +581,10 @@ export default class SwDetailPager extends Component<{}> {
                                 })()
                             }
 
-                            {//审核人评分
+                            {//审核人评分this.props.memberType.indexOf("2") > -1
+                                //2018-9 update:创建人评分n
                                 (() => {
-                                    if (this.props.memberType.indexOf("2") > -1 && this.props.item.scStatus === 4) {
+                                    if (this.props.item.scCreator === App.account && this.props.item.scStatus === 4) {
                                         return <View style={{alignItems: 'center',}}>
                                             <View style={styles.titleContainer}>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold',}}>工作评分</Text>
@@ -575,6 +593,7 @@ export default class SwDetailPager extends Component<{}> {
                                                 <StarSeek onSelect={(select) => this.setState({starA: select})}
                                                           defaultStar={0}/>
                                                 <Text>{StatusGroup.swStarDesc[this.state.starA]}</Text>
+                                                <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
                                                 <TextInput
                                                     style={styles.inputStyle}
                                                     multiline={true}

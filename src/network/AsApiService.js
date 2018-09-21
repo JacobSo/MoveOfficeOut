@@ -30,7 +30,7 @@ export  default  class ApiService {
                 'Content-Type': 'application/json',
             },
             body: param,
-            timeout: 30000
+            timeout: 60000
         })
             .then((response) => {
                 console.log(response);
@@ -49,7 +49,7 @@ export  default  class ApiService {
 
         return newFetch(BASE_URL + method, {
             method: 'DELETE',
-            timeout: 30000
+            timeout: 60000
         })
             .then((response) => {
                 console.log(response);
@@ -74,7 +74,7 @@ export  default  class ApiService {
                 'Content-Type': 'application/json',
             },
             body: param,
-            timeout: 30000
+            timeout: 60000
         })
             .then((response) => {
                 console.log(response);
@@ -93,7 +93,7 @@ export  default  class ApiService {
 
         return newFetch(temp, {
             method: 'GET',
-            timeout: 30000
+            timeout: 60000
             /// body: param
         })
             .then((response) => {

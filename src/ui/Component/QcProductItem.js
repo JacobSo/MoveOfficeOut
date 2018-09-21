@@ -112,7 +112,6 @@ export default class QcProductItem extends Component {
                         if (this.props.product.IsGetIn === 1) {
                             return <Image source={require("../../drawable/get_in.png")}
                                           style={{position: 'absolute', bottom: 45, right: 25}}/>
-
                         }
                     })()
                 }</View>

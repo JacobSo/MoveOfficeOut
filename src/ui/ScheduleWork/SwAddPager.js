@@ -47,7 +47,23 @@ export default class SwAddPager extends Component<{}> {
                 rowHasChanged: (row1, row2) => true,
             }),
             confirmRemark: '',
-            helpContent: this.props.item ? this.props.item.helpContent : ''
+            helpContent: this.props.item ? this.props.item.helpContent : '',
+            workTypeItems: [
+                {key: 0, name: "交期"},
+                {key: 1, name: "起订量"},
+                {key: 2, name: "运费"},
+                {key: 3, name: "单价"},
+                {key: 4, name: "品质异常"},
+                {key: 5, name: "服务"},
+                {key: 6, name: "成品"},
+                {key: 7, name: "材料"},
+                {key: 8, name: "送货"},
+                {key: 9, name: "货款"},
+                {key: 10, name: "其他"},
+            ],
+            workTypeVisible: false,
+            workType: this.props.item && this.props.item.workType ? this.props.item.workType : "请选择",
+            finishDate:"",
         };
 
     }
@@ -81,7 +97,6 @@ export default class SwAddPager extends Component<{}> {
                     () => {
                         if (this.state.confirmRemark) {
                             this.confirmFunc(2);
-
                         } else {
                             SnackBar.show("必须填写驳回理由");
 
@@ -92,9 +107,14 @@ export default class SwAddPager extends Component<{}> {
     }
 
     confirm(flag) {
+        if(flag===1&&!this.state.finishDate){
+            SnackBar.show("必须填写预计完成时间才可以接收工作");
+            return;
+        }
+
         Alert.alert(
-            flag === 0 ? '提交工作？' : "审核通过",
-            flag === 0 ? '提交后进入审核流程，不可更改' : "审核通过，工作马上开展",
+            flag === 0 ? '提交工作？' : "接受工作",
+            flag === 0 ? '提交后进入审核流程，不可更改' : "接受工作，工作马上开展",
             [{
                 text: '取消', onPress: () => {
                 }
@@ -139,7 +159,11 @@ export default class SwAddPager extends Component<{}> {
 
     submit() {
         if (!this.state.date || !this.state.remark) {
-            SnackBar.show("请填写日期和工作");
+            SnackBar.show("请填写开始日期和工作");
+            return
+        }
+        if (this.state.workType === "请选择") {
+            SnackBar.show("请选择工作类型");
             return
         }
         Alert.alert(
@@ -160,12 +184,17 @@ export default class SwAddPager extends Component<{}> {
     }
 
     submitFunc(isBoth) {
+        if(!this.state.members||this.state.members.length===0){
+            SnackBar.show("必须添加协助人");
+            return
+        }
+
         let membersStr = '';
         this.state.members.map((data) => {
             membersStr = data.name + "," + membersStr
         });
         this.setState({isLoading: true,});
-        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null, isBoth, this.state.helpContent)
+        ApiService.createWork(this.state.date, this.state.remark, membersStr.substring(0, membersStr.length - 1), this.props.item ? this.props.item.scId : null, isBoth, this.state.helpContent, this.state.workType)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     if (this.state.pics.length !== 0) {
@@ -192,7 +221,7 @@ export default class SwAddPager extends Component<{}> {
 
     confirmFunc(flag) {
         this.setState({isLoading: true,});
-        ApiService.auditWork(this.props.item.scId, flag, this.state.confirmRemark)
+        ApiService.auditWork(this.props.item.scId, flag, this.state.confirmRemark,this.state.finishDate)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.props.refreshFunc();
@@ -236,8 +265,6 @@ export default class SwAddPager extends Component<{}> {
     }
 
     postImgReq(data, index, callBackData, mainId, isBoth) {
-
-        //
         ApiService.uploadImage(
             mainId,
             data.fileName ? data.fileName : data.uri.substring(data.uri.lastIndexOf('/'), data.uri.length),
@@ -274,7 +301,7 @@ export default class SwAddPager extends Component<{}> {
             if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
                 return ["删除", "操作"]
             } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
-                return ["驳回", "通过"]
+                return ["驳回", "接受工作"]
             } else return []
         } else return ["创建"]
     }
@@ -293,7 +320,6 @@ export default class SwAddPager extends Component<{}> {
                     () => this.confirm(1)]//通过
             } else return [() => this.props.nav.goBack(null),]//noting
         } else return [() => this.props.nav.goBack(null), () => this.submit(),]//新增
-
     }
 
     render() {
@@ -302,7 +328,7 @@ export default class SwAddPager extends Component<{}> {
                 <Toolbar
                     elevation={2}
                     title={["新创建日程",
-                        this.props.item ? ( this.props.item.scCreator === App.account ? "我的工作" //创建人查看
+                        this.props.item ? (this.props.item.scCreator === App.account ? "我的工作" //创建人查看
                             : (this.props.memberType.indexOf('1') > -1 ? "审核"//审核人
                                 : "查看"))//其他
                             : '我的工作']}//创建
@@ -311,11 +337,47 @@ export default class SwAddPager extends Component<{}> {
                     isAction={true}
                     isActionByText={true}
                     actionArray={this.getMenu()}
-                    functionArray={this.getMenuFunc()}
-                />
+                    functionArray={this.getMenuFunc()}/>
                 <ScrollView>
                     <View style={{marginBottom: 110}}>
+                    {
+                        (()=>{
+                          if(this.props.item&&this.props.item.scMembers.indexOf(App.account)>-1){
+                              return<View style={styles.cardContainer}>
+                                      <Text style={{margin: 16, color: 'black'}}>计划完成时间</Text>
+                                      <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
+                                      <DatePicker
+                                          customStyles={{
+                                              placeholderText: {
+                                                  color: Color.content,
+                                                  textAlign: 'center',
+                                                  width: width,
+                                              },
+                                              dateText: {
+                                                  color: Color.content, textAlign: 'center', width: width,
+                                              }
+                                          }}
+                                          date={this.state.finishDate}
+                                          mode="date"
+                                          placeholder="请选择"
+                                          format="YYYY-MM-DD"
+                                          minDate={this.dateStr}
+                                          confirmBtnText="确认"
+                                          cancelBtnText="取消"
+                                          showIcon={false}
+                                          onDateChange={(date) => {
+                                              this.setState({finishDate: date})
+                                          }}
+                                      />
+                                  </View>
+                          }
+                        })()
+                    }
+
+
                         <View style={styles.cardContainer}>
+                            <Text style={{margin: 16, color: 'black'}}>工作开始日期</Text>
+                            <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
                             <DatePicker
                                 disabled={
                                     (this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
@@ -323,17 +385,17 @@ export default class SwAddPager extends Component<{}> {
                                 }
                                 customStyles={{
                                     placeholderText: {
-                                        color: 'black',
+                                        color: Color.content,
                                         textAlign: 'center',
-                                        width: width / 4,
+                                        width: width,
                                     },
                                     dateText: {
-                                        color: Color.content, textAlign: 'center', width: width / 4,
+                                        color: Color.content, textAlign: 'center', width: width,
                                     }
                                 }}
                                 date={this.state.date}
                                 mode="date"
-                                placeholder="工作日期"
+                                placeholder="请选择"
                                 format="YYYY-MM-DD"
                                 minDate={this.dateStr}
                                 confirmBtnText="确认"
@@ -345,20 +407,72 @@ export default class SwAddPager extends Component<{}> {
                             />
                         </View>
                         <View style={styles.cardContainer}>
+                            <Text style={{margin: 16, color: 'black'}}>工作类别</Text>
+                            <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
+                            {
+                                (() => {
+                                    if (!this.state.workTypeVisible)
+                                        return <TouchableOpacity
+                                            disabled={
+                                                (this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) ||
+                                                (this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
+                                            }
+                                            onPress={() => this.setState({workTypeVisible: !this.state.workTypeVisible})}>
+                                            <Text
+                                                style={{margin: 16, color: Color.content}}>{this.state.workType}</Text>
+                                        </TouchableOpacity>;
+                                    else
+                                        return <FlatList
+                                            data={this.state.workTypeItems}
+                                            keyExtractor={(item, index) => item.key}
+                                            extraData={this.state}
+                                            renderItem={({item}) => {
+                                                console.log(item);
+                                                return <TouchableOpacity
+                                                    onPress={() => {
+                                                        this.setState({
+                                                            workType: item.name,
+                                                            workTypeVisible: !this.state.workTypeVisible,
+                                                        })
+                                                    }}>
+                                                    <Text style={{padding: 16}}>{item.name}</Text>
+                                                </TouchableOpacity>
+                                            }}
+                                        />
+                                })()
+
+                            }
+
+
+                        </View>
+
+
+                        <View style={styles.cardContainer}>
                             <Text style={{margin: 16, color: 'black'}}>日程工作描述</Text>
-                            <TextInput
-                                editable={
-                                    !(this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
-                                    !(this.props.item !== undefined && this.props.item.scCreator !== App.account)//非本人
-                                }
-                                style={styles.inputStyle}
-                                multiline={true}
-                                placeholder="在这里填写"
-                                returnKeyType={'done'}
-                                underlineColorAndroid="transparent"
-                                blurOnSubmit={true}
-                                defaultValue={this.state.remark}
-                                onChangeText={(text) => this.setState({remark: text})}/>
+
+                            {
+                                (() => {
+                                    if (!(this.props.item !== undefined && this.props.item.scStatus === 1 && this.props.memberType.indexOf('0') > -1) &&
+                                        !(this.props.item !== undefined && this.props.item.scCreator !== App.account)) {
+                                        return <TextInput
+                                            style={styles.inputStyle}
+                                            multiline={true}
+                                            placeholder="在这里填写"
+                                            returnKeyType={'done'}
+                                            underlineColorAndroid="transparent"
+                                            blurOnSubmit={true}
+                                            defaultValue={this.state.remark}
+                                            onChangeText={(text) => this.setState({remark: text})}/>
+                                    } else {
+                                        return<View>
+                                            <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
+                                            <Text style={{margin: 16, textAlign: 'center', }}>{this.state.remark}</Text>
+                                        </View>
+                                    }
+                                })()
+                            }
+
+
                         </View>
 
                         <View style={styles.cardContainer}>
@@ -388,17 +502,17 @@ export default class SwAddPager extends Component<{}> {
                                 addFunc={() => {
                                     this.props.nav.navigate('swParam', {
                                         finishFunc: (members) => {
-                                          //  console.log(JSON.stringify(members));
-                                        //    console.log(JSON.stringify(this.state.members))
-                                            if(this.state.members.length===0){
+                                            //  console.log(JSON.stringify(members));
+                                            //    console.log(JSON.stringify(this.state.members))
+                                            if (this.state.members.length === 0) {
                                                 this.setState({members: members})
-                                            }else{
+                                            } else {
                                                 let flag = false;
                                                 this.state.members.map((data1) => {
                                                     members.map((data2) => {
                                                         flag = (data1.name === data2.name)
                                                     });
-                                                    if (!flag){
+                                                    if (!flag) {
                                                         members.push(data1)
                                                     }
                                                     flag = false;

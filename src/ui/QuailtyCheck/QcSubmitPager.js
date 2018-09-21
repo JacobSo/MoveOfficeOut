@@ -55,8 +55,6 @@ export default class QcSubmitPager extends Component {
     componentWillMount() {
         if (Platform.OS === "android")
             BackHandler.addEventListener('hardwareBackPress', this.onBackAction);
-
-
     }
 
     componentDidMount() {
