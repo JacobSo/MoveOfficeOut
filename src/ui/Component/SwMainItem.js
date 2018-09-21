@@ -89,15 +89,17 @@ export default class SwMainItem extends Component {
                         }
                     })()
                 }
+
                 {
                     (() => {
-                        if (this.props.item.scStatus < 4 && this.props.item.planCompleTime) {//评分前
+                        if (this.props.item.scStatus < 4 && this.props.item.planCompleTime) {//评分前®
                             let now = new Date();
                             let plan = new Date(this.props.item.planCompleTime);
                             let distance = (plan.getTime() - now.getTime());
                             if (distance < 0) {
-                                return <Image source={require("../../drawable/out_of_date.png")}
-                                              style={{position: 'absolute', top: 16, right: 16}}/>
+                                return   <Text style={{position: 'absolute', top: 25, right: 16,
+                                        transform:[{rotate:'35deg'}],fontSize:36,backgroundColor:"#00000000",color:Color.colorRed,fontWeight: "bold",
+                                        borderColor:Color.colorRed,borderWidth:3,borderRadius:20,padding:5}}>逾期</Text>
                             }
                         }
 

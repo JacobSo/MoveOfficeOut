@@ -3,7 +3,8 @@
  */
 'use strict';
 //let BASE_URL = 'http://192.168.2.3:8806/outapply/';
-let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapply/';
+let BASE_URL = 'http://113.105.237.98:8806/outapply/';
+//let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapply/';
 //let BASE_URL = 'http://192.168.1.190:8806/outapplytest/';
 import App from '../constant/Application';
 let newFetch = function (input, opts) {

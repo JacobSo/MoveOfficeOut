@@ -5,7 +5,7 @@
 import App from '../constant/Application';
 //let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
 //let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wssch/';
-let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wsschtest/';
+//let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/wsschtest/';
 let BASE_URL = 'http://113.105.237.98:8806/wsschtest/';
 let newFetch = function (input, opts) {
     return new Promise((resolve, reject) => {
