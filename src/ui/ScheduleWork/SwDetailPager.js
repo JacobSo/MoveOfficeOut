@@ -203,8 +203,8 @@ export default class SwDetailPager extends Component<{}> {
             return;
         }
         Alert.alert(
-            "完成工作？",
-            "完成工作后进入审核人针对你的工作进行评分的阶段",
+            "完成工作",
+            "确认完成工作后进入评分阶段",
             [{
                 text: '取消', onPress: () => {
                 }

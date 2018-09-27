@@ -63,7 +63,7 @@ export default class SwAddPager extends Component<{}> {
             ],
             workTypeVisible: false,
             workType: this.props.item && this.props.item.workType ? this.props.item.workType : "请选择",
-            finishDate:"",
+            finishDate: "",
         };
 
     }
@@ -107,14 +107,14 @@ export default class SwAddPager extends Component<{}> {
     }
 
     confirm(flag) {
-        if(flag===1&&!this.state.finishDate){
+        if (flag === 1 && !this.state.finishDate) {
             SnackBar.show("必须填写预计完成时间才可以接收工作");
             return;
         }
 
         Alert.alert(
-            flag === 0 ? '提交工作？' : "接受工作",
-            flag === 0 ? '提交后进入审核流程，不可更改' : "接受工作，工作马上开展",
+            flag === 0 ? '提交工作？' : "接收工作",
+            flag === 0 ? '提交后进入审核流程，不可更改' : "接收工作，工作马上开展",
             [{
                 text: '取消', onPress: () => {
                 }
@@ -158,12 +158,17 @@ export default class SwAddPager extends Component<{}> {
     }
 
     submit() {
-        if (!this.state.date || !this.state.remark) {
-            SnackBar.show("请填写开始日期和工作");
+        if (!this.state.date) {
+            SnackBar.show("请填写开始日期");
             return
         }
+
         if (this.state.workType === "请选择") {
             SnackBar.show("请选择工作类型");
+            return
+        }
+        if (!this.state.remark) {
+            SnackBar.show("请填写工作描述");
             return
         }
         Alert.alert(
@@ -184,7 +189,7 @@ export default class SwAddPager extends Component<{}> {
     }
 
     submitFunc(isBoth) {
-        if(!this.state.members||this.state.members.length===0){
+        if (!this.state.members || this.state.members.length === 0) {
             SnackBar.show("必须添加协助人");
             return
         }
@@ -221,7 +226,7 @@ export default class SwAddPager extends Component<{}> {
 
     confirmFunc(flag) {
         this.setState({isLoading: true,});
-        ApiService.auditWork(this.props.item.scId, flag, this.state.confirmRemark,this.state.finishDate)
+        ApiService.auditWork(this.props.item.scId, flag, this.state.confirmRemark, this.state.finishDate)
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
                     this.props.refreshFunc();
@@ -300,8 +305,8 @@ export default class SwAddPager extends Component<{}> {
         if (this.props.item) {//已创建
             if ((this.props.item.scCreator === App.account) && (this.props.item.scStatus === 0 || this.props.item.scStatus === 3)) {//创建人//待提交//已驳回
                 return ["删除", "操作"]
-            } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
-                return ["驳回", "接受工作"]
+            } else if ((this.props.item.scMembers.indexOf(App.account) > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
+                return ["驳回", "接收工作"]
             } else return []
         } else return ["创建"]
     }
@@ -314,7 +319,7 @@ export default class SwAddPager extends Component<{}> {
                     () => this.deleteWork(),
                     () => this.submit(),//修改
                 ]
-            } else if ((this.props.memberType.indexOf("1") > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
+            } else if ((this.props.item.scMembers.indexOf(App.account) > -1) && (this.props.item.scStatus === 1)) {//审核人//待审核
                 return [() => this.props.nav.goBack(null),
                     () => this.popupDialog.show(),//驳回
                     () => this.confirm(1)]//通过
@@ -340,39 +345,39 @@ export default class SwAddPager extends Component<{}> {
                     functionArray={this.getMenuFunc()}/>
                 <ScrollView>
                     <View style={{marginBottom: 110}}>
-                    {
-                        (()=>{
-                          if(this.props.item&&this.props.item.scMembers.indexOf(App.account)>-1){
-                              return<View style={styles.cardContainer}>
-                                      <Text style={{margin: 16, color: 'black'}}>计划完成时间</Text>
-                                      <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
-                                      <DatePicker
-                                          customStyles={{
-                                              placeholderText: {
-                                                  color: Color.content,
-                                                  textAlign: 'center',
-                                                  width: width,
-                                              },
-                                              dateText: {
-                                                  color: Color.content, textAlign: 'center', width: width,
-                                              }
-                                          }}
-                                          date={this.state.finishDate}
-                                          mode="date"
-                                          placeholder="请选择"
-                                          format="YYYY-MM-DD"
-                                          minDate={this.dateStr}
-                                          confirmBtnText="确认"
-                                          cancelBtnText="取消"
-                                          showIcon={false}
-                                          onDateChange={(date) => {
-                                              this.setState({finishDate: date})
-                                          }}
-                                      />
-                                  </View>
-                          }
-                        })()
-                    }
+                        {
+                            (() => {
+                                if (this.props.item && this.props.item.scMembers.indexOf(App.account) > -1) {
+                                    return <View style={styles.cardContainer}>
+                                        <Text style={{margin: 16, color: 'black'}}>计划完成时间</Text>
+                                        <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
+                                        <DatePicker
+                                            customStyles={{
+                                                placeholderText: {
+                                                    color: Color.content,
+                                                    textAlign: 'center',
+                                                    width: width - 32,
+                                                },
+                                                dateText: {
+                                                    color: Color.content, textAlign: 'center', width: width,
+                                                }
+                                            }}
+                                            date={this.state.finishDate}
+                                            mode="date"
+                                            placeholder="请选择"
+                                            format="YYYY-MM-DD"
+                                            minDate={this.dateStr}
+                                            confirmBtnText="确认"
+                                            cancelBtnText="取消"
+                                            showIcon={false}
+                                            onDateChange={(date) => {
+                                                this.setState({finishDate: date})
+                                            }}
+                                        />
+                                    </View>
+                                }
+                            })()
+                        }
 
 
                         <View style={styles.cardContainer}>
@@ -387,7 +392,7 @@ export default class SwAddPager extends Component<{}> {
                                     placeholderText: {
                                         color: Color.content,
                                         textAlign: 'center',
-                                        width: width,
+                                        width: width - 32,
                                     },
                                     dateText: {
                                         color: Color.content, textAlign: 'center', width: width,
@@ -464,9 +469,9 @@ export default class SwAddPager extends Component<{}> {
                                             defaultValue={this.state.remark}
                                             onChangeText={(text) => this.setState({remark: text})}/>
                                     } else {
-                                        return<View>
+                                        return <View>
                                             <View style={{backgroundColor: Color.line, height: 1, width: width - 64}}/>
-                                            <Text style={{margin: 16, textAlign: 'center', }}>{this.state.remark}</Text>
+                                            <Text style={{margin: 16, textAlign: 'center',}}>{this.state.remark}</Text>
                                         </View>
                                     }
                                 })()
