@@ -121,7 +121,7 @@ export default class PreferencesPager extends Component {
                             items={[
                                 ['清理图片缓存', '所有图片将重新下载'],
                                 ['检查更新', '当前版本：' + this.state.version],
-                                ['此版本更新记录', 'v11'],
+                                ['此版本更新记录', 'v12（2018-9-28）'],
                                 ['手动更新', 'http://pgyer.com/lsout']
                             ]}
                             functions={[
@@ -150,6 +150,8 @@ export default class PreferencesPager extends Component {
                         <Text style={styles.titleStyle}>{"版本" + this.state.version + "更新记录"}</Text>
                         <ScrollView>
                             <Text style={{margin: 16}}>
+                                v12（2018-9-28）:{'\n'}
+                                1.【跨部门协作】优化工作流程
                                 v11:{'\n'}
                                 1.【板木/软体研发】新增搜索历史评审，方便打印以往报告{'\n'}
                                 2.【板木/软体研发】解除完成所有产品才能提交的限定，改为警告提醒{'\n'}{'\n'}

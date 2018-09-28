@@ -120,7 +120,7 @@ export default class LauncherPager extends Component {
                     this.setState({isLoading: false})
                 }, 100);
                 console.log(error);
-                SnackBar.show("出错了，请稍后再试");
+                SnackBar.show("权限配置出错，请联系权限分配人员");
             }).done();
     }
 
