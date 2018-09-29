@@ -56,8 +56,8 @@ export default class LauncherPager extends Component {
      */
     componentDidMount() {
         this._bindPush();
-/*        UpdateService.update(false);
-        codePush.sync({
+        UpdateService.update(false);
+      /*  codePush.sync({
             updateDialog: {
                 appendReleaseDescription: true,
                 descriptionPrefix: '\n\n更新内容：\n',

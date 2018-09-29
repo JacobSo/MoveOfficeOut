@@ -203,8 +203,8 @@ export default class SwDetailPager extends Component<{}> {
             return;
         }
         Alert.alert(
-            "完成工作",
-            "确认完成工作后进入评分阶段",
+            "完成工作？",
+            "完成工作后进入审核人针对你的工作进行评分的阶段",
             [{
                 text: '取消', onPress: () => {
                 }
@@ -242,7 +242,7 @@ export default class SwDetailPager extends Component<{}> {
             return;
         }
         Alert.alert(
-            "给予评价：" + StatusGroup.swStarDesc[this.state.starA] + "？",
+            "给予评价：" + StatusGroup.swStarDesc[this.state.starA],
             "评分完成后，工作结束",
             [{
                 text: '取消', onPress: () => {
@@ -312,7 +312,7 @@ export default class SwDetailPager extends Component<{}> {
                 <View style={styles.itemText}>
                     <Text>{'预计完成时间'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent}}>{this.props.item.planCompleTime}</Text>
+                        style={{color: Color.black_semi_transparent}}>{this.props.item.scCreator}</Text>
                 </View>
             </View>
         else return null
