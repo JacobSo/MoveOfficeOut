@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {
     View,
-     Dimensions, FlatList, StyleSheet,  RefreshControl
+    Dimensions, FlatList, StyleSheet, RefreshControl
 } from 'react-native';
 import ApiService from '../../network/SwApiService';
 import Color from '../../constant/Color';
@@ -111,9 +111,9 @@ export default class SwListView extends Component {
     onMainRefresh() {
         this.setState({isRefreshing: true,});
         ApiService.getList(
-            this.props.memberType.indexOf("1") > -1|| this.props.memberType.indexOf("2") > -1 ? "1,2,3,4,5" : "0,1,2,3,4,5",
+            this.props.memberType.indexOf("1") > -1 || this.props.memberType.indexOf("2") > -1 ? "1,2,3,4,5" : "0,1,2,3,4,5",
             this.props.account,
-            this.props.memberType.indexOf("1") > -1&&this.props.isAuditCreate
+            this.props.memberType.indexOf("1") > -1 && this.props.isAuditCreate
         )
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
@@ -152,7 +152,7 @@ export default class SwListView extends Component {
         return (
             <View style={{
                 flex: 1,
-                backgroundColor: Color.background,
+                backgroundColor: Color.background
             }}>
                 {
                     (() => {
@@ -160,13 +160,13 @@ export default class SwListView extends Component {
                             return <RadioForm
                                 buttonColor={Color.colorGreen}
                                 labelStyle={{color: Color.content, margin: 16}}
-                                radio_props={ [
+                                radio_props={[
                                     {label: StatusGroup.swMainFilter[0], value: 0},
                                     {label: StatusGroup.swMainFilter[1], value: 1},
                                     {label: StatusGroup.swMainFilter[2], value: 2},
                                     {label: StatusGroup.swMainFilter[3], value: 3},
-                                    {label: StatusGroup.swMainFilter[4], value: 4},
                                     {label: StatusGroup.swMainFilter[5], value: 5},
+                                    {label: StatusGroup.swMainFilter[6], value: 6},
                                 ]}
                                 initial={this.state.radioValue}
                                 formHorizontal={false}
@@ -194,7 +194,7 @@ export default class SwListView extends Component {
                     (() => {
                         if (this.state.items && this.state.items.length === 0) {
                             return (<RefreshEmptyView isRefreshing={this.state.isRefreshing} onRefreshFunc={() => {
-                                this.props.pageType===0?this.onMainRefresh():this.onCountRefresh()
+                                this.props.pageType === 0 ? this.onMainRefresh() : this.onCountRefresh()
                             } }/>)
                         } else {
                             return (
@@ -206,7 +206,7 @@ export default class SwListView extends Component {
                                     refreshControl={
                                         <RefreshControl
                                             refreshing={this.state.isRefreshing}
-                                            onRefresh={() => this.props.pageType===0?this.onMainRefresh():this.onCountRefresh()}
+                                            onRefresh={() => this.props.pageType === 0 ? this.onMainRefresh() : this.onCountRefresh()}
                                             tintColor={Color.colorBlueGrey}//ios
                                             title="刷新中..."//ios
                                             titleColor='white'

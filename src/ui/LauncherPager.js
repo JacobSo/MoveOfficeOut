@@ -90,13 +90,13 @@ export default class LauncherPager extends Component {
     }
 
     initScheduleType() {
-        this.setState({isLoading: true});
+     //   this.setState({isLoading: true});
         ApiService.initWorkType()
             .then((responseJson) => {
                 if (!responseJson.IsErr) {
-                    setTimeout(() => {
+                 /*   setTimeout(() => {
                         this.setState({isLoading: false})
-                    }, 100);
+                    }, 100);*/
                     if (responseJson.worktypes.indexOf('2') > -1 || responseJson.worktypes.indexOf('1') > -1) {
                         this.props.nav.navigate('swMain', {
                             account: null,
@@ -109,16 +109,16 @@ export default class LauncherPager extends Component {
                         });//0normal/1audit/2check
                     }
                 } else {
-                    setTimeout(() => {
+                  /*  setTimeout(() => {
                         this.setState({isLoading: false})
-                    }, 100);
+                    }, 100);*/
                     SnackBar.show(responseJson.ErrDesc);
                 }
             })
             .catch((error) => {
-                setTimeout(() => {
+                /*setTimeout(() => {
                     this.setState({isLoading: false})
-                }, 100);
+                }, 100);*/
                 console.log(error);
                 SnackBar.show("权限配置出错，请联系权限分配人员");
             }).done();

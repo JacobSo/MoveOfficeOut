@@ -92,7 +92,7 @@ export default class SwMainItem extends Component {
 
                 {
                     (() => {
-                        if (this.props.item.scStatus < 4 && this.props.item.planCompleTime) {//评分前®
+                        if (this.props.item.planCompleTime) {//评分前®
                             let now = new Date();
                             let nowMonth = now.getMonth() + 1;
                             let strDate = now.getDate();
