@@ -57,7 +57,7 @@ export default class SwMainItem extends Component {
                     (() => {
                         if (this.props.item.planCompleTime) {
                             return <View style={styles.itemText}>
-                                <Text>{'计划完成时间'}</Text>
+                                <Text>{'预计完成时间'}</Text>
                                 <Text
                                     style={styles.textContent}>{ this.props.item.planCompleTime}</Text>
                             </View>

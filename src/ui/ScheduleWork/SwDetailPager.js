@@ -312,7 +312,7 @@ export default class SwDetailPager extends Component<{}> {
                 <View style={styles.itemText}>
                     <Text>{'预计完成时间'}</Text>
                     <Text
-                        style={{color: Color.black_semi_transparent}}>{this.props.item.scCreator}</Text>
+                        style={{color: Color.black_semi_transparent}}>{this.props.item.planCompleTime}</Text>
                 </View>
             </View>
         else return null

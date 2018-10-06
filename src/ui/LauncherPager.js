@@ -57,7 +57,7 @@ export default class LauncherPager extends Component {
     componentDidMount() {
         this._bindPush();
         UpdateService.update(false);
-      /*  codePush.sync({
+        codePush.sync({
             updateDialog: {
                 appendReleaseDescription: true,
                 descriptionPrefix: '\n\n更新内容：\n',
@@ -67,7 +67,7 @@ export default class LauncherPager extends Component {
             },
             mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
             deploymentKey: Platform.OS === 'ios' ? code_push_production_key_ios : code_push_production_key_android,
-        });*/
+        });
         //    sqLite.drop(TABLE_Q_S_DRAFT);
         // sqLite.drop(TABLE_Q_S_DRAFT);
         //  sqLite.drop(TABLE_Q_S_PRODUCT);
