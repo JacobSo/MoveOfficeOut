@@ -11,7 +11,7 @@ export  default  class UpdateService {
     static update(isNotice) {
         let iosKey = "662cbac6fcc48aca832a63511afdc0bc";
         let androidKey = "37afc1bd768906cf61bc6cd873fdf09a";
-        let iosCode = 12;//20171021
+        let iosCode = 13;//201810929 update
         let androidCode = 13;//20171023
         if(isNotice)
             SnackBar.show("检查中...",{duration:3000});
