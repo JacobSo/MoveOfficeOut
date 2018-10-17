@@ -27,7 +27,6 @@
 		49169B4C20A04B1F00EBF15B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4B20A04B1F00EBF15B /* OpenGLES.framework */; };
 		49169B4E20A04B3500EBF15B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4D20A04B3500EBF15B /* CoreGraphics.framework */; };
 		49169B5020A04B4100EBF15B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B4F20A04B4100EBF15B /* Security.framework */; };
-		49169B5220A04B6D00EBF15B /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49169B5120A04B6C00EBF15B /* libstdc++.6.0.9.tbd */; };
 		491B960C1EDBF99000E497B4 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 493DA8D11EDBCFDA00C7779F /* libRNFetchBlob.a */; };
 		491B96B71EE7991A00E497B4 /* WDMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96B21EE7991A00E497B4 /* WDMaterial.m */; };
 		491B96B81EE7991A00E497B4 /* WDProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96B41EE7991A00E497B4 /* WDProduct.m */; };
@@ -35,7 +34,6 @@
 		491B96DD1EE7992200E497B4 /* PrintHead.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96DA1EE7992200E497B4 /* PrintHead.m */; };
 		491B96DE1EE7992200E497B4 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96DC1EE7992200E497B4 /* Utils.m */; };
 		491B96E11EE799D300E497B4 /* LSHtmlModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96E01EE799D300E497B4 /* LSHtmlModel.m */; };
-		491B96F91EE79FFE00E497B4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 491B96E31EE79FFE00E497B4 /* Info.plist */; };
 		491B96FA1EE79FFE00E497B4 /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96E61EE79FFE00E497B4 /* MJExtensionConst.m */; };
 		491B96FB1EE79FFE00E497B4 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96E81EE79FFE00E497B4 /* MJFoundation.m */; };
 		491B96FC1EE79FFE00E497B4 /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 491B96EA1EE79FFE00E497B4 /* MJProperty.m */; };
@@ -74,7 +72,6 @@
 		4937C56D1F1458E0001CB368 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */; };
 		4937C5861F175AE8001CB368 /* libyoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA51DF850E9000B6D8A /* libyoga.a */; };
 		4937C5871F176417001CB368 /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */; };
-		4937C5881F176417001CB368 /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */; };
 		4937C58C1F176417001CB368 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		4937C5981F17654F001CB368 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4937C5951F17647E001CB368 /* libRCTWebSocket.a */; };
 		49B878B81ED56E530075E99A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B878B71ED56E530075E99A /* libsqlite3.tbd */; };
@@ -510,7 +507,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49169B5220A04B6D00EBF15B /* libstdc++.6.0.9.tbd in Frameworks */,
 				49F302DB1E8C9572003967E8 /* CoreTelephony.framework in Frameworks */,
 				49B878BA1ED56E600075E99A /* libsqlite3.0.tbd in Frameworks */,
 				49169B5020A04B4100EBF15B /* Security.framework in Frameworks */,
@@ -521,7 +517,6 @@
 				49169B4820A04B0A00EBF15B /* CoreLocation.framework in Frameworks */,
 				4937C5981F17654F001CB368 /* libRCTWebSocket.a in Frameworks */,
 				4937C5871F176417001CB368 /* libjschelpers.a in Frameworks */,
-				4937C5881F176417001CB368 /* libjschelpers.a in Frameworks */,
 				4937C58C1F176417001CB368 /* libRCTNetwork.a in Frameworks */,
 				4937C5861F175AE8001CB368 /* libyoga.a in Frameworks */,
 				4937C56D1F1458E0001CB368 /* libcxxreact.a in Frameworks */,
@@ -1365,7 +1360,6 @@
 				491B97531EE7A86500E497B4 /* LZDataString_H.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				491B96F91EE79FFE00E497B4 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1384,7 +1378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
