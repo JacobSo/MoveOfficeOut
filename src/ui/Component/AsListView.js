@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 16,
         paddingLeft: 16,
-        elevation: 2
+        elevation: 2,
+        borderRadius: 10
     },
 });

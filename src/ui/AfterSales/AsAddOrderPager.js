@@ -61,15 +61,15 @@ export default class AsAddOrderPager extends Component {
         });
         this.state.checkBox = temp;
 //constant pic merge
-        let tempPic=[];
+        let tempPic = [];
         if (this.props.order && this.props.order.pic_attachment.length !== 0) {
             tempPic = this.props.order.pic_attachment;
         }
-        if (this.props.order && this.props.order.attachment ) {
+        if (this.props.order && this.props.order.attachment) {
             let tempAtt = this.props.order.attachment.split(',');
-            tempAtt.map((data)=>{
-               if(['jpg','gif','png','jpeg','bmp'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
-                   tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
+            tempAtt.map((data) => {
+                if (['jpg', 'gif', 'png', 'jpeg', 'bmp'].indexOf(data.substring(data.lastIndexOf('.') + 1).toLowerCase()) > -1)
+                    tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/" + data)
             })
         }
         this.state.image = tempPic
@@ -80,7 +80,10 @@ export default class AsAddOrderPager extends Component {
         return <View style={styles.selectContainer}>
             <TouchableOpacity
                 disabled={this.props.order && this.props.order.status !== 'created'}
-                style={[styles.stepButton, {backgroundColor: (this.state.select[0] ? Color.colorAmber : Color.trans)},]}
+                style={[styles.stepButton, {
+                    backgroundColor: (this.state.select[0] ? Color.colorAmber : Color.trans),
+                    borderRadius: 10
+                },]}
                 onPress={() => this.setState({select: [true, false, false], selectType: "成品"})
                 }>
                 <Text style={{
@@ -90,7 +93,7 @@ export default class AsAddOrderPager extends Component {
             </TouchableOpacity>
             <TouchableOpacity
                 disabled={this.props.order && this.props.order.status !== 'created'}
-                style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorAmber : Color.trans)},]}
+                style={[styles.stepButton, {backgroundColor: (this.state.select[1] ? Color.colorAmber : Color.trans), borderRadius: 10},]}
                 onPress={() => this.setState({select: [false, true, false], selectType: "材料"})
                 }>
                 <Text style={{
@@ -100,7 +103,7 @@ export default class AsAddOrderPager extends Component {
             </TouchableOpacity>
             <TouchableOpacity
                 disabled={this.props.order && this.props.order.status !== 'created'}
-                style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorAmber : Color.trans)},]}
+                style={[styles.stepButton, {backgroundColor: (this.state.select[2] ? Color.colorAmber : Color.trans), borderRadius: 10},]}
                 onPress={() => this.setState({select: [false, false, true], selectType: "其他"})}>
                 <Text style={{
                     textAlign: "center",
@@ -111,7 +114,7 @@ export default class AsAddOrderPager extends Component {
     }
 
     confirmRequest(operation) {
-        if ((operation !== "删除") && (!this.state.remark || !this.state.customer_name||!this.state.accuser_name)) {
+        if ((operation !== "删除") && (!this.state.remark || !this.state.customer_name || !this.state.accuser_name)) {
             SnackBar.show("信息不完整");
             return
         }
@@ -487,7 +490,8 @@ const styles = StyleSheet.create({
         margin: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 2
+        elevation: 2,
+        borderRadius: 10
     },
     textInput: {
         width: width - 64,
@@ -504,7 +508,9 @@ const styles = StyleSheet.create({
         height: 55,
         backgroundColor: 'white',
         margin: 16,
-        elevation: 2
+        elevation: 2,
+        borderRadius: 10
+
     },
     supplierTouch: {
         flexDirection: "row",
@@ -514,6 +520,8 @@ const styles = StyleSheet.create({
         margin: 16,
         justifyContent: 'space-between',
         elevation: 2,
+        borderRadius: 10
+
     },
     editContainer: {
         flexDirection: "row",
@@ -521,7 +529,8 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: 'white',
         margin: 16,
-        elevation: 2
+        elevation: 2,
+        borderRadius: 10
     },
     radioStyle: {
         marginLeft: 16,
@@ -529,7 +538,9 @@ const styles = StyleSheet.create({
         width: width - 32,
         backgroundColor: 'white',
         paddingTop: 16,
-        paddingLeft: 16
+        paddingLeft: 16,
+        borderRadius: 10
+
     },
 
 });
