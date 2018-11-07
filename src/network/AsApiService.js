@@ -210,19 +210,15 @@ export  default  class ApiService {
         return this.getRequest(method);
     }
 
-    static submitOrderSimple(id, status, data,remark) {
+    static submitOrderSimple(id, status, data) {
         let method = 'orders/' + id;
         let temp = {
             operator_name: App.account,
             operation: status,
-            submitType: 'PC',
-            quality: data[0],
-            delivery_date: data[1],
-            not_allow: data[2],
-            loss: data[3],
-            initiative: data[4],
-            remark:remark,
         };
+        if (data !== null) {
+            temp.comment = data;
+        }
         let param = JSON.stringify(temp);
         return this.putRequest(method, param);
     }

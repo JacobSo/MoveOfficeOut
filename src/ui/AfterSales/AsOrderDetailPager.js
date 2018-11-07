@@ -35,11 +35,11 @@ export default class AsOrderDetailPager extends Component {
             radioValue: 0,
             comment: '',
             image: [],
-            scoreA:false,
-            scoreB:false,
-            scoreC:false,
-            scoreD:false,
-            scoreE:false,
+            scoreA: false,
+            scoreB: false,
+            scoreC: false,
+            scoreD: false,
+            scoreE: false,
         }
     }
 
@@ -82,25 +82,28 @@ export default class AsOrderDetailPager extends Component {
                 {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    let scoreList = [];
-                    scoreList.push(this.state.scoreA?0:1);
-                    scoreList.push(this.state.scoreB?0:1);
-                    scoreList.push(this.state.scoreC?1:0);
-                    scoreList.push(this.state.scoreD?0:1);
-                    scoreList.push(this.state.scoreE?1:0);
-                    ApiService.submitOrderSimple(this.props.order.id, 'done', scoreList,this.state.comment)
-                        .then((responseJson) => {
-                        if (responseJson.status === 0) {
-                            SnackBar.show('操作成功');
-                            this.props.refreshFunc();
-                            this.props.nav.goBack(null);
-                        } else {
-                            SnackBar.show(responseJson.message);
-                            setTimeout(() => {
-                                this.setState({isLoading: false})
-                            }, 100);
-                        }
+                    ApiService.submitOrderSimple(this.props.order.id, 'done', {
+                        remark: this.state.comment,
+                        submitType: 'PC',
+                        quality: this.state.scoreA ? 0 : 1,
+                        delivery_date: this.state.scoreB ? 0 : 1,
+                        not_allow: this.state.scoreC ? 1 : 0,
+                        loss: this.state.scoreD ? 0 : 1,
+                        initiative: this.state.scoreE ? 1 : 0,
+                        resume: (this.state.scoreA ? 0 : 1) + (this.state.scoreB ? 0 : 1) + (this.state.scoreC ? 1 : 0) + (this.state.scoreD ? 0 : 1) + (this.state.scoreE ? 1 : 0),
                     })
+                        .then((responseJson) => {
+                            if (responseJson.status === 0) {
+                                SnackBar.show('操作成功');
+                                this.props.refreshFunc();
+                                this.props.nav.goBack(null);
+                            } else {
+                                SnackBar.show(responseJson.message);
+                                setTimeout(() => {
+                                    this.setState({isLoading: false})
+                                }, 100);
+                            }
+                        })
                         .catch((error) => {
                             console.log(error);
                             SnackBar.show("出错了，请稍后再试");
@@ -385,30 +388,30 @@ export default class AsOrderDetailPager extends Component {
                                                 <Text style={styles.titleStyle}>售后评分</Text>
                                                 <CheckBox
                                                     style={{padding: 10,}}
-                                                    rightTextStyle={{color:"#555555"}}
+                                                    rightTextStyle={{color: "#555555"}}
                                                     isChecked={this.state.scoreA}
                                                     onClick={() => this.setState({scoreA: !this.state.scoreA})}
-                                                    rightText={ exList[0]+"，得分："+(this.state.scoreA?0:1)}/>
+                                                    rightText={ exList[0] + "，得分：" + (this.state.scoreA ? 0 : 1)}/>
                                                 <CheckBox
                                                     style={{padding: 10}}
                                                     isChecked={this.state.scoreB}
                                                     onClick={() => this.setState({scoreB: !this.state.scoreB})}
-                                                    rightText={ exList[1]+"，得分："+(this.state.scoreB?0:1)}/>
+                                                    rightText={ exList[1] + "，得分：" + (this.state.scoreB ? 0 : 1)}/>
                                                 <CheckBox
                                                     style={{padding: 10}}
                                                     isChecked={this.state.scoreC}
                                                     onClick={() => this.setState({scoreC: !this.state.scoreC})}
-                                                    rightText={ exList[2]+"，得分："+(this.state.scoreC?1:0)}/>
+                                                    rightText={ exList[2] + "，得分：" + (this.state.scoreC ? 1 : 0)}/>
                                                 <CheckBox
                                                     style={{padding: 10}}
                                                     isChecked={this.state.scoreD}
                                                     onClick={() => this.setState({scoreD: !this.state.scoreD})}
-                                                    rightText={ exList[3]+"，得分："+(this.state.scoreD?0:1)}/>
+                                                    rightText={ exList[3] + "，得分：" + (this.state.scoreD ? 0 : 1)}/>
                                                 <CheckBox
                                                     style={{padding: 10}}
                                                     isChecked={this.state.scoreE}
                                                     onClick={() => this.setState({scoreE: !this.state.scoreE})}
-                                                    rightText={ exList[4]+"-、，得分："+(this.state.scoreE?1:0)}/>
+                                                    rightText={ exList[4] + "-、，得分：" + (this.state.scoreE ? 1 : 0)}/>
                                                 {/*                  <RadioForm
                                                  buttonColor={Color.colorAmber}
                                                  labelStyle={{color: Color.content, margin: 16}}
