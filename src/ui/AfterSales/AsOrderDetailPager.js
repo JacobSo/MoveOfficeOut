@@ -18,12 +18,13 @@ import InputDialog from "../Component/InputDialog";
 import {CachedImage} from "react-native-img-cache";
 import RadioForm from 'react-native-simple-radio-button';
 import App from '../../constant/Application';
+import CheckBox from "../Component/CheckBox";
 
 const Dimensions = require('Dimensions');
 const {width, height} = Dimensions.get('window');
 let typeGroup = ['created', 'waitting', 'service_approving', 'service_approved', 'manager_reviewing', "manager_reviewed"];
 let transGroup = ['已创建', '等待处理', '处理中', '提交审核', '已审核', '完结'];
-const exList = ["5-时效很快，处理结果非常满意", "4-时效快，处理结果一般","3-时效一般，处理结果一般","2-时效慢，处理结果一般","1-时效很慢，处理结果不理想"];
+const exList = ["a.是否影响品质", "b.是否影响交期，处理结果一般", "c.解决方案是否永久杜绝此类型售后", "d.是否牺牲性纠错(金钱损失)", "e.主动性与否"];
 let colorGroup = [Color.colorBlueGrey, Color.colorDeepOrange, Color.colorDeepPurple, Color.colorRed, Color.colorGreen, 'black'];
 export default class AsOrderDetailPager extends Component {
     constructor(props) {
@@ -33,26 +34,32 @@ export default class AsOrderDetailPager extends Component {
             rejectContent: '',
             radioValue: 0,
             comment: '',
-            image:[],
+            image: [],
+            scoreA:false,
+            scoreB:false,
+            scoreC:false,
+            scoreD:false,
+            scoreE:false,
         }
     }
 
     //constant pic merge
     componentWillMount() {
-        let tempPic=[];
+        let tempPic = [];
         if (this.props.order && this.props.order.pic_attachment.length !== 0) {
             tempPic = this.props.order.pic_attachment;
         }
-        if (this.props.order && this.props.order.attachment ) {
+        if (this.props.order && this.props.order.attachment) {
             let tempAtt = this.props.order.attachment.split(',');
-            tempAtt.map((data)=>{
-                if(['jpg','gif','png','jpeg','bmp'].indexOf(data.substring(data.lastIndexOf('.')+1).toLowerCase())>-1)
-                    tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/"+data)
+            tempAtt.map((data) => {
+                if (['jpg', 'gif', 'png', 'jpeg', 'bmp'].indexOf(data.substring(data.lastIndexOf('.') + 1).toLowerCase()) > -1)
+                    tempPic.push("http://lsprt.lsmuyprt.com:5050/api/v1/afterservice/download/" + data)
             })
         }
         this.state.image = tempPic
 
     }
+
     getTypeIndex() {
         let temp = 0;
         typeGroup.map((data, index) => {
@@ -75,10 +82,14 @@ export default class AsOrderDetailPager extends Component {
                 {
                     text: '确定', onPress: () => {
                     this.setState({isLoading: true});
-                    ApiService.submitOrderSimple(this.props.order.id, 'done', {
-                        'resume': exList[this.state.radioValue],
-                        'remark': this.state.comment
-                    }).then((responseJson) => {
+                    let scoreList = [];
+                    scoreList.push(this.state.scoreA?0:1);
+                    scoreList.push(this.state.scoreB?0:1);
+                    scoreList.push(this.state.scoreC?1:0);
+                    scoreList.push(this.state.scoreD?0:1);
+                    scoreList.push(this.state.scoreE?1:0);
+                    ApiService.submitOrderSimple(this.props.order.id, 'done', scoreList,this.state.comment)
+                        .then((responseJson) => {
                         if (responseJson.status === 0) {
                             SnackBar.show('操作成功');
                             this.props.refreshFunc();
@@ -247,7 +258,11 @@ export default class AsOrderDetailPager extends Component {
                                 </View>
                                 <View style={styles.itemText}>
                                     <Text>{'问题描述'}</Text>
-                                    <Text style={{color: Color.black_semi_transparent,width:200,textAlign:'right'}}>{this.props.order.remark}</Text>
+                                    <Text style={{
+                                        color: Color.black_semi_transparent,
+                                        width: 200,
+                                        textAlign: 'right'
+                                    }}>{this.props.order.remark}</Text>
                                 </View>
                             </View>
 
@@ -341,7 +356,7 @@ export default class AsOrderDetailPager extends Component {
                                 <Text style={styles.subTitleStyle}>{'已提交图片'}</Text>
                                 <ListView
                                     ref="scrollView"
-                                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows( this.state.image)}
+                                    dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => true,}).cloneWithRows(this.state.image)}
                                     removeClippedSubviews={false}
                                     enableEmptySections={true}
                                     contentContainerStyle={styles.listStyle}
@@ -363,29 +378,56 @@ export default class AsOrderDetailPager extends Component {
                             {
                                 (() => {
                                     if (this.props.order.status === "manager_reviewing") {
-                                        {/*评分*/}
+                                        {/*评分*/
+                                        }
                                         return <View>
                                             <View style={styles.itemCard}>
                                                 <Text style={styles.titleStyle}>售后评分</Text>
-                                                <RadioForm
-                                                    buttonColor={Color.colorAmber}
-                                                    labelStyle={{color: Color.content, margin: 16}}
-                                                    radio_props={ [
-                                                        {label: exList[0], value: 0},
-                                                        {label: exList[1], value: 1},
-                                                        {label: exList[2], value: 2},
-                                                        {label: exList[3], value: 3},
-                                                        {label: exList[4], value: 4},
-                                                    ]}
-                                                    initial={this.state.radioValue}
-                                                    formHorizontal={false}
-                                                    style={styles.radioStyle}
-                                                    onPress={(value) => {
-                                                        this.setState({
-                                                            radioValue: value,
-                                                        })
-                                                    }}
-                                                />
+                                                <CheckBox
+                                                    style={{padding: 10,}}
+                                                    rightTextStyle={{color:"#555555"}}
+                                                    isChecked={this.state.scoreA}
+                                                    onClick={() => this.setState({scoreA: !this.state.scoreA})}
+                                                    rightText={ exList[0]+"，得分："+(this.state.scoreA?0:1)}/>
+                                                <CheckBox
+                                                    style={{padding: 10}}
+                                                    isChecked={this.state.scoreB}
+                                                    onClick={() => this.setState({scoreB: !this.state.scoreB})}
+                                                    rightText={ exList[1]+"，得分："+(this.state.scoreB?0:1)}/>
+                                                <CheckBox
+                                                    style={{padding: 10}}
+                                                    isChecked={this.state.scoreC}
+                                                    onClick={() => this.setState({scoreC: !this.state.scoreC})}
+                                                    rightText={ exList[2]+"，得分："+(this.state.scoreC?1:0)}/>
+                                                <CheckBox
+                                                    style={{padding: 10}}
+                                                    isChecked={this.state.scoreD}
+                                                    onClick={() => this.setState({scoreD: !this.state.scoreD})}
+                                                    rightText={ exList[3]+"，得分："+(this.state.scoreD?0:1)}/>
+                                                <CheckBox
+                                                    style={{padding: 10}}
+                                                    isChecked={this.state.scoreE}
+                                                    onClick={() => this.setState({scoreE: !this.state.scoreE})}
+                                                    rightText={ exList[4]+"-、，得分："+(this.state.scoreE?1:0)}/>
+                                                {/*                  <RadioForm
+                                                 buttonColor={Color.colorAmber}
+                                                 labelStyle={{color: Color.content, margin: 16}}
+                                                 radio_props={ [
+                                                 {label: exList[0], value: 0},
+                                                 {label: exList[1], value: 1},
+                                                 {label: exList[2], value: 2},
+                                                 {label: exList[3], value: 3},
+                                                 {label: exList[4], value: 4},
+                                                 ]}
+                                                 initial={this.state.radioValue}
+                                                 formHorizontal={false}
+                                                 style={styles.radioStyle}
+                                                 onPress={(value) => {
+                                                 this.setState({
+                                                 radioValue: value,
+                                                 })
+                                                 }}
+                                                 />*/}
                                                 <TextInput style={styles.textInput}
                                                            placeholder="在此输入建议和评价"
                                                            multiline={true}
@@ -404,11 +446,11 @@ export default class AsOrderDetailPager extends Component {
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() => this.popupDialog.show()}>
-                                                <View style={[styles.button,{backgroundColor:'white'}]}>
+                                                <View style={[styles.button, {backgroundColor: 'white'}]}>
                                                     <Text>退审</Text>
                                                 </View>
                                             </TouchableOpacity></View>
-                                    } else if (this.props.order.status === "manager_reviewed"||this.props.isReject||App.workType==="开发专员") {
+                                    } else if (this.props.order.status === "manager_reviewed" || this.props.isReject || App.workType === "开发专员") {
                                         return null
                                     } else {
                                         return <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -455,14 +497,14 @@ const styles = StyleSheet.create({
     },
     itemCard: {
         flexDirection: 'column',
-        alignItems: 'center',
         backgroundColor: 'white',
         elevation: 2,
         marginBottom: 32,
         marginLeft: 16,
         marginRight: 16,
         marginTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        borderRadius: 10
     },
     button: {
         width: width - 32,
@@ -471,7 +513,8 @@ const styles = StyleSheet.create({
         margin: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 2
+        elevation: 2,
+        borderRadius: 10
     },
     textInput: {
         width: width - 32,
@@ -480,15 +523,18 @@ const styles = StyleSheet.create({
         marginRight: 16,
         borderColor: Color.line,
         borderBottomWidth: 1,
-       padding:16
-       // textAlign: 'center'
+        padding: 16
+        // textAlign: 'center'
     },
     titleStyle: {
         textAlign: 'center',
         width: width - 32,
         padding: 5,
         color: 'white',
-        backgroundColor: Color.colorGrey
+        backgroundColor: Color.colorGrey,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+
     },
     subTitleStyle: {
         borderLeftColor: Color.colorAmber,

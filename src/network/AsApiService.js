@@ -65,7 +65,7 @@ export  default  class ApiService {
 
     static postRequest(method, param) {
         let temp = method.indexOf("http://") > -1 ? method : (BASE_URL + method);
-        console.log('method:' +temp + '\nparam:' + param);
+        console.log('method:' + temp + '\nparam:' + param);
 
         return newFetch(temp, {
             method: 'POST',
@@ -210,20 +210,24 @@ export  default  class ApiService {
         return this.getRequest(method);
     }
 
-    static submitOrderSimple(id, status, data) {
+    static submitOrderSimple(id, status, data,remark) {
         let method = 'orders/' + id;
         let temp = {
             operator_name: App.account,
             operation: status,
+            submitType: 'PC',
+            quality: data[0],
+            delivery_date: data[1],
+            not_allow: data[2],
+            loss: data[3],
+            initiative: data[4],
+            remark:remark,
         };
-        if (data !== null) {
-            temp.comment = data;
-        }
         let param = JSON.stringify(temp);
         return this.putRequest(method, param);
     }
 
-    static uploadImage(id,  fileName,imgCode) {
+    static uploadImage(id, fileName, imgCode) {
         let method = "http://lsprt.lsmuyprt.com:8806/shorder/ShImgUpload/UpImg";
         let param = JSON.stringify({
             id: id,

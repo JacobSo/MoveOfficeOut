@@ -337,7 +337,8 @@ const styles = StyleSheet.create({
         margin: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 2
+        elevation: 2,
+        borderRadius:10
     },
 
 });

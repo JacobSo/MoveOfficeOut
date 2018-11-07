@@ -767,7 +767,9 @@ const styles = StyleSheet.create({
         margin: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 2
+        elevation: 2,
+        borderRadius:10
+
     },
     textInput: {
         width: width - 32,
@@ -783,7 +785,8 @@ const styles = StyleSheet.create({
     detailContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        margin: 10
+        margin: 10,
+        borderRadius:10
     },
     detailTouch: {
         justifyContent: "space-between",
