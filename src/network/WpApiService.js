@@ -7,7 +7,7 @@
 import App from '../constant/Application';
 //let BASE_URL = 'http://192.168.2.3:8806/outapplytest/';
 //let BASE_URL = 'http://192.168.2.3:8806/outapply/';
-let BASE_URL = 'http://lsprt.lsmuyprt.com:8806/outapply/';
+let BASE_URL = 'http://scmprt.linshimuye.com:8806/outapply/';
 let newFetch = function (input, opts) {
     return new Promise((resolve, reject) => {
         setTimeout(reject, opts.timeout);

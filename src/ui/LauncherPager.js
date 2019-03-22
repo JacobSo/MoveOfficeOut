@@ -2,6 +2,7 @@
  *
  ┌────────────┬───────────────────────────────────────┐
  │Android       │ Deployment Key                        │http://lsprt.lsmuyprt.com:3000/
+ http://scmprt.linshimuye.com:3000/
  ├────────────┼───────────────────────────────────────┤
  │ Production │ aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog │
  ├────────────┼───────────────────────────────────────┤

@@ -11,8 +11,8 @@ export  default  class UpdateService {
     static update(isNotice) {
         let iosKey = "662cbac6fcc48aca832a63511afdc0bc";
         let androidKey = "37afc1bd768906cf61bc6cd873fdf09a";
-        let iosCode = 15;//201811017 update
-        let androidCode = 13;//20171023
+        let iosCode = 16;//20190322
+        let androidCode = 14;//20190322
         if(isNotice)
             SnackBar.show("检查中...",{duration:3000});
         ApiService.pgyerApiCheck(Platform.OS === 'ios' ? iosKey : androidKey)

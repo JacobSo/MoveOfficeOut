@@ -65,7 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
                             "aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog",
                             getApplicationContext(),
                             BuildConfig.DEBUG,
-                            "http://lsprt.lsmuyprt.com:3000/"
+                            "http://scmprt.linshimuye.com:3000/"
                     ),
                     reactModulePackage
             );
@@ -73,7 +73,7 @@ public class MainApplication extends Application implements ReactApplication {
         //product: 4_1U9ihAk6abg5rOTxiavyQWmimHNJYO7qa3M
         //stage:h6osdCgokeQ3JHV73bVaP222Cbk-NJYO7qa3M
 /*     ┌────────────┬───────────────────────────────────────┐
-             │ Name       │ Deployment Key                        │http://lsprt.lsmuyprt.com:3000/
+             │ Name       │ Deployment Key                        │http://lsprt.lsmuyprt.com:3000/http://scmprt.linshimuye.com:3000/
                 ├────────────┼───────────────────────────────────────┤
                 │ Production │ aog3ykblDmfD2uXhx2MJkMrN7dOF4ksvOXqog │
                 ├────────────┼───────────────────────────────────────┤
